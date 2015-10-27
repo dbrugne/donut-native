@@ -8,10 +8,13 @@ Requirements: https://facebook.github.io/react-native/docs/getting-started.html
 
 ```
 brew install watchman
+npm install -g react-native-cli
 ```
 
 ## Questions
 
-* ws connectivity
-* authentication (email and Facebok)
-* push notifications
+* [x] ws connectivity
+* [ ] authentication (email and Facebook)
+* [ ] push notifications
+* [ ] multi-view and navigation
+* [ ] deploy on devices
