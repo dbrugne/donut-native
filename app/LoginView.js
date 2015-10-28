@@ -18,7 +18,7 @@ var {
   AsyncStorage
 } = React;
 
-var HomeView = require('./MoviesView');
+var HomeView = require('./HomeView');
 //var authentication = require('../models/authentication');
 
 class LoginView extends Component {
@@ -125,78 +125,6 @@ class LoginView extends Component {
     });
   }
 };
-
-//var donutMobile = React.createClass({
-//  getInitialState() {
-//    return {
-//      email: 'yangs@yangs.net',
-//      password: 'password',
-//      logged: false,
-//    };
-//  },
-//  componentWillMount() {
-//    var that = this;
-//    AsyncStorage.multiGet(['donut:token', 'donut:code'])
-//      .then(function (data) {
-//        console.log(data);
-//        if (data.token) {
-//          that.setState({
-//            logged: true
-//          });
-//        }
-//      });
-//  },
-//  render: function() {
-//    if (!this.state.logged) {
-//      return this.renderLoginView();
-//    }
-//
-//    return (<HomeView/>);
-//  },
-//  _handlePress: function () {
-//    if (this.state.email && this.state.password) {
-//      console.log('go', this.state.email, this.state.password);
-//      var params = {
-//        method: 'post',
-//        headers: {
-//          'Accept': 'application/json',
-//          'Content-Type': 'application/json',
-//        },
-//        body: JSON.stringify({
-//          'email': this.state.email,
-//          'password': this.state.password
-//        })
-//      };
-//      var that = this;
-//      fetch('https://test.donut.me/oauth/get-token-from-credentials', params)
-//        .then(function(res) {
-//          return res.json();
-//        })
-//        .then(function(resJson) {
-//          try {
-//            that.saveStatus(resJson);
-//            return resJson;
-//          } catch (e) {
-//            console.error(e);
-//          }
-//        })
-//    }
-//  },
-//  async saveStatus(res) {
-//    try {
-//      await AsyncStorage.multiSet([
-//        ['donut:token', res.token],
-//        ['donut:code', res.code]
-//      ]);
-//      this.setState({
-//        logged: true
-//      });
-//    } catch (error) {
-////      this._appendMessage('AsyncStorage error: ' + error.message);
-//      console.error(error);
-//    }
-//  },
-//});
 
 var styles = StyleSheet.create({
   container: {
