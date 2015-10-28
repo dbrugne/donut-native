@@ -1,7 +1,10 @@
 'use strict';
 
 /**
- * Ideas https://github.com/ntoscano/ReactNativePersistentUserLogin/blob/master/persistentUserLogin.js
+ * https://medium.com/@ntoscano/react-native-persistent-user-login-6a48ff380ab8#.ojepkj31k
+ * http://wiredify.com/shohey1226/logs/React-Native---Router-for-Login-status-using-Navigator
+ * https://github.com/ntoscano/ReactNativePersistentUserLogin/blob/master/persistentUserLogin.js
+ * https://blog.nraboy.com/2015/09/using-navigator-routes-in-your-react-native-application/
  */
 
 
