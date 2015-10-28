@@ -13,8 +13,9 @@ npm install -g react-native-cli
 
 ## Questions
 
+* [x] authentication (email)
+* [ ] authentication (Facebook)
+* [x] deploy on devices
 * [x] ws connectivity
-* [ ] authentication (email and Facebook)
-* [ ] push notifications
 * [ ] multi-view and navigation
-* [ ] deploy on devices
+* [ ] push notifications
