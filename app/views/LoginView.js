@@ -7,7 +7,7 @@
  * https://blog.nraboy.com/2015/09/using-navigator-routes-in-your-react-native-application/
  */
 
-
+var _ = require('underscore');
 var React = require('react-native');
 
 var {
@@ -21,40 +21,31 @@ var {
   AsyncStorage
 } = React;
 
-var HomeView = require('./HomeView');
-//var authentication = require('../models/authentication');
+var currentUser = require('../models/current-user');
 
 class LoginView extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      email: 'yangs@yangs.net',
-      password: 'password'
+      email: '',
+      password: '',
+      hasPassword: false,
+      messages: [],
+      errors: []
     };
   }
-  componentDidMount() {
-    this._loadInitialState().done();
-  }
-  async _loadInitialState() {
-    try {
-      var value = await AsyncStorage.getItem('token');
-      if (value !== null) {
-        console.log('logged in', value);
-        this.displayHomeView();
-//        this._appendMessage('Recovered selection from disk: ' + value);
-      } else {
-        console.log('not logged in');
-//        this._appendMessage('Initialized with no selection on disk.');
-      }
-    } catch (error) {
-      console.error(error);
-//      this._appendMessage('AsyncStorage error: ' + error.message);
-    }
+
+  componentDidMount () {
+    this.setState({
+      email: currentUser.getEmail()
+    });
   }
 
   render () {
     return (
       <View style={styles.container}>
+        {this.state.errors.map((m) => <Text>{m}</Text>)}
+        {this.state.messages.map((m) => <Text>{m}</Text>)}
         <Text style={styles.title}>
           Sign In
         </Text>
@@ -77,56 +68,29 @@ class LoginView extends Component {
       </View>
     );
   }
+
   onSubmitPressed () {
-    if (this.state.email && this.state.password) {
-      console.log('go', this.state.email, this.state.password);
-      var params = {
-        method: 'post',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          'email': this.state.email,
-          'password': this.state.password
-        })
-      };
-      var that = this;
-      fetch('https://test.donut.me/oauth/get-token-from-credentials', params)
-        .then(function(res) {
-          return res.json();
-        })
-        .then(function(resJson) {
-          try {
-            that.saveStatus(resJson);
-            return resJson;
-          } catch (e) {
-            console.error(e);
-          }
-        })
+    if (!this.state.email || !this.state.password) {
+      return;
     }
+
+    // @todo : loading screen
+    var that = this;
+    currentUser.login(this.state.email, this.state.password, _.bind(function (err) {
+      if (err) {
+        this._appendError(err);
+      }
+    }, this));
   }
-  async saveStatus(res) {
-    console.log(res);
-    try {
-      await AsyncStorage.multiSet([
-        ['token', res.token],
-        ['code', res.code]
-      ]);
-      this.displayHomeView();
-    } catch (error) {
-//      this._appendMessage('AsyncStorage error: ' + error.message);
-      console.error(error);
-    }
+
+  _appendMessage (string) {
+    this.setState({messages: this.state.messages.concat(string)});
   }
-  displayHomeView() {
-    console.log('go to home view');
-    this.props.navigator.push({
-      name: "Secure Page",
-      component: HomeView,
-      index: 1
-    });
+
+  _appendError (string) {
+    this.setState({errors: this.state.messages.concat(string)});
   }
+
 };
 
 var styles = StyleSheet.create({
