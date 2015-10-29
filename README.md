@@ -20,3 +20,25 @@ npm install -g react-native-cli
 * [x] ws connectivity
 * [ ] multi-view and navigation
 * [ ] push notifications
+
+## Interesting example
+
+```
+  componentDidMount() {    
+    this._loadInitialState().done();
+  }
+  
+  async _loadInitialState() {
+    try {
+      var value = await AsyncStorage.getItem('token');
+      if (value !== null) {
+        console.log('logged in', value);
+        this.displayHomeView();
+      } else {
+        console.log('not logged in');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+```  
