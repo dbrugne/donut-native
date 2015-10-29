@@ -70,6 +70,10 @@ var CurrentUserModel = Backbone.Model.extend({
     return this.oauth.email;
   },
 
+  getToken: function () {
+    return this.oauth.token;
+  },
+
   isAdmin: function () {
     return (this.get('admin') === true);
   },

@@ -10,10 +10,12 @@ var {
 } = React;
 
 var Client = require('@dbrugne/donut-common/client');
+var currentUser = require('../models/current-user');
+var storage = require('./storage');
 
 // token retrieving logic
 var getTokenFromSession = function (callback) {
-  AsyncStorage.getItem('token', callback);
+  storage.getKey('token', callback); // @todo : fix bug when using currentUser directly (probably lifecycle side effect)
 };
 
 module.exports = Client({

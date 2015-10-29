@@ -10,6 +10,7 @@ var {
 var NavigatorNavigationBarStyles = Navigator.NavigationBar.StylesIOS;//require('NavigatorNavigationBarStyles');
 var NavigationBarRouteMapper     = require('./NavigationBarRouteMapper');
 var app = require('../libs/app');
+var Drawer = require('react-native-drawer');
 
 //var stacksEqual = function(one, two, length) {
 //  if (one.length < length) return false;
@@ -23,6 +24,7 @@ var app = require('../libs/app');
 //  return true;
 //};
 
+var NavigationView = require('../views/NavigationView');
 var HomeView = require('../views/HomeView');
 var Container = React.createClass({
   render: function() {
@@ -140,19 +142,27 @@ class NavigationBar extends Component {
 
   render () {
     return (
+    <Drawer
+      type="static"
+      content={<NavigationView />}
+      openDrawerOffset={100}
+      styles={{main: {shadowColor: "#000000", shadowOpacity: 0.4, shadowRadius: 3}}}
+      tweenHandler={Drawer.tweenPresets.parallax}
+      >
       <View style={styles.appContainer}>
         <Navigator
           ref='navigator'
-//          debugOverlay={false}
+          //          debugOverlay={false}
           initialRoute={{ name: 'home', title: 'home', index: 0, component: HomeView }}
           renderScene={this.renderScene.bind(this)}
-//          initialRoute={{name: 'home'}}
-//          renderScene={this.renderScene}
-//          navBarHidden={this.props.navBarHidden}
-//          initialRouteStack={this.props.routeStack.path}
+          //          initialRoute={{name: 'home'}}
+          //          renderScene={this.renderScene}
+          //          navBarHidden={this.props.navBarHidden}
+          //          initialRouteStack={this.props.routeStack.path}
           navigationBar={this.renderNavBar()}
-        />
+          />
       </View>
+    </Drawer>
     );
   }
 

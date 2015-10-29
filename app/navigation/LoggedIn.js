@@ -25,11 +25,11 @@ class Index extends Component {
   }
 
   componentDidMount () {
-//    this.client.connect();
+    this.client.connect();
   }
 
   componentWillUnmount () {
-//    this.client.disconnect();
+    this.client.disconnect();
   }
 
   render () {

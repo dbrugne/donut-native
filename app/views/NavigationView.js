@@ -15,7 +15,7 @@ var {
 } = React;
 
 var common = require('@dbrugne/donut-common/mobile');
-var client = require('./libs/client');
+var client = require('../libs/client');
 
 class NavigationView extends Component {
   constructor (props) {
