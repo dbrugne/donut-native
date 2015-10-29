@@ -14,6 +14,7 @@ var {
 
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
+var NavigationBar = require('./NavigationBar');
 
 class Index extends Component {
   constructor (props) {
@@ -24,10 +25,12 @@ class Index extends Component {
   }
 
   componentDidMount () {
-//    this.client.connect(); // @todo
+//    this.client.connect();
   }
 
-  // @todo : unmount listeners
+  componentWillUnmount () {
+//    this.client.disconnect();
+  }
 
   render () {
 
@@ -35,12 +38,7 @@ class Index extends Component {
 
     return (
       <View style={styles.main}>
-        <Text>Authentication OK!</Text>
-        <Text>{currentUser.oauth.token}</Text>
-        <Text>{currentUser.oauth.code}</Text>
-        <TouchableHighlight onPress={() => currentUser.logout()} style={styles.button}>
-          <Text style={styles.logout}>LOGOUT</Text>
-        </TouchableHighlight>
+        <NavigationBar />
       </View>
     );
   }
@@ -48,7 +46,7 @@ class Index extends Component {
 
 var styles = StyleSheet.create({
   main: {
-    marginTop: 60
+    flex: 1
   }
 });
 
