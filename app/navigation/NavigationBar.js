@@ -147,7 +147,6 @@ class NavigationBar extends Component {
         ref='drawer'
         content={<NavigationView />}
         openDrawerOffset={100}
-        closedDrawerOffset={20}
         styles={{main: {shadowColor: "#000000", shadowOpacity: 0.4, shadowRadius: 3}}}
         tweenHandler={Drawer.tweenPresets.parallax}
         >
@@ -179,8 +178,10 @@ class NavigationBar extends Component {
     console.log(_route);
     if (_route) {
       this.refs.navigator.jumpTo(_route);
+      this.refs.drawer.close();
     } else {
       this.refs.navigator.push(route);
+      this.refs.drawer.close();
     }
   }
 }

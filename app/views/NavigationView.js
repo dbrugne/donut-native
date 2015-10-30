@@ -16,6 +16,10 @@ var {
 
 var common = require('@dbrugne/donut-common/mobile');
 var client = require('../libs/client');
+var app = require('../libs/app');
+
+var RoomView = require('../views/Room');
+var OnetooneView = require('../views/Onetoone');
 
 class NavigationView extends Component {
   constructor (props) {
@@ -47,16 +51,19 @@ class NavigationView extends Component {
   render () {
     return (
       <View style={styles.main}>
+        <TouchableHighlight onPress={() => this.navigateToHome()}>
+          <Text style={styles.title}>HOME</Text>
+        </TouchableHighlight>
         <Text>onetoones</Text>
         <ListView
           dataSource={this.state.ones}
-          renderRow={this.renderOne}
+          renderRow={this.renderOne.bind(this)}
           style={styles.listView}
           />
         <Text>rooms</Text>
         <ListView
           dataSource={this.state.rooms}
-          renderRow={this.renderRoom}
+          renderRow={this.renderRoom.bind(this)}
           style={styles.listView}
           />
       </View>
@@ -66,14 +73,14 @@ class NavigationView extends Component {
   renderOne (e) {
     var avatarUrl = common.cloudinary.prepare(e.avatar, 30)
     return (
-      <TouchableHighlight onPress={() => console.log('press', '@' + e.username)}>
+      <TouchableHighlight onPress={() => this.navigateToOne(e.user_id, e.username)}>
         <View style={styles.container}>
           <Image
-            source={{uri: avatarUrl}} s
+            source={{uri: avatarUrl}}
             style={styles.thumbnail}
             />
           <View style={styles.rightContainer}>
-              <Text style={styles.title}>{e.username}</Text>
+              <Text style={styles.title}>@{e.username}</Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -82,15 +89,40 @@ class NavigationView extends Component {
 
   renderRoom (e) {
     return (
-      <TouchableHighlight onPress={() => console.log('press', e.identifier)}>
+      <TouchableHighlight onPress={() => this.navigateToRoom(e.room_id, e.identifier)}>
         <View style={styles.container}>
-          <View style={styles.rightContainer} onSelect={() => console.log('touche')}>
+          <View style={styles.rightContainer}>
               <Text style={styles.title}>{e.identifier}</Text>
           </View>
         </View>
       </TouchableHighlight>
     );
   }
+
+  navigateToOne (id, title) {
+    app.trigger('navigateTo', {
+      name: 'one-' + id,
+      title: title,
+      component: OnetooneView,
+      id: id,
+    });
+  }
+
+  navigateToRoom (id, title) {
+    app.trigger('navigateTo', {
+      name: 'one-' + id,
+      title: title,
+      component: RoomView,
+      id: id,
+    });
+  }
+
+  navigateToHome () {
+    app.trigger('navigateTo', {
+      name: 'home',
+    });
+  }
+
 };
 
 var styles = StyleSheet.create({
