@@ -134,7 +134,7 @@ class NavigationBar extends Component {
 
     return (
       <Navigator.NavigationBar
-        routeMapper={new NavigationBarRouteMapper()}
+        routeMapper={NavigationBarRouteMapper(this)}
         style={styles.navBar}
       />
     );
@@ -142,27 +142,29 @@ class NavigationBar extends Component {
 
   render () {
     return (
-    <Drawer
-      type="static"
-      content={<NavigationView />}
-      openDrawerOffset={100}
-      styles={{main: {shadowColor: "#000000", shadowOpacity: 0.4, shadowRadius: 3}}}
-      tweenHandler={Drawer.tweenPresets.parallax}
-      >
-      <View style={styles.appContainer}>
-        <Navigator
-          ref='navigator'
-          //          debugOverlay={false}
-          initialRoute={{ name: 'home', title: 'home', index: 0, component: HomeView }}
-          renderScene={this.renderScene.bind(this)}
-          //          initialRoute={{name: 'home'}}
-          //          renderScene={this.renderScene}
-          //          navBarHidden={this.props.navBarHidden}
-          //          initialRouteStack={this.props.routeStack.path}
-          navigationBar={this.renderNavBar()}
-          />
-      </View>
-    </Drawer>
+      <Drawer
+        type='static'
+        ref='drawer'
+        content={<NavigationView />}
+        openDrawerOffset={100}
+        closedDrawerOffset={20}
+        styles={{main: {shadowColor: "#000000", shadowOpacity: 0.4, shadowRadius: 3}}}
+        tweenHandler={Drawer.tweenPresets.parallax}
+        >
+        <View style={styles.appContainer} >
+          <Navigator
+            ref='navigator'
+            //          debugOverlay={false}
+            initialRoute={{ name: 'home', title: 'home', index: 0, component: HomeView }}
+            renderScene={this.renderScene}
+            //          initialRoute={{name: 'home'}}
+            //          renderScene={this.renderScene}
+            //          navBarHidden={this.props.navBarHidden}
+            //          initialRouteStack={this.props.routeStack.path}
+            navigationBar={this.renderNavBar()}
+            />
+        </View>
+      </Drawer>
     );
   }
 
