@@ -18,7 +18,7 @@ npm install -g react-native-cli
 * [x] deploy on iOS devices
 * [x] deploy on Android devices
 * [x] ws connectivity
-* [ ] multi-view and navigation
+* [x] multi-view and navigation
 * [ ] push notifications
 
 ## Interesting example
