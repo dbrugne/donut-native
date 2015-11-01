@@ -7,36 +7,48 @@ var {
 
 var _ = require('underscore');
 
-var LocalKeyStore = {
+var Storage = {
   getKey: function (keyName, callback) {
+    callback = callback || _.noop;
     AsyncStorage.getItem(keyName, function (err, value) { // callback: error, value
       if (err) {
         console.log('Error getting item (' + keyName + ') from local storage! ' + err.message);
-        if (callback) {
-          callback(err, null);
-        }
+        callback(err, null);
       } else {
-        if (callback) {
-          callback(null, value);
-        }
+        console.log('returning value', value);
+        callback(null, value);
       }
     });
   },
-  setKey: function (keyName, value, callback) { // callback: error
+  setKey: function (keyName, value, callback) {
+    callback = callback || _.noop;
+
+    if (!value) {
+      return this.removeKey(keyName, callback);
+    }
+
     AsyncStorage.setItem(keyName, value, function (err) {
       if (err) {
-        console.log('Error setting item (' + keyName + ') to local storage! ' + err.message);
-        if (callback) {
-          callback(err);
-        }
+        console.log('Error setting item (' + keyName + ') in local storage! ' + err.message);
+        callback(err);
       } else {
-        if (callback) {
-          callback(null);
-        }
+        callback(null);
+      }
+    });
+  },
+  removeKey: function (key, callback) {
+    callback = callback || _.noop;
+    AsyncStorage.removeItem(key, function (err) {
+      if (err) {
+        console.log('Error removing item (' + key + ') from local storage! ' + err.message);
+        callback(err);
+      } else {
+        callback(null);
       }
     });
   },
   getKeys: function (keys, callback) {
+    callback = callback || _.noop;
     AsyncStorage.multiGet(keys, function (err, values) {
       if (err) {
         callback(err);
@@ -50,13 +62,53 @@ var LocalKeyStore = {
     });
   },
   setKeys: function (values, callback) {
-    var data = [];
+    callback = callback || _.noop;
+    var keysToSave = [];
+    var keysToRemove = [];
+
     _.each(values, function (value, key) {
-      data.push([ key, value ]);
+      if (!value) {
+        keysToRemove.push(key);
+        return;
+      }
+
+      keysToSave.push([key, value]);
     });
 
-    AsyncStorage.multiSet(data, callback);
+    var save = function (cb) {
+      if (!keysToSave.length) {
+        return cb(null);
+      }
+      AsyncStorage.multiSet(keysToSave, cb);
+    };
+    var remove = function (cb) {
+      if (!keysToRemove.length) {
+        return cb(null);
+      }
+      AsyncStorage.multiRemove(keysToRemove, cb);
+    };
+
+    save(function (err) {
+      if (err) {
+        console.warn(err);
+      }
+
+      remove(callback);
+    })
+  },
+  removeKeys: function (keys, callback) {
+    callback = callback || _.noop;
+    AsyncStorage.multiRemove(keys, function (err) {
+      if (err) {
+        console.log('Error removing item (' + key + ') from local storage! ' + err.message);
+        callback(err);
+      } else {
+        callback(null);
+      }
+    });
   }
+
+  // @todo : implement removeKeys, use it in setKeys, replace all usage in code
 };
 
-module.exports = LocalKeyStore;
+module.exports = Storage;

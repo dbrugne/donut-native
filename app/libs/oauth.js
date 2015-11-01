@@ -105,12 +105,8 @@ var oauth = _.extend({
 
       // unset invalid token
       this.token = null;
-      storage.setKey({ token: '' }, function (err) {
-        if (err) {
-          return callback(err);
-        }
-
-        return callback(null, false);
+      storage.removeKey('token', function (err) {
+        return callback(err, false);
       });
     }, this));
   },
@@ -124,13 +120,13 @@ var oauth = _.extend({
       return callback(null);
     }
 
-    this.oauthRequest('get-token-from-credentials', { email: this.email, code: this.code }, function (err, response) {
+    this.oauthRequest('get-token-from-credentials', { email: this.email, code: this.code }, _.bind(function (err, response) {
       if (err) {
         return callback(err);
       }
       if (response.err && response.err !== 'no-username') {
         // unset current code
-        storage.setKey('code', '', function (err) {
+        storage.removeKey('code', function (err) {
           if (err) {
             return callback(err);
           }
@@ -155,7 +151,7 @@ var oauth = _.extend({
 
         return callback(null);
       });
-    });
+    }, this));
   },
 
   /**
@@ -198,7 +194,7 @@ var oauth = _.extend({
   logout: function (callback) {
     this.token = null;
     this.code = null;
-    storage.setKeys({ token: '', code: '' }, callback);
+    storage.removeKeys(['token', 'code'], callback);
   }
 
 }, Backbone.Events);
