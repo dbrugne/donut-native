@@ -24,7 +24,7 @@ var Drawer = require('react-native-drawer');
 //  return true;
 //};
 
-var NavigationView = require('../views/NavigationView');
+var NavigationView = require('./NavigationView');
 var HomeView = require('../views/HomeView');
 var Container = React.createClass({
   render: function() {
