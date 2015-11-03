@@ -1,25 +1,21 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
-var oauth = require('../libs/oauth');
+var oauth = require('../libs/oauth'); // @mobile
 
 var CurrentUserModel = Backbone.Model.extend({
-  oauth: oauth,
+  oauth: oauth,  // @mobile
 
   defaults: function () {
     return {
-      user_id: '',
-      username: '',
-      avatar: '',
-      status: '',
-      admin: false,
-      token: null,
-      code: null
+      token: null, // @mobile
+      code: null // @mobile
     };
   },
 
   initialize: function () {
     this.listenTo(client, 'user:updated', this.onUpdated);
+    this.listenTo(client, 'preferences:update', this.setPreference);
 
     // listen for client statuses (should be done only by client and view??)
     var statuses = {
@@ -40,6 +36,46 @@ var CurrentUserModel = Backbone.Model.extend({
     }, this));
   },
 
+  onUpdated: function (data) {
+    if (data.username !== this.get('username')) {
+      return;
+    }
+    _.each(data.data, _.bind(function (value, key) {
+      this.set(key, value);
+    }, this));
+  },
+  setPreference: function (data, options) {
+    options = options || {};
+
+    var keys = Object.keys(data);
+    if (!keys || !keys.length) {
+      return;
+    }
+
+    var key = keys[ 0 ];
+    if (!key) {
+      return;
+    }
+
+    var preferences = this.get('preferences') || {};
+    preferences[ key ] = data[ key ];
+    this.set('preferences', preferences, options);
+  },
+  setPreferences: function (preferences, options) {
+    options = options || {};
+
+    if (!preferences) {
+      return;
+    }
+
+    var newPreferences = {}; // reset all previous keys
+    _.each(preferences, function (value, key, list) {
+      newPreferences[ key ] = value;
+    });
+
+    this.set('preferences', newPreferences, options);
+  },
+
   loadInitialState: function () {
     this.oauth.loadStorage(_.bind(function () {
       this.oauth.checkStatus(_.bind(function (err) {
@@ -50,15 +86,6 @@ var CurrentUserModel = Backbone.Model.extend({
         // trigger LoggedOut navigation tree
         this.trigger('currentUserStatus');
       }, this));
-    }, this));
-  },
-
-  onUpdated: function (data) {
-    if (data.username !== this.get('username')) {
-      return;
-    }
-    _.each(data.data, _.bind(function (value, key) {
-      this.set(key, value);
     }, this));
   },
 
