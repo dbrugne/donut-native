@@ -62,7 +62,7 @@ var styles = StyleSheet.create({
   links: {
     flex: 1,
     backgroundColor: '#EEEEEE',
-  }
+  },
 });
 
 module.exports = HomeView;

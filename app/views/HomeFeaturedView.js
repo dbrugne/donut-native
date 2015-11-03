@@ -57,13 +57,12 @@ class HomeView extends Component {
     }
 
     return (
-      <ScrollView>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this.renderElement}
-          style={styles.listView}
-          />
-      </ScrollView>
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={this.renderElement}
+        style={styles.listView}
+        scrollEnabled={false}
+        />
     );
   }
 
@@ -85,16 +84,8 @@ class HomeView extends Component {
 }
 
 var styles = StyleSheet.create({
-  main: {
-    flex: 1,
-//    marginTop: NavigatorNavigationBarStyles.General.TotalNavHeight,
-  },
-  links: {
-    flex: 1,
-    backgroundColor: '#EEEEEE',
-  },
   listView: {
-    flex: 9,
+    flex: 1,
   },
   container: {
     flex: 1,
