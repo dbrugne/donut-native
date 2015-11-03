@@ -1,9 +1,12 @@
 var React = require('react-native');
-
 var {
   Text,
+  TouchableOpacity,
   StyleSheet
 } = React;
+var {
+  Icon
+} = require('react-native-icons');
 
 var app = require('../libs/app');
 
@@ -15,11 +18,30 @@ var NavigationBarRouteMapper = {
   drawerOpened: false,
 
   LeftButton: function (route, navigator, index, navState) {
-    return (<Text style={styles.button} route={route} index={index} navigator={navigator} direction="left" onPress={this.toggleControlPanel.bind(this)}>MENU</Text>);
+    return (
+      <TouchableOpacity style={styles.leftContainer} onPress={this.toggleControlPanel.bind(this)}>
+        <Icon
+          name='fontawesome|bars'
+          size={30}
+          color='#FFFFFF'
+          style={styles.navigation}
+          />
+      </TouchableOpacity>
+    );
   },
 
   RightButton: function (route, navigator, index, navState) {
-    return (<Text style={styles.button} route={route} index={index} navigator={navigator} direction="right">RIGHT</Text>);
+//    return (<Text style={styles.button} route={route} index={index} navigator={navigator} direction="right">RIGHT</Text>);
+    return (
+      <TouchableOpacity style={styles.rightContainer} onPress={this.toggleControlPanel.bind(this)}>
+        <Icon
+          name='fontawesome|hand-peace-o'
+          size={30}
+          color='#FFFFFF'
+          style={styles.navigation}
+          />
+      </TouchableOpacity>
+    );
   },
 
   Title: function (route, navigator, index, navState) {
@@ -50,6 +72,18 @@ var styles = StyleSheet.create({
     fontWeight: '500',
     marginVertical: 9,
   },
+  leftContainer: {
+    paddingTop: 6,
+    paddingLeft: 10
+  },
+  rightContainer: {
+    paddingTop: 6,
+    paddingRight: 10
+  },
+  navigation: {
+    width: 30,
+    height: 30,
+  }
 });
 
 module.exports = function (_parent) {
