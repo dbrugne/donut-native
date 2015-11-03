@@ -7,7 +7,8 @@ var {
   View,
   Text,
   Component,
-  TouchableHighlight
+  TouchableHighlight,
+  ScrollView
 } = React;
 
 var app = require('../libs/app');
@@ -21,13 +22,13 @@ class NavigationView extends Component {
 
   render () {
     return (
-      <View style={styles.main}>
+      <ScrollView style={styles.main}>
         <TouchableHighlight onPress={() => this.navigateToHome()}>
           <Text style={styles.title}>HOME</Text>
         </TouchableHighlight>
         <NavigationOnesView />
         <NavigationRoomsView />
-      </View>
+      </ScrollView>
     );
   }
 
@@ -43,7 +44,8 @@ var styles = StyleSheet.create({
   main: {
     marginTop: 25,
     flexDirection: 'column',
-    flexWrap: 'nowrap'
+    flexWrap: 'nowrap',
+    color: '#00FF00'
   },
   title: {
     fontSize: 20,

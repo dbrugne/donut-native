@@ -54,6 +54,14 @@ class NavigationRoomsView extends Component {
   }
 
   renderElement (e) {
+    if (e.blocked) {
+      return (
+        <View style={styles.itemBlocked}>
+          <Text style={styles.itemBlockedTitle}>{e.identifier}</Text>
+        </View>
+      );
+    }
+
     return (
       <TouchableHighlight onPress={() => this.navigateToRoom(e.room_id, e.identifier)}>
         <View style={styles.item}>
@@ -86,12 +94,22 @@ var styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   item: {
-    backgroundColor: '#F5FCFF',
     marginBottom: 5,
   },
   itemTitle: {
+    fontFamily: 'Open Sans',
+    fontStyle: 'normal',
     fontSize: 18,
   },
+  itemBlocked: {
+    marginBottom: 5
+  },
+  itemBlockedTitle: {
+    color: '#FF0000',
+    fontFamily: 'Open Sans',
+    fontStyle: 'normal',
+    fontSize: 18,
+  }
 });
 
 module.exports = NavigationRoomsView;
