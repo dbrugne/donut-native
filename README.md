@@ -14,7 +14,7 @@ npm install -g react-native-cli
 ## Questions
 
 * [x] authentication (email)
-* [ ] authentication (Facebook) : https://developers.facebook.com/quickstarts/328600083963864/?platform=ios
+* [ ] authentication (Facebook)
 * [x] deploy on iOS devices
 * [x] deploy on Android devices
 * [x] ws connectivity
