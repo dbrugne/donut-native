@@ -7,6 +7,8 @@ var {
   Component
 } = React;
 
+// @todo : animate status bar to top on drawer open and close (https://facebook.github.io/react-native/docs/statusbarios.html)
+
 var NavigatorNavigationBarStyles = Navigator.NavigationBar.StylesIOS;//require('NavigatorNavigationBarStyles');
 var NavigationBarRouteMapper     = require('./NavigationBarRouteMapper');
 var app = require('../libs/app');

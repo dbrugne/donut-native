@@ -85,29 +85,35 @@ class NavigationOnesView extends Component {
 
 var styles = StyleSheet.create({
   block: {
+    marginBottom: 15,
   },
   title: {
-    fontSize: 20,
+    fontFamily: 'Open Sans',
+    fontSize: 12,
+    fontWeight: 'bold',
+    paddingLeft: 10,
     marginBottom: 8,
-    color: '#00FF00'
+    color: '#FFFFFF'
   },
   listView: {
-    backgroundColor: '#F5FCFF'
   },
   item: {
-    backgroundColor: '#F5FCFF',
-    marginBottom: 5,
+    paddingLeft: 10,
+    paddingVertical: 3,
     flexDirection: 'row'
-  },
-  itemTitle: {
-    fontSize: 18
   },
   thumbnail: {
     width: 30,
     height: 30
   },
   rightContainer: {
-    flex: 1
+    flex: 1,
+    paddingLeft: 10
+  },
+  itemTitle: {
+    fontFamily: 'Open Sans',
+    fontSize: 16,
+    color: '#FFFFFF'
   }
 });
 

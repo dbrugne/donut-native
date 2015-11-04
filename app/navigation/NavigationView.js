@@ -10,6 +10,9 @@ var {
   TouchableHighlight,
   ScrollView
 } = React;
+var {
+  Icon
+} = require('react-native-icons');
 
 var app = require('../libs/app');
 var NavigationRoomsView = require('./NavigationRoomsView');
@@ -24,7 +27,15 @@ class NavigationView extends Component {
     return (
       <ScrollView style={styles.main}>
         <TouchableHighlight onPress={() => this.navigateToHome()}>
-          <Text style={styles.title}>HOME</Text>
+          <View style={styles.homeContainer}>
+            <Icon
+              name='fontawesome|home'
+              size={20}
+              color='#FFFFFF'
+              style={styles.icon}
+              />
+            <Text style={styles.title}>Go to home</Text>
+          </View>
         </TouchableHighlight>
         <NavigationOnesView />
         <NavigationRoomsView />
@@ -42,15 +53,25 @@ class NavigationView extends Component {
 
 var styles = StyleSheet.create({
   main: {
-    marginTop: 25,
+    paddingTop: 25,
     flexDirection: 'column',
     flexWrap: 'nowrap',
-    color: '#00FF00'
+    backgroundColor: '#585858'
+  },
+  homeContainer: {
+    paddingLeft: 10,
+    flexDirection: 'row',
+    marginVertical: 9,
   },
   title: {
-    fontSize: 20,
-    marginBottom: 8,
-    textAlign: 'center',
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    color: '#FFFFFF',
+    marginLeft: 5
+  },
+  icon: {
+    width: 18,
+    height: 18
   }
 });
 

@@ -56,8 +56,8 @@ class NavigationRoomsView extends Component {
   renderElement (e) {
     if (e.blocked) {
       return (
-        <View style={styles.itemBlocked}>
-          <Text style={styles.itemBlockedTitle}>{e.identifier}</Text>
+        <View style={[styles.item]}>
+          <Text style={[styles.itemTitle, {color: '#AAAAAA'}]}>{e.identifier} (blocked)</Text>
         </View>
       );
     }
@@ -84,31 +84,26 @@ class NavigationRoomsView extends Component {
 
 var styles = StyleSheet.create({
   block: {
+    marginBottom: 15,
   },
   title: {
-    fontSize: 20,
+    fontFamily: 'Open Sans',
+    fontSize: 12,
+    fontWeight: 'bold',
+    paddingLeft: 10,
     marginBottom: 8,
-    color: '#00FF00'
+    color: '#FFFFFF'
   },
   listView: {
-    backgroundColor: '#F5FCFF',
   },
   item: {
-    marginBottom: 5,
+    paddingLeft: 10,
+    paddingVertical: 3,
   },
   itemTitle: {
     fontFamily: 'Open Sans',
-    fontStyle: 'normal',
-    fontSize: 18,
-  },
-  itemBlocked: {
-    marginBottom: 5
-  },
-  itemBlockedTitle: {
-    color: '#FF0000',
-    fontFamily: 'Open Sans',
-    fontStyle: 'normal',
-    fontSize: 18,
+    fontSize: 16,
+    color: '#FFFFFF'
   }
 });
 
