@@ -14,7 +14,7 @@ var {
 var app = require('../libs/app');
 var rooms = require('../collections/rooms');
 
-var RoomView = require('../views/Room'); // @todo : implement routing logic
+var RoomView = require('../views/RoomView'); // @todo : implement routing logic
 
 class NavigationRoomsView extends Component {
   constructor (props) {

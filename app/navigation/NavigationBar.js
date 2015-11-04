@@ -191,13 +191,12 @@ var styles = StyleSheet.create({
     flex: 1
   },
   navBar: {
-    backgroundColor: '#5cafec',
+    backgroundColor: '#f4f5f6',
     height: NavigatorNavigationBarStyles.General.TotalNavHeight
   },
   scene: {
     flex: 1,
     marginTop: NavigatorNavigationBarStyles.General.TotalNavHeight,
-    backgroundColor: '#FF0000',
   },
   sceneHidden: {
     marginTop: 0

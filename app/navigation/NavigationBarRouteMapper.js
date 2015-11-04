@@ -2,7 +2,8 @@ var React = require('react-native');
 var {
   Text,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  View
 } = React;
 var {
   Icon
@@ -19,12 +20,12 @@ var NavigationBarRouteMapper = {
 
   LeftButton: function (route, navigator, index, navState) {
     return (
-      <TouchableOpacity style={styles.leftContainer} onPress={this.toggleControlPanel.bind(this)}>
+      <TouchableOpacity style={[styles.navBarText, styles.leftContainer]} onPress={this.toggleControlPanel.bind(this)}>
         <Icon
           name='fontawesome|bars'
-          size={30}
-          color='#FFFFFF'
-          style={styles.navigation}
+          size={25}
+          color='#5f5e63'
+          style={styles.icon}
           />
       </TouchableOpacity>
     );
@@ -33,12 +34,12 @@ var NavigationBarRouteMapper = {
   RightButton: function (route, navigator, index, navState) {
 //    return (<Text style={styles.button} route={route} index={index} navigator={navigator} direction="right">RIGHT</Text>);
     return (
-      <TouchableOpacity style={styles.rightContainer} onPress={this.toggleControlPanel.bind(this)}>
+      <TouchableOpacity style={[styles.navBarText, styles.rightContainer]} onPress={this.toggleControlPanel.bind(this)}>
         <Icon
           name='fontawesome|hand-peace-o'
-          size={30}
-          color='#FFFFFF'
-          style={styles.navigation}
+          size={25}
+          color='#5f5e63'
+          style={styles.icon}
           />
       </TouchableOpacity>
     );
@@ -46,9 +47,11 @@ var NavigationBarRouteMapper = {
 
   Title: function (route, navigator, index, navState) {
     return (
-      <Text style={[styles.navBarText, styles.navBarTitleText]}>
-        {route.title} [{index}]
-      </Text>
+      <View style={styles.titleContainer}>
+        <Text style={[styles.navBarText, styles.navBarTitleText]}>
+          {route.title} [{index}]
+        </Text>
+      </View>
     );
   },
   toggleControlPanel: function () {
@@ -66,23 +69,29 @@ var NavigationBarRouteMapper = {
 };
 
 var styles = StyleSheet.create({
-  navBarTitleText: {
-    fontSize: 20,
-    color: 'white',
-    fontWeight: '500',
+  titleContainer: {
+    flex: 1,
+    alignSelf: 'flex-start',
+    marginLeft: 50
+  },
+  navBarText: {
+    color: '#424242',
+    fontFamily: 'Open Sans',
     marginVertical: 9,
   },
+  navBarTitleText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   leftContainer: {
-    paddingTop: 6,
-    paddingLeft: 10
+    marginLeft: 10
   },
   rightContainer: {
-    paddingTop: 6,
-    paddingRight: 10
+    marginRight: 10
   },
-  navigation: {
-    width: 30,
-    height: 30,
+  icon: {
+    width: 24,
+    height: 24,
   }
 });
 
