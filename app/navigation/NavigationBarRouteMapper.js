@@ -80,7 +80,7 @@ var styles = StyleSheet.create({
     marginVertical: 9,
   },
   navBarTitleText: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   leftContainer: {
