@@ -2,6 +2,7 @@
 
 var React = require('react-native');
 var {
+  ActivityIndicatorIOS,
   StyleSheet,
   TouchableHighlight,
   Text,
@@ -12,23 +13,13 @@ var {
   NativeModules
 } = React;
 
+var InvertibleScrollView = require('react-native-invertible-scroll-view');
+
 var app = require('../libs/app');
 var client = require('../libs/client');
 var _ = require('underscore');
-
 var InputView = require('./DiscussionInputView');
 var EventsView = require('./DiscussionEventsView');
-
-// @todo : scroll up to load more : https://gist.github.com/jsdf/6930c0211e0dc5bf0227 https://github.com/jsdf/react-native-refreshable-listview
-
-function measureCallback(ox, oy, width, height, px, py) {
-  console.log("ox: " + ox);
-  console.log("oy: " + oy);
-  console.log("width: " + width);
-  console.log("height: " + height);
-  console.log("px: " + px);
-  console.log("py: " + py);
-}
 
 class RoomView extends Component {
   constructor (props) {
@@ -38,11 +29,13 @@ class RoomView extends Component {
       rowHasChanged: (r1, r2) => r1.data.id !== r2.data.id
     });
     this.state = {
+      loading: false,
+      more: true,
       messages: ds.cloneWithRows({}),
     };
 
     this.model = props.model;
-    this.shouldScrollToBottom = false;
+    this.topEvent = null;
   }
   componentDidMount () {
     client.on('room:message', _.bind(function (data) {
@@ -56,75 +49,106 @@ class RoomView extends Component {
     }, this));
 
     // initial history load
-    console.log('load', this.model.get('identifier'));
+    this.setState({
+      loading: true
+    });
     this.model.history(null, null, (response) => {
       if (!response.history || !response.history.length) {
         return;
       }
       this.setState({
-        messages: this.state.messages.cloneWithRows(response.history)
+        messages: this.state.messages.cloneWithRows(response.history),
+        loading: false,
+        more: response.more
       });
-
-      this.shouldScrollToBottom = true;
-
-      // @todo : handle more
     });
-  }
-  componentDidUpdate () {
-    if (this.shouldScrollToBottom === true) {
-      setTimeout(() => { // @bug react-native
-        console.log(this.refs.listView.scrollProperties);
-        var navBarHeight = 45;
-        var inputHeight = 41;
-        var viewportHeight = NativeModules.UIManager.Dimensions.window.height;
-        var eventsHeight = viewportHeight - navBarHeight - inputHeight;
-        var scrollTo = this.refs.listView.scrollProperties.contentLength - eventsHeight;
-        console.log(viewportHeight, eventsHeight, scrollTo);
-        this.refs.listView.getScrollResponder().scrollTo(scrollTo);
-        this.shouldScrollToBottom = false;
-      }, 1000);
-    }
   }
   render () {
     return (
       <View ref='container' style={styles.container}>
         <ListView
           ref='listView'
-          pageSize={16}
-          scrollEventThrottle={64}
+          renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
           style={styles.listView}
           dataSource={this.state.messages}
-          renderHeader={this.renderHeader.bind(this)}
-          renderRow={this.renderEvent}
-          renderFooter={this.renderFooter.bind(this)}
+          renderRow={this.renderEvent.bind(this)}
+          renderFooter={this.renderHeader.bind(this)}
           onScroll={this.onScroll}
           />
       </View>
     );
-  }
-  renderHeader () {
-    return (
-      <Text style={styles.title}>You are in {this.props.title}</Text>
-    );
+    /**
+     pageSize={16}
+     scrollEventThrottle={32}
+     onEndReached={this.onEndReached.bind(this)}
+     onEndReachedThreshold={16}
+     */
   }
   renderEvent (event) {
+    this.topEvent = event.data.id;
+    var dd = new Date(event.data.time);
+    var time = dd.getHours() + ':' + dd.getMinutes();
     return (
-      <Text style={styles.event}>{event.type} {event.data.id}</Text>
+      <Text style={styles.event}>{event.type} {event.data.id} {time}</Text>
     );
   }
-  renderFooter () {
+  renderHeader () {
+    if (!this.state.more) {
+      return (
+        <Text style={[styles.title, {'backgroundColor': '#FF0000'}]}>You are in {this.props.title}</Text>
+      );
+    }
+
+    var loading = (<View style={{height: 40}} />);
+    if (this.state.loading) {
+      loading = (
+        <ActivityIndicatorIOS
+          animating={this.state.loading}
+          style={[styles.centering, {height: 80}]}
+          size='small'
+          color='#666666'
+          />
+      );
+    }
+
     return (
-      <Text style={styles.title}>end</Text>
+      <View>
+        {loading}
+        <TouchableHighlight
+          onPress={this.onLoadMore.bind(this)}
+          style={styles.button}>
+          <Text>Load more</Text>
+        </TouchableHighlight>
+      </View>
     );
+  }
+  onLoadMore (event: Object) {
+    this.setState({
+      loading: true
+    });
+    this.model.history(null,this.topEvent, (response) => {
+      if (!response.history || !response.history.length) {
+        return;
+      }
+      this.setState({
+        messages: this.state.messages.cloneWithRows(response.history),
+        loading: false,
+        more: response.more
+      });
+    });
   }
   onScroll (event: Object) {
-    console.log(event.nativeEvent.contentOffset.y);
+//    console.log(event.nativeEvent.contentOffset.y);
   }
 }
 
 var styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  loading: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
@@ -140,6 +164,12 @@ var styles = StyleSheet.create({
   event: {
     fontSize: 12,
     color: '#666666'
+  },
+  button: {
+  padding: 20,
+  borderStyle: 'solid',
+  borderWidth: 1,
+  borderColor: 'black',
   }
 });
 
