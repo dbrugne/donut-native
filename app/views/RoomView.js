@@ -17,6 +17,9 @@ var app = require('../libs/app');
 var client = require('../libs/client');
 var _ = require('underscore');
 
+var EventsView = require('./DiscussionEventsView');
+var InputView = require('./DiscussionInputView');
+
 var animation = {
   duration: 400,
   create: {
@@ -34,21 +37,10 @@ class RoomView extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      messages: '',
-      text: 'hello world!',
       keyboardSpace: 0
     };
-  }
-  componentDidMount () {
-    client.on('room:message', _.bind(function (data) {
-      if (data.room_id !== this.props.currentRoute.id) {
-        return;
-      }
 
-      this.setState({
-        messages: this.state.messages + '\n@' + data.username + ': ' + data.message
-      });
-    }, this));
+    this.model = props.currentRoute.model;
   }
   componentWillMount () {
     DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
@@ -64,45 +56,23 @@ class RoomView extends Component {
     console.log('render with keyboardSpace', this.state.keyboardSpace);
     return (
       <View style={styles.main}>
-        <Text style={styles.title}>Room {this.props.currentRoute.title}</Text>
-        <ScrollView style={styles.events}>
-          <Text style={styles.title}>{this.state.messages}</Text>
-        </ScrollView>
-        <View style={styles.inputContainer}>
-          <TextInput style={styles.input}
-                     onChangeText={(text) => this.setState({text})}
-                     value={this.state.text} />
-        </View>
-        <View style={{height: this.state.keyboardSpace}}></View>
+        <EventsView title={this.props.currentRoute.title} model={this.model} />
+        <InputView />
+        <View style={{backgroundColor: '#FF0000', height: this.state.keyboardSpace}}></View>
       </View>
     );
   }
 }
 
+// http://stackoverflow.com/questions/29313244/how-to-auto-slide-the-window-out-from-behind-keyboard-when-textinput-has-focus
+// http://stackoverflow.com/questions/29541971/absolute-and-flexbox-in-react-native
 var styles = StyleSheet.create({
   main: {
     flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#00FF00',
-  },
-  title: {
+    flexDirection: 'column'
   },
   events: {
     flex: 1
-  },
-  inputContainer: {
-    left: 0,
-    right: 0,
-//    backgroundColor: '#FF0000',
-//    position: 'absolute',
-//    bottom: 0,
-  },
-  // http://stackoverflow.com/questions/29313244/how-to-auto-slide-the-window-out-from-behind-keyboard-when-textinput-has-focus
-  // http://stackoverflow.com/questions/29541971/absolute-and-flexbox-in-react-native
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
   }
 });
 
