@@ -155,13 +155,11 @@ class NavigationBar extends Component {
         <View style={styles.appContainer} >
           <Navigator
             ref='navigator'
-            //          debugOverlay={false}
+            // debugOverlay={false}
             initialRoute={{ name: 'home', title: 'home', index: 0, component: HomeView }}
             renderScene={this.renderScene}
-            //          initialRoute={{name: 'home'}}
-            //          renderScene={this.renderScene}
-            //          navBarHidden={this.props.navBarHidden}
-            //          initialRouteStack={this.props.routeStack.path}
+            // navBarHidden={this.props.navBarHidden}
+            // initialRouteStack={this.props.routeStack.path}
             navigationBar={this.renderNavBar()}
             />
         </View>
@@ -194,7 +192,9 @@ var styles = StyleSheet.create({
   },
   navBar: {
     backgroundColor: '#f4f5f6',
-    height: NavigatorNavigationBarStyles.General.TotalNavHeight
+    height: NavigatorNavigationBarStyles.General.TotalNavHeight,
+    borderBottomWidth: 1,
+    borderBottomColor: '#d9d9d9',
   },
   scene: {
     flex: 1,

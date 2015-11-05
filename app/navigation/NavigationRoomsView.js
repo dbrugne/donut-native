@@ -62,8 +62,13 @@ class NavigationRoomsView extends Component {
       );
     }
 
+    var model = rooms.get(e.room_id);
+    if (!model) {
+      return;
+    }
+
     return (
-      <TouchableHighlight onPress={() => this.navigateToRoom(e.room_id, e.identifier)}>
+      <TouchableHighlight onPress={() => this.navigateToRoom(model)}>
         <View style={styles.item}>
           <Text style={styles.itemTitle}>{e.identifier}</Text>
         </View>
@@ -71,12 +76,13 @@ class NavigationRoomsView extends Component {
     );
   }
 
-  navigateToRoom (id, title) {
+  navigateToRoom (model) {
     app.trigger('navigateTo', {
-      name: 'one-' + id,
-      title: title,
+      name: 'room-' + model.get('id'),
+      title: model.get('identifier'),
       component: RoomView,
-      id: id,
+      id: model.get('id'),
+      model: model
     });
   }
 
