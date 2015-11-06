@@ -20,7 +20,7 @@ var NavigationBarRouteMapper = {
 
   LeftButton: function (route, navigator, index, navState) {
     return (
-      <TouchableOpacity style={[styles.navBarText, styles.leftContainer]} onPress={this.toggleControlPanel.bind(this)}>
+      <TouchableOpacity style={[styles.leftContainer]} onPress={this.toggleControlPanel.bind(this)}>
         <Icon
           name='fontawesome|bars'
           size={25}
@@ -34,7 +34,7 @@ var NavigationBarRouteMapper = {
   RightButton: function (route, navigator, index, navState) {
 //    return (<Text style={styles.button} route={route} index={index} navigator={navigator} direction="right">RIGHT</Text>);
     return (
-      <TouchableOpacity style={[styles.navBarText, styles.rightContainer]} onPress={this.toggleControlPanel.bind(this)}>
+      <TouchableOpacity style={[styles.rightContainer]} onPress={this.toggleControlPanel.bind(this)}>
         <Icon
           name='fontawesome|hand-peace-o'
           size={25}
@@ -77,21 +77,23 @@ var styles = StyleSheet.create({
   navBarText: {
     color: '#424242',
     fontFamily: 'Open Sans',
-    marginVertical: 9,
+    marginVertical: 9
   },
   navBarTitleText: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   leftContainer: {
-    marginLeft: 10
+    marginLeft: 10,
+    marginVertical: 9
   },
   rightContainer: {
-    marginRight: 10
+    marginRight: 10,
+    marginVertical: 9
   },
   icon: {
     width: 24,
-    height: 24,
+    height: 24
   }
 });
 
