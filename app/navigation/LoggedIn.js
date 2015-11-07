@@ -14,7 +14,7 @@ var {
 
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
-var NavigationBar = require('./NavigationBar');
+var NavigationBar = require('./Navigation');
 
 class Index extends Component {
   constructor (props) {

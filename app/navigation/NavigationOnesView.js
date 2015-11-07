@@ -16,8 +16,6 @@ var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
 var onetoones = require('../collections/onetoones');
 
-var OnetooneView = require('../views/Onetoone'); // @todo : implement routing logic
-
 class NavigationOnesView extends Component {
   constructor (props) {
     super(props);
@@ -29,18 +27,15 @@ class NavigationOnesView extends Component {
       })
     };
   }
-
   componentWillMount () {
     app.on('redrawNavigation', () => this.refreshData());
     app.on('redrawNavigationOnes', () => this.refreshData());
   }
-
   refreshData () {
     this.setState({
       elements: this.state.elements.cloneWithRows(onetoones.toJSON())
     });
   }
-
   render () {
     return (
       <View style={styles.block}>
@@ -54,11 +49,10 @@ class NavigationOnesView extends Component {
       </View>
     );
   }
-
   renderElement (e) {
     var avatarUrl = common.cloudinary.prepare(e.avatar, 30)
     return (
-      <TouchableHighlight onPress={() => this.navigateToOne(e.user_id, e.username)}>
+      <TouchableHighlight onPress={() => app.trigger('navigateTo', 'onetoone/' + e.user_id)}>
         <View style={styles.item}>
           <Image
             source={{uri: avatarUrl}}
@@ -71,16 +65,6 @@ class NavigationOnesView extends Component {
       </TouchableHighlight>
     );
   }
-
-  navigateToOne (id, title) {
-    app.trigger('navigateTo', {
-      name: 'one-' + id,
-      title: title,
-      component: OnetooneView,
-      id: id
-    });
-  }
-
 };
 
 var styles = StyleSheet.create({

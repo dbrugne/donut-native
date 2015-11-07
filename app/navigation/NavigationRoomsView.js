@@ -14,8 +14,6 @@ var {
 var app = require('../libs/app');
 var rooms = require('../collections/rooms');
 
-var RoomView = require('../views/RoomView'); // @todo : implement routing logic
-
 class NavigationRoomsView extends Component {
   constructor (props) {
     super(props);
@@ -68,24 +66,13 @@ class NavigationRoomsView extends Component {
     }
 
     return (
-      <TouchableHighlight onPress={() => this.navigateToRoom(model)}>
+      <TouchableHighlight onPress={() => app.trigger('navigateTo', 'room/' + model.get('id'))}>
         <View style={styles.item}>
           <Text style={styles.itemTitle}>{e.identifier}</Text>
         </View>
       </TouchableHighlight>
     );
   }
-
-  navigateToRoom (model) {
-    app.trigger('navigateTo', {
-      name: 'room-' + model.get('id'),
-      title: model.get('identifier'),
-      component: RoomView,
-      id: model.get('id'),
-      model: model
-    });
-  }
-
 };
 
 var styles = StyleSheet.create({

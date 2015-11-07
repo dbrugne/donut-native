@@ -32,11 +32,11 @@ class TestView extends Component {
   }
 
   home () {
-    app.trigger('navigateTo', {name: 'home', title: 'home', component: require('./HomeView')});
+    app.trigger('navigateTo', 'home');
   }
 
   test2 () {
-    app.trigger('navigateTo', {name: 'test2', title: 'test2', component: require('./Test2')});
+    app.trigger('navigateTo', 'test2');
   }
 }
 

@@ -26,7 +26,7 @@ class NavigationView extends Component {
   render () {
     return (
       <ScrollView style={styles.main}>
-        <TouchableHighlight onPress={() => this.navigateToHome()}>
+        <TouchableHighlight onPress={() => app.trigger('navigateTo', 'home')}>
           <View style={styles.homeContainer}>
             <Icon
               name='fontawesome|home'
@@ -42,13 +42,6 @@ class NavigationView extends Component {
       </ScrollView>
     );
   }
-
-  navigateToHome () {
-    app.trigger('navigateTo', {
-      name: 'home',
-    });
-  }
-
 };
 
 var styles = StyleSheet.create({

@@ -44,12 +44,17 @@ class HomeView extends Component {
     );
   }
 
-  test1 () {
-    app.trigger('navigateTo', {name: 'test1', title: 'test1', component: require('./Test1')});
+  /****************************
+   * DEBUG
+   ****************************/
+  componentDidMount() {
+    require('../libs/client').on('welcome', (data) => app.trigger('navigateTo', 'room/557ed3a4bcb50bc52b74744b'));
   }
-
+  test1 () {
+    app.trigger('navigateTo', 'test1');
+  }
   test2 () {
-    app.trigger('navigateTo', {name: 'test2', title: 'test2', component: require('./Test2')});
+    app.trigger('navigateTo', 'test2');
   }
 }
 
