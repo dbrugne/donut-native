@@ -15,9 +15,10 @@ var {
 
 var InvertibleScrollView = require('react-native-invertible-scroll-view');
 
+var _ = require('underscore');
 var app = require('../libs/app');
 var client = require('../libs/client');
-var _ = require('underscore');
+var events = require('../libs/events');
 var InputView = require('./DiscussionInputView');
 var EventsView = require('./DiscussionEventsView');
 
@@ -31,37 +32,28 @@ class RoomView extends Component {
     this.state = {
       loading: false,
       more: true,
-      messages: ds.cloneWithRows({}),
+      dataSource: ds.cloneWithRows([])
     };
 
     this.model = props.model;
+    this.eventsBlob = [];
     this.topEvent = null;
   }
   componentDidMount () {
-    client.on('room:message', _.bind(function (data) {
-      if (data.room_id !== this.props.currentRoute.id) {
+    var that = this;
+    client.on('room:message', (data) => {
+      if (data.room_id !== that.model.get('id')) {
         return;
       }
 
-//      this.setState({
-//        messages: this.state.messages + '\n@' + data.username + ': ' + data.message
-//      });
-    }, this));
-
-    // initial history load
-    this.setState({
-      loading: true
-    });
-    this.model.history(null, null, (response) => {
-      if (!response.history || !response.history.length) {
-        return;
-      }
-      this.setState({
-        messages: this.state.messages.cloneWithRows(response.history),
-        loading: false,
-        more: response.more
+      that.eventsBlob = that.eventsBlob.concat([{type: 'room:message', data: data}]);
+      that.setState({
+        dataSource: that.state.dataSource.cloneWithRows(that.eventsBlob)
       });
     });
+
+    // initial history load
+    this._loadHistory();
   }
   render () {
     return (
@@ -70,8 +62,8 @@ class RoomView extends Component {
           ref='listView'
           renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
           style={styles.listView}
-          dataSource={this.state.messages}
-          renderRow={this.renderEvent.bind(this)}
+          dataSource={this.state.dataSource}
+          renderRow={this.renderRow.bind(this)}
           renderFooter={this.renderHeader.bind(this)}
           onScroll={this.onScroll}
           />
@@ -82,15 +74,17 @@ class RoomView extends Component {
      scrollEventThrottle={32}
      onEndReached={this.onEndReached.bind(this)}
      onEndReachedThreshold={16}
+     renderSectionHeader={this.renderSectionHeader.bind(this)}
+     renderSeparator={this.renderSeparator.bind(this)}
      */
   }
-  renderEvent (event) {
+  renderRow (event, sectionID, rowID, highlightRow) {
+    if (!event.data) {
+      console.log('empty', event);
+      return (<Text/>)
+    }
     this.topEvent = event.data.id;
-    var dd = new Date(event.data.time);
-    var time = dd.getHours() + ':' + dd.getMinutes();
-    return (
-      <Text style={styles.event}>{event.type} {event.data.id} {time}</Text>
-    );
+    return events.render(event);
   }
   renderHeader () {
     if (!this.state.more) {
@@ -122,16 +116,32 @@ class RoomView extends Component {
       </View>
     );
   }
+//  renderSectionHeader (sectionData, sectionID) {
+//    console.log('renderSectionHeader', sectionData, sectionID);
+//    return (
+//      <Text>renderSectionHeader</Text>
+//    );
+//  }
+//  renderSeparator (sectionID, rowID, adjacentRowHighlighted) {
+//    console.log('renderSeparator', sectionID, rowID, adjacentRowHighlighted);
+//  }
   onLoadMore (event: Object) {
+    this._loadHistory(this.topEvent);
+  }
+  _loadHistory (end) {
     this.setState({
       loading: true
     });
-    this.model.history(null,this.topEvent, (response) => {
+    this.model.history(null, end, (response) => {
       if (!response.history || !response.history.length) {
         return;
       }
+      console.log(this.eventsBlob);
+      console.log(response.history);
+      this.eventsBlob = this.eventsBlob.concat(response.history);
+      console.log(this.eventsBlob);
       this.setState({
-        messages: this.state.messages.cloneWithRows(response.history),
+        dataSource: this.state.dataSource.cloneWithRows(this.eventsBlob),
         loading: false,
         more: response.more
       });
@@ -160,10 +170,6 @@ var styles = StyleSheet.create({
   },
   listView: {
     flex: 1
-  },
-  event: {
-    fontSize: 12,
-    color: '#666666'
   },
   button: {
   padding: 20,
