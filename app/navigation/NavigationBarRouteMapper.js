@@ -34,7 +34,7 @@ var NavigationBarRouteMapper = {
   RightButton: function (route, navigator, index, navState) {
 //    return (<Text style={styles.button} route={route} index={index} navigator={navigator} direction="right">RIGHT</Text>);
     return (
-      <TouchableOpacity style={[styles.rightContainer]} onPress={this.toggleControlPanel.bind(this)}>
+      <TouchableOpacity style={[styles.rightContainer]}>
         <Icon
           name='fontawesome|hand-peace-o'
           size={25}
