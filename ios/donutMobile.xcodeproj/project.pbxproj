@@ -297,6 +297,7 @@
 				6D3D0E901BE9199D0058ED93 /* OpenSans-Regular.ttf */,
 				6D3D0E911BE9199D0058ED93 /* OpenSans-Semibold.ttf */,
 				6D3D0E921BE9199D0058ED93 /* OpenSans-SemiboldItalic.ttf */,
+				6D3D0EA41BE92A080058ED93 /* FontAwesome.otf */,
 			);
 			name = Fonts;
 			sourceTree = "<group>";
@@ -346,7 +347,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				6D3D0EA41BE92A080058ED93 /* FontAwesome.otf */,
 				6D3D0E881BE9154F0058ED93 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* donutMobile */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
