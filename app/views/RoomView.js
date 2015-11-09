@@ -22,7 +22,7 @@ class RoomView extends Component {
 
     this.model = props.currentRoute.model;
   }
-  componentWillMount () {
+  componentDidMount () {
     DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
       LayoutAnimation.configureNext(animation);
       this.setState({keyboardSpace: frames.endCoordinates.height});
@@ -36,8 +36,8 @@ class RoomView extends Component {
     return (
       <View style={styles.main}>
         <EventsView title={this.props.currentRoute.title} model={this.model} />
-        <InputView />
-        <View style={{backgroundColor: '#FF0000', height: this.state.keyboardSpace}}></View>
+        <InputView model={this.model} />
+        <View style={{height: this.state.keyboardSpace}}></View>
       </View>
     );
   }

@@ -13,17 +13,30 @@ class InputView extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      text: 'hello world!',
+      text: ''
     };
+
+    this.model = props.model;
   }
   render() {
     return (
       <View style={styles.inputContainer}>
         <TextInput style={styles.input}
                    onChangeText={(text) => this.setState({text})}
-                   value={this.state.text} />
+                   onSubmitEditing={this.onSubmit.bind(this)}
+                   placeholder="Envoyer un message"
+                   blurOnSubmit={false}
+                   value={this.state.text}
+                   enablesReturnKeyAutomatically={true}
+                   returnKeyType="send" />
       </View>
     );
+  }
+  onSubmit () {
+    this.model.sendMessage(this.state.text);
+    this.setState({
+      text: ''
+    });
   }
 }
 
@@ -40,7 +53,7 @@ var styles = StyleSheet.create({
   input: {
     padding: 3,
     paddingHorizontal: 5,
-    height: 40,
+    height: 40
   }
 });
 

@@ -40,17 +40,7 @@ class RoomView extends Component {
     this.topEvent = null;
   }
   componentDidMount () {
-    var that = this;
-    client.on('room:message', (data) => {
-      if (data.room_id !== that.model.get('id')) {
-        return;
-      }
-
-      that.eventsBlob = that.eventsBlob.concat([{type: 'room:message', data: data}]);
-      that.setState({
-        dataSource: that.state.dataSource.cloneWithRows(that.eventsBlob)
-      });
-    });
+    this.model.on('freshEvent', this.addFreshEvent.bind(this));
 
     // initial history load
     this._loadHistory();
@@ -146,6 +136,13 @@ class RoomView extends Component {
   }
   onScroll (event: Object) {
 //    console.log(event.nativeEvent.contentOffset.y);
+  }
+  addFreshEvent (type, data) {
+    // add to list top, the inverted view will display on bottom
+    this.eventsBlob = [{type: type, data: data}].concat(this.eventsBlob);
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.eventsBlob)
+    });
   }
 }
 

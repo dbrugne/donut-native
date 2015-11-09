@@ -107,8 +107,6 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:typing', this.onTyping);
   },
   onWelcome: function (data) {
-    currentUser.set(data.user, {silent: true});
-    currentUser.setPreferences(data.preferences, {silent: true});
     // regular
     _.each(data.rooms, _.bind(function (room) {
       this.addModel(room);
@@ -236,19 +234,21 @@ var RoomsCollection = Backbone.Collection.extend({
   },
   onUserOnline: function (data) {
     var model;
-    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
-      return;
-    }
 
-    model.users.onUserOnline(data);
+    _.each(data.rooms_id, _.bind(function (roomId) {
+      if ((model = this.get(roomId))) {
+        model.users.onUserOnline(data);
+      }
+    }, this));
   },
   onUserOffline: function (data) {
     var model;
-    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
-      return;
-    }
 
-    model.users.onUserOffline(data);
+    _.each(data.rooms_id, _.bind(function (roomId) {
+      if ((model = this.get(roomId))) {
+        model.users.onUserOffline(data);
+      }
+    }, this));
   },
   onKick: function (data) {
     this._onExpulsion('kick', data);
@@ -302,7 +302,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    client.roomJoin(data.room_id); // @todo : anti-pattern!
+    client.roomJoin(data.room_id); // @todo yls : trigger event instead
   },
   onDeban: function (data) {
     var model;
@@ -311,7 +311,7 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     if (currentUser.get('user_id') === data.user_id) {
-      // @todo : anti-pattern!
+      // @todo yls : trigger event instead
       client.roomJoin(data.room_id, null, _.bind(function () {
         if (data.room_mode === 'private') {
           var isFocused = model.get('focused');

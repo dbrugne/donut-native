@@ -36,8 +36,8 @@ class OnetooneView extends Component {
     return (
       <View style={styles.main}>
         <EventsView title={this.props.currentRoute.title} model={this.model} />
-        <InputView />
-        <View style={{backgroundColor: '#FF0000', height: this.state.keyboardSpace}}></View>
+        <InputView model={this.model} />
+        <View style={{height: this.state.keyboardSpace}}></View>
       </View>
     );
   }

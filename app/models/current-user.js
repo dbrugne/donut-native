@@ -14,6 +14,7 @@ var CurrentUserModel = Backbone.Model.extend({
   },
 
   initialize: function () {
+    this.listenTo(client, 'welcome', this.onWelcome);
     this.listenTo(client, 'user:updated', this.onUpdated);
     this.listenTo(client, 'preferences:update', this.setPreference);
 
@@ -34,6 +35,12 @@ var CurrentUserModel = Backbone.Model.extend({
         this.set('status', element);
       }, this));
     }, this));
+  },
+
+  onWelcome: function (data) {
+    this.set(data.user, {silent: true});
+    this.setPreferences(data.preferences, {silent: true});
+    this.trigger('change');
   },
 
   onUpdated: function (data) {

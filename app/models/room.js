@@ -36,8 +36,8 @@ var RoomModel = Backbone.Model.extend({
       window.location.host +
       '/r/' + (
         this.get('group_id')
-        ? this.get('group_name') + '/' + this.get('name')
-        : this.get('name')
+          ? this.get('group_name') + '/' + this.get('name')
+          : this.get('name')
       );
   },
   leave: function () {
@@ -74,8 +74,7 @@ var RoomModel = Backbone.Model.extend({
     }, this));
   },
   history: function (start, end, callback) {
-//    client.roomHistory(this.get('room_id'), start, end, 100, function (data) { // @todo report number params in web client code
-    client.roomHistory(this.get('room_id'), start, end, 50, function (data) { // @mobile
+    client.roomHistory(this.get('room_id'), start, end, 100, function (data) {
       return callback(data);
     });
   },
@@ -88,7 +87,7 @@ var RoomModel = Backbone.Model.extend({
   onViewed: function (data) {
     if (this.get('unviewed')) {
       this.set('unviewed', false);
-      // @todo: why triggering a full redraw? We should just ask for a CSS class removing
+      // @todo yls: why triggering a full redraw? We should just ask for a CSS class removing
       app.trigger('redrawNavigationRooms');
     }
     this.trigger('viewed', data);

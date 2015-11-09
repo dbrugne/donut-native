@@ -2,7 +2,7 @@
 
 var React = require('react-native');
 var {
-  LayoutAnimation
+  LayoutAnimation,
 } = React;
 
 module.exports = {

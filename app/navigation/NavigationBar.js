@@ -12,20 +12,13 @@ var {
   Icon
 } = require('react-native-icons');
 
-var app = require('../libs/app');
+var LeftButtonView = require('./LeftButtonView');
 
 // @source: https://github.com/facebook/react-native/blob/2b916f3ceffbcb11ed383f958823d221b3feacc6/Examples/UIExplorer/Navigator/NavigationBarSample.js
 var routeMapper = {
   LeftButton: function (route, navigator, index, navState) {
     return (
-      <TouchableOpacity style={[styles.leftContainer]} onPress={() => app.trigger('toggleDrawer')}>
-        <Icon
-          name='fontawesome|bars'
-          size={25}
-          color='#5f5e63'
-          style={styles.icon}
-          />
-      </TouchableOpacity>
+      <LeftButtonView />
     );
   },
   RightButton: function (route, navigator, index, navState) {
@@ -69,10 +62,6 @@ var styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 15,
     fontWeight: 'bold'
-  },
-  leftContainer: {
-    marginLeft: 10,
-    marginVertical: 9
   },
   rightContainer: {
     marginRight: 10,

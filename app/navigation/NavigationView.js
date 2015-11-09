@@ -15,8 +15,8 @@ var {
 } = require('react-native-icons');
 
 var app = require('../libs/app');
-var NavigationRoomsView = require('./NavigationRoomsView');
 var NavigationOnesView = require('./NavigationOnesView');
+var NavigationRoomsView = require('./NavigationRoomsView');
 
 class NavigationView extends Component {
   constructor (props) {
@@ -26,7 +26,7 @@ class NavigationView extends Component {
   render () {
     return (
       <ScrollView style={styles.main}>
-        <TouchableHighlight onPress={() => app.trigger('navigateTo', 'home')}>
+        <TouchableHighlight style={styles.homeBlock} onPress={() => app.trigger('navigateTo', 'home')}>
           <View style={styles.homeContainer}>
             <Icon
               name='fontawesome|home'
@@ -46,15 +46,17 @@ class NavigationView extends Component {
 
 var styles = StyleSheet.create({
   main: {
-    paddingTop: 25,
     flexDirection: 'column',
     flexWrap: 'nowrap',
     backgroundColor: '#585858'
   },
+  homeBlock: {
+    marginVertical: 9
+  },
   homeContainer: {
     paddingLeft: 10,
     flexDirection: 'row',
-    marginVertical: 9,
+    marginVertical: 9
   },
   title: {
     fontFamily: 'Open Sans',

@@ -40,7 +40,7 @@ class NavigationRoomsView extends Component {
   render () {
     return (
       <View style={styles.block}>
-        <Text style={styles.title}>rooms</Text>
+        <Text style={styles.title}>ROOMS</Text>
         <ListView
           dataSource={this.state.elements}
           renderRow={this.renderElement.bind(this)}
@@ -65,10 +65,21 @@ class NavigationRoomsView extends Component {
       return;
     }
 
+    var badge = null;
+    if (model.get('unviewed')) {
+      badge = (
+        <Text style={styles.unviewed}>●</Text>
+      );
+    }
+
     return (
-      <TouchableHighlight onPress={() => app.trigger('navigateTo', 'room/' + model.get('id'))}>
+      <TouchableHighlight
+        onPress={() => app.trigger('navigateTo', 'room/' + model.get('id'))}
+        underlayColor='#888888'
+        >
         <View style={styles.item}>
           <Text style={styles.itemTitle}>{e.identifier}</Text>
+          {badge}
         </View>
       </TouchableHighlight>
     );
@@ -97,6 +108,13 @@ var styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 16,
     color: '#FFFFFF'
+  },
+  unviewed: {
+    position: 'absolute',
+    top: 0,
+    right: 10,
+    fontSize: 20,
+    color: '#fc2063'
   }
 });
 

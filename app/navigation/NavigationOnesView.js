@@ -39,7 +39,7 @@ class NavigationOnesView extends Component {
   render () {
     return (
       <View style={styles.block}>
-        <Text style={styles.title}>onetoones</Text>
+        <Text style={styles.title}>ONE TO ONES</Text>
         <ListView
           dataSource={this.state.elements}
           renderRow={this.renderElement.bind(this)}
@@ -50,9 +50,24 @@ class NavigationOnesView extends Component {
     );
   }
   renderElement (e) {
-    var avatarUrl = common.cloudinary.prepare(e.avatar, 30)
+    var model = onetoones.get(e.user_id);
+    if (!model) {
+      return;
+    }
+
+    var badge = null;
+    if (model.get('unviewed')) {
+      badge = (
+        <Text style={styles.unviewed}>●</Text>
+      );
+    }
+
+    var avatarUrl = common.cloudinary.prepare(e.avatar, 30);
     return (
-      <TouchableHighlight onPress={() => app.trigger('navigateTo', 'onetoone/' + e.user_id)}>
+      <TouchableHighlight
+        onPress={() => app.trigger('navigateTo', 'onetoone/' + e.user_id)}
+        underlayColor='#888888'
+        >
         <View style={styles.item}>
           <Image
             source={{uri: avatarUrl}}
@@ -60,6 +75,7 @@ class NavigationOnesView extends Component {
             />
           <View style={styles.rightContainer}>
               <Text style={styles.itemTitle}>@{e.username}</Text>
+              {badge}
           </View>
         </View>
       </TouchableHighlight>
@@ -69,7 +85,7 @@ class NavigationOnesView extends Component {
 
 var styles = StyleSheet.create({
   block: {
-    marginBottom: 15,
+    marginBottom: 20
   },
   title: {
     fontFamily: 'Open Sans',
@@ -98,6 +114,13 @@ var styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 16,
     color: '#FFFFFF'
+  },
+  unviewed: {
+    position: 'absolute',
+    top: 0,
+    right: 10,
+    fontSize: 20,
+    color: '#fc2063'
   }
 });
 

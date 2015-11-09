@@ -6,14 +6,15 @@ var {
   StyleSheet,
   TouchableOpacity,
   View,
-  Component
+  Component,
+  StatusBarIOS,
+  StatusBarAnimation
 } = React;
 
-// @todo : animate status bar to top on drawer open and close (https://facebook.github.io/react-native/docs/statusbarios.html)
-
 var app = require('../libs/app');
+var rooms = require('../collections/rooms');
+var onetoones = require('../collections/onetoones');
 var Drawer = require('react-native-drawer');
-
 var router = require('./Router');
 var NavigationBarView = require('./NavigationBar');
 var NavigationView = require('./NavigationView');
@@ -83,24 +84,44 @@ class Navigation extends Component {
             // navBarHidden={this.props.navBarHidden}
             // initialRouteStack={this.props.routeStack.path}
             navigationBar={this.renderNavBar()}
+            onDidFocus={this.onFocus.bind(this)}
             />
         </View>
       </Drawer>
     );
   }
 
+  onFocus (route) {
+    console.log('focus me hard', route);
+
+    // unfocus all
+    rooms.each(function (o) {
+      o.set('focused', false);
+    });
+    onetoones.each(function (o) {
+      o.set('focused', false);
+    });
+
+    // focus
+    if (route && route.model) {
+      route.model.set('focused', true);
+    }
+  }
+
   closeDrawer () {
     this.refs.drawer.close();
     this.drawerOpened = false;
+    StatusBarIOS.setHidden(false, 'slide');
   }
 
   toggleDrawer () {
     if (this.drawerOpened) {
-      this.refs.drawer.close();
+      this.closeDrawer();
     } else {
       this.refs.drawer.open();
+      StatusBarIOS.setHidden(true, 'slide');
+      this.drawerOpened = !this.drawerOpened;
     }
-    this.drawerOpened = !this.drawerOpened;
   }
 
   navigateTo (url) {
