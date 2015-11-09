@@ -136,10 +136,7 @@ class RoomView extends Component {
       if (!response.history || !response.history.length) {
         return;
       }
-      console.log(this.eventsBlob);
-      console.log(response.history);
       this.eventsBlob = this.eventsBlob.concat(response.history);
-      console.log(this.eventsBlob);
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.eventsBlob),
         loading: false,

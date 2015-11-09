@@ -13,7 +13,7 @@ var EventsView = require('./DiscussionEventsView');
 var InputView = require('./DiscussionInputView');
 var animation = require('../libs/animations').keyboard;
 
-class RoomView extends Component {
+class OnetooneView extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -22,7 +22,7 @@ class RoomView extends Component {
 
     this.model = props.currentRoute.model;
   }
-  componentWillMount () {
+  componentDidMount () {
     DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
       LayoutAnimation.configureNext(animation);
       this.setState({keyboardSpace: frames.endCoordinates.height});
@@ -55,4 +55,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = RoomView;
+module.exports = OnetooneView;

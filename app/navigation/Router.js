@@ -1,7 +1,7 @@
 'use strict';
 
 var HomeView = require('../views/HomeView');
-var OnetooneView = require('../views/Onetoone');
+var OnetooneView = require('../views/OnetooneView');
 var RoomView = require('../views/RoomView');
 
 var onePattern = /^onetoone\/(\w+)/;

@@ -35,7 +35,20 @@ var templates = {
       </View>
     )
   },
-  'user:message': false,
+  'user:message': function (event) {
+    var dd = new Date(event.data.time);
+    var time = dd.getHours() + ':' + ((dd.getMinutes() > 9) ? dd.getMinutes() : '0' + dd.getMinutes());
+    return (
+      <View style={[styles.event, styles.message]}>
+        <Image style={styles.avatar} source={{uri: common.cloudinary.prepare(event.data.from_avatar, 30)}} />
+        <Text style={styles.date}>{time}</Text>
+        <Text style={styles.from_username}>@{event.data.from_username}</Text>
+        <Text>:</Text>
+        <Text style={styles.messageContent}>{event.data.message}</Text>
+        <Text></Text>
+      </View>
+    )
+  },
   'room:topic': false,
   'room:deop': false,
   'room:kick': false,
