@@ -92,8 +92,6 @@ class Navigation extends Component {
   }
 
   onFocus (route) {
-    console.log('focus me hard', route);
-
     // unfocus all
     rooms.each(function (o) {
       o.set('focused', false);

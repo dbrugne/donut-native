@@ -74,7 +74,7 @@ var RoomModel = Backbone.Model.extend({
     }, this));
   },
   history: function (start, end, callback) {
-    client.roomHistory(this.get('room_id'), start, end, 100, function (data) {
+    client.roomHistory(this.get('room_id'), start, end, 50, function (data) { // @mobile
       return callback(data);
     });
   },

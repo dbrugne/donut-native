@@ -38,6 +38,7 @@ class RoomView extends Component {
     this.model = props.model;
     this.eventsBlob = [];
     this.topEvent = null;
+    this.bottomEvent = null;
   }
   componentDidMount () {
     this.model.on('freshEvent', this.addFreshEvent.bind(this));
@@ -55,11 +56,13 @@ class RoomView extends Component {
           dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}
           renderFooter={this.renderHeader.bind(this)}
-          onScroll={this.onScroll}
+          onChangeVisibleRows={this.onChangeVisibleRows.bind(this)}
+          pageSize={4}
           />
       </View>
     );
     /**
+     onScroll={this.onScroll}
      pageSize={16}
      scrollEventThrottle={32}
      onEndReached={this.onEndReached.bind(this)}
@@ -69,17 +72,25 @@ class RoomView extends Component {
      */
   }
   renderRow (event, sectionID, rowID, highlightRow) {
+    // inverted ListView is always rendered from last to first chronological event
+    // (from bottom to top)
+
     if (!event.data) {
-      console.log('empty', event);
       return (<Text/>)
     }
     this.topEvent = event.data.id;
-    return events.render(event);
+
+    var p = null;
+    if (rowID > 0) {
+      var previous = this.state.dataSource.getRowData(0, (rowID - 1));
+    }
+
+    return events.render(event, previous);
   }
   renderHeader () {
     if (!this.state.more) {
       return (
-        <Text style={[styles.title, {'backgroundColor': '#FF0000'}]}>You are in {this.props.title}</Text>
+        <Text style={styles.title}>You are in {this.props.title}</Text>
       );
     }
 
@@ -106,15 +117,6 @@ class RoomView extends Component {
       </View>
     );
   }
-//  renderSectionHeader (sectionData, sectionID) {
-//    console.log('renderSectionHeader', sectionData, sectionID);
-//    return (
-//      <Text>renderSectionHeader</Text>
-//    );
-//  }
-//  renderSeparator (sectionID, rowID, adjacentRowHighlighted) {
-//    console.log('renderSeparator', sectionID, rowID, adjacentRowHighlighted);
-//  }
   onLoadMore (event: Object) {
     this._loadHistory(this.topEvent);
   }
@@ -132,23 +134,42 @@ class RoomView extends Component {
         loading: false,
         more: response.more
       });
+
+      if (!_.isArray(response.history)) {
+        return;
+      }
+
+      // response.history last
+      var last = response.history[response.history.length - 1];
+      this.topEvent = last.id;
+
+      // response.history first
+      if (!this.bottomEvent) {
+        var first = response.history[0];
+        if (first && first.id) {
+          this.bottomEvent = first.id;
+        }
+      }
     });
   }
-  onScroll (event: Object) {
-//    console.log(event.nativeEvent.contentOffset.y);
+  onChangeVisibleRows (visibleRows, changedRows) {
+    // @todo implement viewed event sending
+//    console.log(visibleRows, changedRows);
   }
   addFreshEvent (type, data) {
-    // add to list top, the inverted view will display on bottom
+    // add on list top, the inverted view will display on bottom
     this.eventsBlob = [{type: type, data: data}].concat(this.eventsBlob);
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.eventsBlob)
     });
+    this.bottomEvent = data.id;
   }
 }
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    paddingBottom: 5
   },
   loading: {
     alignItems: 'center',
