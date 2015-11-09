@@ -27,9 +27,9 @@ class HomeView extends Component {
       <View style={styles.main}>
         <HomeFeaturedView />
         <View style={styles.links}>
-          <Text>Authentication OK!</Text>
-          <Text>{currentUser.oauth.token}</Text>
-          <Text>{currentUser.oauth.code}</Text>
+          <Text style={styles.text}>Authentication OK!</Text>
+          <Text style={styles.text}>{currentUser.oauth.token}</Text>
+          <Text style={styles.text}>{currentUser.oauth.code}</Text>
           <TouchableHighlight onPress={() => currentUser.logout()} style={styles.button}>
             <Text style={styles.logout}>LOGOUT</Text>
           </TouchableHighlight>
@@ -48,7 +48,7 @@ class HomeView extends Component {
    * DEBUG
    ****************************/
   componentDidMount() {
-    require('../libs/client').on('welcome', (data) => app.trigger('navigateTo', 'room/557ed3a4bcb50bc52b74744b'));
+    //require('../libs/client').on('welcome', (data) => app.trigger('navigateTo', 'room/557ed3a4bcb50bc52b74744b'));
   }
   test1 () {
     app.trigger('navigateTo', 'test1');
@@ -66,8 +66,20 @@ var styles = StyleSheet.create({
   },
   links: {
     flex: 1,
-    backgroundColor: '#EEEEEE',
+    backgroundColor: '#EEEEEE'
   },
+  text: {
+    fontSize: 10
+
+  },
+  test: {
+    fontSize: 10
+
+  },
+  logout: {
+    fontSize: 10
+
+  }
 });
 
 module.exports = HomeView;

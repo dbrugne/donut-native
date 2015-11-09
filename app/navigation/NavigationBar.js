@@ -37,7 +37,7 @@ var routeMapper = {
     return (
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>
-          {route.title} [{index}]
+          {route.title}
         </Text>
       </View>
     );
