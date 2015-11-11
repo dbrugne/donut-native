@@ -9,6 +9,7 @@ var {
   DeviceEventEmitter
 } = React;
 
+var _ = require('underscore');
 var EventsView = require('./DiscussionEventsView');
 var InputView = require('./DiscussionInputView');
 var animation = require('../libs/animations').keyboard;
@@ -21,22 +22,37 @@ class RoomView extends Component {
     };
 
     this.model = props.currentRoute.model;
+    this.subscription = [];
   }
   componentDidMount () {
-    DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
+    this.subscription.push(DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
       LayoutAnimation.configureNext(animation);
       this.setState({keyboardSpace: frames.endCoordinates.height});
-    });
-    DeviceEventEmitter.addListener('keyboardWillHide', () => {
+    }));
+    this.subscription.push(DeviceEventEmitter.addListener('keyboardWillHide', () => {
       LayoutAnimation.configureNext(animation);
       this.setState({keyboardSpace: 0});
-    });
+    }));
+    this.subscription.push(this.props.navigator.navigationContext.addListener('didfocus', (event) => {
+      var route = event.data.route;
+      if (route.id !== this.props.currentRoute.id) {
+        return;
+      }
+      console.log('i was focused', this.props.currentRoute.title);
+      if (!this.refs.events.onFocus) {
+        return console.log('FOUND ERRROR onFocus', this.props.currentRoute.title);
+      }
+      this.refs.events.onFocus();
+    }));
+  }
+  componentWillUnmount () {
+    _.each(this.subscription, (s) => s.remove());
   }
   render() {
     return (
       <View style={styles.main}>
-        <EventsView title={this.props.currentRoute.title} model={this.model} />
-        <InputView model={this.model} />
+        <EventsView ref='events' title={this.props.currentRoute.title} model={this.model} />
+        <InputView ref='input' model={this.model} />
         <View style={{height: this.state.keyboardSpace}}></View>
       </View>
     );

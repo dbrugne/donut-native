@@ -28,6 +28,11 @@ class LeftButton extends Component {
     app.on('redrawNavigationRooms', this.onUnviewed.bind(this));
     app.on('newEvent', this.onNewEvent.bind(this));
   }
+  componentWillUnmount () {
+    app.off('redrawNavigationOnes');
+    app.off('redrawNavigationRooms');
+    app.off('newEvent');
+  }
   render () {
     var badge = null;
     if (this.state.unviewed === true) {

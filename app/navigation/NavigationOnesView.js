@@ -27,9 +27,13 @@ class NavigationOnesView extends Component {
       })
     };
   }
-  componentWillMount () {
+  componentDidMount () {
     app.on('redrawNavigation', () => this.refreshData());
     app.on('redrawNavigationOnes', () => this.refreshData());
+  }
+  componentWillUnmount () {
+    app.off('redrawNavigation');
+    app.off('redrawNavigationOnes');
   }
   refreshData () {
     this.setState({

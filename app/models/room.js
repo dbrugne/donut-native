@@ -25,7 +25,7 @@ var RoomModel = Backbone.Model.extend({
   initialize: function () {
     this.users = new RoomUsersCollection({
       parent: this
-    });
+    }); // @mobile : add remove to unsubscribe events
   },
   getIdentifier: function () {
     return this.get('name');
