@@ -38,8 +38,8 @@
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	<key>UIAppFonts</key>
-	<array>
+  <key>UIAppFonts</key>
+  <array>
     <string>OpenSans-ExtraBold.ttf</string>
     <string>OpenSans-Light.ttf</string>
     <string>OpenSans-Semibold.ttf</string>
@@ -50,11 +50,12 @@
     <string>OpenSans-BoldItalic.ttf</string>
     <string>OpenSans-Italic.ttf</string>
     <string>OpenSans-Regular.ttf</string>
-	</array>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
+  </array>
+  <key>NSAppTransportSecurity</key>
+  <dict>
+    <!--See http://ste.vn/2015/06/10/configuring-app-transport-security-ios-9-osx-10-11/-->
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+  </dict>
 </dict>
 </plist>
