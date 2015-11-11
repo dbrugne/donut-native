@@ -17,6 +17,22 @@ var LeftButtonView = require('./LeftButtonView');
 // @source: https://github.com/facebook/react-native/blob/2b916f3ceffbcb11ed383f958823d221b3feacc6/Examples/UIExplorer/Navigator/NavigationBarSample.js
 var routeMapper = {
   LeftButton: function (route, navigator, index, navState) {
+//    console.log('PASS IN MAPPER!!', route.title);
+    if (route.back === 'pop') {
+      return (
+        <TouchableOpacity style={styles.backContainer} onPress={function () {
+          console.log('music'); navigator.pop()
+        }}>
+          <Icon
+            name='fontawesome|angle-left'
+            size={25}
+            color='#5f5e63'
+            style={styles.icon}
+            />
+        </TouchableOpacity>
+      );
+    }
+
     return (
       <LeftButtonView />
     );
@@ -70,6 +86,12 @@ var styles = StyleSheet.create({
   icon: {
     width: 24,
     height: 24
+  },
+  backContainer: {
+    flexDirection: 'row',
+    marginLeft: 10,
+    paddingRight: 5,
+    marginVertical: 9
   }
 });
 

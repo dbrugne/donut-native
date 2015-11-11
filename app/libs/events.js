@@ -5,10 +5,12 @@ var {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  TouchableHighlight
 } = React;
 
 var _ = require('underscore');
+var app = require('../libs/app');
 var common = require('@dbrugne/donut-common');
 var date = require('../libs/date');
 
@@ -24,7 +26,7 @@ var templates = {
       <View style={styles.userBlock}>
         <Image style={styles.userBlockAvatar} source={{uri: common.cloudinary.prepare(event.data.avatar, 30*2)}} />
         <View style={styles.userBlockUsernameContainer}>
-          <Text style={styles.username}>@{event.data.username}</Text>
+          {renderClickableUsername(event.data.username, event.data.user_id)}
           <Text style={styles.date}>{event.data.dateshort}</Text>
         </View>
       </View>
@@ -45,27 +47,27 @@ var templates = {
         message = 'est maintenant hors ligne';
         break;
       case 'room:out':
-        message = 'vient de rentrer';
+        message = 'vient de sortir';
         break;
       case 'room:in':
-        message = 'vient de sortir';
+        message = 'vient de rentrer';
         break;
     }
     return (
       <View style={[styles.statusBlock, styles.event]}>
-        <Text>
-          <Text style={styles.username}>@{event.data.username}</Text>
-          <Text> {message}</Text>
-        </Text>
+        <Image style={styles.statusBlockAvatar} source={{uri: common.cloudinary.prepare(event.data.avatar, 20*2)}} />
+        {renderClickableUsername(event.data.username, event.data.user_id)}
+        <Text> {message}</Text>
       </View>
     );
   },
   'room:message': (event) => templates._message(event),
   'user:message': (event) => templates._message(event),
   _message: function (event) {
+    // ({event.data.username})
     return (
       <View style={[styles.event, styles.message]}>
-        <Text style={styles.messageContent}>{event.data.message} ({event.data.username})</Text>
+        <Text style={styles.messageContent}>{event.data.message}</Text>
       </View>
     );
   },
@@ -85,11 +87,9 @@ var templates = {
     // @todo i18next
     return (
       <View style={[styles.promoteBlock, styles.event]}>
-        <Text>
-            <Text style={styles.username}>@{event.data.username}</Text>
-            <Text> a été {event.type} par </Text>
-            <Text style={styles.username}>@{event.data.by_username}</Text>
-          </Text>
+        {renderClickableUsername(event.data.username, event.data.user_id)}
+        <Text> a été {event.type} par </Text>
+        {renderClickableUsername(event.data.by_username, event.data.by_user_id)}
       </View>
     );
   }
@@ -201,6 +201,7 @@ exports._data = function (type, data) {
 
   if (data.message || data.topic) {
     var subject = data.message || data.topic;
+    subject = _.unescape(subject);
     // @todo implement toJSX
 //    subject = common.markup.toHtml(subject, {
 //      template: function (markup) {
@@ -249,9 +250,27 @@ exports._data = function (type, data) {
   };
 };
 
+function renderClickableUsername (username, user_id) {
+  var url = 'user/profile/' + user_id;
+  return (
+    <TouchableHighlight onPress={() => app.trigger('navigateTo', url, {username: username})}>
+      <Text style={styles.username}>@{username}</Text>
+    </TouchableHighlight>
+  );
+}
+
 var styles = StyleSheet.create({
   event: {
     marginHorizontal: 5
+  },
+  statusBlock: {
+    flexDirection: 'row'
+  },
+  statusBlockAvatar: {
+    width: 20,
+    height: 20,
+    marginRight: 9,
+    marginBottom: 2,
   },
   userBlock: {
     flexDirection: 'row',
@@ -273,7 +292,8 @@ var styles = StyleSheet.create({
   username: {
     fontWeight: 'bold',
     fontSize: 13,
-    fontFamily: 'Open Sans'
+    fontFamily: 'Open Sans',
+    color: '#333333',
   },
   date: {
     color: '#666666',

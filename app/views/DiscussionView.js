@@ -14,7 +14,7 @@ var EventsView = require('./DiscussionEventsView');
 var InputView = require('./DiscussionInputView');
 var animation = require('../libs/animations').keyboard;
 
-class OnetooneView extends Component {
+class DiscussionView extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -38,7 +38,7 @@ class OnetooneView extends Component {
       if (route.id !== this.props.currentRoute.id) {
         return;
       }
-      console.log('i was focused', this.props.currentRoute.title);
+//      console.log('i was focused', this.props.currentRoute.title);
       if (!this.refs.events.onFocus) {
         return console.log('FOUND ERRROR onFocus', this.props.currentRoute.title);
       }
@@ -71,4 +71,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = OnetooneView;
+module.exports = DiscussionView;

@@ -22,7 +22,7 @@ module.exports = Client({
   device: 'native',
   host: 'https://test.donut.me',
   debug: function () {
-    console.log(arguments);
+//    console.log(arguments);
   },
   retrieveToken: getTokenFromSession,
   invalidToken: getTokenFromSession

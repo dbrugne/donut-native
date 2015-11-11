@@ -39,12 +39,13 @@ class RoomView extends Component {
     this.eventsBlob = [];
     this.topEvent = null;
     this.bottomEvent = null;
+    this.wasFocusedAtLeastOneTime = false;
   }
   componentDidMount () {
     this.model.on('freshEvent', this.addFreshEvent.bind(this));
-
-    // initial history load
-    this._loadHistory();
+  }
+  componentWillUnmount () {
+    this.model.off('freshEvent');
   }
   render () {
     return (
@@ -92,8 +93,11 @@ class RoomView extends Component {
   }
   renderHeader () {
     if (!this.state.more) {
+      var prefix = (this.model.get('type') === 'room')
+        ? 'Your are in'
+        : 'You discuss with'
       return (
-        <Text style={styles.title}>You are in {this.props.title}</Text>
+        <Text style={styles.title}>{prefix} {this.props.title}</Text>
       );
     }
 
@@ -171,6 +175,13 @@ class RoomView extends Component {
       dataSource: this.state.dataSource.cloneWithRows(this.eventsBlob)
     });
     this.bottomEvent = data.id;
+  }
+  onFocus () {
+    // first focus
+    if (!this.wasFocusedAtLeastOneTime) {
+      this._loadHistory()
+      this.wasFocusedAtLeastOneTime = true;
+    }
   }
 }
 

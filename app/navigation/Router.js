@@ -1,52 +1,76 @@
 'use strict';
 
-var HomeView = require('../views/HomeView');
-var OnetooneView = require('../views/OnetooneView');
-var RoomView = require('../views/RoomView');
-
-var onePattern = /^onetoone\/(\w+)/;
-var roomPattern = /^room\/(\w+)/;
-
 var onetoones = require('../collections/onetoones');
 var rooms = require('../collections/rooms');
 
-module.exports = function (url) {
+var HomeView = require('../views/HomeView');
+var DiscussionView = require('../views/DiscussionView');
+var ProfileView = require('../views/ProfileView');
+
+var profilePattern = /^(user|room)\/profile\/(\w+)$/;
+var discussionPattern = /^(onetoone|room)\/(\w+)$/;
+
+module.exports = function (url, options) {
   if (!url) {
     return;
   }
 
+  var route = {
+    url: url,
+    options: options
+  };
+
   if (url === 'home') {
-    return {id: 'home', title: 'home', index: 0, component: HomeView};
+    route.title = 'Your space';
+    route.index = 0;
+    route.component = HomeView;
+    return route;
   }
   if (url === 'test1') {
-    return {id: 'test1', title: 'test1', component: require('../views/Test1')};
+    route.title = 'Page de test 1';
+    route.component = require('../views/Test1');
+    return route;
   }
   if (url === 'test2') {
-    return {id: 'test2', title: 'test2', component: require('../views/Test2')};
+    route.title = 'Page de test 2';
+    route.component = require('../views/Test2');
+    return route;
   }
 
   var match;
-  var model;
 
-  match = onePattern.exec(url)
+  match = profilePattern.exec(url);
   if (match) {
-    model = onetoones.get(match[1]);
-    return {
-      id: model.get('id'),
-      component: OnetooneView,
-      model: model,
-      title: '@' + model.get('username')
-    };
+    route.type = match[1];
+    route.id = match[2];
+    route.component = ProfileView;
+    route.back = 'pop';
+
+    route.identifier = (route.type === 'user')
+      ? '@' + options.username
+      : options.identifier;
+    route.title = 'Profil de ' + route.identifier;
+
+    return route;
   }
 
-  match = roomPattern.exec(url)
+  match = discussionPattern.exec(url);
   if (match) {
-    model = rooms.get(match[1]);
-    return {
-      id: model.get('id'),
-      component: RoomView,
-      model: model,
-      title: model.get('identifier')
-    };
+    route.type = match[1];
+    route.id = match[2];
+    route.component = DiscussionView;
+
+    // model
+    var collection = (route.type === 'room')
+      ? rooms
+      : onetoones;
+    route.model = collection.get(route.id);
+
+    // title
+    route.title = (route.type === 'room')
+      ? route.model.get('identifier')
+      : '@' + route.model.get('username');
+
+    return route;
   }
 };

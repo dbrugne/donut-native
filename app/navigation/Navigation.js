@@ -47,15 +47,9 @@ class Navigation extends Component {
     app.on('navigateTo', this.navigateTo.bind(this));
     app.on('toggleDrawer', this.toggleDrawer.bind(this));
   }
-
-  renderScene (route, navigator) {
-    return(
-      <Container
-        route={route}
-        navigator={navigator}
-        {...this.props}
-      />
-    );
+  componentWillUnmount () {
+    app.off('navigateTo');
+    app.off('toggleDrawer');
   }
 
   renderNavBar () {
@@ -74,6 +68,8 @@ class Navigation extends Component {
         openDrawerOffset={100}
         styles={{main: {shadowColor: "#000000", shadowOpacity: 0.4, shadowRadius: 3}}}
         tweenHandler={Drawer.tweenPresets.parallax}
+        onOpen={this.onOpenDrawer.bind(this)}
+        onClose={this.onCloseDrawer.bind(this)}
         >
         <View style={styles.appContainer} >
           <Navigator
@@ -85,10 +81,29 @@ class Navigation extends Component {
             // initialRouteStack={this.props.routeStack.path}
             navigationBar={this.renderNavBar()}
             onDidFocus={this.onFocus.bind(this)}
-            />
+            configureScene={this.configureScene}
+          />
         </View>
       </Drawer>
     );
+  }
+
+  renderScene (route, navigator) {
+    return(
+      <Container
+        route={route}
+        navigator={navigator}
+        {...this.props}
+        />
+    );
+  }
+
+  // @source: https://rnplay.org/apps/HPy6UA
+  configureScene (route) {
+    return Object.assign({}, Navigator.SceneConfigs.FloatFromRight, {
+      springTension: 100,
+      springFriction: 1
+    });
   }
 
   onFocus (route) {
@@ -106,38 +121,50 @@ class Navigation extends Component {
     }
   }
 
-  closeDrawer () {
-    this.refs.drawer.close();
+  onOpenDrawer () {
+    this.drawerOpened = true;
+    StatusBarIOS.setHidden(true, 'slide');
+  }
+  onCloseDrawer () {
     this.drawerOpened = false;
     StatusBarIOS.setHidden(false, 'slide');
   }
 
+  closeDrawer () {
+    this.refs.drawer.close();
+  }
+
   toggleDrawer () {
     if (this.drawerOpened) {
-      this.closeDrawer();
+      this.refs.drawer.close();
     } else {
       this.refs.drawer.open();
-      StatusBarIOS.setHidden(true, 'slide');
-      this.drawerOpened = !this.drawerOpened;
     }
   }
 
-  navigateTo (url) {
+  navigateTo (url, options) {
     if (!this.refs.navigator) {
       return;
     }
-    var route = router(url);
+
+    console.log('route to', url);
+    var route = router(url, options);
+    console.log('get =>', route);
     if (!route) {
       return;
     }
 
-    var _route = this.refs.navigator.getCurrentRoutes().filter((r) => (r.id === route.id))[0];
-    if (_route) {
-      this.refs.navigator.jumpTo(_route);
+    var existingRoute = this.refs.navigator.getCurrentRoutes().filter((r) => (r.url === route.url))[0];
+    console.log('exists =>', !!(existingRoute));
+    if (existingRoute) {
+      this.refs.navigator.jumpTo(existingRoute);
     } else {
       this.refs.navigator.push(route);
+      // @todo : bug when .push() from root view, "Navigate forward to a new scene, squashing any scenes that you could jumpForward to"
     }
     this.closeDrawer();
+    console.log(require('underscore').map(this.refs.navigator.getCurrentRoutes(), (r) => r.title))
+//    console.log(this.refs.navigator.getCurrentRoutes())
   }
 }
 
