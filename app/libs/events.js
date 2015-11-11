@@ -14,6 +14,8 @@ var date = require('../libs/date');
 
 var exports = module.exports = {};
 
+var messagesTypes = [ 'room:message', 'user:message' ];
+
 var templates = {
   'ping': false,
   'hello': false,
@@ -93,7 +95,7 @@ var templates = {
   }
 };
 
-exports.render = function (event, previous) {
+exports.render = function (event, previous, isLast) {
   var ready = this._data(event.type, event.data);
   var data = ready.data;
 
@@ -105,7 +107,18 @@ exports.render = function (event, previous) {
     );
   }
 
-  if (previous) {
+  // top (last) event
+  if (isLast && messagesTypes.indexOf(ready.type) !== -1) {
+    return (
+      <View>
+        {templates['userBlock'](ready)}
+        {component(ready)}
+      </View>
+    );
+  }
+
+  // all event but first and last
+  if (previous && !isLast) {
     var readyPrevious = this._data(previous.type, previous.data);
     if (this.block(readyPrevious, ready)) {
       return (
@@ -120,21 +133,20 @@ exports.render = function (event, previous) {
   return component(ready);
 };
 
-exports.block = function (event, previous) {
-  var messagesTypes = [ 'room:message', 'user:message' ];
-  if (messagesTypes.indexOf(event.type) === -1) {
+exports.block = function (previous, current) {
+  if (messagesTypes.indexOf(previous.type) === -1) {
     return false;
   }
-  if (!previous) {
+  if (!current) {
     return true;
   }
-  if (messagesTypes.indexOf(previous.type) === -1) {
+  if (messagesTypes.indexOf(current.type) === -1) {
     return true;
   }
-  if (!date.isSameDay(event.data.time, previous.data.time)) {
+  if (!date.isSameDay(previous.data.time, current.data.time)) {
     return true;
   }
-  if (event.data.user_id !== previous.data.user_id) {
+  if (previous.data.user_id !== current.data.user_id) {
     return true;
   }
   return false;

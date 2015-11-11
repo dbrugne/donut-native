@@ -80,12 +80,14 @@ class RoomView extends Component {
     }
     this.topEvent = event.data.id;
 
-    var p = null;
     if (rowID > 0) {
       var previous = this.state.dataSource.getRowData(0, (rowID - 1));
     }
 
-    return events.render(event, previous);
+    // rowID is a string
+    var isLast = (parseInt(rowID) === (this.eventsBlob.length - 1));
+
+    return events.render(event, previous, isLast);
   }
   renderHeader () {
     if (!this.state.more) {
