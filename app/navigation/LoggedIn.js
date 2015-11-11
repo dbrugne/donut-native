@@ -14,7 +14,7 @@ var {
 
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
-var NavigationBar = require('./Navigation');
+var Navigation = require('./Navigation');
 
 class Index extends Component {
   constructor (props) {
@@ -38,7 +38,7 @@ class Index extends Component {
 
     return (
       <View style={styles.main}>
-        <NavigationBar />
+        <Navigation />
       </View>
     );
   }
