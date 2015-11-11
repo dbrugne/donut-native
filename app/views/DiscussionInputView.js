@@ -22,13 +22,15 @@ class InputView extends Component {
     return (
       <View style={styles.inputContainer}>
         <TextInput style={styles.input}
+                   ref='input'
                    onChangeText={(text) => this.setState({text})}
                    onSubmitEditing={this.onSubmit.bind(this)}
-                   placeholder="Envoyer un message"
+                   placeholder='Envoyer un message'
                    blurOnSubmit={false}
                    value={this.state.text}
                    enablesReturnKeyAutomatically={true}
-                   returnKeyType="send" />
+                   returnKeyType='send'
+          />
       </View>
     );
   }
@@ -37,6 +39,7 @@ class InputView extends Component {
     this.setState({
       text: ''
     });
+    this.refs.input.focus(); // @todo : not working due to blurOnSubmit https://github.com/facebook/react-native/pull/2149
   }
 }
 
