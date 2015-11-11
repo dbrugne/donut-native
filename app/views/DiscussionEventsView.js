@@ -55,6 +55,7 @@ class RoomView extends Component {
           style={styles.listView}
           dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}
+          renderHeader={this.renderFooter.bind(this)}
           renderFooter={this.renderHeader.bind(this)}
           onChangeVisibleRows={this.onChangeVisibleRows.bind(this)}
           pageSize={4}
@@ -119,6 +120,11 @@ class RoomView extends Component {
       </View>
     );
   }
+  renderFooter () {
+    return (
+      <View style={styles.footer} />
+    );
+  }
   onLoadMore (event: Object) {
     this._loadHistory(this.topEvent);
   }
@@ -170,8 +176,7 @@ class RoomView extends Component {
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingBottom: 5
+    flex: 1
   },
   loading: {
     alignItems: 'center',
@@ -193,6 +198,9 @@ var styles = StyleSheet.create({
   borderStyle: 'solid',
   borderWidth: 1,
   borderColor: 'black',
+  },
+  footer: {
+    paddingBottom: 5 // elegant spacer under last event
   }
 });
 
