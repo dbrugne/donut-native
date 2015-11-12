@@ -3,6 +3,8 @@ var Backbone = require('backbone');
 var client = require('../libs/client');
 var oauth = require('../libs/oauth'); // @mobile
 
+// @todo : implement a MobileCurrentUser that extend current-user and add oauth logic and methods
+
 var CurrentUserModel = Backbone.Model.extend({
   oauth: oauth,  // @mobile
 

@@ -25,7 +25,7 @@ var RoomModel = Backbone.Model.extend({
   initialize: function () {
     this.users = new RoomUsersCollection({
       parent: this
-    }); // @mobile : add remove to unsubscribe events
+    });
   },
   getIdentifier: function () {
     return this.get('name');
@@ -73,8 +73,8 @@ var RoomModel = Backbone.Model.extend({
       this.set(key, value);
     }, this));
   },
-  history: function (start, end, callback) {
-    client.roomHistory(this.get('room_id'), start, end, 50, function (data) { // @mobile
+  history: function (start, end, limit, callback) {
+    client.roomHistory(this.get('room_id'), start, end, limit, function (data) {
       return callback(data);
     });
   },
@@ -83,6 +83,9 @@ var RoomModel = Backbone.Model.extend({
   },
   viewedElements: function (elements) {
     client.roomViewed(this.get('room_id'), elements);
+  },
+  joinRoom: function (cb) {
+    client.roomJoin(this.get('room_id'), cb);
   },
   onViewed: function (data) {
     if (this.get('unviewed')) {
@@ -93,7 +96,7 @@ var RoomModel = Backbone.Model.extend({
     this.trigger('viewed', data);
   },
   isInputActive: function () {
-    return !(this.users.isUserDevoiced(currentUser.get('user_id')));
+    return !(this.users.isUserDevoiced(currentUser.get('user_id')) || !currentUser.isConfirmed());
   }
 
 });
