@@ -154,12 +154,14 @@ class Navigation extends Component {
       return;
     }
 
-    var existingRoute = this.refs.navigator.getCurrentRoutes().filter((r) => (r.url === route.url))[0];
+    var routes = this.refs.navigator.getCurrentRoutes();
+    var existingRoute = routes.filter((r) => (r.url === route.url))[0];
     console.log('exists =>', !!(existingRoute));
     if (existingRoute) {
       this.refs.navigator.jumpTo(existingRoute);
     } else {
       this.refs.navigator.push(route);
+//      this.refs.navigator.replaceAtIndex(route, routes.length);
       // @todo : bug when .push() from root view, "Navigate forward to a new scene, squashing any scenes that you could jumpForward to"
     }
     this.closeDrawer();
