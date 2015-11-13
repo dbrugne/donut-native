@@ -11,7 +11,7 @@ var Launch = React.createClass({
   render: function() {
     return (
       <View style={styles.container}>
-        <Text>Launch me harder!</Text>
+        <Text style={{}}>Launch me harder!</Text>
       </View>
     )
   }
@@ -20,8 +20,9 @@ var Launch = React.createClass({
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
-    marginTop: 50
+    marginTop: 50,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
