@@ -136,7 +136,7 @@ class RoomView extends Component {
     this.setState({
       loading: true
     });
-    this.model.history(null, end, (response) => {
+    this.model.history(null, end, 25, (response) => {
       if (!response.history || !response.history.length) {
         return;
       }
