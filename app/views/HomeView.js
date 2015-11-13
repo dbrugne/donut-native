@@ -30,9 +30,6 @@ class HomeView extends Component {
           <Text style={styles.text}>Authentication OK!</Text>
           <Text style={styles.text}>{currentUser.oauth.token}</Text>
           <Text style={styles.text}>{currentUser.oauth.code}</Text>
-          <TouchableHighlight onPress={() => currentUser.logout()} style={styles.button}>
-            <Text style={styles.logout}>LOGOUT</Text>
-          </TouchableHighlight>
           <TouchableHighlight onPress={this.test1.bind(this)} style={styles.button}>
             <Text style={styles.test}>__TEST1__</Text>
           </TouchableHighlight>
@@ -74,11 +71,6 @@ var styles = StyleSheet.create({
   },
   test: {
     fontSize: 10
-
-  },
-  logout: {
-    fontSize: 10
-
   }
 });
 

@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
+var app = require('../libs/app');
 var client = require('../libs/client');
 var oauth = require('../libs/oauth'); // @mobile
 
@@ -40,9 +41,9 @@ var CurrentUserModel = Backbone.Model.extend({
   },
 
   onWelcome: function (data) {
-    this.set(data.user, {silent: true});
-    this.setPreferences(data.preferences, {silent: true});
-    this.trigger('change');
+    this.set(data.user);
+    this.setPreferences(data.preferences);
+    app.trigger('muteview');
   },
 
   onUpdated: function (data) {
