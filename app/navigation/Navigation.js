@@ -47,6 +47,7 @@ class Navigation extends Component {
     app.on('navigateTo', this.navigateTo.bind(this));
     app.on('toggleDrawer', this.toggleDrawer.bind(this));
   }
+
   componentWillUnmount () {
     app.off('navigateTo');
     app.off('toggleDrawer');
@@ -71,7 +72,7 @@ class Navigation extends Component {
         onOpen={this.onOpenDrawer.bind(this)}
         onClose={this.onCloseDrawer.bind(this)}
         >
-        <View style={styles.appContainer} >
+        <View style={styles.appContainer}>
           <Navigator
             ref='navigator'
             // debugOverlay={false}
@@ -82,14 +83,14 @@ class Navigation extends Component {
             navigationBar={this.renderNavBar()}
             onDidFocus={this.onFocus.bind(this)}
             configureScene={this.configureScene}
-          />
+            />
         </View>
       </Drawer>
     );
   }
 
   renderScene (route, navigator) {
-    return(
+    return (
       <Container
         route={route}
         navigator={navigator}
@@ -125,6 +126,7 @@ class Navigation extends Component {
     this.drawerOpened = true;
     StatusBarIOS.setHidden(true, 'slide');
   }
+
   onCloseDrawer () {
     this.drawerOpened = false;
     StatusBarIOS.setHidden(false, 'slide');
@@ -155,18 +157,40 @@ class Navigation extends Component {
     }
 
     var routes = this.refs.navigator.getCurrentRoutes();
-    var existingRoute = routes.filter((r) => (r.url === route.url))[0];
+    var existingRoute = routes.filter((r) => (r.url === route.url))[ 0 ];
     console.log('exists =>', !!(existingRoute));
     if (existingRoute) {
       this.refs.navigator.jumpTo(existingRoute);
     } else {
-      this.refs.navigator.push(route);
-//      this.refs.navigator.replaceAtIndex(route, routes.length);
-      // @todo : bug when .push() from root view, "Navigate forward to a new scene, squashing any scenes that you could jumpForward to"
+      this.superPush(route);
     }
     this.closeDrawer();
     console.log(require('underscore').map(this.refs.navigator.getCurrentRoutes(), (r) => r.title))
 //    console.log(this.refs.navigator.getCurrentRoutes())
+  }
+
+  superPush (route) {
+    // @source : react-native/Libraries/CustomComponents/Navigator/Navigator.js:891
+    var navigator = this.refs.navigator;
+//    invariant(!!route, 'Must supply route to push');
+//    var activeLength = navigator.state.presentedIndex + 1;
+//    var activeStack = navigator.state.routeStack.slice(0, activeLength);
+//    var activeAnimationConfigStack = navigator.state.sceneConfigStack.slice(0, activeLength);
+    var activeStack = navigator.state.routeStack; // @hack
+    var activeAnimationConfigStack = navigator.state.sceneConfigStack; // @hack
+    var nextStack = activeStack.concat([route]);
+    var destIndex = nextStack.length - 1;
+    var nextAnimationConfigStack = activeAnimationConfigStack.concat([
+      navigator.props.configureScene(route),
+    ]);
+    navigator._emitWillFocus(nextStack[destIndex]);
+    navigator.setState({
+      routeStack: nextStack,
+      sceneConfigStack: nextAnimationConfigStack,
+    }, () => {
+      navigator._enableScene(destIndex);
+      navigator._transitionTo(destIndex);
+    });
   }
 }
 

@@ -20,9 +20,7 @@ var routeMapper = {
 //    console.log('PASS IN MAPPER!!', route.title);
     if (route.back === 'pop') {
       return (
-        <TouchableOpacity style={styles.backContainer} onPress={function () {
-          console.log('music'); navigator.pop()
-        }}>
+        <TouchableOpacity style={styles.backContainer} onPress={() => navigator.pop()}>
           <Icon
             name='fontawesome|angle-left'
             size={25}
