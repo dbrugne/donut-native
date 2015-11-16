@@ -21,7 +21,7 @@ var getTokenFromSession = function (callback) {
 module.exports = Client({
   device: 'native',
   host: 'https://test.donut.me',
-  debug: function () {
+  debug: () => {
 //    console.log(arguments);
   },
   retrieveToken: getTokenFromSession,
