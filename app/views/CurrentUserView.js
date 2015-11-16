@@ -32,7 +32,6 @@ class CurrentUserView extends Component {
     var username = (user.username)
       ? '@' + user.username + ' '
       : '';
-    console.log(user);
     return (
       <View style={styles.main}>
         <Image style={styles.avatar} source={{uri: common.cloudinary.prepare(user.avatar, 50)}} />
