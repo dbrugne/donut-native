@@ -3,14 +3,13 @@
 var onetoones = require('../collections/onetoones');
 var rooms = require('../collections/rooms');
 
-var HomeView = require('../views/HomeView');
-var DiscussionView = require('../views/DiscussionView');
-var ProfileView = require('../views/ProfileView');
-
 var profilePattern = /^(user|room)\/profile\/(\w+)$/;
 var discussionPattern = /^(onetoone|room)\/(\w+)$/;
 
-module.exports = function (url, options) {
+// @warning: lasy load route components to avoid cyclic reference
+// http://stackoverflow.com/questions/29807664/cyclic-dependency-returns-empty-object-in-react-native
+
+function getRoute (url, options) {
   if (!url) {
     return;
   }
@@ -23,7 +22,7 @@ module.exports = function (url, options) {
   if (url === 'home') {
     route.title = 'Your space';
     route.index = 0;
-    route.component = HomeView;
+    route.component = require('../views/HomeView'); // lazy load
     return route;
   }
   if (url === 'test1') {
@@ -36,6 +35,11 @@ module.exports = function (url, options) {
     route.component = require('../views/Test2');
     return route;
   }
+  if (url === 'test3') {
+    route.title = 'Page de test 2';
+    route.component = require('../views/Test2');
+    return route;
+  }
 
   var match;
 
@@ -43,7 +47,7 @@ module.exports = function (url, options) {
   if (match) {
     route.type = match[1];
     route.id = match[2];
-    route.component = ProfileView;
+    route.component = require('../views/ProfileView'); // lazy load
     route.back = 'pop';
 
     route.identifier = (route.type === 'user')
@@ -58,7 +62,7 @@ module.exports = function (url, options) {
   if (match) {
     route.type = match[1];
     route.id = match[2];
-    route.component = DiscussionView;
+    route.component = require('../views/DiscussionView'); // lazy load
 
     // model
     var collection = (route.type === 'room')
@@ -74,3 +78,5 @@ module.exports = function (url, options) {
     return route;
   }
 };
+
+module.exports = getRoute;
