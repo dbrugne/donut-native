@@ -48,3 +48,7 @@ npm install -g react-native-cli
 https://facebook.github.io/react-native/docs/android-setup.html#content
 
 PATH add =>  \<sdk>\tools and \<sdk>\platform-tools
+
+To use your own device :
+- https://facebook.github.io/react-native/docs/running-on-device-android.html#content
+- and make sure your device had the correct driver
