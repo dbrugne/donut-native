@@ -29,21 +29,27 @@ class UserProfileView extends Component {
     };
 
     this.id = props.currentRoute.id;
+    this.type = props.currentRoute.type;
   }
   componentDidMount () {
     if (this.id) {
-      client.roomRead(this.id, {more: true}, (response) => {
-        if (response.err) {
-          return this.setState({
-            error: 'Impossible de charger ce profil, veuillez ré-essayer plus tard'
-          });
-        }
-        this.setState({
-          loading: false,
-          data: response
-        });
+      if (this.type === 'room') {
+        client.roomRead(this.id, {more: true}, this.onData.bind(this));
+      } else {
+        client.userRead(this.id, this.onData.bind(this));
+      }
+    }
+  }
+  onData (response) {
+    if (response.err) {
+      return this.setState({
+        error: 'Impossible de charger ce profil, veuillez ré-essayer plus tard'
       });
     }
+    this.setState({
+      loading: false,
+      data: response
+    });
   }
   render () {
     // @todo i18next
