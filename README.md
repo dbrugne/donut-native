@@ -47,4 +47,4 @@ npm install -g react-native-cli
 
 https://facebook.github.io/react-native/docs/android-setup.html#content
 
-PATH add =>  <sdk>\tools and <sdk>\platform-tools
+PATH add =>  \<sdk>\tools and \<sdk>\platform-tools
