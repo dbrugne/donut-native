@@ -124,12 +124,16 @@ class Navigation extends Component {
 
   onOpenDrawer () {
     this.drawerOpened = true;
-    StatusBarIOS.setHidden(true, 'slide');
+    if (StatusBarIOS) {
+      StatusBarIOS.setHidden(true, 'slide');
+    }
   }
 
   onCloseDrawer () {
     this.drawerOpened = false;
-    StatusBarIOS.setHidden(false, 'slide');
+    if (StatusBarIOS) {
+      StatusBarIOS.setHidden(false, 'slide');
+    }
   }
 
   closeDrawer () {
@@ -200,7 +204,8 @@ var styles = StyleSheet.create({
   },
   scene: {
     flex: 1,
-    marginTop: Navigator.NavigationBar.Styles.General.TotalNavHeight
+    marginTop: Navigator.NavigationBar.Styles.General.TotalNavHeight,
+    backgroundColor: '#FFFFFF'
   },
   sceneHidden: {
     marginTop: 0

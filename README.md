@@ -42,3 +42,15 @@ npm install -g react-native-cli
     }
   }
 ```  
+
+## Android setup for windows
+
+https://facebook.github.io/react-native/docs/android-setup.html#content
+
+PATH add =>  \<sdk path>\tools and \<sdk path>\platform-tools
+
+https://github.com/facebook/react-native/blob/master/ReactAndroid/README.md#prerequisites
+
+To use your own device :
+- https://facebook.github.io/react-native/docs/running-on-device-android.html#content
+- and make sure your device had the correct driver
