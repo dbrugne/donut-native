@@ -46,6 +46,7 @@ npm install -g react-native-cli
 ## Android setup for windows
 
 Les paths du sdk et du ndk ne doivent pas contenir d'espace !
+
 https://facebook.github.io/react-native/docs/android-setup.html#content
 
 PATH add =>  \<sdk path>\tools and \<sdk path>\platform-tools
