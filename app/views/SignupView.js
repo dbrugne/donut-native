@@ -72,8 +72,6 @@ class SignupView extends Component {
     currentUser.signUp(this.state.email, this.state.password, this.state.username, _.bind(function (err) {
       if (err) {
         this._appendError(err);
-      } else {
-        this._appendError('Success');
       }
     }, this));
   }

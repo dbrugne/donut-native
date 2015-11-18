@@ -131,7 +131,13 @@ var CurrentUserModel = Backbone.Model.extend({
     callback(null);
   },
   signUp: function (email, password, username, callback) {
-    this.oauth.signUp(email, password, username, callback);
+    this.oauth.signUp(email, password, username, _.bind(function (err) {
+      if (err) {
+        return callback(err);
+      }
+
+      this.trigger('currentUserStatus');
+    }, this));
   }
 
 });
