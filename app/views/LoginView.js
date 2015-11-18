@@ -150,14 +150,15 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   link: {
-    fontSize: 15
+    fontSize: 15,
+    marginTop: 10
   },
   forgot: {
     alignSelf: 'flex-end',
     marginRight: 28
   },
   create: {
-    marginTop: 25,
+    marginTop: 20,
     alignSelf: 'center'
   },
   title: {
@@ -184,7 +185,7 @@ var styles = StyleSheet.create({
     width: 250,
     backgroundColor: "#fd5286",
     borderRadius: 3,
-    marginTop: 30,
+    marginTop: 20,
     justifyContent: "center",
     alignSelf: "center"
   },
