@@ -7,7 +7,8 @@ var {
   Text,
   TextInput,
   TouchableHighlight,
-  View
+  View,
+  ToastAndroid
   } = React;
 
 var currentUser = require('../models/current-user');
@@ -65,7 +66,7 @@ class SignupView extends Component {
 
   onSubmitPressed () {
     if (!this.state.email || !this.state.password || !this.state.username) {
-      return;
+      return this._appendError('not-complete');
     }
 
     currentUser.signUp(this.state.email, this.state.password, this.state.username, _.bind(function (err) {
@@ -81,7 +82,11 @@ class SignupView extends Component {
   }
 
   _appendError (string) {
-    this.setState({errors: this.state.messages.concat(string)});
+    if (ToastAndroid) {
+      ToastAndroid.show(string, ToastAndroid.SHORT);
+    } else {
+      this.setState({errors: this.state.messages.concat(string)});
+    }
   }
 
 }

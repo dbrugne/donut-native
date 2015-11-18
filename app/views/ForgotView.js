@@ -7,7 +7,8 @@ var {
   View,
   StyleSheet,
   TextInput,
-  TouchableHighlight
+  TouchableHighlight,
+  ToastAndroid
   } = React;
 
 
@@ -45,7 +46,7 @@ class ForgotView extends Component {
 
   onResetPressed () {
     if (!this.state.email) {
-      return;
+      return this._appendError('not-complete');
     }
 
     currentUser.forgot(this.state.email, _.bind(function (err) {
@@ -58,7 +59,11 @@ class ForgotView extends Component {
   }
 
   _appendError (string) {
-    this.setState({errors: this.state.errors.concat(string)});
+    if (ToastAndroid) {
+      ToastAndroid.show(string, ToastAndroid.SHORT);
+    } else {
+      this.setState({errors: this.state.messages.concat(string)});
+    }
   }
 }
 

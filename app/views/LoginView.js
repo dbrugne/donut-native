@@ -19,7 +19,8 @@ var {
   View,
   Navigator,
   AsyncStorage,
-  BackAndroid
+  BackAndroid,
+  ToastAndroid
 } = React;
 
 var currentUser = require('../models/current-user');
@@ -95,7 +96,7 @@ class LoginView extends Component {
 
   onSubmitPressed () {
     if (!this.state.email || !this.state.password) {
-      return;
+      return this._appendError('not-complete');
     }
 
     // @todo : loading screen
@@ -129,7 +130,11 @@ class LoginView extends Component {
   }
 
   _appendError (string) {
-    this.setState({errors: this.state.messages.concat(string)});
+    if (ToastAndroid) {
+      ToastAndroid.show(string, ToastAndroid.SHORT);
+    } else {
+      this.setState({errors: this.state.messages.concat(string)});
+    }
   }
 
 };
