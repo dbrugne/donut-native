@@ -195,6 +195,31 @@ var oauth = _.extend({
     this.token = null;
     this.code = null;
     storage.removeKeys(['token', 'code'], callback);
+  },
+
+  signUp: function (email, password, username, callback) {
+    this.email = email;
+    console.log(email, this.email);
+    storage.setKey('email', email, _.bind(function (err) {
+      if (err) {
+        return callback(err);
+      }
+      console.log(email, this.email);
+
+      this.oauthRequest('signup', { email: email, password: password, username: username }, _.bind(function (err, response) {
+        if (err) {
+          return callback(err);
+        }
+        if (response.err) {
+          return callback(response.err);
+        }
+
+        this.token = response.token;
+        storage.setKeys({
+          token: this.token
+        }, callback);
+      }, this));
+    }, this));
   }
 
 }, Backbone.Events);

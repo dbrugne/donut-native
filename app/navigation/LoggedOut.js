@@ -23,6 +23,7 @@ class LoggedOut extends Component {
           debugOverlay={false}
           renderScene={this.renderScene}
           initialRoute={{ name: 'login', index: 0, component: require('../views/LoginView') }}
+          onBack={() => {navigator.popToTop()}}
         />
       </View>
     );
