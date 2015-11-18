@@ -118,7 +118,7 @@ var styles = StyleSheet.create({
     color: "#555555"
   },
   button: {
-    height: 36,
+    height: 46,
     width: 250,
     backgroundColor: "#fd5286",
     borderRadius: 3,
@@ -127,7 +127,7 @@ var styles = StyleSheet.create({
     alignSelf: "center"
   },
   buttonFacebook: {
-    height: 36,
+    height: 46,
     width: 250,
     backgroundColor: "#4a649d",
     borderRadius: 3,

@@ -43,7 +43,9 @@ class LoginView extends Component {
     });
     if (BackAndroid) {
       BackAndroid.addEventListener('hardwareBackPress', _.bind(function () {
-        this.props.navigator.popToTop().bind(this);
+        if (this.props.navigator.getCurrentRoutes()[1]) {
+          this.props.navigator.popToTop().bind(this);
+        }
       }, this));
     }
   }
@@ -147,7 +149,7 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   link: {
-    fontSize: 12
+    fontSize: 15
   },
   forgot: {
     alignSelf: 'flex-end',
@@ -177,7 +179,7 @@ var styles = StyleSheet.create({
     color: "#555555"
   },
   button: {
-    height: 36,
+    height: 46,
     width: 250,
     backgroundColor: "#fd5286",
     borderRadius: 3,
@@ -186,7 +188,7 @@ var styles = StyleSheet.create({
     alignSelf: "center"
   },
   buttonFacebook: {
-    height: 36,
+    height: 46,
     width: 250,
     backgroundColor: "#4a649d",
     borderRadius: 3,

@@ -87,7 +87,7 @@ var styles = StyleSheet.create({
     color: "#555555"
   },
   button: {
-    height: 36,
+    height: 46,
     width: 250,
     backgroundColor: "#fd5286",
     borderRadius: 3,
