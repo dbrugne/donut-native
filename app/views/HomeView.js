@@ -27,6 +27,9 @@ class HomeView extends Component {
       <View style={styles.main}>
         <HomeFeaturedView />
         <View style={styles.links}>
+          <TouchableHighlight onPress={this._onLogout.bind(this)} style={styles.button}>
+            <Text style={styles.test}>Logout</Text>
+          </TouchableHighlight>
           <Text style={styles.text}>Authentication OK!</Text>
           <Text style={styles.text}>{currentUser.oauth.token}</Text>
           <Text style={styles.text}>{currentUser.oauth.code}</Text>
@@ -52,6 +55,9 @@ class HomeView extends Component {
   }
   test2 () {
     app.trigger('navigateTo', 'test2');
+  }
+  _onLogout () {
+    currentUser.logout();
   }
 }
 

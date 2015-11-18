@@ -44,25 +44,36 @@ class LoginView extends Component {
   render () {
     return (
       <View style={styles.container}>
-        {this.state.errors.map((m) => <Text>{m}</Text>)}
-        {this.state.messages.map((m) => <Text>{m}</Text>)}
-        <Text style={styles.title}>
-          Sign In
-        </Text>
         <View>
-          <TextInput
-            placeholder="Email"
-            onChange={(event) => this.setState({email: event.nativeEvent.text})}
-            style={styles.formInput}
-            value={this.state.email} />
-          <TextInput
-            placeholder="Password"
-            secureTextEntry={true}
-            onChange={(event) => this.setState({password: event.nativeEvent.text})}
-            style={styles.formInput}
-            value={this.state.password} />
-          <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))} style={styles.button}>
-            <Text style={styles.buttonText}>Submit</Text>
+          <TouchableHighlight onPress={(this.onFacebookPressed.bind(this))} style={styles.buttonFacebook}>
+            <Text style={styles.buttonText}>SIGN IN WITH FACEBOOK</Text>
+          </TouchableHighlight>
+          <Text style={styles.title}>
+            OR SIGN IN WITH AN ACCOUNT
+          </Text>
+          {this.state.errors.map((m) => <Text>{m}</Text>)}
+          {this.state.messages.map((m) => <Text>{m}</Text>)}
+          <View>
+            <TextInput
+              placeholder="Email"
+              onChange={(event) => this.setState({email: event.nativeEvent.text})}
+              style={styles.formInput}
+              value={this.state.email} />
+            <TextInput
+              placeholder="Password"
+              secureTextEntry={true}
+              onChange={(event) => this.setState({password: event.nativeEvent.text})}
+              style={styles.formInput}
+              value={this.state.password} />
+            <TouchableHighlight onPress={(this.onForgotPressed.bind(this))} style={styles.forgot}>
+              <Text style={styles.link}>FORGOT PASSWORD</Text>
+            </TouchableHighlight>
+            <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))} style={styles.button}>
+              <Text style={styles.buttonText}>HERE WE GO!</Text>
+            </TouchableHighlight>
+          </View>
+          <TouchableHighlight onPress={(this.onCreatePressed.bind(this))} style={styles.create}>
+            <Text style={styles.link}>I don't have an account yet. Create one</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -83,6 +94,16 @@ class LoginView extends Component {
     }, this));
   }
 
+  onFacebookPressed () {
+  }
+
+  onForgotPressed () {
+  }
+
+  onCreatePressed () {
+
+  }
+
   _appendMessage (string) {
     this.setState({messages: this.state.messages.concat(string)});
   }
@@ -95,20 +116,34 @@ class LoginView extends Component {
 
 var styles = StyleSheet.create({
   container: {
-    padding: 30,
-    marginTop: 65,
-    alignItems: "stretch"
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  link: {
+    fontSize: 12
+  },
+  forgot: {
+    alignSelf: 'flex-end',
+    marginRight: 28
+  },
+  create: {
+    marginTop: 25,
+    alignSelf: 'center'
   },
   title: {
-    fontSize: 18,
-    marginBottom: 10
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#111',
+    alignSelf: "center",
+    marginTop: 40
   },
   formInput: {
-    height: 36,
-    padding: 10,
+    height: 42,
+    paddingBottom: 10,
+    width: 250,
     marginRight: 5,
-    marginBottom: 5,
-    marginTop: 5,
     flex: 1,
     fontSize: 18,
     borderWidth: 1,
@@ -118,13 +153,20 @@ var styles = StyleSheet.create({
   },
   button: {
     height: 36,
-    flex: 1,
-    backgroundColor: "#555555",
-    borderColor: "#555555",
-    borderWidth: 1,
-    borderRadius: 8,
-    marginTop: 10,
-    justifyContent: "center"
+    width: 250,
+    backgroundColor: "#fd5286",
+    borderRadius: 3,
+    marginTop: 30,
+    justifyContent: "center",
+    alignSelf: "center"
+  },
+  buttonFacebook: {
+    height: 36,
+    width: 250,
+    backgroundColor: "#4a649d",
+    borderRadius: 3,
+    justifyContent: "center",
+    alignSelf: "center"
   },
   buttonText: {
     fontSize: 18,

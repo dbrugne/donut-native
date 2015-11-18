@@ -7,8 +7,6 @@ var {
   Navigator
 } = React;
 
-var LoginView = require('../views/LoginView');
-
 class LoggedOut extends Component {
   componentDidMount() {
     // @todo : listen for nav event on app => this.refs.navigator
@@ -24,7 +22,7 @@ class LoggedOut extends Component {
           ref='navigator'
           debugOverlay={false}
           renderScene={this.renderScene}
-          initialRoute={{ name: 'login', index: 0, component: LoginView }}
+          initialRoute={{ name: 'login', index: 0, component: require('../views/LoginView') }}
         />
       </View>
     );
