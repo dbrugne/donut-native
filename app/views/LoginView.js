@@ -43,7 +43,8 @@ class LoginView extends Component {
     });
     if (BackAndroid) {
       BackAndroid.addEventListener('hardwareBackPress', _.bind(function () {
-        if (this.props.navigator.getCurrentRoutes()[1]) {
+        var routes = this.props.navigator.getCurrentRoutes();
+        if (routes && routes.length > 1) {
           this.props.navigator.popToTop().bind(this);
         }
       }, this));
