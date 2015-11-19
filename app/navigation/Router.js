@@ -45,6 +45,11 @@ function getRoute (url, options) {
     route.component = require('../views/MyAccountView');
     return route;
   }
+  if (url === 'change-email') {
+    route.title = 'Change Email';
+    route.component = require('../views/ChangeEmailView');
+    return route;
+  }
 
   var match;
 

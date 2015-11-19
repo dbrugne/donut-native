@@ -138,6 +138,9 @@ var CurrentUserModel = Backbone.Model.extend({
 
       this.trigger('currentUserStatus');
     }, this));
+  },
+  changeMainEmail: function (email, callback) {
+    client.accountEmail(email, 'main', callback);
   }
 
 });

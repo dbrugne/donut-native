@@ -12,6 +12,8 @@ var {
   TouchableHighlight
   } = React;
 
+var app = require('../libs/app');
+
 class ForgotView extends Component {
   constructor (props) {
     super(props);
@@ -42,7 +44,7 @@ class ForgotView extends Component {
   }
 
   _onChangeEmail () {
-
+    app.trigger('navigateTo', 'change-email');
   }
   _onChangePassword () {
 
@@ -62,10 +64,10 @@ class ForgotView extends Component {
 }
 
 var items = [
+  {title: 'Edit profile', fc: '_onEditProfile'},
   {title: 'Change Email', fc: '_onChangeEmail'},
   {title: 'Change password', fc: '_onChangePassword'},
   {title: 'Add email', fc: '_onAddEmail'},
-  {title: 'Edit profile', fc: '_onEditProfile'},
   {title: 'Change preferences', fc: '_onChangePreferences'},
   {title: 'Logout', fc: '_onLogout'}
 ];
