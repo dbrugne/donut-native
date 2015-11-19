@@ -220,6 +220,19 @@ var oauth = _.extend({
         }, callback);
       }, this));
     }, this));
+  },
+
+  forgot: function (email, callback) {
+    this.oauthRequest('forgot', { email: email }, _.bind(function (err, response) {
+      if (err) {
+        return callback(err);
+      }
+      if (response.err) {
+        return callback(response.err);
+      }
+
+      return callback(null);
+    }, this));
   }
 
 }, Backbone.Events);
