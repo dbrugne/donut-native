@@ -79,11 +79,12 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 80,
-    backgroundColor: '#EEE',
+    backgroundColor: '#111',
     marginBottom: 1
   },
   item: {
-    fontSize: 20
+    fontSize: 20,
+    color: "#EEE"
   }
 });
 
