@@ -50,6 +50,11 @@ function getRoute (url, options) {
     route.component = require('../views/ChangeEmailView');
     return route;
   }
+  if (url === 'search') {
+    route.title = 'Search';
+    route.component = require('../views/Search');
+    return route;
+  }
 
   var match;
 

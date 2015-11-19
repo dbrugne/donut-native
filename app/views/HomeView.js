@@ -39,6 +39,9 @@ class HomeView extends Component {
           <TouchableHighlight onPress={this.test2.bind(this)} style={styles.button}>
             <Text style={styles.test}>__TEST2__</Text>
           </TouchableHighlight>
+          <TouchableHighlight onPress={this.search.bind(this)} style={styles.button}>
+            <Text style={styles.test}>__SEARCH__</Text>
+          </TouchableHighlight>
         </View>
       </View>
     );
@@ -55,6 +58,9 @@ class HomeView extends Component {
   }
   test2 () {
     app.trigger('navigateTo', 'test2');
+  }
+  search () {
+    app.trigger('navigateTo', 'search');
   }
   _onLogout () {
     currentUser.logout();
