@@ -9,6 +9,8 @@
 
 var _ = require('underscore');
 var React = require('react-native');
+var SignupView = require('../views/SignupView');
+var ForgotView = require('../views/ForgotView');
 
 var {
   Component,
@@ -117,14 +119,14 @@ class LoginView extends Component {
   onForgotPressed () {
     this.props.navigator.push({
       title: 'Forgot',
-      component: require('../views/ForgotView')
+      component: ForgotView
     });
   }
 
   onCreatePressed () {
     this.props.navigator.push({
       title: 'Create',
-      component: require('../views/SignupView')
+      component: SignupView
     });
   }
 
