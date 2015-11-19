@@ -41,7 +41,7 @@ class CurrentUserView extends Component {
             <Text style={[styles.text, styles.status]}>({user.status})</Text>
           </View>
           <TouchableHighlight style={styles.myAccount} onPress={() => app.trigger('navigateTo', 'my-account')}>
-            <Text style={[styles.text, styles.myAccountText]}>Mon compte</Text>
+            <Text style={styles.text}>My account</Text>
           </TouchableHighlight>
         </View>
       </View>

@@ -40,6 +40,11 @@ function getRoute (url, options) {
     route.component = require('../views/Test2');
     return route;
   }
+  if (url === 'my-account') {
+    route.title = 'My account';
+    route.component = require('../views/MyAccountView');
+    return route;
+  }
 
   var match;
 
