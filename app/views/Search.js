@@ -22,39 +22,63 @@ class SearchView extends Component {
     super(props);
     this.state = {
       type: 'rooms',
-      loaded: false,
+      findValue: '',
+      more: false,
       dataSource: new ListView.DataSource({
         rowHasChanged: function (row1, row2) {
           return (row1 !== row2);
         }
       })
     };
+
+    this.nextValue = '';
+    this.limit = 25;
   }
 
   render () {
+    var more = this.state.more ? this._renderLoadMore() : null;
     return (
       <View style={styles.main}>
-        <View>
+        <View onResponderTerminate={this.renderElement.bind(this)}>
           <TextInput style={styles.formInputFind}
             placeholder='Search donut, community or user here'
             onChangeText={(text) => this.setState({findValue: text})}
-            value={this.state.text}
+            value={this.state.findValue}
             />
+          <View style={styles.buttonContainer}>
+            <TouchableHighlight onPress={this.search.bind(this, 'rooms', null)} style={styles.button}>
+              <Text style={styles.textButton}>donuts</Text>
+            </TouchableHighlight>
+            <TouchableHighlight onPress={this.search.bind(this, 'users', null)} style={styles.button}>
+              <Text style={styles.textButton}>users</Text>
+            </TouchableHighlight>
+            <TouchableHighlight onPress={this.search.bind(this, 'groups', null)} style={styles.button}>
+              <Text style={styles.textButton}>community</Text>
+            </TouchableHighlight>
+          </View>
         </View>
-        <TouchableHighlight onPress={this.findRooms.bind(this)} style={styles.button}>
-          <Text style={styles.textButton}>SEARCH</Text>
-        </TouchableHighlight>
         <View style={styles.searchContainer}>
           <ListView
             dataSource={this.state.dataSource}
-            renderRow={this.renderElement}
+            renderRow={this.renderElement.bind(this)}
             />
         </View>
+        {more}
       </View>
     );
   }
 
-  renderElement (room) {
+  renderElement (rowData) {
+    if (this.state.type === 'rooms') {
+      return this.renderRoomsElement(rowData);
+    } else if (this.state.type === 'users') {
+      return this.renderUsersElement(rowData);
+    } else if (this.state.type === 'groups') {
+      return this.renderGroupsElement(rowData);
+    }
+  }
+
+  renderRoomsElement (room) {
     var url = 'room/profile/' + room.room_id;
     var avatarUrl = common.cloudinary.prepare(room.avatar, 30)
     return (
@@ -67,33 +91,82 @@ class SearchView extends Component {
           <Text>{room.identifier}</Text>
         </View>
       </TouchableHighlight>
-    )
+    );
   }
 
-  findRooms () {
+  renderUsersElement (user) {
+    var avatarUrl = common.cloudinary.prepare(user.avatar, 30)
+    return (
+      <View>
+        <Image
+          source={{uri: avatarUrl}}
+          style={styles.thumbnail}
+          />
+        <Text>@{user.username}</Text>
+      </View>
+    );
+  }
+
+  renderGroupsElement (group) {
+    var avatarUrl = common.cloudinary.prepare(group.avatar, 30)
+    return (
+      <View>
+        <Image
+          source={{uri: avatarUrl}}
+          style={styles.thumbnail}
+          />
+        <Text>{group.name}</Text>
+      </View>
+    );
+  }
+
+  _renderLoadMore () {
+    if (this.state.more) {
+      return (
+        <View>
+          <TouchableHighlight onPress={this.loadMore.bind(this)}><Text>Load more</Text></TouchableHighlight>
+        </View>
+      );
+    } else {
+      return (<View></View>);
+    }
+  }
+
+  loadMore () {
+    console.log('loadmore');
+    var skip = {[this.state.type]: this.state.dataSource._cachedRowCount};
+    this.search(this.state.type, skip);
+  }
+
+  search (type, skip) {
+    skip = skip || null;
     if (!this.state.findValue) {
-      console.log('empty');
       return;
     }
+
+    this.setState({
+      type: type
+    });
+    this.nextValue = this.state.findValue;
+
     var options = {
-      rooms: true,
+      [this.state.type]: true,
       limit: {
-        rooms: 5
-      }
+        [this.state.type]: this.limit
+      },
+      skip: skip
     };
-    var that = this;
     client.search(this.state.findValue, options, _.bind(function (response) {
-      if (!response.err && response.rooms) {
-        console.log('good');
+      if (!response.err && response[this.state.type].list.length) {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(response.rooms.list),
-          loaded: true
+          dataSource: this.state.dataSource.cloneWithRows(response[this.state.type].list),
+          more: (response[this.state.type].list.length === this.limit)
         })
+        console.log(this.state.dataSource);
         this.render();
       }
-    }, this))
+    }, this));
   }
-
 }
 
 var styles = StyleSheet.create({
@@ -101,17 +174,23 @@ var styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    margin: 10,
+  },
   textButton: {
+    margin: 10,
     textAlign: 'center',
     color: '#fff'
   },
   button: {
     backgroundColor: '#444444',
-    marginLeft: 5,
-    width: 100
+    margin: 10,
+    width: 100,
+    height: 40
   },
   formInputFind: {
-    flex: 1,
     top: 0
   },
   thumbnail: {
