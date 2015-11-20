@@ -10,33 +10,41 @@ var {
   StyleSheet,
   SwitchAndroid,
   SwitchIOS,
-  ToastAndroid
+  ToastAndroid,
+  ListView
   } = React;
 
 var currentUser = require('../models/current-user');
+
+var items = [
+  {field: 'notif:channels:email', description: 'on email (only if you are offline)'},
+  {field: 'notif:channels:mobile', description: 'on mobile'},
+  {field: 'notif:usermessage', description: 'when a user sends me a private message'},
+  {field: 'notif:invite', description: 'when a user invites me'}
+];
 
 class UserPreferencesView extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      'notif:channels:email': false,
-      'notif:usermessage': false,
-      'notif:invite': false,
-      'notif:channels:mobile': false,
       loaded: false,
-      errors: []
+      errors: [],
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2
+      })
     };
+    _.each(items, _.bind(function (i) {
+      this.state[i.field] = false;
+    }, this));
   }
 
   componentDidMount () {
     client.userPreferencesRead(null, _.bind(function (data) {
-      this.setState({
-        'notif:channels:email': data.preferences['notif:channels:email'],
-        'notif:usermessage': data.preferences['notif:usermessage'],
-        'notif:invite': data.preferences['notif:invite'],
-        'notif:channels:mobile': data.preferences['notif:channels:mobile'],
-        loaded: true
-      });
+      var read = {loaded: true};
+      _.each(items, _.bind(function (i) {
+        read[i.field] = data.preferences[i.field];
+      }, this));
+      this.setState(read);
     }, this));
   }
 
@@ -45,59 +53,39 @@ class UserPreferencesView extends Component {
       return this.renderLoadingView();
     }
 
-    var SwitchComponent;
-    if (Platform.OS === 'android') {
-      SwitchComponent = SwitchAndroid;
-    } else {
-      SwitchComponent = SwitchIOS;
-    }
     return (
       <View style={styles.container}>
         <View>
           <Text style={styles.title}>Set preferences</Text>
           {this.state.errors.map((m) => <Text>{m}</Text>)}
           <Text style={styles.label}>Notify me:</Text>
-          <View style={styles.row}>
-            <View style={styles.rightContainer}>
-              <SwitchComponent
-                style={styles.switch}
-                onValueChange={this._changePreferences.bind(this, 'notif:channels:email')}
-                value={this.state['notif:channels:email']}
-                />
-            </View>
-            <Text>on email (only if you are offline)</Text>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.rightContainer}>
-              <SwitchComponent
-                style={styles.switch}
-                onValueChange={this._changePreferences.bind(this, 'notif:channels:mobile')}
-                value={this.state['notif:channels:mobile']}
-                />
-            </View>
-            <Text>on mobile</Text>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.rightContainer}>
-              <SwitchComponent
-                style={styles.switch}
-                onValueChange={this._changePreferences.bind(this, 'notif:usermessage')}
-                value={this.state['notif:usermessage']}
-                />
-            </View>
-            <Text>when a user sends me a private message</Text>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.rightContainer}>
-              <SwitchComponent
-                style={styles.switch}
-                onValueChange={this._changePreferences.bind(this, 'notif:invite')}
-                value={this.state['notif:invite']}
-                />
-            </View>
-            <Text>when a user invites me</Text>
-          </View>
+          <ListView
+              dataSource={this.state.dataSource.cloneWithRows(items)}
+              renderRow={this.renderElement.bind(this)}
+            />
         </View>
+      </View>
+    )
+  }
+
+  renderElement (item) {
+    var SwitchComponent;
+    if (Platform.OS === 'android') {
+      SwitchComponent = SwitchAndroid;
+    } else {
+      SwitchComponent = SwitchIOS;
+    }
+
+    return (
+      <View style={styles.row}>
+        <View style={styles.rightContainer}>
+          <SwitchComponent
+            style={styles.switch}
+            onValueChange={this._changePreferences.bind(this, item.field)}
+            value={this.state[item.field]}
+            />
+        </View>
+        <Text>{item.description}</Text>
       </View>
     )
   }
