@@ -48,6 +48,13 @@ function getRoute (url, options) {
   if (url === 'change-email') {
     route.title = 'Change Email';
     route.component = require('../views/ChangeEmailView');
+    route.back = 'pop';
+    return route;
+  }
+  if (url === 'change-password') {
+    route.title = 'Change Password';
+    route.component = require('../views/ChangePasswordView');
+    route.back = 'pop';
     return route;
   }
   if (url === 'search') {

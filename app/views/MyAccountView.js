@@ -47,9 +47,9 @@ class ForgotView extends Component {
     app.trigger('navigateTo', 'change-email');
   }
   _onChangePassword () {
-
+    app.trigger('navigateTo', 'change-password');
   }
-  _onAddEmail () {
+  _onManageEmails () {
 
   }
   _onEditProfile () {
@@ -67,7 +67,7 @@ var items = [
   {title: 'Edit profile', fc: '_onEditProfile'},
   {title: 'Change Email', fc: '_onChangeEmail'},
   {title: 'Change password', fc: '_onChangePassword'},
-  {title: 'Add email', fc: '_onAddEmail'},
+  {title: 'Manage emails', fc: '_onManageEmails'},
   {title: 'Change preferences', fc: '_onChangePreferences'},
   {title: 'Logout', fc: '_onLogout'}
 ];
