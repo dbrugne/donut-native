@@ -1,5 +1,6 @@
 var React = require('react-native');
 var _ = require('underscore');
+var Platform = require('Platform');
 
 var {
   Component,
@@ -59,7 +60,7 @@ class ForgotView extends Component {
   }
 
   _appendError (string) {
-    if (ToastAndroid) {
+    if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
       this.setState({errors: this.state.messages.concat(string)});

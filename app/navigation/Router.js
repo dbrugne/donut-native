@@ -75,6 +75,12 @@ function getRoute (url, options) {
     route.back = 'pop';
     return route;
   }
+  if (url === 'manage-emails') {
+    route.title = 'Manage emails';
+    route.component = require('../views/ManageEmailsView');
+    route.back = 'pop';
+    return route;
+  }
   if (url === 'search') {
     route.title = 'Search';
     route.component = require('../views/Search');
