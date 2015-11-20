@@ -25,5 +25,8 @@ module.exports = Client({
 //    console.log(arguments);
   },
   retrieveToken: getTokenFromSession,
-  invalidToken: getTokenFromSession
+  invalidToken: getTokenFromSession,
+  sio: {
+    transports: ['websocket']
+  }
 });
