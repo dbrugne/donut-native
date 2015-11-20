@@ -69,6 +69,12 @@ function getRoute (url, options) {
     route.back = 'pop';
     return route;
   }
+  if (url === 'edit-profile') {
+    route.title = 'Edit profile';
+    route.component = require('../views/EditProfileView');
+    route.back = 'pop';
+    return route;
+  }
   if (url === 'search') {
     route.title = 'Search';
     route.component = require('../views/Search');
