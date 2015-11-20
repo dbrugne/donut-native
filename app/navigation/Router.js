@@ -63,6 +63,12 @@ function getRoute (url, options) {
     route.back = 'pop';
     return route;
   }
+  if (url === 'edit-information') {
+    route.title = 'Edit information';
+    route.component = require('../views/EditInformationView');
+    route.back = 'pop';
+    return route;
+  }
   if (url === 'search') {
     route.title = 'Search';
     route.component = require('../views/Search');
