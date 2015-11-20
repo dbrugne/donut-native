@@ -13,7 +13,7 @@ var {
 
 var currentUser = require('../models/current-user');
 
-class ForgotView extends Component {
+class ChangeEmailView extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -112,4 +112,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = ForgotView;
+module.exports = ChangeEmailView;

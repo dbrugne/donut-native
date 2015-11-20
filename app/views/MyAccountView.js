@@ -56,7 +56,7 @@ class ForgotView extends Component {
 
   }
   _onChangePreferences () {
-
+    app.trigger('navigateTo', 'user-preferences');
   }
   _onLogout () {
     currentUser.logout();
