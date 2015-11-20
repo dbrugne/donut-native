@@ -15,8 +15,9 @@ var _ = require('underscore');
 var client = require('../libs/client');
 var common = require('@dbrugne/donut-common/mobile');
 
-// @todo close button that pop the view
-// @todo unmount component when navigating (event from drawer)
+var navigation = require('../libs/navigation');
+
+// @todo unmount component when navigating (even from drawer)
 // @todo on unmouting stop current loading and pending callbacks
 
 class UserProfileView extends Component {
@@ -28,8 +29,8 @@ class UserProfileView extends Component {
       error: null
     };
 
-    this.id = props.currentRoute.id;
-    this.type = props.currentRoute.type;
+    this.type = props.element.type;
+    this.id = props.element.id;
   }
   componentDidMount () {
     if (this.id) {
@@ -58,7 +59,7 @@ class UserProfileView extends Component {
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>
             <Text>Chargement du profil de{"\n"}</Text>
-            <Text>{this.props.currentRoute.title}</Text>
+            <Text>{this.props.element.identifier}</Text>
           </Text>
           <ActivityIndicatorIOS
             animating={this.state.loading}
@@ -79,7 +80,10 @@ class UserProfileView extends Component {
       <View style={styles.container}>
         <Image style={styles.avatar} source={{uri: avatarUrl}} />
         <Text style={styles.identifier}>{data.identifier}</Text>
-        <TouchableHighlight style={styles.owner} onPress={() => console.log('touch')}>
+        <TouchableHighlight style={styles.owner} onPress={() => {
+          //this.props.childNavigator.push(router.getRoute(url, {identifier: room.identifier}));
+          this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username}));
+        }}>
           <Text>
             <Text>by </Text>
             <Text style={styles.ownerUsername}>@{data.owner_username}</Text>

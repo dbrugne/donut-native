@@ -17,7 +17,6 @@ var InvertibleScrollView = require('react-native-invertible-scroll-view');
 
 var _ = require('underscore');
 var app = require('../libs/app');
-var router = require('../navigation/Router');
 var client = require('../libs/client');
 var events = require('../libs/events');
 
@@ -88,14 +87,14 @@ class DiscussionEventsView extends Component {
     // rowID is a string
     var isLast = (parseInt(rowID) === (this.eventsBlob.length - 1));
     console.log(this.props.childNavigator.xurl);
-
-    return events.render(event, previous, isLast, (username, user_id) => {
-      var url = 'user/profile/' + user_id;
-      var route = router.getRoute(url, {username});
-      console.log('route', url, 'on', this.props.childNavigator.xurl)
-      // @todo : if a profile is already open .replace()
-      this.props.childNavigator.push(route);
-    });
+    return events.render(event, previous, isLast, _.noop);
+//    return events.render(event, previous, isLast, (username, user_id) => {
+//      var url = 'user/profile/' + user_id;
+//      var route = router.getRoute(url, {username});
+//      console.log('route', url, 'on', this.props.childNavigator.xurl)
+//      // @todo : if a profile is already open .replace()
+//      this.props.childNavigator.push(route);
+//    });
   }
   renderHeader () {
     if (!this.state.more) {

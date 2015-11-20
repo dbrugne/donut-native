@@ -3,18 +3,10 @@
 var React = require('react-native');
 
 var {
-  AppRegistry,
-  StyleSheet,
-  View,
-  Text,
-  Navigator,
-  TouchableHighlight,
-  Component,
+  Component
 } = React;
 
 var client = require('../libs/client');
-var currentUser = require('../models/current-user');
-var Navigation = require('./Navigation');
 
 class Index extends Component {
   constructor (props) {
@@ -23,31 +15,18 @@ class Index extends Component {
     };
     this.client = client;
   }
-
   componentDidMount () {
     this.client.connect();
   }
-
   componentWillUnmount () {
     this.client.disconnect();
   }
-
   render () {
-
-    // @todo : mount navigation + drawer
-
+    var RootNavigator = require('../libs/navigation').RootNavigator;
     return (
-      <View style={styles.main}>
-        <Navigation />
-      </View>
+      <RootNavigator />
     );
   }
 }
-
-var styles = StyleSheet.create({
-  main: {
-    flex: 1
-  }
-});
 
 module.exports = Index;

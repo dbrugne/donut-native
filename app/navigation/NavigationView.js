@@ -15,9 +15,9 @@ var {
 } = require('react-native-icons');
 
 var app = require('../libs/app');
-var CurrentUserView = require('../views/CurrentUserView');
-var NavigationOnesView = require('./NavigationOnesView');
-var NavigationRoomsView = require('./NavigationRoomsView');
+var CurrentUserView = require('../components/CurrentUser');
+var NavigationOnesView = require('./../components/NavigationOnes');
+var NavigationRoomsView = require('./../components/NavigationRooms');
 
 class NavigationView extends Component {
   constructor (props) {

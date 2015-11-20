@@ -10,8 +10,8 @@ var {
 } = React;
 
 var _ = require('underscore');
-var EventsView = require('./DiscussionEventsView');
-var InputView = require('./DiscussionInputView');
+var EventsView = require('../components/DiscussionEvents');
+var InputView = require('../components/DiscussionInput');
 var animation = require('../libs/animations').keyboard;
 
 class DiscussionView extends Component {

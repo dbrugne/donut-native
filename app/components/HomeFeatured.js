@@ -9,14 +9,13 @@ var {
   Text,
   View,
   Component,
-  ScrollView,
   ActivityIndicatorIOS
 } = React;
 
 var common = require('@dbrugne/donut-common/mobile');
 var client = require('./../libs/client');
 
-var router = require('../navigation/Router');
+var navigation = require('../libs/navigation');
 
 class HomeView extends Component {
   constructor (props) {
@@ -56,19 +55,20 @@ class HomeView extends Component {
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={this.renderElement.bind(this)}
+        renderRow={this.renderRow.bind(this)}
         style={styles.listView}
         scrollEnabled={false}
       />
     );
   }
 
-  renderElement(room) {
+  renderRow(room) {
     var url = 'room/profile/' + room.room_id;
     var avatarUrl = common.cloudinary.prepare(room.avatar, 30)
     return (
       <TouchableHighlight onPress={() => {
-        this.props.childNavigator.push(router.getRoute(url, {identifier: room.identifier}));
+        //this.props.childNavigator.push(router.getRoute(url, {identifier: room.identifier}));
+        this.props.navigator.push(navigation.getProfile({type: 'room', id: room.room_id, identifier: room.identifier}));
       }} >
         <View style={styles.container}>
           <Image

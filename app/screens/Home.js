@@ -2,18 +2,14 @@
 
 var React = require('react-native');
 var {
-  Image,
-  ListView,
-  TouchableHighlight,
-  Text,
-  View,
   Component,
-  ScrollView
+  Text,
+  View
 } = React;
 
-var HomeFeaturedView = require('./HomeFeaturedView');
+var HomeFeatured = require('../components/HomeFeatured');
 
-class HomeView extends Component {
+class Home extends Component {
   constructor (props) {
     super(props);
   }
@@ -21,7 +17,7 @@ class HomeView extends Component {
     return (
       <View style={{flex: 1}}>
         <Text>Bienvenue</Text>
-        <HomeFeaturedView {...this.props} />
+        <HomeFeatured {...this.props} />
       </View>
     );
   }
@@ -30,4 +26,4 @@ class HomeView extends Component {
 //  }
 }
 
-module.exports = HomeView;
+module.exports = Home;

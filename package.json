@@ -6,7 +6,8 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
-    "@dbrugne/donut-common": "^1.1.8",
+    "@dbrugne/donut-common": "latest",
+    "@exponent/react-native-navigator": "^0.3.0",
     "backbone": "^1.2.3",
     "i18next-client": "^1.11.0",
     "react-native": "^0.14.2",
