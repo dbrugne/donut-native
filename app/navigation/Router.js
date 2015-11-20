@@ -6,38 +6,32 @@ var rooms = require('../collections/rooms');
 var profilePattern = /^(user|room)\/profile\/(\w+)$/;
 var discussionPattern = /^(onetoone|room)\/(\w+)$/;
 
-// @warning: lasy load route components to avoid cyclic reference
-// http://stackoverflow.com/questions/29807664/cyclic-dependency-returns-empty-object-in-react-native
+var router = module.exports = {};
 
-function getRoute (url, options) {
+// @warning: lazy load route components to avoid cyclic reference
+// http://stackoverflow.com/questions/29807664/cyclic-dependency-returns-empty-object-in-react-native
+router.getRoute = function (url, options) {
   if (!url) {
     return;
   }
 
   var route = {
     url: url,
+    stackRoot: false, // if this route will create a new route stack
     options: options
   };
 
   if (url === 'home') {
     route.title = 'Your space';
     route.index = 0;
+    route.stackRoot = true;
     route.component = require('../views/HomeView'); // lazy load
     return route;
   }
-  if (url === 'test1') {
-    route.title = 'Page de test 1';
-    route.component = require('../views/Test1');
-    return route;
-  }
-  if (url === 'test2') {
-    route.title = 'Page de test 2';
-    route.component = require('../views/Test2');
-    return route;
-  }
-  if (url === 'test3') {
-    route.title = 'Page de test 2';
-    route.component = require('../views/Test2');
+  if (url === 'my-account') {
+    route.title = 'Your account';
+    route.stackRoot = true;
+    route.component = require('../views/MyAccountView');
     return route;
   }
   if (url === 'my-account') {
@@ -100,6 +94,7 @@ function getRoute (url, options) {
 
   match = discussionPattern.exec(url);
   if (match) {
+    route.stackRoot = true;
     route.type = match[1];
     route.id = match[2];
     route.component = require('../views/DiscussionView'); // lazy load
@@ -119,4 +114,9 @@ function getRoute (url, options) {
   }
 };
 
-module.exports = getRoute;
+router.getStackRoute = function (initialRoute) {
+  return {
+    id: 'stack/' + initialRoute.url,
+    initialRoute
+  };
+};

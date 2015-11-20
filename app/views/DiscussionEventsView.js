@@ -17,12 +17,11 @@ var InvertibleScrollView = require('react-native-invertible-scroll-view');
 
 var _ = require('underscore');
 var app = require('../libs/app');
+var router = require('../navigation/Router');
 var client = require('../libs/client');
 var events = require('../libs/events');
-var InputView = require('./DiscussionInputView');
-var EventsView = require('./DiscussionEventsView');
 
-class RoomView extends Component {
+class DiscussionEventsView extends Component {
   constructor (props) {
     super(props);
 
@@ -88,8 +87,15 @@ class RoomView extends Component {
 
     // rowID is a string
     var isLast = (parseInt(rowID) === (this.eventsBlob.length - 1));
+    console.log(this.props.childNavigator.xurl);
 
-    return events.render(event, previous, isLast);
+    return events.render(event, previous, isLast, (username, user_id) => {
+      var url = 'user/profile/' + user_id;
+      var route = router.getRoute(url, {username});
+      console.log('route', url, 'on', this.props.childNavigator.xurl)
+      // @todo : if a profile is already open .replace()
+      this.props.childNavigator.push(route);
+    });
   }
   renderHeader () {
     if (!this.state.more) {
@@ -136,7 +142,7 @@ class RoomView extends Component {
     this.setState({
       loading: true
     });
-    this.model.history(null, end, 25, (response) => {
+    this.model.history(null, end, 40, (response) => {
       if (!response.history || !response.history.length) {
         return;
       }
@@ -215,4 +221,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = RoomView;
+module.exports = DiscussionEventsView;

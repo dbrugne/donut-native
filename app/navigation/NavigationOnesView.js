@@ -69,7 +69,7 @@ class NavigationOnesView extends Component {
     var avatarUrl = common.cloudinary.prepare(e.avatar, 30);
     return (
       <TouchableHighlight
-        onPress={() => app.trigger('navigateTo', 'onetoone/' + e.user_id)}
+        onPress={() => app.trigger('switchToNavigationStack', 'onetoone/' + e.user_id)}
         underlayColor='#888888'
         >
         <View style={styles.item}>

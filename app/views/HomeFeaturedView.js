@@ -9,13 +9,14 @@ var {
   Text,
   View,
   Component,
-  ScrollView
+  ScrollView,
+  ActivityIndicatorIOS
 } = React;
 
 var common = require('@dbrugne/donut-common/mobile');
-var app = require('../libs/app');
 var client = require('./../libs/client');
-var currentUser = require('../models/current-user');
+
+var router = require('../navigation/Router');
 
 class HomeView extends Component {
   constructor (props) {
@@ -40,31 +41,25 @@ class HomeView extends Component {
   componentWillUnmount () {
     client.off('welcome');
   }
-//  fetchData() {
-//    var that = this;
-//    client.home(function (response) {
-//      if (response.err) {
-//        console.error(response.err);
-//      }
-//
-//      that.setState({
-//        dataSource: that.state.dataSource.cloneWithRows(response.rooms.list),
-//        loaded: true
-//      });
-//    });
-//  }
   render() {
     if (!this.state.loaded) {
-      return (<View></View>);
+      return (
+        <ActivityIndicatorIOS
+          animating={true}
+          style={{height: 80}}
+          size='small'
+          color='#666666'
+        />
+      );
     }
 
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={this.renderElement}
+        renderRow={this.renderElement.bind(this)}
         style={styles.listView}
         scrollEnabled={false}
-        />
+      />
     );
   }
 
@@ -72,7 +67,9 @@ class HomeView extends Component {
     var url = 'room/profile/' + room.room_id;
     var avatarUrl = common.cloudinary.prepare(room.avatar, 30)
     return (
-      <TouchableHighlight onPress={() => app.trigger('navigateTo', url, {identifier: room.identifier})}>
+      <TouchableHighlight onPress={() => {
+        this.props.childNavigator.push(router.getRoute(url, {identifier: room.identifier}));
+      }} >
         <View style={styles.container}>
           <Image
             source={{uri: avatarUrl}}
@@ -80,7 +77,6 @@ class HomeView extends Component {
             />
           <View style={styles.rightContainer}>
             <Text style={styles.title}>{room.identifier}</Text>
-            <Text style={styles.owner}>by {room.owner_username}</Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -96,23 +92,22 @@ var styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
-    marginVertical: 10
+    margin: 10
   },
   thumbnail: {
     width: 30,
-    height: 30
+    height: 30,
+    marginRight: 10
   },
   rightContainer: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   title: {
-    fontSize: 20,
-    marginBottom: 8,
-  },
-  owner: {
-  },
+    fontFamily: 'Open Sans',
+    fontSize: 16,
+    fontWeight: 'bold'
+  }
 });
 
 module.exports = HomeView;

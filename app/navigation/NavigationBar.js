@@ -20,7 +20,10 @@ var routeMapper = {
 //    console.log('PASS IN MAPPER!!', route.title);
     if (route.back === 'pop') {
       return (
-        <TouchableOpacity style={styles.backContainer} onPress={() => navigator.pop()}>
+        <TouchableOpacity style={styles.backContainer} onPress={() => {
+          navigator.pop();
+//          require('underscore').defer(() => console.log(require('underscore').map(navigator.getCurrentRoutes(), (r) => r.title)))
+        }}>
           <Icon
             name='fontawesome|angle-left'
             size={25}

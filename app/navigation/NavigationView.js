@@ -28,7 +28,7 @@ class NavigationView extends Component {
     return (
       <ScrollView style={styles.main}>
         <CurrentUserView />
-        <TouchableHighlight style={styles.homeBlock} onPress={() => app.trigger('navigateTo', 'home')}>
+        <TouchableHighlight style={styles.homeBlock} onPress={() => app.trigger('switchToNavigationStack', 'home')}>
           <View style={styles.homeContainer}>
             <Icon
               name='fontawesome|home'

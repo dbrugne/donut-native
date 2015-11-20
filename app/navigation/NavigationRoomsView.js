@@ -78,7 +78,7 @@ class NavigationRoomsView extends Component {
 
     return (
       <TouchableHighlight
-        onPress={() => app.trigger('navigateTo', 'room/' + model.get('id'))}
+        onPress={() => app.trigger('switchToNavigationStack', 'room/' + model.get('id'))}
         underlayColor='#888888'
         >
         <View style={styles.item}>

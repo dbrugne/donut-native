@@ -33,7 +33,7 @@ class DiscussionView extends Component {
       LayoutAnimation.configureNext(animation);
       this.setState({keyboardSpace: 0});
     }));
-    this.subscription.push(this.props.navigator.navigationContext.addListener('didfocus', (event) => {
+    this.subscription.push(this.props.parentNavigator.navigationContext.addListener('didfocus', (event) => {
       var route = event.data.route;
       if (route.id !== this.props.currentRoute.id) {
         return;
@@ -51,7 +51,7 @@ class DiscussionView extends Component {
   render() {
     return (
       <View style={styles.main}>
-        <EventsView ref='events' title={this.props.currentRoute.title} model={this.model} />
+        <EventsView ref='events' title={this.props.currentRoute.title} model={this.model} {...this.props} />
         <InputView ref='input' model={this.model} />
         <View style={{height: this.state.keyboardSpace}}></View>
       </View>

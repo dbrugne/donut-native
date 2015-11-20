@@ -95,7 +95,9 @@ var templates = {
   }
 };
 
-exports.render = function (event, previous, isLast) {
+var usernameCallback = null;
+exports.render = function (event, previous, isLast, openUserProfile) {
+  usernameCallback = openUserProfile;
   var ready = this._data(event.type, event.data);
   var data = ready.data;
 
@@ -251,9 +253,8 @@ exports._data = function (type, data) {
 };
 
 function renderClickableUsername (username, user_id) {
-  var url = 'user/profile/' + user_id;
   return (
-    <TouchableHighlight onPress={() => app.trigger('navigateTo', url, {username: username})}>
+    <TouchableHighlight onPress={() => usernameCallback(username, user_id)}>
       <Text style={styles.username}>@{username}</Text>
     </TouchableHighlight>
   );
