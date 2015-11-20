@@ -1,6 +1,7 @@
 var React = require('react-native');
 var _ = require('underscore');
 var client = require('../libs/client');
+var Platform = require('Platform');
 
 var {
   Component,
@@ -103,7 +104,7 @@ class ChangePasswordView extends Component {
   }
 
   _appendError (string) {
-    if (ToastAndroid) {
+    if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
       this.setState({errors: this.state.messages.concat(string)});

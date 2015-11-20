@@ -11,6 +11,7 @@ var _ = require('underscore');
 var React = require('react-native');
 var SignupView = require('../views/SignupView');
 var ForgotView = require('../views/ForgotView');
+var Platform = require('Platform');
 
 var {
   Component,
@@ -135,7 +136,7 @@ class LoginView extends Component {
   }
 
   _appendError (string) {
-    if (ToastAndroid) {
+    if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
       this.setState({errors: this.state.messages.concat(string)});
