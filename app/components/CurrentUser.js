@@ -13,6 +13,7 @@ var {
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
+var navigation = require('../libs/navigation');
 
 class CurrentUserView extends Component {
   constructor (props) {
@@ -40,7 +41,7 @@ class CurrentUserView extends Component {
             <Text style={[styles.text, styles.username]}>{username}</Text>
             <Text style={[styles.text, styles.status]}>({user.status})</Text>
           </View>
-          <TouchableHighlight style={styles.myAccount} onPress={() => app.trigger('switchToNavigationStack', 'my-account')}>
+          <TouchableHighlight style={styles.myAccount} onPress={() => navigation.switchTo(navigation.getMyAccount())}>
             <Text style={styles.text}>My account</Text>
           </TouchableHighlight>
         </View>

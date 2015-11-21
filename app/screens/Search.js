@@ -16,6 +16,7 @@ var _ = require('underscore');
 var app = require('../libs/app');
 var client = require('../libs/client');
 var common = require('@dbrugne/donut-common/mobile');
+var navigation = require('../libs/navigation');
 
 class SearchView extends Component {
   constructor (props) {
@@ -36,7 +37,10 @@ class SearchView extends Component {
   }
 
   render () {
-    var more = this.state.more ? this._renderLoadMore() : null;
+    var more = this.state.more
+      ? this._renderLoadMore()
+      : null;
+
     return (
       <View style={styles.main}>
         <View onResponderTerminate={this.renderElement.bind(this)}>
@@ -79,10 +83,9 @@ class SearchView extends Component {
   }
 
   renderRoomsElement (room) {
-    var url = 'room/profile/' + room.room_id;
     var avatarUrl = common.cloudinary.prepare(room.avatar, 30)
     return (
-      <TouchableHighlight onPress={() => app.trigger('navigateTo', url, {identifier: room.identifier})}>
+      <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getProfile(room))}>
         <View>
           <Image
             source={{uri: avatarUrl}}
@@ -172,7 +175,6 @@ class SearchView extends Component {
 var styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   buttonContainer: {
     flexDirection: 'row',

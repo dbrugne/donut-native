@@ -21,9 +21,6 @@ class Home extends Component {
       </View>
     );
   }
-//  componentDidMount() {
-//    require('../libs/client').on('welcome', (data) => require('../libs/app').trigger('switchToNavigationStack', 'room/557ed3a4bcb50bc52b74744b'));
-//  }
 }
 
 module.exports = Home;

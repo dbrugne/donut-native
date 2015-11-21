@@ -14,36 +14,38 @@ var EventsView = require('../components/DiscussionEvents');
 var InputView = require('../components/DiscussionInput');
 var animation = require('../libs/animations').keyboard;
 
-class DiscussionView extends Component {
+class Discussion extends Component {
   constructor (props) {
     super(props);
     this.state = {
       keyboardSpace: 0
     };
 
-    this.model = props.currentRoute.model;
-    this.subscription = [];
+    this.model = props.model;
   }
   componentDidMount () {
-    this.subscription.push(DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
-      LayoutAnimation.configureNext(animation);
-      this.setState({keyboardSpace: frames.endCoordinates.height});
-    }));
-    this.subscription.push(DeviceEventEmitter.addListener('keyboardWillHide', () => {
-      LayoutAnimation.configureNext(animation);
-      this.setState({keyboardSpace: 0});
-    }));
-    this.subscription.push(this.props.parentNavigator.navigationContext.addListener('didfocus', (event) => {
-      var route = event.data.route;
-      if (route.id !== this.props.currentRoute.id) {
-        return;
-      }
-//      console.log('i was focused', this.props.currentRoute.title);
-      if (!this.refs.events.onFocus) {
-        return console.log('FOUND ERRROR onFocus', this.props.currentRoute.title);
-      }
-      this.refs.events.onFocus();
-    }));
+    this.subscription = [
+      DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
+        LayoutAnimation.configureNext(animation);
+        this.setState({keyboardSpace: frames.endCoordinates.height});
+      }),
+      DeviceEventEmitter.addListener('keyboardWillHide', () => {
+        LayoutAnimation.configureNext(animation);
+        this.setState({keyboardSpace: 0});
+      })
+    ];
+
+    // @todo : history load
+//    this.subscription.push(this.props.parentNavigator.navigationContext.addListener('didfocus', (event) => {
+//      var route = event.data.route;
+//      if (route.id !== this.model.get('id')) {
+//        return;
+//      }
+//      if (!this.refs.events.onFocus) {
+//        return console.log('FOUND ERRROR onFocus', this.model.get('id'));
+//      }
+//      this.refs.events.onFocus();
+//    }));
   }
   componentWillUnmount () {
     _.each(this.subscription, (s) => s.remove());
@@ -51,7 +53,7 @@ class DiscussionView extends Component {
   render() {
     return (
       <View style={styles.main}>
-        <EventsView ref='events' title={this.props.currentRoute.title} model={this.model} {...this.props} />
+        <EventsView ref='events' title={this.model.get('identifier')} model={this.model} {...this.props} />
         <InputView ref='input' model={this.model} />
         <View style={{height: this.state.keyboardSpace}}></View>
       </View>
@@ -71,4 +73,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = DiscussionView;
+module.exports = Discussion;

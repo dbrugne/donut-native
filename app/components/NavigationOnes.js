@@ -15,6 +15,7 @@ var {
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
 var onetoones = require('../collections/onetoones');
+var navigation = require('../libs/navigation');
 
 class NavigationOnesView extends Component {
   constructor (props) {
@@ -69,7 +70,7 @@ class NavigationOnesView extends Component {
     var avatarUrl = common.cloudinary.prepare(e.avatar, 30);
     return (
       <TouchableHighlight
-        onPress={() => app.trigger('switchToNavigationStack', 'onetoone/' + e.user_id)}
+        onPress={() => navigation.switchTo(navigation.getDiscussion(model.get('id'), model))}
         underlayColor='#888888'
         >
         <View style={styles.item}>

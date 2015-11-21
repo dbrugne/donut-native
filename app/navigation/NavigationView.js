@@ -18,6 +18,7 @@ var app = require('../libs/app');
 var CurrentUserView = require('../components/CurrentUser');
 var NavigationOnesView = require('./../components/NavigationOnes');
 var NavigationRoomsView = require('./../components/NavigationRooms');
+var navigation = require('../libs/navigation');
 
 class NavigationView extends Component {
   constructor (props) {
@@ -28,17 +29,30 @@ class NavigationView extends Component {
     return (
       <ScrollView style={styles.main}>
         <CurrentUserView />
-        <TouchableHighlight style={styles.homeBlock} onPress={() => app.trigger('switchToNavigationStack', 'home')}>
-          <View style={styles.homeContainer}>
-            <Icon
-              name='fontawesome|home'
-              size={20}
-              color='#FFFFFF'
-              style={styles.icon}
-              />
-            <Text style={styles.title}>Découvrir</Text>
-          </View>
-        </TouchableHighlight>
+        <View style={{marginVertical: 9}}>
+          <TouchableHighlight style={styles.linkBlock} onPress={() => navigation.switchTo(navigation.getHome())}>
+            <View style={styles.linkContainer}>
+              <Icon
+                name='fontawesome|home'
+                size={20}
+                color='#FFFFFF'
+                style={styles.icon}
+                />
+              <Text style={styles.title}>Découvrir</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.linkBlock} onPress={() => navigation.switchTo(navigation.getSearch())}>
+            <View style={styles.linkContainer}>
+              <Icon
+                name='fontawesome|search'
+                size={20}
+                color='#FFFFFF'
+                style={styles.icon}
+                />
+              <Text style={styles.title}>Chercher</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
         <NavigationOnesView />
         <NavigationRoomsView />
       </ScrollView>
@@ -52,13 +66,12 @@ var styles = StyleSheet.create({
     flexWrap: 'nowrap',
     backgroundColor: '#585858'
   },
-  homeBlock: {
-    marginVertical: 9
+  linkBlock: {
   },
-  homeContainer: {
+  linkContainer: {
     paddingLeft: 10,
     flexDirection: 'row',
-    marginVertical: 9
+    marginVertical: 4
   },
   title: {
     fontFamily: 'Open Sans',

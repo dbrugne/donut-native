@@ -10,9 +10,10 @@ var {
   View,
   StyleSheet,
   TouchableHighlight
-  } = React;
+} = React;
 
 var app = require('../libs/app');
+var navigation = require('../libs/navigation');
 
 class ForgotView extends Component {
   constructor (props) {
@@ -44,22 +45,22 @@ class ForgotView extends Component {
   }
 
   _onChangeEmail () {
-    app.trigger('navigateTo', 'change-email');
+    this.props.navigator.push(navigation.getMyAccountEmail());
   }
   _onChangePassword () {
-    app.trigger('navigateTo', 'change-password');
+    this.props.navigator.push(navigation.getMyAccountPassword());
   }
   _onManageEmails () {
-    app.trigger('navigateTo', 'manage-emails');
+    this.props.navigator.push(navigation.getMyAccountEmails());
   }
   _onEditProfile () {
-    app.trigger('navigateTo', 'edit-profile');
+    this.props.navigator.push(navigation.getMyAccountProfile());
   }
   _onEditInformation () {
-    app.trigger('navigateTo', 'edit-information');
+    this.props.navigator.push(navigation.getMyAccountInformation());
   }
   _onChangePreferences () {
-    app.trigger('navigateTo', 'user-preferences');
+    this.props.navigator.push(navigation.getMyAccountPreferences());
   }
   _onLogout () {
     currentUser.logout();

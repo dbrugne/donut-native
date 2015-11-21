@@ -137,7 +137,25 @@ routes.getHome = function () {
       return require('../screens/Home');
     },
     getTitle: function () {
-      return this.id;
+      return 'Découvrir';
+    },
+    configureScene: function () {
+      return ExNavigator.SceneConfigs.FloatFromRight;
+    },
+    renderLeftButton: function (navigator) {
+      return (<LeftNavigation navigator={navigator} />);
+    }
+  });
+};
+
+routes.getSearch = function () {
+  return getRoute({
+    id: 'search',
+    getSceneClass: function () {
+      return require('../screens/Search');
+    },
+    getTitle: function () {
+      return 'Chercher';
     },
     configureScene: function () {
       return ExNavigator.SceneConfigs.FloatFromRight;
@@ -165,7 +183,7 @@ routes.getMyAccount = function () {
   return getRoute({
     id: 'my-account',
     getSceneClass: function () {
-      return require('../views/MyAccountView');
+      return require('../screens/MyAccount');
     },
     getTitle: function () {
       return 'My Account';
@@ -175,16 +193,82 @@ routes.getMyAccount = function () {
     }
   });
 };
+routes.getMyAccountEmail = function () {
+  return getRoute({
+    id: 'my-account-email',
+    getSceneClass: function () {
+      return require('../views/MyAccountEmail');
+    },
+    getTitle: function () {
+      return 'My Email';
+    }
+  });
+};
+routes.getMyAccountEmails = function () {
+  return getRoute({
+    id: 'my-account-emails',
+    getSceneClass: function () {
+      return require('../views/MyAccountEmails');
+    },
+    getTitle: function () {
+      return 'My Emails';
+    }
+  });
+};
+routes.getMyAccountPassword = function () {
+  return getRoute({
+    id: 'my-account-password',
+    getSceneClass: function () {
+      return require('../views/MyAccountPassword');
+    },
+    getTitle: function () {
+      return 'My Password';
+    }
+  });
+};
+routes.getMyAccountProfile = function () {
+  return getRoute({
+    id: 'my-account-profile',
+    getSceneClass: function () {
+      return require('../views/MyAccountProfile');
+    },
+    getTitle: function () {
+      return 'My Profile';
+    }
+  });
+};
+routes.getMyAccountInformation = function () {
+  return getRoute({
+    id: 'my-account-informations',
+    getSceneClass: function () {
+      return require('../views/MyAccountInformation');
+    },
+    getTitle: function () {
+      return 'My Informations';
+    }
+  });
+};
+routes.getMyAccountPreferences = function () {
+  return getRoute({
+    id: 'my-account-preferences',
+    getSceneClass: function () {
+      return require('../views/MyAccountPreferences');
+    },
+    getTitle: function () {
+      return 'My Preferences';
+    }
+  });
+};
 
-routes.getDiscussion = function (id) {
+routes.getDiscussion = function (id, model) {
   return getRoute({
     id: 'discussion-' + id,
     renderScene: function (navigator) {
-      let DiscussionScene = require('../screens/Discussion');
-      return <DiscussionScene navigator={navigator} id={this.id} />;
+      let Discussion = require('../screens/Discussion');
+      return <Discussion navigator={navigator} model={model} />;
     },
     getTitle: function () {
-      return this.id;
+      return model.get('identifier');
     },
     renderLeftButton: function (navigator) {
       return (<LeftNavigation navigator={navigator} />);

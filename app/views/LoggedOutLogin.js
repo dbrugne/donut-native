@@ -1,5 +1,16 @@
+'use strict';
+
+/**
+ * https://medium.com/@ntoscano/react-native-persistent-user-login-6a48ff380ab8#.ojepkj31k
+ * http://wiredify.com/shohey1226/logs/React-Native---Router-for-Login-status-using-Navigator
+ * https://github.com/ntoscano/ReactNativePersistentUserLogin/blob/master/persistentUserLogin.js
+ * https://blog.nraboy.com/2015/09/using-navigator-routes-in-your-react-native-application/
+ */
+
 var _ = require('underscore');
 var React = require('react-native');
+var SignupView = require('./LoggedOutSignup');
+var ForgotView = require('./LoggedOutForgot');
 var Platform = require('Platform');
 
 var {
@@ -9,22 +20,46 @@ var {
   TextInput,
   TouchableHighlight,
   View,
+  Navigator,
+  AsyncStorage,
+  BackAndroid,
   ToastAndroid
-  } = React;
+} = React;
 
 var currentUser = require('../models/current-user');
 
-class SignupView extends Component {
+class LoginView extends Component {
   constructor (props) {
     super(props);
     this.state = {
       email: '',
       password: '',
       hasPassword: false,
-      username: false,
       messages: [],
       errors: []
     };
+  }
+
+  componentDidMount () {
+    this.setState({
+      email: currentUser.getEmail()
+    });
+    if (BackAndroid) {
+      BackAndroid.addEventListener('hardwareBackPress', _.bind(function () {
+        var routes = this.props.navigator.getCurrentRoutes();
+        if (routes && routes.length > 1) {
+          // @todo yfuks: pourquoi pas juste this.props.navigator.pop() ?
+          this.props.navigator.popToTop().bind(this);
+        }
+      }, this));
+    }
+  }
+
+  componentWillUnmount () {
+    if (BackAndroid) {
+      BackAndroid.removeEventListener('hardwareBackPress', _.bind(function () {
+      }, this));
+    }
   }
 
   render () {
@@ -32,7 +67,7 @@ class SignupView extends Component {
       <View style={styles.container}>
         <View>
           <TouchableHighlight onPress={(this.onFacebookPressed.bind(this))} style={styles.buttonFacebook}>
-            <Text style={styles.buttonText}>SIGN UP WITH FACEBOOK</Text>
+            <Text style={styles.buttonText}>SIGN IN WITH FACEBOOK</Text>
           </TouchableHighlight>
           <Text style={styles.title}>
             OR
@@ -51,26 +86,29 @@ class SignupView extends Component {
               onChange={(event) => this.setState({password: event.nativeEvent.text})}
               style={styles.formInput}
               value={this.state.password} />
-            <TextInput
-              placeholder="Username"
-              onChange={(event) => this.setState({username: event.nativeEvent.text})}
-              style={styles.formInput}
-              value={this.state.username} />
+            <TouchableHighlight onPress={(this.onForgotPressed.bind(this))} style={styles.forgot}>
+              <Text style={styles.link}>FORGOT PASSWORD</Text>
+            </TouchableHighlight>
             <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))} style={styles.button}>
               <Text style={styles.buttonText}>HERE WE GO!</Text>
             </TouchableHighlight>
           </View>
+          <TouchableHighlight onPress={(this.onCreatePressed.bind(this))} style={styles.create}>
+            <Text style={styles.link}>I don't have an account yet. Create one</Text>
+          </TouchableHighlight>
         </View>
       </View>
     );
   }
 
   onSubmitPressed () {
-    if (!this.state.email || !this.state.password || !this.state.username) {
+    if (!this.state.email || !this.state.password) {
       return this._appendError('not-complete');
     }
 
-    currentUser.signUp(this.state.email, this.state.password, this.state.username, _.bind(function (err) {
+    // @todo : loading screen
+    var that = this;
+    currentUser.login(this.state.email, this.state.password, _.bind(function (err) {
       if (err) {
         this._appendError(err);
       }
@@ -78,6 +116,24 @@ class SignupView extends Component {
   }
 
   onFacebookPressed () {
+  }
+
+  onForgotPressed () {
+    this.props.navigator.push({
+      title: 'Forgot',
+      component: ForgotView
+    });
+  }
+
+  onCreatePressed () {
+    this.props.navigator.push({
+      title: 'Create',
+      component: SignupView
+    });
+  }
+
+  _appendMessage (string) {
+    this.setState({messages: this.state.messages.concat(string)});
   }
 
   _appendError (string) {
@@ -88,7 +144,7 @@ class SignupView extends Component {
     }
   }
 
-}
+};
 
 var styles = StyleSheet.create({
   container: {
@@ -97,12 +153,24 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  link: {
+    fontSize: 15,
+    marginTop: 10
+  },
+  forgot: {
+    alignSelf: 'flex-end',
+    marginRight: 28
+  },
+  create: {
+    marginTop: 20,
+    alignSelf: 'center'
+  },
   title: {
     fontSize: 12,
     fontWeight: 'bold',
     color: '#111',
     alignSelf: "center",
-    marginTop: 40
+    marginTop: 20
   },
   formInput: {
     height: 42,
@@ -121,7 +189,7 @@ var styles = StyleSheet.create({
     width: 250,
     backgroundColor: "#fd5286",
     borderRadius: 3,
-    marginTop: 30,
+    marginTop: 20,
     justifyContent: "center",
     alignSelf: "center"
   },
@@ -140,4 +208,4 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = SignupView;
+module.exports = LoginView;

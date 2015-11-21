@@ -7,7 +7,7 @@ var {
 } = React;
 
 var currentUser = require('./models/current-user');
-var Launch = require('./views/Launch');
+var Launch = require('./views/Launching');
 var LoggedOut = require('./navigation/LoggedOut');
 var LoggedIn = require('./navigation/LoggedIn');
 

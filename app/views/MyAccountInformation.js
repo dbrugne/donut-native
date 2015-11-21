@@ -11,7 +11,7 @@ var {
   TextInput,
   TouchableHighlight,
   ToastAndroid
-  } = React;
+} = React;
 
 var currentUser = require('../models/current-user');
 

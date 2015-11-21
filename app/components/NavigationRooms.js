@@ -13,6 +13,7 @@ var {
 
 var app = require('../libs/app');
 var rooms = require('../collections/rooms');
+var navigation = require('../libs/navigation');
 
 class NavigationRoomsView extends Component {
   constructor (props) {
@@ -78,11 +79,11 @@ class NavigationRoomsView extends Component {
 
     return (
       <TouchableHighlight
-        onPress={() => app.trigger('switchToNavigationStack', 'room/' + model.get('id'))}
+        onPress={() => navigation.switchTo(navigation.getDiscussion(model.get('id'), model))}
         underlayColor='#888888'
         >
         <View style={styles.item}>
-          <Text style={styles.itemTitle}>{e.identifier}</Text>
+          <Text style={styles.itemTitle}>{model.get('identifier')}</Text>
           {badge}
         </View>
       </TouchableHighlight>
