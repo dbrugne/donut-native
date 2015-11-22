@@ -8,6 +8,9 @@ var {
 
 var client = require('../libs/client');
 
+// @todo : if application is backgrounded for > 5 mn disconnect
+// @todo : when disconnected block very views/navigation
+
 class Index extends Component {
   constructor (props) {
     super(props);
