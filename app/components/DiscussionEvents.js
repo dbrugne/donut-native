@@ -20,7 +20,7 @@ var app = require('../libs/app');
 var client = require('../libs/client');
 var events = require('../libs/events');
 
-class DiscussionEventsView extends Component {
+class DiscussionEvents extends Component {
   constructor (props) {
     super(props);
 
@@ -86,7 +86,6 @@ class DiscussionEventsView extends Component {
 
     // rowID is a string
     var isLast = (parseInt(rowID) === (this.eventsBlob.length - 1));
-    console.log(this.props.childNavigator.xurl);
     return events.render(event, previous, isLast, _.noop);
 //    return events.render(event, previous, isLast, (username, user_id) => {
 //      var url = 'user/profile/' + user_id;
@@ -220,4 +219,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = DiscussionEventsView;
+module.exports = DiscussionEvents;

@@ -34,18 +34,6 @@ class Discussion extends Component {
         this.setState({keyboardSpace: 0});
       })
     ];
-
-    // @todo : history load
-//    this.subscription.push(this.props.parentNavigator.navigationContext.addListener('didfocus', (event) => {
-//      var route = event.data.route;
-//      if (route.id !== this.model.get('id')) {
-//        return;
-//      }
-//      if (!this.refs.events.onFocus) {
-//        return console.log('FOUND ERRROR onFocus', this.model.get('id'));
-//      }
-//      this.refs.events.onFocus();
-//    }));
   }
   componentWillUnmount () {
     _.each(this.subscription, (s) => s.remove());

@@ -51,15 +51,32 @@ function getRoute (route) {
     id: null,
     // no arrow function, otherwise the parent context is passed as 'this'
     onWillFocus: function () {
-      console.log('will focus', this.id);
+      if (this._onWillFocus) {
+        this._onWillFocus();
+      }
     },
     onDidFocus: function () {
       currentRoute = this;
-      console.log('Screen ' + currentNavigator.id + '/' + currentRoute.id + ' is now focused');
-      _logCurrentStack();
+      _.defer(() => {
+        console.log('Screen ' + currentNavigator.id + '/' + currentRoute.id + ' is now focused');
+        _logCurrentStack();
+        if (this._onDidFocus) {
+          this._onDidFocus();
+        }
+      });
     },
-    onWillBlur: _.noop,
-    onDidBlur: _.noop
+    onWillBlur: function () {
+      if (this._onWillBlur) {
+        this._onWillBlur();
+      }
+    },
+    onDidBlur: function () {
+      _.defer(() => {
+        if (this._onDidBlur) {
+          this._onDidBlur();
+        }
+      });
+    }
   }));
 
   return knownRoutes[route.id];
@@ -93,28 +110,25 @@ function _pushToBottom (navigator, route) {
 }
 
 function _logCurrentStack () {
-  _.defer(() => {
-    var stack = '\n\u00BB rootNavigator';
-    _.each(navigators, function (n) {
-      stack += '\n  \u00BB ' + n.id;
-      if (n.id === currentNavigator.id) {
+  var stack = '\n\u00BB rootNavigator';
+  _.each(navigators, function (n) {
+    stack += '\n  \u00BB ' + n.id;
+    if (n.id === currentNavigator.id) {
+      stack += ' *';
+    }
+    if (!n.scene) {
+      stack += '\n    \u00BB <unknown>';
+      return;
+    }
+
+    _.each(n.scene.__navigator.getCurrentRoutes(), (r) => {
+      stack += '\n    \u00BB ' + r.id;
+      if (r.id === currentRoute.id) {
         stack += ' *';
       }
-      if (!n.scene) {
-        stack += '\n    \u00BB <unknown>';
-        return;
-      }
-
-      _.each(n.scene.__navigator.getCurrentRoutes(), (r) => {
-        stack += '\n    \u00BB ' + r.id;
-        if (r.id === currentRoute.id) {
-          stack += ' *';
-        }
-      });
     });
-
-    console.log(stack);
   });
+  console.log(stack);
 }
 
 var LeftNavigation = React.createClass({
@@ -256,7 +270,6 @@ routes.getMyAccountPreferences = function () {
     }
   });
 };
-
 routes.getDiscussion = function (id, model) {
   return getRoute({
     id: 'discussion-' + id,
@@ -269,6 +282,10 @@ routes.getDiscussion = function (id, model) {
     },
     renderLeftButton: function (navigator) {
       return (<LeftNavigation navigator={navigator} />);
+    },
+    _onDidFocus: function () {
+      console.log('pouet');
+      this.scene.refs.events.onFocus();
     }
   });
 };
