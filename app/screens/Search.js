@@ -9,6 +9,7 @@ var {
   TextInput,
   View,
   ListView,
+  ScrollView,
   Component,
 } = React;
 
@@ -27,7 +28,6 @@ class SearchView extends Component {
       findValue: '',
       more: false,
       dataSource: ds.cloneWithRows([]),
-      loading: false
     };
 
     this.nextValue = '';
@@ -36,6 +36,7 @@ class SearchView extends Component {
   }
 
   render () {
+
     var more = this.state.more
       ? this._renderLoadMore()
       : null;
@@ -60,7 +61,7 @@ class SearchView extends Component {
             </TouchableHighlight>
           </View>
         </View>
-        <View style={styles.searchContainer}>
+        <View style={styles.searchContainer} >
           <ListView
             dataSource={this.state.dataSource}
             renderRow={this.renderElement.bind(this)}
@@ -90,7 +91,7 @@ class SearchView extends Component {
             source={{uri: avatarUrl}}
             style={styles.thumbnail}
             />
-          <Text>{room.identifier}</Text>
+          <Text style={styles.textElement}>{room.identifier}</Text>
         </View>
       </TouchableHighlight>
     );
@@ -106,7 +107,7 @@ class SearchView extends Component {
             source={{uri: avatarUrl}}
             style={styles.thumbnail}
             />
-          <Text>@{user.username}</Text>
+          <Text style={styles.textElement}>@{user.username}</Text>
         </View>
       </TouchableHighlight>
     );
@@ -122,7 +123,7 @@ class SearchView extends Component {
             source={{uri: avatarUrl}}
             style={styles.thumbnail}
             />
-          <Text>#{group.name}</Text>
+          <Text style={styles.textElement}>#{group.name}</Text>
         </View>
       </TouchableHighlight>
     );
@@ -162,8 +163,7 @@ class SearchView extends Component {
     }
 
     this.setState({
-      type: type,
-      loading: true
+      type: type
     });
     this.nextValue = this.state.findValue;
 
@@ -179,8 +179,7 @@ class SearchView extends Component {
         this.resultBlob = (!this.state.more) ? response[this.state.type].list : this.resultBlob.concat(response[this.state.type].list);
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(this.resultBlob),
-          more: (response[this.state.type].list.length === this.limit),
-          loading: false
+          more: (response[this.state.type].list.length === this.limit)
         });
         this.render();
       }
@@ -212,8 +211,11 @@ var styles = StyleSheet.create({
     top: 0
   },
   thumbnail: {
-    width: 30,
-    height: 30
+    width: 40,
+    height: 40,
+    borderColor: '#000',
+    borderRadius: 20,
+    borderWidth: 1
   },
   searchContainer: {
     flex: 1,
@@ -222,7 +224,15 @@ var styles = StyleSheet.create({
     marginTop: 10
   },
   element: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    height: 60,
+    borderColor: '#000',
+    borderBottomWidth: 1,
+    padding: 10
+  },
+  textElement: {
+    marginLeft: 20,
+    fontWeight: 'bold'
   }
 });
 
