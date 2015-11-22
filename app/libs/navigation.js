@@ -147,7 +147,6 @@ routes.getHome = function () {
     }
   });
 };
-
 routes.getSearch = function () {
   return getRoute({
     id: 'search',
@@ -165,7 +164,6 @@ routes.getSearch = function () {
     }
   });
 };
-
 routes.getProfile = function (element) {
   return getRoute({
     id: 'profile-' + element.id,
@@ -178,7 +176,6 @@ routes.getProfile = function (element) {
     }
   });
 };
-
 routes.getMyAccount = function () {
   return getRoute({
     id: 'my-account',
