@@ -28,12 +28,12 @@ class NavigationRoomsView extends Component {
   }
 
   componentDidMount () {
-    app.on('redrawNavigation', () => this.refreshData());
-    app.on('redrawNavigationRooms', () => this.refreshData());
+    app.on('redrawNavigation', this.refreshData, this);
+    app.on('redrawNavigationRooms', this.refreshData, this);
+    app.on('viewedEvent', this.refreshData, this);
   }
   componentWillUnmount () {
-    app.off('redrawNavigation');
-    app.off('redrawNavigationRooms');
+    app.off(null, null, this);
   }
 
   refreshData () {

@@ -1,7 +1,7 @@
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var client = require('../libs/client');
-var currentUser = require('./mobile-current-user');
+var currentUser = require('./current-user');
 
 var OneToOneModel = Backbone.Model.extend({
   defaults: function () {
@@ -103,7 +103,7 @@ var OneToOneModel = Backbone.Model.extend({
   onViewed: function (data) {
     if (this.get('unviewed') === true) {
       this.set('unviewed', false);
-      app.trigger('redrawNavigationOnes');
+      app.trigger('viewedEvent', this);
     }
     this.trigger('viewed', data);
   },

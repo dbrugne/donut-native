@@ -30,6 +30,7 @@ var _ = require('underscore');
 var Drawer = require('react-native-drawer')
 import ExNavigator from '@exponent/react-native-navigator';
 var Button = require('react-native-button');
+var app = require('./app');
 
 let navigationBarHeight = 64;
 var drawer;
@@ -131,16 +132,45 @@ function _logCurrentStack () {
   console.log(stack);
 }
 
+var currentUser = require('../models/current-user');
+var {
+  Icon
+} = require('react-native-icons');
 var LeftNavigation = React.createClass({
+  getInitialState () {
+    return {
+      unviewed: currentUser.get('unviewed')
+    };
+  },
+  componentDidMount () {
+    currentUser.on('change:unviewed', (model, value) => this.setState({
+      unviewed: value
+    }), this);
+  },
+  componentWillMount () {
+    currentUser.off(null, null, this);
+  },
   render () {
+    var unviewed = (this.state.unviewed === true)
+      ? (<Icon name='fontawesome|circle' size={14} color='#fc2063' style={styles.unviewed} />)
+      : null;
+
     return (
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
-        onPress={() => drawer.open()}
-        style={ExNavigator.Styles.barLeftButton}>
-        <Text style={ExNavigator.Styles.barLeftButtonText}>NAV</Text>
+        onPress={this.onPress}
+        style={ExNavigator.Styles.barLeftButton} >
+        <Icon name='fontawesome|bars' size={25} style={styles.toggle} />
+        {unviewed}
       </TouchableOpacity>
     );
+  },
+  onPress () {
+    if (drawerOpened) {
+      drawer.close();
+    } else {
+      drawer.open();
+    }
   }
 });
 
@@ -381,4 +411,19 @@ var styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
+  toggle: {
+    width: 24,
+    height: 24,
+    // ExNavigator.Styles.barLeftButtonText
+    fontSize: 18,
+    marginLeft: 10,
+    paddingVertical: 20
+  },
+  unviewed: {
+    position: 'absolute',
+    top: 5,
+    left: 28,
+    width: 13,
+    height: 13,
+  }
 });

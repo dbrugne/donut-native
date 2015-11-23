@@ -2,7 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var client = require('../libs/client');
-var currentUser = require('./mobile-current-user');
+var currentUser = require('./current-user');
 var RoomUsersCollection = require('../collections/room-users');
 
 var RoomModel = Backbone.Model.extend({
@@ -92,17 +92,15 @@ var RoomModel = Backbone.Model.extend({
     client.roomViewed(this.get('room_id'), elements);
   },
   onViewed: function (data) {
-    if (this.get('unviewed')) {
+    if (this.get('unviewed') === true) {
       this.set('unviewed', false);
-      // @todo yls: why triggering a full redraw? We should just ask for a CSS class removing
-      app.trigger('redrawNavigationRooms');
+      app.trigger('viewedEvent', this);
     }
     this.trigger('viewed', data);
   },
   isInputActive: function () {
     return !(this.users.isUserDevoiced(currentUser.get('user_id')) || (!currentUser.isConfirmed() && this.get('mode') !== 'public'));
   }
-
 });
 
 module.exports = RoomModel;

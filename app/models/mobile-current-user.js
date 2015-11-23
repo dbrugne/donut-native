@@ -6,7 +6,8 @@ var currentUser = require('./current-user');
 currentUser.defaults = function () {
   return {
     token: null,
-    code: null
+    code: null,
+    unviewed: 0
   };
 };
 
