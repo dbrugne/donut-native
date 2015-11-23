@@ -4,6 +4,8 @@ var _ = require('underscore');
 var currentUser = require('../models/mobile-current-user');
 var client = require('../libs/client');
 var Platform = require('Platform');
+var Button = require('react-native-button');
+var navigation = require('../libs/navigation');
 
 var {
   Component,
@@ -15,6 +17,7 @@ var {
   TouchableHighlight,
   SwitchAndroid,
   SwitchIOS,
+  ToastAndroid
   } = React;
 var {
   Icon
@@ -27,6 +30,8 @@ class ForgotView extends Component {
     super(props);
     this.state = {
       emailToAdd: '',
+      errors: [],
+      dataResponse: {},
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
@@ -36,7 +41,12 @@ class ForgotView extends Component {
 
   componentDidMount () {
     client.userRead(currentUser.get('user_id'), _.bind(function (response) {
+      var dataResponse = {};
+      _.each(response.account.emails, function (e) {
+        dataResponse[e.email] = e;
+      });
       this.setState({
+        dataResponse: dataResponse,
         dataSource: this.state.dataSource.cloneWithRows(response.account.emails),
         load: true
       });
@@ -50,18 +60,16 @@ class ForgotView extends Component {
 
     return (
       <View style={styles.container}>
+        {this.state.errors.map((m) => <Text>{m}</Text>)}
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderElement.bind(this)}
         />
         <View>
-          <TextInput
-            placeholder="Add an email"
-            onChange={(event) => this.setState({emailToAdd: event.nativeEvent.text})}
-            style={styles.formInput}/>
-          <TouchableHighlight>
-          <Text>Add address</Text>
-          </TouchableHighlight>
+          <Button style={styles.button}
+            onPress={() => this.props.navigator.push(navigation.getMyAccountEmailsAdd())}>
+          Add an address
+          </Button>
         </View>
       </View>
     )
@@ -77,19 +85,21 @@ class ForgotView extends Component {
 
     var status;
     if (item.confirmed && !item.main) {
-      status =  <Icon
+      status =  <Button
+        onPress={this._onDelete.bind(this, item)}><Icon
         name='fontawesome|trash'
         size={27}
         color='#888'
         style={styles.icon}
-        />;
+        /></Button>;
     } else if (!item.confirmed) {
-      status =  <Icon
+      status =  <Button
+        onPress={this._onSend.bind(this, item)}><Icon
         name='fontawesome|envelope'
         size={27}
         color='#888'
         style={styles.icon}
-        />;
+        /></Button>;
     } else {
       status =  <Icon
         name='fontawesome|check'
@@ -101,7 +111,9 @@ class ForgotView extends Component {
     var Switch;
     if (item.confirmed || item.main) {
       Switch = <SwitchComponent
-        value={item.main}
+        onValueChange={this._changeMain.bind(this, item)}
+        value={this.state.dataResponse[item.email].main}
+        disabled={this.state.dataResponse[item.email].main}
         />;
     }
     return (
@@ -124,6 +136,74 @@ class ForgotView extends Component {
       </View>
     );
   }
+
+  _changeMain(item) {
+    // @todo yfuks find good pattern
+    var tmpData = this.state.dataResponse;
+    var tmpValues = [];
+    _.each(_.keys(tmpData), function (k) {
+      if (k !== item.email) {
+        tmpData[k].main = false;
+        tmpValues.push(tmpData[k]);
+      } else {
+        tmpData[k].main = true;
+        tmpValues.push(tmpData[k]);
+      }
+    });
+    this.setState({
+      dataResponse: tmpData,
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2
+      })
+    });
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(tmpValues)
+    });
+    client.accountEmail(item.email, 'main', _.bind(function (response) {
+      if (response.err) {
+        this._appendError(response.err);
+      } else {
+        this._appendError('Success');
+      }
+    }, this));
+  }
+
+  _onSend (item) {
+    client.accountEmail(item.email, 'validate', _.bind(function (response) {
+      if (response.err) {
+        this._appendError(response.err);
+      } else {
+        this._appendError('Success');
+      }
+    }, this));
+  }
+
+  _onDelete (item) {
+    var tmpValues = [];
+    _.each(_.keys(this.state.dataResponse), function (k) {
+      if (k !== item.email) {
+        tmpValues.push(this.state.dataResponse[k]);
+      }
+    });
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(tmpValues)
+    });
+    client.accountEmail(item.email, 'delete', _.bind(function (response) {
+      if (response.err) {
+        this._appendError(response.err);
+      } else {
+        this._appendError('Success');
+      }
+    }, this));
+  }
+
+  _appendError (string) {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(string, ToastAndroid.SHORT);
+    } else {
+      this.setState({errors: this.state.messages.concat(string)});
+    }
+  }
 }
 
 var styles = StyleSheet.create({
@@ -137,7 +217,8 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     height: 80,
     backgroundColor: '#EEE',
-    marginBottom: 1
+    borderBottomWidth: 1,
+    borderBottomColor: '#AAA'
   },
   item: {
     flex: 1,
@@ -149,6 +230,11 @@ var styles = StyleSheet.create({
     width: 27,
     height: 27,
     marginRight: 15
+  },
+  button: {
+    height: 40,
+    backgroundColor: '#EEE',
+    color: "#888"
   }
 });
 

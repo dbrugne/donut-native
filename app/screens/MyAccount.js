@@ -2,6 +2,7 @@
 var React = require('react-native');
 var _ = require('underscore');
 var currentUser = require('../models/mobile-current-user');
+var Button = require('react-native-button');
 
 var {
   Component,
@@ -36,11 +37,9 @@ class ForgotView extends Component {
 
   renderElement(item) {
     return (
-      <TouchableHighlight onPress={this[item.fc].bind(this)} style={styles.row}>
-        <View>
-            <Text style={styles.item}>{item.title}</Text>
-        </View>
-      </TouchableHighlight>
+      <Button onPress={this[item.fc].bind(this)} style={styles.row}>
+        {item.title}
+      </Button>
     );
   }
 
@@ -82,16 +81,11 @@ var styles = StyleSheet.create({
     flex: 1
   },
   row: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 80,
-    backgroundColor: '#111',
-    marginBottom: 1
-  },
-  item: {
-    fontSize: 20,
-    color: "#EEE"
+    backgroundColor: '#EEE',
+    color: '#777',
+    lineHeight: 40
   }
 });
 
