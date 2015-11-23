@@ -15,7 +15,7 @@ var {
 
 var currentUser = require('../models/mobile-current-user');
 
-class ChangeEmailView extends Component {
+class AddEmailView extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -24,17 +24,11 @@ class ChangeEmailView extends Component {
     };
   }
 
-  componentDidMount () {
-    this.setState({
-      email: currentUser.getEmail()
-    });
-  }
-
   render () {
     return (
       <View style={styles.container}>
         <View>
-          <Text style={styles.title}>Change main email</Text>
+          <Text style={styles.title}>Add email</Text>
           {this.state.errors.map((m) => <Text>{m}</Text>)}
           <TextInput
             placeholder="Email"
@@ -42,7 +36,7 @@ class ChangeEmailView extends Component {
             style={styles.formInput}
             value={this.state.email} />
           <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))} style={styles.button}>
-            <Text style={styles.buttonText}>CHANGE</Text>
+            <Text style={styles.buttonText}>ADD</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -54,7 +48,7 @@ class ChangeEmailView extends Component {
       return this._appendError('not-complete');
     }
 
-    client.accountEmail(this.state.email, 'main', _.bind(function (response) {
+    client.accountEmail(this.state.email, 'add', _.bind(function (response) {
       if (response.err) {
         this._appendError(response.err);
       } else {
@@ -114,4 +108,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = ChangeEmailView;
+module.exports = AddEmailView;

@@ -256,6 +256,17 @@ routes.getMyAccountEmails = function () {
     }
   });
 };
+routes.getMyAccountEmailsAdd = function () {
+  return getRoute({
+    id: 'my-account-emails-add',
+    getSceneClass: function () {
+      return require('../views/MyAccountEmailsAdd');
+    },
+    getTitle: function () {
+      return 'Add an email';
+    }
+  });
+};
 routes.getMyAccountPassword = function () {
   return getRoute({
     id: 'my-account-password',
