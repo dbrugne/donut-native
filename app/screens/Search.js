@@ -9,6 +9,7 @@ var {
   TextInput,
   View,
   ListView,
+  ScrollView,
   Component,
 } = React;
 
@@ -21,29 +22,28 @@ var navigation = require('../libs/navigation');
 class SearchView extends Component {
   constructor (props) {
     super(props);
+    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       type: 'rooms',
       findValue: '',
       more: false,
-      dataSource: new ListView.DataSource({
-        rowHasChanged: function (row1, row2) {
-          return (row1 !== row2);
-        }
-      })
+      dataSource: ds.cloneWithRows([]),
     };
 
     this.nextValue = '';
     this.limit = 25;
+    this.resultBlob = [];
   }
 
   render () {
+
     var more = this.state.more
       ? this._renderLoadMore()
       : null;
 
     return (
       <View style={styles.main}>
-        <View onResponderTerminate={this.renderElement.bind(this)}>
+        <View>
           <TextInput style={styles.formInputFind}
             placeholder='Search donut, community or user here'
             onChangeText={(text) => this.setState({findValue: text})}
@@ -61,7 +61,7 @@ class SearchView extends Component {
             </TouchableHighlight>
           </View>
         </View>
-        <View style={styles.searchContainer}>
+        <View style={styles.searchContainer} >
           <ListView
             dataSource={this.state.dataSource}
             renderRow={this.renderElement.bind(this)}
@@ -86,40 +86,46 @@ class SearchView extends Component {
     var avatarUrl = common.cloudinary.prepare(room.avatar, 30)
     return (
       <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getProfile(room))}>
-        <View>
+        <View style={styles.element}>
           <Image
             source={{uri: avatarUrl}}
             style={styles.thumbnail}
             />
-          <Text>{room.identifier}</Text>
+          <Text style={styles.textElement}>{room.identifier}</Text>
         </View>
       </TouchableHighlight>
     );
   }
 
   renderUsersElement (user) {
+    var url = 'user/profile/' + user.user_id;
     var avatarUrl = common.cloudinary.prepare(user.avatar, 30)
     return (
-      <View>
-        <Image
-          source={{uri: avatarUrl}}
-          style={styles.thumbnail}
-          />
-        <Text>@{user.username}</Text>
-      </View>
+      <TouchableHighlight onPress={() => app.trigger('navigateTo', url, {username: user.username})}>
+        <View style={styles.element}>
+          <Image
+            source={{uri: avatarUrl}}
+            style={styles.thumbnail}
+            />
+          <Text style={styles.textElement}>@{user.username}</Text>
+        </View>
+      </TouchableHighlight>
     );
   }
 
   renderGroupsElement (group) {
+    var url = 'group/profile/' + group.group_id;
     var avatarUrl = common.cloudinary.prepare(group.avatar, 30)
     return (
-      <View>
-        <Image
-          source={{uri: avatarUrl}}
-          style={styles.thumbnail}
-          />
-        <Text>{group.name}</Text>
-      </View>
+      <TouchableHighlight onPress={() => app.trigger('navigateTo', url, {identifier: group.identifier})}>
+        <View style={styles.element}>
+          <Image
+            source={{uri: avatarUrl}}
+            style={styles.thumbnail}
+            />
+          <Text style={styles.textElement}>#{group.name}</Text>
+        </View>
+      </TouchableHighlight>
     );
   }
 
@@ -136,8 +142,7 @@ class SearchView extends Component {
   }
 
   loadMore () {
-    console.log('loadmore');
-    var skip = {[this.state.type]: this.state.dataSource._cachedRowCount};
+    var skip = {[this.state.type]: this.resultBlob.length};
     this.search(this.state.type, skip);
   }
 
@@ -145,6 +150,16 @@ class SearchView extends Component {
     skip = skip || null;
     if (!this.state.findValue) {
       return;
+    }
+
+    if (this.state.findValue !== this.nextValue && this.state.type !== type) {
+      this.resultBlob = [];
+    }
+
+    if (!skip) {
+      this.setState({
+        more: false
+      });
     }
 
     this.setState({
@@ -161,11 +176,11 @@ class SearchView extends Component {
     };
     client.search(this.state.findValue, options, _.bind(function (response) {
       if (!response.err && response[this.state.type].list.length) {
+        this.resultBlob = (!this.state.more) ? response[this.state.type].list : this.resultBlob.concat(response[this.state.type].list);
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(response[this.state.type].list),
+          dataSource: this.state.dataSource.cloneWithRows(this.resultBlob),
           more: (response[this.state.type].list.length === this.limit)
-        })
-        console.log(this.state.dataSource);
+        });
         this.render();
       }
     }, this));
@@ -196,13 +211,28 @@ var styles = StyleSheet.create({
     top: 0
   },
   thumbnail: {
-    width: 30,
-    height: 30
+    width: 40,
+    height: 40,
+    borderColor: '#000',
+    borderRadius: 20,
+    borderWidth: 1
   },
   searchContainer: {
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
     marginTop: 10
+  },
+  element: {
+    flexDirection: 'row',
+    height: 60,
+    borderColor: '#000',
+    borderBottomWidth: 1,
+    padding: 10
+  },
+  textElement: {
+    marginLeft: 20,
+    fontWeight: 'bold'
   }
 });
 
