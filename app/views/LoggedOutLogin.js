@@ -44,7 +44,7 @@ class LoginView extends Component {
     this.setState({
       email: currentUser.getEmail()
     });
-    if (BackAndroid) {
+    if (Platform.OS === 'android') {
       BackAndroid.addEventListener('hardwareBackPress', _.bind(function () {
         var routes = this.props.navigator.getCurrentRoutes();
         if (routes && routes.length > 1) {
@@ -56,7 +56,7 @@ class LoginView extends Component {
   }
 
   componentWillUnmount () {
-    if (BackAndroid) {
+    if (Platform.OS === 'android') {
       BackAndroid.removeEventListener('hardwareBackPress', _.bind(function () {
       }, this));
     }
