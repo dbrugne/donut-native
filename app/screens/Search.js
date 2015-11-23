@@ -208,7 +208,8 @@ var styles = StyleSheet.create({
     height: 40
   },
   formInputFind: {
-    top: 0
+    height: 40,
+    borderWidth: 1
   },
   thumbnail: {
     width: 40,
