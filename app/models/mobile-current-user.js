@@ -69,8 +69,4 @@ currentUser.signUp = function (email, password, username, callback) {
   }, this));
 };
 
-currentUser.changeMainEmail = function (email, callback) {
-  client.accountEmail(email, 'main', callback);
-};
-
 module.exports = currentUser;

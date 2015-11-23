@@ -53,7 +53,7 @@ class ChangeEmailView extends Component {
       return this._appendError('not-complete');
     }
 
-    currentUser.changeMainEmail(this.state.email, _.bind(function (response) {
+    client.accountEmail(this.state.email, 'main', _.bind(function (response) {
       if (response.err) {
         this._appendError(response.err);
       } else {
