@@ -2,7 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var client = require('../libs/client');
-var currentUser = require('./current-user');
+var currentUser = require('./mobile-current-user');
 var RoomUsersCollection = require('../collections/room-users');
 
 var RoomModel = Backbone.Model.extend({
@@ -23,9 +23,16 @@ var RoomModel = Backbone.Model.extend({
     };
   },
   initialize: function () {
-    this.users = new RoomUsersCollection({
-      parent: this
-    });
+    if (!this.get('blocked')) {
+      this.users = new RoomUsersCollection({
+        parent: this
+      });
+    }
+  },
+  unbindUsers: function () {
+    if (!this.get('blocked')) {
+      this.users.stopListening();
+    }
   },
   getIdentifier: function () {
     return this.get('name');
@@ -84,9 +91,6 @@ var RoomModel = Backbone.Model.extend({
   viewedElements: function (elements) {
     client.roomViewed(this.get('room_id'), elements);
   },
-  joinRoom: function (cb) {
-    client.roomJoin(this.get('room_id'), cb);
-  },
   onViewed: function (data) {
     if (this.get('unviewed')) {
       this.set('unviewed', false);
@@ -96,7 +100,7 @@ var RoomModel = Backbone.Model.extend({
     this.trigger('viewed', data);
   },
   isInputActive: function () {
-    return !(this.users.isUserDevoiced(currentUser.get('user_id')) || !currentUser.isConfirmed());
+    return !(this.users.isUserDevoiced(currentUser.get('user_id')) || (!currentUser.isConfirmed() && this.get('mode') !== 'public'));
   }
 
 });

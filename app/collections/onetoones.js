@@ -2,7 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
 var app = require('../libs/app');
-var currentUser = require('../models/current-user');
+var currentUser = require('../models/mobile-current-user');
 var OneToOneModel = require('../models/onetoone');
 
 var OnetoonesCollection = Backbone.Collection.extend({
@@ -114,7 +114,8 @@ var OnetoonesCollection = Backbone.Collection.extend({
           username: event.from_username,
           user_id: event.from_user_id,
           avatar: event.from_avatar,
-          color: event.from_color
+          color: event.from_color,
+          status: 'online'
         };
       } else {
         return; // visibly something goes wrong
