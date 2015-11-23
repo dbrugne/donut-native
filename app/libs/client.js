@@ -12,14 +12,15 @@ var storage = require('./storage');
 
 // token retrieving logic
 var getTokenFromSession = function (callback) {
-  storage.getKey('token', callback); // @todo : fix bug when using currentUser directly (probably lifecycle side effect)
+  // @todo : fix bug when using currentUser directly (probably lifecycle side effect)
+  storage.getKey('token', callback);
 };
 
 module.exports = Client({
   device: 'native',
   host: 'https://test.donut.me',
-  debug: () => {
-//    console.log(arguments);
+  debug: function () {
+    console.log(arguments);
   },
   retrieveToken: getTokenFromSession,
   invalidToken: getTokenFromSession,
