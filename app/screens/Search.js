@@ -202,7 +202,7 @@ class SearchView extends Component {
     };
     client.search(this.state.findValue, options, _.bind(function (response) {
       if (response.err) {
-        return;
+        return this.resetList(null);
       }
       this.resultBlob = (!this.state.more) ? response[this.state.type].list : this.resultBlob.concat(response[this.state.type].list);
       this.setState({
