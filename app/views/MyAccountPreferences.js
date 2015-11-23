@@ -14,7 +14,7 @@ var {
   ListView
   } = React;
 
-var currentUser = require('../models/current-user');
+var currentUser = require('../models/mobile-current-user');
 
 var items = [
   {field: 'notif:channels:email', description: 'on email (only if you are offline)'},

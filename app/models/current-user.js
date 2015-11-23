@@ -1,25 +1,13 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../libs/app');
 var client = require('../libs/client');
-var oauth = require('../libs/oauth'); // @mobile
-
-// @todo : implement a MobileCurrentUser that extend current-user and add oauth logic and methods
+var app = require('../libs/app');
 
 var CurrentUserModel = Backbone.Model.extend({
-  oauth: oauth,  // @mobile
-
-  defaults: function () {
-    return {
-      token: null, // @mobile
-      code: null // @mobile
-    };
-  },
-
-  initialize: function () {
-    this.listenTo(client, 'welcome', this.onWelcome);
+  initialize: function (options) {
     this.listenTo(client, 'user:updated', this.onUpdated);
     this.listenTo(client, 'preferences:update', this.setPreference);
+    this.listenTo(client, 'welcome', this.onWelcome);
 
     // listen for client statuses (should be done only by client and view??)
     var statuses = {
@@ -47,10 +35,10 @@ var CurrentUserModel = Backbone.Model.extend({
   },
 
   onUpdated: function (data) {
-    if (data.username !== this.get('username')) {
+    if (data.user_id !== this.get('user_id')) {
       return;
     }
-    _.each(data.data, _.bind(function (value, key) {
+    _.each(data.data, _.bind(function (value, key, list) {
       this.set(key, value);
     }, this));
   },
@@ -85,64 +73,56 @@ var CurrentUserModel = Backbone.Model.extend({
 
     this.set('preferences', newPreferences, options);
   },
+  setConfirmed: function () {
+    this.set('confirmed', true);
+  },
+  discussionMode: function () {
+    var preferences = this.get('preferences');
 
-  loadInitialState: function () {
-    this.oauth.loadStorage(_.bind(function () {
-      this.oauth.checkStatus(_.bind(function (err) {
-        if (err) {
-          console.warn(err);
-        }
+    // if no preference set OR browser:sound equal to true, we play
+    if (!preferences || typeof preferences[ 'chatmode:compact' ] === 'undefined') {
+      return false;
+    }
 
-        // trigger LoggedOut navigation tree
-        this.trigger('currentUserStatus');
-      }, this));
-    }, this));
+    return (preferences[ 'chatmode:compact' ] === true);
+  },
+  shouldDisplayExitPopin: function () {
+    var preferences = this.get('preferences');
+
+    // if no preference set OR browser:exitpopin equal to true, we show
+    return (!preferences || typeof preferences[ 'browser:exitpopin' ] === 'undefined' || preferences[ 'browser:exitpopin' ] === true);
+  },
+  shouldDisplayWelcome: function () {
+    var preferences = this.get('preferences');
+
+    // if no preference set OR browser:welcome equal to true, we show
+    return (!preferences || typeof preferences[ 'browser:welcome' ] === 'undefined' || preferences[ 'browser:welcome' ] === true);
+  },
+  shouldPlaySound: function () {
+    var preferences = this.get('preferences');
+
+    // if no preference set OR browser:sound equal to true, we play
+    return (!preferences || typeof preferences[ 'browser:sounds' ] === 'undefined' || preferences[ 'browser:sounds' ] === true);
   },
 
-  isLoggedIn: function () {
-    return (this.oauth.loaded && this.oauth.token);
-  },
+  shouldDisplayDesktopNotif: function () {
+    var preferences = this.get('preferences');
 
-  getEmail: function () {
-    return this.oauth.email;
-  },
+    // if no preference set OR browser:sound equal to true, we play
+    if (!preferences || typeof preferences[ 'notif:channels:desktop' ] === 'undefined') {
+      return false;
+    }
 
-  getToken: function () {
-    return this.oauth.token;
+    return (preferences[ 'notif:channels:desktop' ] === true);
   },
 
   isAdmin: function () {
     return (this.get('admin') === true);
   },
 
-  login: function (email, password, callback) {
-    this.oauth.login(email, password, _.bind(function (err) {
-      if (err) {
-        return callback(err);
-      }
-
-      this.trigger('currentUserStatus');
-    }, this));
-  },
-  logout: function () {
-    this.oauth.logout(() => this.trigger('currentUserStatus'));
-  },
-  forgot: function (email, callback) {
-    this.oauth.forgot(email, callback);
-  },
-  signUp: function (email, password, username, callback) {
-    this.oauth.signUp(email, password, username, _.bind(function (err) {
-      if (err) {
-        return callback(err);
-      }
-
-      this.trigger('currentUserStatus');
-    }, this));
-  },
-  changeMainEmail: function (email, callback) {
-    client.accountEmail(email, 'main', callback);
+  isConfirmed: function () {
+    return (this.get('confirmed') === true);
   }
-
 });
 
 module.exports = new CurrentUserModel();

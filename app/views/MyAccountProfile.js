@@ -10,7 +10,7 @@ var {
   StyleSheet
   } = React;
 
-var currentUser = require('../models/current-user');
+var currentUser = require('../models/mobile-current-user');
 var common = require('@dbrugne/donut-common/mobile');
 
 //@todo yfuks possibility to access camera/library to change poster/avatar

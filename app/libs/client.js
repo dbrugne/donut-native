@@ -5,12 +5,9 @@
 window.navigator.userAgent = 'react-native';
 
 var React = require('react-native');
-var {
-  AsyncStorage
-} = React;
 
 var Client = require('@dbrugne/donut-common/client');
-var currentUser = require('../models/current-user');
+var currentUser = require('../models/mobile-current-user');
 var storage = require('./storage');
 
 // token retrieving logic

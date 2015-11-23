@@ -12,7 +12,7 @@ var {
   ToastAndroid
   } = React;
 
-var currentUser = require('../models/current-user');
+var currentUser = require('../models/mobile-current-user');
 
 // @todo : ykufs how to go back to login??
 

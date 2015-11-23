@@ -12,7 +12,7 @@ var {
 
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
-var currentUser = require('../models/current-user');
+var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
 
 class CurrentUserView extends Component {
