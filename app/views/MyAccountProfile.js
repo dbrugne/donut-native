@@ -12,8 +12,7 @@ var {
   ScrollView,
   Image,
   StyleSheet,
-  ToastAndroid,
-  ListView
+  ToastAndroid
   } = React;
 var {
   Icon
@@ -33,9 +32,6 @@ class EditProfileView extends Component {
       errors: [],
       showColorPicker: false,
       username: currentUser.get('username'),
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2
-      }),
       load: false
     };
   }
