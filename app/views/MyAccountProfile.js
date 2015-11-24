@@ -1,14 +1,22 @@
 var React = require('react-native');
 var _ = require('underscore');
 var client = require('../libs/client');
+var Button = require('react-native-button');
+var colors = require('../libs/colors').list;
+var Platform = require('Platform');
 
 var {
   Component,
   Text,
   View,
+  ScrollView,
   Image,
-  StyleSheet
+  StyleSheet,
+  ToastAndroid
   } = React;
+var {
+  Icon
+  } = require('react-native-icons');
 
 var currentUser = require('../models/mobile-current-user');
 var common = require('@dbrugne/donut-common/mobile');
@@ -20,9 +28,10 @@ class EditProfileView extends Component {
     super(props);
     this.state = {
       picture: '',
-      poster: '',
       color: '',
       errors: [],
+      showColorPicker: false,
+      username: currentUser.get('username'),
       load: false
     };
   }
@@ -30,8 +39,7 @@ class EditProfileView extends Component {
   componentDidMount () {
     client.userRead(currentUser.get('user_id'), _.bind(function (response) {
       this.setState({
-        picture: common.cloudinary.prepare(response.avatar, 100),
-        poster: common.cloudinary.prepare(response.poster, 200),
+        picture: common.cloudinary.prepare(response.avatar, 200),
         color: response.color,
         load: true
       });
@@ -44,26 +52,91 @@ class EditProfileView extends Component {
     }
 
     return (
-      <View style={styles.container}>
-        <View>
-          {this.state.errors.map((m) => <Text>{m}</Text>)}
-          <Text style={styles.label}>Profile picture</Text>
-          <Image
-            style={styles.image}
-            source={{uri: this.state.picture}}
+      <ScrollView style={styles.container}>
+        {this.state.errors.map((m) => <Text>{m}</Text>)}
+        <View style={{alignItems: 'center'}}>
+          <Button>
+            <Image
+              style={styles.image}
+              source={{uri: this.state.picture}}
+              />
+            <Icon
+              name='fontawesome|pencil'
+              size={25}
+              color='#888'
+              style={styles.icon}
+              />
+          </Button>
+          <View style={styles.row}>
+            <Text style={styles.label}>@{this.state.username}</Text>
+            <Icon
+            name='fontawesome|circle'
+            size={8}
+            color='#57C259'
+            style={styles.status}
             />
-          <Text style={styles.label}>Poster</Text>
-          <Image
-            style={styles.image}
-            source={{uri: this.state.poster}}
-            />
-          <Text style={styles.label}>Color</Text>
+          </View>
+          <View style={styles.separator}></View>
+        </View>
+        {this._renderColor(this.state.color)}
+        {this._renderColorPicker(colors)}
+      </ScrollView>
+    )
+  }
+
+  _renderColor (color) {
+    if (this.state.showColorPicker) {
+      return;
+    }
+
+    return (
+      <View style={{alignItems: 'center'}}>
+        <Text style={styles.label}>Color</Text>
+        <Button onPress={() => this.setState({showColorPicker: !this.state.showColorPicker})}>
           <View
-            style={[styles.image, {backgroundColor: this.state.color}]}
-            />
+            style={[styles.image, {backgroundColor: color}]}
+            /><Icon
+          name='fontawesome|pencil'
+          size={25}
+          color='#888'
+          style={styles.icon}
+          />
+        </Button>
+      </View>
+    );
+  }
+
+  _renderColorPicker (color) {
+    if (!this.state.showColorPicker) {
+      return;
+    }
+
+    var listOfView = [];
+    _.each(color, _.bind(function (c) {
+      listOfView.push(
+        <Button key={c.name} onPress={() => this._changeUserColor(c)}>
+          <View style={[styles.colorSquare, {backgroundColor: c.hex}]}></View>
+        </Button>);
+    }, this));
+    return (
+      <View>
+        <Text style={[styles.label, {alignSelf: 'center'}]}>Select a color</Text>
+        <View style={styles.colorPicker}>
+          {listOfView}
         </View>
       </View>
-    )
+    );
+  }
+
+  _changeUserColor (c) {
+    client.userUpdate({color: c.hex}, _.bind(function (response) {
+      if (response.err) {
+        this._appendError(response.err);
+      } else {
+        this.setState({color: c.hex, showColorPicker: false});
+        this._appendError('Success');
+      }
+    }, this));
   }
 
   renderLoadingView () {
@@ -75,34 +148,65 @@ class EditProfileView extends Component {
       </View>
     );
   }
+
+  _appendError (string) {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(string, ToastAndroid.SHORT);
+    } else {
+      this.setState({errors: this.state.messages.concat(string)});
+    }
+  }
 }
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  formInput: {
-    height: 42,
-    paddingBottom: 10,
-    width: 250,
-    marginRight: 5,
-    flex: 1,
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#555555",
-    borderRadius: 8,
-    color: "#555555"
+    flex: 1
   },
   label: {
     fontWeight: 'bold',
-    color: "#777"
+    color: "#222",
+    marginTop: 10
   },
   image: {
-    height: 100,
-    width: 100
+    height: 140,
+    width: 140,
+    borderRadius: 4,
+    marginTop: 15
+  },
+  icon: {
+    width: 25,
+    height: 25,
+    position: 'absolute',
+    top: 128,
+    right: 0
+  },
+  status: {
+    width: 18,
+    height: 28
+  },
+  separator: {
+    flex: 1,
+    width: 250,
+    height: 1,
+    backgroundColor: '#AAA',
+    marginTop: 25,
+    marginBottom: 15
+  },
+  colorPicker: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 25,
+    justifyContent: 'center'
+  },
+  row: {
+    flexDirection: 'row'
+  },
+  colorSquare: {
+    width: 25,
+    height: 25,
+    margin: 3,
+    borderRadius: 2
   }
 });
 
