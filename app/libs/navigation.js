@@ -22,6 +22,7 @@
 var React = require('react-native');
 var {
   StyleSheet,
+  View,
   Text,
   TouchableOpacity
 } = React;
@@ -59,7 +60,7 @@ function getRoute (route) {
     onDidFocus: function () {
       currentRoute = this;
       _.defer(() => {
-        console.log('Screen ' + currentNavigator.id + '/' + currentRoute.id + ' is now focused');
+//        console.log('Screen ' + currentNavigator.id + '/' + currentRoute.id + ' is now focused');
         _logCurrentStack();
         if (this._onDidFocus) {
           this._onDidFocus();
@@ -77,6 +78,16 @@ function getRoute (route) {
           this._onDidBlur();
         }
       });
+    },
+    renderBackButton: function (navigator) {
+      return (
+        <TouchableOpacity
+          touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
+          onPress={() => navigator.pop()}
+          style={ExNavigator.Styles.barLeftButton} >
+          <Icon name='fontawesome|angle-left' size={25} style={styles.backButton} />
+        </TouchableOpacity>
+      );
     }
   }));
 
@@ -110,6 +121,58 @@ function _pushToBottom (navigator, route) {
   });
 }
 
+function _popNicelyToHome (navigator, index) {
+  // already on home?
+  if (navigator.state.presentedIndex === 0) {
+    _popNicely(navigator, index);
+  }
+
+  // transition to home (index:0)
+  var popIndex = 0;
+  navigator._enableScene(popIndex);
+  navigator._emitWillFocus(navigator.state.routeStack[popIndex]);
+  navigator._transitionTo(
+    popIndex,
+    null, // default velocity
+    null, // no spring jumping
+    () => _popNicely(navigator, index)
+  );
+}
+
+function _popNicely (navigator, index) {
+  if (index === 0) {
+    return;
+  }
+  // Remove any unneeded rendered routes.
+  var configStack = navigator.state.sceneConfigStack;
+  configStack.splice(index, 1);
+  var routeStack = navigator.state.routeStack;
+  var poppedRoute = routeStack.splice(index, 1)[0];
+  navigators = _.omit(navigators, poppedRoute.id);
+  navigator.setState({
+    sceneConfigStack: configStack,
+    routeStack: routeStack
+  });
+}
+
+routes.removeDiscussionRoute = function (id, model) {
+  var route = routes.getNavigator(routes.getDiscussion(id));
+  var existingRoute = rootNavigator.getCurrentRoutes().find((element) => element === route);
+  if (!existingRoute) {
+    return; // view is not mounted, no op
+  }
+
+  var existingRouteIndex = rootNavigator.getCurrentRoutes().indexOf(existingRoute);
+  var navigator = rootNavigator.__navigator;
+  var presentedIndex = navigator.state.presentedIndex;
+  var isFocused = (presentedIndex === existingRouteIndex);
+  if (isFocused) {
+    _popNicelyToHome(navigator, existingRouteIndex);
+  } else {
+    _popNicely(navigator, existingRouteIndex);
+  }
+}
+
 function _logCurrentStack () {
   var stack = '\n\u00BB rootNavigator';
   _.each(navigators, function (n) {
@@ -123,7 +186,7 @@ function _logCurrentStack () {
     }
 
     _.each(n.scene.__navigator.getCurrentRoutes(), (r) => {
-      stack += '\n    \u00BB ' + r.id;
+      stack += '\n    \u00BB ' + ((r.getTitle) ? r.getTitle() : r.id);
       if (r.id === currentRoute.id) {
         stack += ' *';
       }
@@ -160,7 +223,7 @@ var LeftNavigation = React.createClass({
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
         onPress={this.onPress}
         style={ExNavigator.Styles.barLeftButton} >
-        <Icon name='fontawesome|bars' size={25} style={styles.toggle} />
+        <Icon name='fontawesome|clone' size={22} style={styles.toggle} />
         {unviewed}
       </TouchableOpacity>
     );
@@ -311,6 +374,18 @@ routes.getMyAccountPreferences = function () {
     }
   });
 };
+routes.getDiscussionSettings = function (id, model) {
+  return getRoute({
+    id: 'discussion-settings-' + id,
+    renderScene: function (navigator) {
+      let Settings = require('../views/DiscussionSettings');
+      return <Settings navigator={navigator} model={model} />;
+    },
+    getTitle: function () {
+      return 'Settings';
+    }
+  });
+};
 routes.getDiscussion = function (id, model) {
   return getRoute({
     id: 'discussion-' + id,
@@ -324,8 +399,17 @@ routes.getDiscussion = function (id, model) {
     renderLeftButton: function (navigator) {
       return (<LeftNavigation navigator={navigator} />);
     },
+    renderRightButton: function (navigator) {
+      return (
+        <TouchableOpacity
+          touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
+          onPress={() => navigator.push(routes.getDiscussionSettings(id, model))}
+          style={ExNavigator.Styles.barRightButton} >
+          <Icon name='fontawesome|cog' size={25} style={styles.settings} />
+        </TouchableOpacity>
+      );
+    },
     _onDidFocus: function () {
-      console.log('pouet');
       this.scene.refs.events.onFocus();
     }
   });
@@ -423,9 +507,23 @@ var styles = StyleSheet.create({
     height: 50,
   },
   toggle: {
+    width: 22,
+    height: 22,
+    // ExNavigator.Styles.barLeftButtonText
+    fontSize: 18,
+    marginLeft: 10,
+    paddingVertical: 20
+  },
+  settings: {
     width: 24,
     height: 24,
-    // ExNavigator.Styles.barLeftButtonText
+    fontSize: 18,
+    marginRight: 10,
+    paddingVertical: 20
+  },
+  backButton: {
+    width: 24,
+    height: 24,
     fontSize: 18,
     marginLeft: 10,
     paddingVertical: 20

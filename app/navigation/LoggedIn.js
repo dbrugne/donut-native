@@ -12,6 +12,7 @@ var rooms = require('../collections/rooms');
 var app = require('../libs/app');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
+var navigation = require('../libs/navigation');
 
 // @todo : if application is backgrounded for > 5 mn disconnect
 // @todo : when disconnected block every views/navigation
@@ -24,12 +25,16 @@ class Index extends Component {
   componentDidMount () {
     app.on('newEvent', this.onNewEvent, this);
     app.on('viewedEvent', this.computeUnviewed, this);
+    onetoones.on('remove', this.onRemoveDiscussion, this);
+    rooms.on('remove', this.onRemoveDiscussion, this);
     client.on('welcome', this.onWelcome, this);
 
     this.client.connect();
   }
   componentWillUnmount () {
     app.off(null, null, this);
+    onetoones.off(null, null, this);
+    rooms.off(null, null, this);
     client.off(null, null, this);
 
     this.client.disconnect();
@@ -79,6 +84,9 @@ class Index extends Component {
     } else {
       app.trigger('redrawNavigationOnes');
     }
+  }
+  onRemoveDiscussion (model) {
+    navigation.removeDiscussionRoute(model.get('id'), model);
   }
 }
 
