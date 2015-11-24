@@ -58,3 +58,40 @@ To use your own device :
 - https://facebook.github.io/react-native/docs/running-on-device-android.html#content
 - and make sure your device had the correct driver
 - react-native phone menu => dev settings => debug server ... => ipPcOnWifi:8081 
+
+## Fix compilation errors (jquery & xmlhttprequest libs)
+
+- /www/donut-native/node_modules/backbone/backbone.js 
+
+comment line 26
+
+```
+//try { $ = require('jquery'); } catch(e) {}
+```
+
+- /www/donut-native/node_modules/engine.io-client/lib/transports/index.js
+
+Change path to XMLHttpRequest
+
+```
+//var XMLHttpRequest = require('xmlhttprequest');
+var XMLHttpRequest = require('../xmlhttprequest');
+```
+ 
+- /www/donut-native/node_modules/engine.io-client/lib/transports/polling-xhr.js
+
+Change path to XMLHttpRequest
+
+```
+//var XMLHttpRequest = require('xmlhttprequest');
+var XMLHttpRequest = require('../xmlhttprequest');
+```
+
+- /www/donut-native/node_modules/engine.io-client/lib/transports/polling.js
+
+Change path to XMLHttpRequest
+
+```
+//var XMLHttpRequest = require('xmlhttprequest');
+var XMLHttpRequest = require('../xmlhttprequest');
+```
