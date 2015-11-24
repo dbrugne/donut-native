@@ -205,6 +205,7 @@ exports._data = function (type, data) {
     var subject = data.message || data.topic;
     subject = _.unescape(subject);
     // @todo implement toJSX
+    subject = common.markup.toText(subject);
 //    subject = common.markup.toHtml(subject, {
 //      template: function (markup) {
 //        return (
