@@ -87,13 +87,6 @@ class DiscussionEvents extends Component {
     // rowID is a string
     var isLast = (parseInt(rowID) === (this.eventsBlob.length - 1));
     return events.render(event, previous, isLast, _.noop);
-//    return events.render(event, previous, isLast, (username, user_id) => {
-//      var url = 'user/profile/' + user_id;
-//      var route = router.getRoute(url, {username});
-//      console.log('route', url, 'on', this.props.childNavigator.xurl)
-//      // @todo : if a profile is already open .replace()
-//      this.props.childNavigator.push(route);
-//    });
   }
   renderHeader () {
     if (!this.state.more) {
@@ -142,7 +135,10 @@ class DiscussionEvents extends Component {
     });
     this.model.history(null, end, 40, (response) => {
       if (!response.history || !response.history.length) {
-        return;
+        return this.setState({
+          loading: false,
+          more: false
+        });
       }
       this.eventsBlob = this.eventsBlob.concat(response.history);
       this.setState({
