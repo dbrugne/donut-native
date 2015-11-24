@@ -50,6 +50,7 @@ function getRoute (route) {
   }
 
   knownRoutes[route.id] = _.defaults(route, _.clone({
+    __type: 'route',
     id: null,
     // no arrow function, otherwise the parent context is passed as 'this'
     onWillFocus: function () {
@@ -496,6 +497,9 @@ routes.RootNavigator = React.createClass({
 });
 
 routes.switchTo = function (route) {
+  if (!_.isObject(route) || route.__type !== 'route') {
+    return console.log('switchTo expect a route object');
+  }
   _pushOrJumpTo(rootNavigator.__navigator, routes.getNavigator(route));
 };
 

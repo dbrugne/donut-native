@@ -13,6 +13,7 @@ var app = require('../libs/app');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var navigation = require('../libs/navigation');
+var i18next = require('i18next-client');
 
 // @todo : if application is backgrounded for > 5 mn disconnect
 // @todo : when disconnected block every views/navigation
@@ -21,12 +22,16 @@ class Index extends Component {
   constructor (props) {
     super(props);
     this.client = client;
+    this.nextFocus;
   }
   componentDidMount () {
     app.on('newEvent', this.onNewEvent, this);
     app.on('viewedEvent', this.computeUnviewed, this);
+    app.on('joinRoom', this.onJoinRoom, this);
     onetoones.on('remove', this.onRemoveDiscussion, this);
     rooms.on('remove', this.onRemoveDiscussion, this);
+    onetoones.on('add', this.onAddDiscussion, this);
+    rooms.on('add', this.onAddDiscussion, this);
     client.on('welcome', this.onWelcome, this);
 
     this.client.connect();
@@ -85,8 +90,32 @@ class Index extends Component {
       app.trigger('redrawNavigationOnes');
     }
   }
+  onAddDiscussion (model) {
+    if (this.nextFocus === model.get('id')) {
+      navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
+    }
+  }
   onRemoveDiscussion (model) {
     navigation.removeDiscussionRoute(model.get('id'), model);
+  }
+  onJoinRoom (id) {
+    if (!id) {
+      return;
+    }
+
+    var model = rooms.find((m) => m.get('room_id') === id);
+    if (model) {
+      return navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
+    }
+
+    this.nextFocus = id;
+    client.roomJoin(id, null, (response) => {
+      // @todo handle errors
+      // response.err === 'group-members-only'
+      // response.code === 404
+      // response.code === 403 => blocked model handling
+      // response.code === 500
+    });
   }
 }
 

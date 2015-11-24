@@ -13,7 +13,9 @@ var {
 } = React;
 
 var common = require('@dbrugne/donut-common/mobile');
+var app = require('./../libs/app');
 var client = require('./../libs/client');
+var Button = require('react-native-button');
 
 var navigation = require('../libs/navigation');
 
@@ -77,6 +79,7 @@ class HomeView extends Component {
             />
           <View style={styles.rightContainer}>
             <Text style={styles.title}>{room.identifier}</Text>
+            <Button onPress={() => app.trigger('joinRoom', room.room_id)}>JOIN</Button>
           </View>
         </View>
       </TouchableHighlight>
