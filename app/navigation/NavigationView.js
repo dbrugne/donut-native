@@ -52,6 +52,17 @@ class NavigationView extends Component {
               <Text style={styles.title}>Chercher</Text>
             </View>
           </TouchableHighlight>
+          <TouchableHighlight style={styles.linkBlock} onPress={() => navigation.switchTo(navigation.getRoomCreate())}>
+            <View style={styles.linkContainer}>
+              <Icon
+                name='fontawesome|plus'
+                size={20}
+                color='#FFFFFF'
+                style={styles.icon}
+                />
+              <Text style={styles.title}>Create</Text>
+            </View>
+          </TouchableHighlight>
         </View>
         <NavigationOnesView />
         <NavigationRoomsView />

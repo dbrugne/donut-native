@@ -272,6 +272,23 @@ routes.getSearch = function () {
     }
   });
 };
+routes.getRoomCreate = function () {
+  return getRoute({
+    id: 'create-room',
+    getSceneClass: function () {
+      return require('../screens/RoomCreate');
+    },
+    getTitle: function () {
+      return 'Create a donut';
+    },
+    configureScene: function () {
+      return ExNavigator.SceneConfigs.FloatFromRight;
+    },
+    renderLeftButton: function (navigator) {
+      return (<LeftNavigation navigator={navigator} />);
+    }
+  });
+};
 routes.getProfile = function (element) {
   return getRoute({
     id: 'profile-' + element.id,
