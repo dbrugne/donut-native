@@ -2,7 +2,7 @@ var React = require('react-native');
 var _ = require('underscore');
 var client = require('../libs/client');
 var Button = require('react-native-button');
-var colors = require('../libs/color').list;
+var colors = require('../libs/colors').list;
 var Platform = require('Platform');
 
 var {
