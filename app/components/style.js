@@ -9,47 +9,58 @@ var {
 module.exports = StyleSheet.create({
 
   // colors
-  clText: { color: '#333'},
-  clSuccess: { color: '#4fedc0'},
-  clWarning: { color: '#ffda3e'},
-  clError: { color: '#ff3838'},
-  clNeutral: { color: '#777777'},
+  //clText: { color: '#333'},
+  //clSuccess: { color: '#4fedc0'},
+  //clWarning: { color: '#ffda3e'},
+  //clError: { color: '#ff3838'},
+  //clNeutral: { color: '#777777'},
+  //clBackgroundGrayed: { color: '#f0f0f0'},
   // List groups
   listGroup: {
     flexWrap: 'wrap',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'stretch',
-    borderColor: '#DDD',
-    borderTopWidth:1,
-    borderStyle: 'solid',
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 20,
+    marginLeft:10,
+    marginRight:10,
+    borderColor: '#DDD',
+    borderStyle: 'solid',
+    borderWidth: 1
   },
   listGroupItem: {
     flex: 1,
     paddingTop: 10,
     paddingBottom: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingLeft: 10,
+    paddingRight: 10,
     backgroundColor: '#fff',
-    borderColor: '#DDD',
-    borderBottomWidth:1,
-    borderTopWidth:0,
-    borderStyle: 'solid',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderColor: '#DDD',
+    borderTopWidth:1,
+    borderStyle: 'solid'
+  },
+  listGroupItemFirst: {
+    borderTopWidth: 0
   },
   listGroupItemIcon: {
     width: 14,
     height: 14,
     marginRight: 5
   },
+  listGroupItemIconRight: {
+    width: 14,
+    height: 14,
+    alignSelf: 'flex-end'
+  },
   listGroupItemText: {
     color: '#333333',
     fontFamily: 'Open Sans',
-    fontSize: 14
+    fontSize: 14,
+    flex: 1
   },
   // buttons
   button: {

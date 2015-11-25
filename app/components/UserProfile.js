@@ -54,7 +54,7 @@ class UserProfileView extends Component {
     var location = null;
     if (data.location) {
       location = (
-        <View style={s.listGroupItem}>
+        <View style={[s.listGroupItem, s.listGroupItemFirst]}>
           <Icon
             name='fontawesome|map-marker'
             size={14}
@@ -71,7 +71,7 @@ class UserProfileView extends Component {
       // @todo implement website link
       website = (
         <TouchableHighlight >
-          <View style={s.listGroupItem}>
+          <View style={[s.listGroupItem, !data.location && s.listGroupItemFirst]}>
             <Icon
               name='fontawesome|link'
               size={14}
@@ -79,6 +79,12 @@ class UserProfileView extends Component {
               style={s.listGroupItemIcon}
               />
             <Text style={s.listGroupItemText}>{data.website.title}</Text>
+            <Icon
+              name='fontawesome|chevron-right'
+              size={14}
+              color='#DDD'
+              style={s.listGroupItemIconRight}
+              />
           </View>
         </TouchableHighlight>
       );
@@ -86,7 +92,7 @@ class UserProfileView extends Component {
 
     var registeredAt = (
       // @todo fix i18next call (for dates rendering)
-      <View style={s.listGroupItem}>
+      <View style={[s.listGroupItem, (!data.location && !data.website) && s.listGroupItemFirst]}>
         <Icon
           name='fontawesome|clock-o'
           size={14}
@@ -111,6 +117,12 @@ class UserProfileView extends Component {
                 style={s.listGroupItemIcon}
                 />
               <Text style={s.listGroupItemText}> débloquer cet utilisateur</Text>
+              <Icon
+                name='fontawesome|chevron-right'
+                size={14}
+                color='#DDD'
+                style={s.listGroupItemIconRight}
+                />
             </View>
           </TouchableHighlight>
         </View>
@@ -128,6 +140,12 @@ class UserProfileView extends Component {
                 style={s.listGroupItemIcon}
                 />
               <Text style={s.listGroupItemText}> bloquer cet utilisateur</Text>
+              <Icon
+                name='fontawesome|chevron-right'
+                size={14}
+                color='#DDD'
+                style={s.listGroupItemIconRight}
+                />
             </View>
           </TouchableHighlight>
         </View>
@@ -141,7 +159,7 @@ class UserProfileView extends Component {
         <View>
           <TouchableHighlight>
             <View style={s.listGroupItem}>
-              <Text style={[s.listGroupItemText, s.clError]}> cet utilisateur vous a bloqué</Text>
+              <Text style={[s.listGroupItemText, s.clError]}>cet utilisateur vous a bloqué</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -166,17 +184,19 @@ class UserProfileView extends Component {
           </View>
           <Text style={styles.bio}>{bio}</Text>
         </View>
-        <TouchableHighlight style={s.button} >
-          <View style={s.buttonLabel}>
-            <Text style={s.buttonText}>discuter</Text>
+        <View style={styles.container2}>
+          <TouchableHighlight style={s.button} >
+            <View style={s.buttonLabel}>
+              <Text style={s.buttonText}>discuter</Text>
+            </View>
+          </TouchableHighlight>
+          <View style={s.listGroup}>
+            {location}
+            {website}
+            {registeredAt}
+            {bannedLink}
+            {isBannedLink}
           </View>
-        </TouchableHighlight>
-        <View style={s.listGroup}>
-          {location}
-          {website}
-          {registeredAt}
-          {bannedLink}
-          {isBannedLink}
         </View>
       </ScrollView>
     );
@@ -186,13 +206,21 @@ class UserProfileView extends Component {
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flexWrap: 'nowrap',
-    flex: 1
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0'
   },
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#FFF'
+  },
+  container2: {
+    flex: 1,
+    borderTopWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#DDD',
+    paddingTop: 10
   },
   avatar: {
     width: 120,

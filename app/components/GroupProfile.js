@@ -40,7 +40,7 @@ class GroupProfileView extends Component {
       // @todo implement website link
       website = (
         <TouchableHighlight >
-          <View style={s.listGroupItem}>
+          <View style={[s.listGroupItem, s.listGroupItemFirst]}>
             <Icon
               name='fontawesome|link'
               size={14}
@@ -48,6 +48,12 @@ class GroupProfileView extends Component {
               style={s.listGroupItemIcon}
               />
             <Text style={s.listGroupItemText}> {data.website.title}</Text>
+            <Icon
+              name='fontawesome|chevron-right'
+              size={14}
+              color='#DDD'
+              style={s.listGroupItemIconRight}
+              />
           </View>
         </TouchableHighlight>
       );
@@ -55,7 +61,7 @@ class GroupProfileView extends Component {
 
     var createdAt = (
       // @todo fix i18next call (for dates rendering)
-      <View style={s.listGroupItem}>
+      <View style={[s.listGroupItem, !data.website && s.listGroupItemFirst]}>
         <Icon
           name='fontawesome|clock-o'
           size={14}
@@ -64,6 +70,26 @@ class GroupProfileView extends Component {
           />
         <Text style={s.listGroupItemText}> créé le {date.longDateTime(data.created)}</Text>
       </View>
+    );
+
+    var permalink = (
+      <TouchableHighlight >
+        <View style={s.listGroupItem}>
+          <Icon
+            name='fontawesome|link'
+            size={14}
+            color='#333'
+            style={s.listGroupItemIcon}
+            />
+          <Text style={s.listGroupItemText}> permalien de ce profil</Text>
+          <Icon
+            name='fontawesome|chevron-right'
+            size={14}
+            color='#DDD'
+            style={s.listGroupItemIconRight}
+            />
+        </View>
+      </TouchableHighlight>
     );
 
     var links = null;
@@ -82,6 +108,12 @@ class GroupProfileView extends Component {
                 style={s.listGroupItemIcon}
                 />
               <Text style={s.listGroupItemText}> éditer</Text>
+              <Icon
+                name='fontawesome|chevron-right'
+                size={14}
+                color='#DDD'
+                style={s.listGroupItemIconRight}
+                />
             </View>
           </TouchableHighlight>
           <TouchableHighlight>
@@ -93,6 +125,12 @@ class GroupProfileView extends Component {
                 style={s.listGroupItemIcon}
                 />
               <Text style={s.listGroupItemText}> gérer les utilisateurs</Text>
+              <Icon
+                name='fontawesome|chevron-right'
+                size={14}
+                color='#DDD'
+                style={s.listGroupItemIconRight}
+                />
             </View>
           </TouchableHighlight>
           <TouchableHighlight>
@@ -104,6 +142,12 @@ class GroupProfileView extends Component {
                 style={s.listGroupItemIcon}
                 />
               <Text style={s.listGroupItemText}> accès</Text>
+              <Icon
+                name='fontawesome|chevron-right'
+                size={14}
+                color='#DDD'
+                style={s.listGroupItemIconRight}
+                />
             </View>
           </TouchableHighlight>
         </View>
@@ -125,32 +169,24 @@ class GroupProfileView extends Component {
           </TouchableHighlight>
           <Text style={styles.description}>{description}</Text>
         </View>
-        <TouchableHighlight style={s.button}>
-          <View style={s.buttonLabel}>
-            <Text style={s.buttonText}>Rejoindre {this.members_count} </Text>
-            <Icon
-              name='fontawesome|user'
-              size={20}
-              color='#ffda3e'
-              style={s.buttonIcon}
-              />
-          </View>
-        </TouchableHighlight>
-        <View style={s.listGroup}>
-          {website}
-          {createdAt}
-          <TouchableHighlight >
-            <View style={s.listGroupItem}>
+        <View style={styles.container2}>
+          <TouchableHighlight style={s.button}>
+            <View style={s.buttonLabel}>
+              <Text style={s.buttonText}>Rejoindre {this.members_count} </Text>
               <Icon
-                name='fontawesome|link'
-                size={14}
-                color='#333'
-                style={s.listGroupItemIcon}
+                name='fontawesome|user'
+                size={20}
+                color='#ffda3e'
+                style={s.buttonIcon}
                 />
-              <Text style={s.listGroupItemText}> permalien de ce profil</Text>
             </View>
           </TouchableHighlight>
-          {links}
+          <View style={s.listGroup}>
+            {website}
+            {createdAt}
+            {permalink}
+            {links}
+          </View>
         </View>
       </ScrollView>
     );
@@ -160,12 +196,21 @@ class GroupProfileView extends Component {
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flexWrap: 'nowrap'
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0'
   },
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#FFF'
+  },
+  container2: {
+    flex: 1,
+    borderTopWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#DDD',
+    paddingTop: 10
   },
   avatar: {
     width: 120,
