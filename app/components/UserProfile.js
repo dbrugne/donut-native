@@ -9,14 +9,20 @@ var {
   TouchableHighlight,
   Component,
   Image,
-  ScrollView
+  ScrollView,
+  ListView
 } = React;
+var {
+  Icon
+} = require('react-native-icons');
+
 
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
 var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
+var s = require('./style');
 
 class UserProfileView extends Component {
   constructor (props) {
@@ -35,15 +41,70 @@ class UserProfileView extends Component {
       );
     }
 
+    var statusText = (
+      <Text style={styles.statusText}> Offline</Text>
+    );
+    if (data.status && data.status === 'online') {
+      statusText = (
+        <Text style={styles.statusText}> Offline</Text>
+      );
+    }
+
+    var bio = _.unescape(data.bio);
+
+    var location = null;
+    if (data.location) {
+      location = (
+        <View style={s.listGroupItem}>
+          <Icon
+            name='fontawesome|map-marker'
+            size={14}
+            color='#333'
+            style={s.listGroupItemIcon}
+            />
+          <Text style={s.listGroupItemText}>{data.location}</Text>
+        </View>
+      );
+    }
+
+    var website = null;
+    if (data.website) {
+      // @todo implement website link
+      website = (
+        <TouchableHighlight >
+          <View style={s.listGroupItem}>
+            <Icon
+              name='fontawesome|link'
+              size={14}
+              color='#333'
+              style={s.listGroupItemIcon}
+              />
+            <Text style={s.listGroupItemText}>{data.website.title}</Text>
+          </View>
+        </TouchableHighlight>
+      );
+    }
 
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
           <Image style={styles.avatar} source={{uri: avatarUrl}} />
-          <Text style={styles.username}>{data.username}</Text>
-
           {realname}
-
+          <Text style={[styles.username, data.realname && styles.usernameGray ]}>@{data.username}</Text>
+          <View style={styles.status}>
+            <Icon
+              name='fontawesome|circle-o'
+              size={14}
+              color='#333'
+              style={[styles.icon, (data.status && data.status === 'online') && styles.iconOnline]}
+              />
+            {statusText}
+          </View>
+          <Text style={styles.bio}>{bio}</Text>
+        </View>
+        <View style={s.listGroup}>
+          {location}
+          {website}
         </View>
       </ScrollView>
     );
@@ -53,7 +114,8 @@ class UserProfileView extends Component {
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flexWrap: 'nowrap'
+    flexWrap: 'nowrap',
+    flex: 1
   },
   container: {
     flex: 1,
@@ -71,13 +133,45 @@ var styles = StyleSheet.create({
     color: '#333333',
     fontFamily: 'Open Sans',
     fontSize: 22,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 5
+  },
+  usernameGray: {
+    color: '#b6b6b6'
   },
   realname: {
     color: '#333333',
     fontFamily: 'Open Sans',
     fontSize: 22,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 5
+  },
+  status: {
+    marginBottom: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  statusText: {
+    color: '#333333',
+    fontFamily: 'Open Sans',
+    fontSize: 18
+  },
+  icon: {
+    width: 14,
+    height: 14,
+    color: '#c7c7c7'
+  },
+  iconOnline: {
+    color: '#4fedc0'
+  },
+  bio: {
+    marginVertical: 10,
+    marginHorizontal: 10,
+    color: '#333333',
+    fontFamily: 'Open Sans',
+    fontSize: 16,
+    textAlign: 'justify'
   }
 });
 

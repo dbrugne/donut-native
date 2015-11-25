@@ -38,8 +38,15 @@ class ProfileView extends Component {
     if (this.id) {
       if (this.type === 'room') {
         client.roomRead(this.id, {more: true}, this.onData.bind(this));
-      } else {
+      } else if (this.type === 'user') {
         client.userRead(this.id, this.onData.bind(this));
+      } else if (this.type === 'group') {
+        var what = {
+          rooms: false,
+          users: false,
+          admin: false
+        };
+        client.groupRead(this.id, what, this.onData.bind(this));
       }
     }
   }
@@ -76,23 +83,17 @@ class ProfileView extends Component {
     switch (this.type) {
       case 'room':
         return (
-          <View style={styles.container}>
-            <RoomProfile data={this.state.data} navigator={this.props.navigator} />
-          </View>
+          <RoomProfile data={this.state.data} navigator={this.props.navigator} />
         );
       break;
       case 'user':
         return (
-          <View style={styles.container}>
-            <UserProfile data={this.state.data} navigator={this.props.navigator} />
-          </View>
+          <UserProfile data={this.state.data} navigator={this.props.navigator} />
         );
       break;
       case 'group':
         return (
-          <View style={styles.container}>
-            <GroupProfile data={this.state.data} navigator={this.props.navigator} />
-          </View>
+          <GroupProfile data={this.state.data} navigator={this.props.navigator} />
         );
       break;
       default:
@@ -118,12 +119,6 @@ var styles = StyleSheet.create({
   loading: {
     height: 120
   },
-  // profile
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
 });
 
 module.exports = ProfileView;
