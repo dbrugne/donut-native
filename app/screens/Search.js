@@ -11,6 +11,9 @@ var {
   ListView,
   Component,
 } = React;
+var {
+  Icon
+  } = require('react-native-icons');
 
 var _ = require('underscore');
 var app = require('../libs/app');
@@ -43,20 +46,34 @@ class SearchView extends Component {
     return (
       <View style={styles.main}>
         <View>
-          <TextInput style={[styles.formInputFind, s.searchInput]}
-            placeholder='Search donut, community or user here'
-            onChangeText={(text) => this.setState({findValue: text})}
-            value={this.state.findValue}
-            onChange={this.changeText.bind(this)}
+          <View  style={styles.formInputContainer}>
+            <TextInput style={styles.formInputFind}
+              placeholder='Search donut, community or user here'
+              onChangeText={(text) => this.setState({findValue: text})}
+              value={this.state.findValue}
+              onChange={this.changeText.bind(this)}
+              />
+            <Icon
+            name='fontawesome|search'
+            size={18}
+            color='#DDD'
+            style={styles.formInputFindIcon}
             />
+          </View>
           <View style={styles.buttonContainer}>
-            <TouchableHighlight onPress={this.search.bind(this, 'rooms', null)} style={styles.button}>
+            <TouchableHighlight onPress={this.search.bind(this, 'rooms', null)}
+                                underlayColor= '#DDD'
+                                style={[styles.button, this.state.type === 'rooms' && styles.buttonActive]}>
               <Text style={styles.textButton}>donuts</Text>
             </TouchableHighlight>
-            <TouchableHighlight onPress={this.search.bind(this, 'users', null)} style={styles.button}>
+            <TouchableHighlight onPress={this.search.bind(this, 'users', null)}
+                                underlayColor= '#DDD'
+                                style={[styles.button, this.state.type === 'users' && styles.buttonActive]}>
               <Text style={styles.textButton}>users</Text>
             </TouchableHighlight>
-            <TouchableHighlight onPress={this.search.bind(this, 'groups', null)} style={styles.button}>
+            <TouchableHighlight onPress={this.search.bind(this, 'groups', null)}
+                                underlayColor= '#DDD'
+                                style={[styles.button, this.state.type === 'groups' && styles.buttonActive]}>
               <Text style={styles.textButton}>community</Text>
             </TouchableHighlight>
           </View>
@@ -221,24 +238,49 @@ var styles = StyleSheet.create({
     flex: 1
   },
   buttonContainer: {
+    borderTopWidth: 3,
+    borderStyle: 'solid',
+    borderColor: '#DDD',
     flexDirection: 'row',
-    justifyContent: 'center',
-    margin: 10
+    justifyContent: 'center'
   },
   textButton: {
-    margin: 10,
+    padding: 10,
     textAlign: 'center',
-    color: '#fff'
+    color: '#333'
   },
   button: {
-    backgroundColor: '#444444',
-    margin: 10,
-    width: 100,
-    height: 40
+    height: 40,
+    flex: 1
+  },
+  buttonActive: {
+    borderBottomWidth:3,
+    borderStyle: 'solid',
+    borderColor: '#3498db'
+  },
+  buttonLast: {
+    borderRightWidth: 0
+  },
+  formInputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   formInputFind: {
     height: 40,
-    borderWidth: 1
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 5,
+    paddingBottom: 5,
+    fontSize: 18,
+    color: '#48BBEC',
+    flex: 1
+  },
+  formInputFindIcon: {
+    width: 18,
+    height: 18,
+    alignSelf: 'center',
+    marginRight: 10
   },
   thumbnail: {
     width: 40,

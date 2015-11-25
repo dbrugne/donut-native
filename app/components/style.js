@@ -96,13 +96,5 @@ module.exports = StyleSheet.create({
   buttonIcon: {
     width: 20,
     height: 20
-  },
-  // search field
-  searchInput: {
-    padding: 4,
-    fontSize: 18,
-    borderBottomWidth: 3,
-    borderColor: '#48BBEC',
-    color: '#48BBEC'
   }
 });
