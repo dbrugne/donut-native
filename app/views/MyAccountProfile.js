@@ -2,10 +2,10 @@ var React = require('react-native');
 var _ = require('underscore');
 var client = require('../libs/client');
 var Button = require('react-native-button');
-var colors = require('../libs/colors').list;
 var Platform = require('Platform');
 
 var {
+  NativeModules,
   Component,
   Text,
   View,
@@ -20,8 +20,10 @@ var {
 
 var currentUser = require('../models/mobile-current-user');
 var common = require('@dbrugne/donut-common/mobile');
+var navigation = require('../libs/navigation');
 
 //@todo yfuks possibility to access camera/library to change poster/avatar
+let { UIImagePickerManager: ImagePickerManager } = NativeModules;
 
 class EditProfileView extends Component {
   constructor (props) {
@@ -30,20 +32,32 @@ class EditProfileView extends Component {
       picture: '',
       color: '',
       errors: [],
-      showColorPicker: false,
       username: currentUser.get('username'),
+      realName: '',
       load: false
     };
   }
 
   componentDidMount () {
+    currentUser.on('change', this.onChange.bind(this));
     client.userRead(currentUser.get('user_id'), _.bind(function (response) {
       this.setState({
-        picture: common.cloudinary.prepare(response.avatar, 200),
+        realName: response.realname,
+        picture: common.cloudinary.prepare(response.avatar, 180),
         color: response.color,
         load: true
       });
     }, this));
+  }
+  componentWillUnmount () {
+    currentUser.off('change');
+  }
+
+  onChange (model, options) {
+    this.setState({
+      color: model.get('color'),
+      picture: common.cloudinary.prepare(model.get('avatar'), 180)
+    });
   }
 
   render () {
@@ -54,89 +68,92 @@ class EditProfileView extends Component {
     return (
       <ScrollView style={styles.container}>
         {this.state.errors.map((m) => <Text>{m}</Text>)}
-        <View style={{alignItems: 'center'}}>
-          <Button>
-            <Image
-              style={styles.image}
-              source={{uri: this.state.picture}}
-              />
-            <Icon
-              name='fontawesome|pencil'
-              size={25}
-              color='#888'
-              style={styles.icon}
-              />
-          </Button>
-          <View style={styles.row}>
-            <Text style={styles.label}>@{this.state.username}</Text>
-            <Icon
-            name='fontawesome|circle'
-            size={8}
-            color='#57C259'
-            style={styles.status}
+        <View style={{flex: 1,flexDirection: 'row',alignItems: 'center', backgroundColor: '#EEE', height: 200}}>
+          <Image
+            style={styles.image}
+            source={{uri: this.state.picture}}
             />
+          <View style={{flex: 1}}>
+            <Text style={styles.realname}>{this.state.realName}</Text>
+            <Text style={{textAlign: 'center'}}>@{this.state.username}</Text>
           </View>
-          <View style={styles.separator}></View>
         </View>
-        {this._renderColor(this.state.color)}
-        {this._renderColorPicker(colors)}
+        {this._renderMenu(this.state.color)}
       </ScrollView>
     )
   }
 
-  _renderColor (color) {
-    if (this.state.showColorPicker) {
-      return;
+  _pickFromCamera () {
+    if (Platform.OS === 'android') {
+      ImagePickerManager.launchCamera({}, (cancelled, response) => {
+        if (!cancelled) {
+          this.setState({picture: response.uri});
+        }
+      });
     }
-
-    return (
-      <View style={{alignItems: 'center'}}>
-        <Text style={styles.label}>Color</Text>
-        <Button onPress={() => this.setState({showColorPicker: !this.state.showColorPicker})}>
-          <View
-            style={[styles.image, {backgroundColor: color}]}
-            /><Icon
-          name='fontawesome|pencil'
-          size={25}
-          color='#888'
-          style={styles.icon}
-          />
-        </Button>
-      </View>
-    );
   }
 
-  _renderColorPicker (color) {
-    if (!this.state.showColorPicker) {
-      return;
+  _pickFromGallery () {
+    if (Platform.OS === 'android') {
+      ImagePickerManager.launchImageLibrary({}, (cancelled, response) => {
+        console.log(response);
+        if (!cancelled) {
+          this.setState({picture: response.uri});
+        }
+      });
     }
+  }
 
-    var listOfView = [];
-    _.each(color, _.bind(function (c) {
-      listOfView.push(
-        <Button key={c.name} onPress={() => this._changeUserColor(c)}>
-          <View style={[styles.colorSquare, {backgroundColor: c.hex}]}></View>
-        </Button>);
-    }, this));
+  _renderMenu (color) {
     return (
-      <View>
-        <Text style={[styles.label, {alignSelf: 'center'}]}>Select a color</Text>
-        <View style={styles.colorPicker}>
-          {listOfView}
+      <View style={{marginTop: 20}}>
+        <View style={styles.rowAspect}>
+          <Button onPress={() => this.props.navigator.push(navigation.getColorPicker())}>
+            <View style={styles.formRow}>
+              <View>
+                <Text style={{fontWeight: 'bold', color: '#222', fontSize: 20}}>Color</Text>
+                <Text style={{}}>select color that appears on your profile</Text>
+              </View>
+              <View
+                style={[styles.color, {backgroundColor: color}]}
+                />
+            </View>
+          </Button>
+        </View>
+        <View style={styles.rowAspect}>
+          <Button onPress={this._pickFromGallery.bind(this)}>
+            <View style={styles.formRow}>
+            <View>
+              <Text style={{fontWeight: 'bold', color: '#222', fontSize: 20}}>Gallery</Text>
+              <Text style={{}}>get a picture from gallery</Text>
+            </View>
+            <Icon
+              name='fontawesome|archive'
+              size={40}
+              color='#888'
+              style={styles.icon}
+            />
+            </View>
+          </Button>
+        </View>
+        <View style={styles.rowAspect}>
+          <Button onPress={this._pickFromCamera.bind(this)}>
+            <View style={styles.formRow}>
+              <View>
+                <Text style={{fontWeight: 'bold', color: '#222', fontSize: 20}}>Photo</Text>
+                <Text style={{}}>get a picture from camera</Text>
+              </View>
+              <Icon
+                name='fontawesome|camera'
+                size={40}
+                color='#888'
+                style={styles.icon}
+                />
+            </View>
+          </Button>
         </View>
       </View>
     );
-  }
-
-  _changeUserColor (c) {
-    client.userUpdate({color: c.hex}, _.bind(function (response) {
-      if (response.err) {
-        this._appendError(response.err);
-      } else {
-        this.setState({color: c.hex, showColorPicker: false});
-        this._appendError('Success');
-      }
-    }, this));
   }
 
   renderLoadingView () {
@@ -162,51 +179,46 @@ var styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  label: {
-    fontWeight: 'bold',
-    color: "#222",
-    marginTop: 10
-  },
   image: {
     height: 140,
     width: 140,
     borderRadius: 4,
-    marginTop: 15
+    marginTop: 15,
+    marginLeft: 15
   },
   icon: {
-    width: 25,
-    height: 25,
+    width: 60,
+    height: 60,
     position: 'absolute',
-    top: 128,
     right: 0
-  },
-  status: {
-    width: 18,
-    height: 28
-  },
-  separator: {
-    flex: 1,
-    width: 250,
-    height: 1,
-    backgroundColor: '#AAA',
-    marginTop: 25,
-    marginBottom: 15
-  },
-  colorPicker: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 25,
-    justifyContent: 'center'
   },
   row: {
     flexDirection: 'row'
   },
-  colorSquare: {
-    width: 25,
-    height: 25,
-    margin: 3,
-    borderRadius: 2
+  realname: {
+    fontSize: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: "#222"
+  },
+  formRow: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    height: 60,
+    marginLeft: 10,
+    marginRight: 10
+  },
+  color: {
+    height: 40,
+    width: 40,
+    borderRadius: 4,
+    position: 'absolute',
+    right: 10,
+    top: 10
+  },
+  rowAspect: {
+    marginBottom: 20
   }
 });
 

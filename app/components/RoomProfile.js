@@ -252,8 +252,7 @@ var styles = StyleSheet.create({
     marginHorizontal: 10,
     color: '#333333',
     fontFamily: 'Open Sans',
-    fontSize: 16,
-    textAlign: 'justify'
+    fontSize: 16
   },
   icon: {
     width: 14,

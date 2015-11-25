@@ -32,8 +32,11 @@ var Drawer = require('react-native-drawer')
 import ExNavigator from '@exponent/react-native-navigator';
 var Button = require('react-native-button');
 var app = require('./app');
+var Platform = require('Platform');
 
-let navigationBarHeight = 64;
+let navigationBarHeight = ((Platform.OS === 'android')
+  ? 56
+  : 64);
 var drawer;
 var drawerOpened = false;
 var rootNavigator;
@@ -389,6 +392,17 @@ routes.getMyAccountPreferences = function () {
     },
     getTitle: function () {
       return 'My Preferences';
+    }
+  });
+};
+routes.getColorPicker = function () {
+  return getRoute({
+    id: 'color-picker',
+    getSceneClass: function () {
+      return require('../views/ColorPicker');
+    },
+    getTitle: function () {
+      return 'Color picker';
     }
   });
 };

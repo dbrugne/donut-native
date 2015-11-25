@@ -1,6 +1,7 @@
 package com.donutmobile;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
@@ -11,6 +12,9 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.smixx.reactnativeicons.ReactNativeIcons;
 import java.util.Arrays;
 import com.smixx.reactnativeicons.IconFont;
@@ -19,6 +23,12 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     private ReactInstanceManager mReactInstanceManager;
     private ReactRootView mReactRootView;
+
+    private List<ActivityResultListener> mListeners = new ArrayList<>();
+
+    public void addActivityResultListener(ActivityResultListener listener) {
+        mListeners.add(listener);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +41,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .setJSMainModuleName("index.android")
                 .addPackage(new MainReactPackage())
                 .addPackage(new ReactNativeIcons())
+                .addPackage(new ImagePickerPackage(this))
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
@@ -78,6 +89,13 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         if (mReactInstanceManager != null) {
             mReactInstanceManager.onResume(this);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        for (ActivityResultListener listener : mListeners) {
+            listener.onActivityResult(requestCode, resultCode, data);
         }
     }
 }
