@@ -14,13 +14,15 @@ var {
 var _ = require('underscore');
 var client = require('../libs/client');
 var common = require('@dbrugne/donut-common/mobile');
-
+var RoomProfile = require('../components/RoomProfile');
+var GroupProfile = require('../components/GroupProfile');
+var UserProfile = require('../components/UserProfile');
 var navigation = require('../libs/navigation');
 
 // @todo unmount component when navigating (even from drawer)
 // @todo on unmouting stop current loading and pending callbacks
 
-class UserProfileView extends Component {
+class ProfileView extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -71,28 +73,32 @@ class UserProfileView extends Component {
       );
     }
 
-    var data = this.state.data;
-    var avatarUrl = common.cloudinary.prepare(data.avatar, 120);
-    var description = data.description || data.bio;
-    description = _.unescape(description);
-
-    return (
-      <View style={styles.container}>
-        <Image style={styles.avatar} source={{uri: avatarUrl}} />
-        <Text style={styles.identifier}>{data.identifier}</Text>
-        <TouchableHighlight style={styles.owner} onPress={() => {
-          //this.props.childNavigator.push(router.getRoute(url, {identifier: room.identifier}));
-          this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username}));
-        }}>
-          <Text>
-            <Text>by </Text>
-            <Text style={styles.ownerUsername}>@{data.owner_username}</Text>
-          </Text>
-        </TouchableHighlight>
-        <Text style={styles.description}>{description}</Text>
-        <Text>{data.room_id}</Text>
-      </View>
-    );
+    switch (this.type) {
+      case 'room':
+        return (
+          <View style={styles.container}>
+            <RoomProfile data={this.state.data} navigator={this.props.navigator} />
+          </View>
+        );
+      break;
+      case 'user':
+        return (
+          <View style={styles.container}>
+            <UserProfile data={this.state.data} navigator={this.props.navigator} />
+          </View>
+        );
+      break;
+      case 'group':
+        return (
+          <View style={styles.container}>
+            <GroupProfile data={this.state.data} navigator={this.props.navigator} />
+          </View>
+        );
+      break;
+      default:
+        return navigation.switchTo(navigation.getHome()); // @todo goto home make this work
+      break;
+    }
   }
 }
 
@@ -117,33 +123,7 @@ var styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginTop: 20,
-    marginBottom: 10,
-    borderColor: '#DCDCDC',
-    borderWidth: 5
-  },
-  identifier: {
-    color: '#333333',
-    fontFamily: 'Open Sans',
-    fontSize: 22,
-    fontWeight: 'bold'
-  },
-  owner: {
-
-  },
-  ownerUsername: {
-    fontFamily: 'Open Sans',
-    fontWeight: 'bold'
-  },
-  description: {
-    marginVertical: 15,
-    marginHorizontal: 9
   }
 });
 
-module.exports = UserProfileView;
+module.exports = ProfileView;
