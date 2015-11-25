@@ -37,16 +37,19 @@ class ProfileView extends Component {
   componentDidMount () {
     if (this.id) {
       if (this.type === 'room') {
-        client.roomRead(this.id, {more: true}, this.onData.bind(this));
+        client.roomRead(this.id, {
+          more: true,
+          users: false,
+          admin: false
+        }, this.onData.bind(this));
       } else if (this.type === 'user') {
         client.userRead(this.id, this.onData.bind(this));
       } else if (this.type === 'group') {
-        var what = {
+        client.groupRead(this.id, {
           rooms: false,
           users: false,
           admin: false
-        };
-        client.groupRead(this.id, what, this.onData.bind(this));
+        }, this.onData.bind(this));
       }
     }
   }

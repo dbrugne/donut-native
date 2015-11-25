@@ -5,7 +5,6 @@ var {
   StyleSheet,
   View,
   Text,
-  ActivityIndicatorIOS,
   TouchableHighlight,
   Component,
   Image,
@@ -21,12 +20,14 @@ var app = require('../libs/app');
 var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
 var s = require('./style');
+var date = require('../libs/date');
 
 class GroupProfileView extends Component {
   constructor(props) {
     super(props);
 
     this.data = props.data;
+    this.members_count = (this.data.members && this.data.members.length) ? this.data.members.length : 0;
   }
 
   render() {
@@ -52,6 +53,65 @@ class GroupProfileView extends Component {
       );
     }
 
+    var createdAt = (
+      // @todo fix i18next call (for dates rendering)
+      <View style={s.listGroupItem}>
+        <Icon
+          name='fontawesome|clock-o'
+          size={14}
+          color='#333'
+          style={s.listGroupItemIcon}
+          />
+        <Text style={s.listGroupItemText}> créé le {date.longDateTime(data.created)}</Text>
+      </View>
+    );
+
+    var links = null;
+    if (currentUser.get('user_id') === data.owner_id || currentUser.isAdmin()) {
+      // @todo implement onpress goto group edit
+      // @todo implement onpress goto group users
+      // @todo implement onpress goto group access
+      links = (
+        <View>
+          <TouchableHighlight>
+            <View style={s.listGroupItem}>
+              <Icon
+                name='fontawesome|pencil'
+                size={14}
+                color='#333'
+                style={s.listGroupItemIcon}
+                />
+              <Text style={s.listGroupItemText}> éditer</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight>
+            <View style={s.listGroupItem}>
+              <Icon
+                name='fontawesome|users'
+                size={14}
+                color='#333'
+                style={s.listGroupItemIcon}
+                />
+              <Text style={s.listGroupItemText}> gérer les utilisateurs</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight>
+            <View style={s.listGroupItem}>
+              <Icon
+                name='fontawesome|key'
+                size={14}
+                color='#333'
+                style={s.listGroupItemIcon}
+                />
+              <Text style={s.listGroupItemText}> accès</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      );
+    }
+
+    // @todo implement permalink link
+    // @todo implement joinGroup
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
@@ -65,8 +125,32 @@ class GroupProfileView extends Component {
           </TouchableHighlight>
           <Text style={styles.description}>{description}</Text>
         </View>
+        <TouchableHighlight style={s.button}>
+          <View style={s.buttonLabel}>
+            <Text style={s.buttonText}>Rejoindre {this.members_count} </Text>
+            <Icon
+              name='fontawesome|user'
+              size={20}
+              color='#ffda3e'
+              style={s.buttonIcon}
+              />
+          </View>
+        </TouchableHighlight>
         <View style={s.listGroup}>
           {website}
+          {createdAt}
+          <TouchableHighlight >
+            <View style={s.listGroupItem}>
+              <Icon
+                name='fontawesome|link'
+                size={14}
+                color='#333'
+                style={s.listGroupItemIcon}
+                />
+              <Text style={s.listGroupItemText}> permalien de ce profil</Text>
+            </View>
+          </TouchableHighlight>
+          {links}
         </View>
       </ScrollView>
     );

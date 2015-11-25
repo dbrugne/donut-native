@@ -5,12 +5,10 @@ var {
   StyleSheet,
   View,
   Text,
-  ActivityIndicatorIOS,
   TouchableHighlight,
   Component,
   Image,
-  ScrollView,
-  ListView
+  ScrollView
 } = React;
 var {
   Icon
@@ -23,6 +21,7 @@ var app = require('../libs/app');
 var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
 var s = require('./style');
+var date = require('../libs/date');
 
 class UserProfileView extends Component {
   constructor (props) {
@@ -85,6 +84,71 @@ class UserProfileView extends Component {
       );
     }
 
+    var registeredAt = (
+      // @todo fix i18next call (for dates rendering)
+      <View style={s.listGroupItem}>
+        <Icon
+          name='fontawesome|clock-o'
+          size={14}
+          color='#333'
+          style={s.listGroupItemIcon}
+          />
+        <Text style={s.listGroupItemText}> inscrit le {date.longDateTime(data.registered)}</Text>
+      </View>
+    );
+
+    var bannedLink = null;
+    if (data.banned === true) {
+      // @todo implement ban / deban action
+      bannedLink = (
+        <View>
+          <TouchableHighlight>
+            <View style={s.listGroupItem}>
+              <Icon
+                name='fontawesome|ban'
+                size={14}
+                color='#ff3838'
+                style={s.listGroupItemIcon}
+                />
+              <Text style={s.listGroupItemText}> débloquer cet utilisateur</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      );
+    } else {
+      // @todo implement ban / deban action
+      bannedLink = (
+        <View>
+          <TouchableHighlight>
+            <View style={s.listGroupItem}>
+              <Icon
+                name='fontawesome|ban'
+                size={14}
+                color='#ff3838'
+                style={s.listGroupItemIcon}
+                />
+              <Text style={s.listGroupItemText}> bloquer cet utilisateur</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      );
+    }
+
+    var isBannedLink = null;
+    if (data.i_am_banned === true) {
+      // @todo implement ban / deban action
+      isBannedLink = (
+        <View>
+          <TouchableHighlight>
+            <View style={s.listGroupItem}>
+              <Text style={[s.listGroupItemText, s.clError]}> cet utilisateur vous a bloqué</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      );
+    }
+
+    // @todo implement joinOne
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
@@ -102,9 +166,17 @@ class UserProfileView extends Component {
           </View>
           <Text style={styles.bio}>{bio}</Text>
         </View>
+        <TouchableHighlight style={s.button} >
+          <View style={s.buttonLabel}>
+            <Text style={s.buttonText}>discuter</Text>
+          </View>
+        </TouchableHighlight>
         <View style={s.listGroup}>
           {location}
           {website}
+          {registeredAt}
+          {bannedLink}
+          {isBannedLink}
         </View>
       </ScrollView>
     );

@@ -8,6 +8,12 @@ var {
 
 module.exports = StyleSheet.create({
 
+  // colors
+  clText: { color: '#333'},
+  clSuccess: { color: '#4fedc0'},
+  clWarning: { color: '#ffda3e'},
+  clError: { color: '#ff3838'},
+  clNeutral: { color: '#777777'},
   // List groups
   listGroup: {
     flexWrap: 'wrap',
@@ -32,7 +38,7 @@ module.exports = StyleSheet.create({
     borderTopWidth:0,
     borderStyle: 'solid',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center'
   },
   listGroupItemIcon: {
@@ -44,38 +50,48 @@ module.exports = StyleSheet.create({
     color: '#333333',
     fontFamily: 'Open Sans',
     fontSize: 14
-  }
+  },
   // buttons
-  //button: {
-  //  height: 36,
-  //  flex: 1,
-  //  flexDirection: 'row',
-  //  backgroundColor: '#48BBEC',
-  //  borderColor: '#48BBEC',
-  //  borderWidth: 1,
-  //  borderRadius: 8,
-  //  marginBottom: 10,
-  //  alignSelf: 'stretch',
-  //  justifyContent: 'center'
-  //},
-  //buttonLabel: {
-  //  fontFamily: 'Open Sans',
-  //  fontSize: 16,
-  //  fontWeight: 'bold',
-  //  color: '#FFFFFF',
-  //  textAlign: 'center',
-  //  alignSelf: 'center'
-  //},
+  button: {
+    height: 36,
+    backgroundColor: '#f5f8fa',
+    borderColor: '#e1e8ed',
+    borderWidth: 1,
+    borderRadius: 4,
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    flexWrap: 'nowrap',
+    flexDirection: 'row'
+  },
+  buttonLabel: {
+    flexWrap: 'nowrap',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flex: 1
+  },
+  buttonText: {
+    fontFamily: 'Open Sans',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333'
+  },
+  buttonIcon: {
+    width: 20,
+    height: 20
+  },
   // search field
-  //searchInput: {
-  //  height: 36,
-  //  padding: 4,
-  //  marginRight: 5,
-  //  flex: 4,
-  //  fontSize: 18,
-  //  borderWidth: 1,
-  //  borderColor: '#48BBEC',
-  //  borderRadius: 8,
-  //  color: '#48BBEC'
-  //}
+  searchInput: {
+    padding: 4,
+    fontSize: 18,
+    borderBottomWidth: 3,
+    borderColor: '#48BBEC',
+    color: '#48BBEC'
+  }
 });

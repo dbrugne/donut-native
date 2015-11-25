@@ -17,6 +17,7 @@ var app = require('../libs/app');
 var client = require('../libs/client');
 var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../libs/navigation');
+var s = require('../components/style');
 
 var LIMIT = 25;
 var TIME_SEARCH = 500;
@@ -42,7 +43,7 @@ class SearchView extends Component {
     return (
       <View style={styles.main}>
         <View>
-          <TextInput style={styles.formInputFind}
+          <TextInput style={[styles.formInputFind, s.searchInput]}
             placeholder='Search donut, community or user here'
             onChangeText={(text) => this.setState({findValue: text})}
             value={this.state.findValue}
