@@ -23,6 +23,7 @@ var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../libs/navigation');
 
 //@todo yfuks possibility to access camera/library to change poster/avatar
+//@todo yfuks/dbrugne make it work on IOS https://github.com/marcshilling/react-native-image-picker
 let { UIImagePickerManager: ImagePickerManager } = NativeModules;
 
 class EditProfileView extends Component {
