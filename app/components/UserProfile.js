@@ -40,12 +40,28 @@ class UserProfileView extends Component {
       );
     }
 
-    var statusText = (
-      <Text style={styles.statusText}> Offline</Text>
+    var status = (
+      <View style={styles.status}>
+        <Icon
+          name='fontawesome|circle-o'
+          size={14}
+          color='#c7c7c7'
+          style={[styles.icon, (data.status && data.status === 'online') && styles.iconOnline]}
+          />
+        <Text style={styles.statusText}> Offline</Text>
+      </View>
     );
     if (data.status && data.status === 'online') {
-      statusText = (
-        <Text style={styles.statusText}> Offline</Text>
+      status = (
+        <View style={styles.status}>
+          <Icon
+            name='fontawesome|circle'
+            size={14}
+            color='#4fedc0'
+            style={[styles.icon, (data.status && data.status === 'online') && styles.iconOnline]}
+            />
+          <Text style={styles.statusText}> Online</Text>
+        </View>
       );
     }
 
@@ -173,15 +189,7 @@ class UserProfileView extends Component {
           <Image style={styles.avatar} source={{uri: avatarUrl}} />
           {realname}
           <Text style={[styles.username, data.realname && styles.usernameGray ]}>@{data.username}</Text>
-          <View style={styles.status}>
-            <Icon
-              name='fontawesome|circle-o'
-              size={14}
-              color='#333'
-              style={[styles.icon, (data.status && data.status === 'online') && styles.iconOnline]}
-              />
-            {statusText}
-          </View>
+          {status}
           <Text style={styles.bio}>{bio}</Text>
         </View>
         <View style={styles.container2}>

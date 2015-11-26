@@ -60,6 +60,7 @@ class SearchView extends Component {
             style={styles.formInputFindIcon}
             />
           </View>
+
           <View style={styles.buttonContainer}>
             <TouchableHighlight onPress={this.search.bind(this, 'rooms', null)}
                                 underlayColor= '#DDD'
@@ -78,6 +79,7 @@ class SearchView extends Component {
             </TouchableHighlight>
           </View>
         </View>
+
         <View style={styles.searchContainer} >
           <ListView
             ref='listview'
@@ -89,8 +91,6 @@ class SearchView extends Component {
       </View>
     );
   }
-
-
   renderElement (rowData) {
     if (this.state.type === 'rooms') {
       return this.renderRoomsElement(rowData);
@@ -100,48 +100,101 @@ class SearchView extends Component {
       return this.renderGroupsElement(rowData);
     }
   }
-
   renderRoomsElement (room) {
-    var avatarUrl = common.cloudinary.prepare(room.avatar, 30)
+    var avatarUrl = common.cloudinary.prepare(room.avatar, 40);
+    var description = null;
+    if (room.description) {
+      description = (
+        <Text style={styles.description}>{_.unescape(room.description).replace(/\n/g, '')}</Text>
+      );
+    }
     return (
-      <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getProfile({type: 'room', id: room.room_id, identifier: room.identifier}))}>
+      <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getProfile({type: 'room', id: room.room_id, identifier: room.identifier}))}
+                          underlayColor= '#DDD'
+        >
         <View style={styles.element}>
           <Image
             source={{uri: avatarUrl}}
             style={styles.thumbnail}
             />
           <Text style={styles.textElement}>{room.identifier}</Text>
-          <Text> by @{room.owner_username}</Text>
+          {description}
         </View>
       </TouchableHighlight>
     );
   }
 
   renderUsersElement (user) {
-    var avatarUrl = common.cloudinary.prepare(user.avatar, 30)
+    var avatarUrl = common.cloudinary.prepare(user.avatar, 40);
+    var realname = null;
+    if (user.realname) {
+      realname = (
+        <Text style={styles.textElement}>{user.realname}</Text>
+      );
+    }
+    var bio = null;
+    if (user.bio) {
+      bio = (
+        <Text style={styles.description}>{_.unescape(user.bio).replace(/\n/g, '')}</Text>
+      );
+    }
+    var status = (
+      <Icon
+        name='fontawesome|circle-o'
+        size={14}
+        color='#c7c7c7'
+        style={styles.icon}
+        />
+    );
+    if (user.status && user.status === 'online') {
+      status = (
+        <Icon
+          name='fontawesome|circle'
+          size={14}
+          color='#4fedc0'
+          style={styles.icon}
+          />
+      );
+    }
     return (
-      <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getProfile({type: 'user', id: user.user_id, identifier: '@' + user.username}))}>
+      <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getProfile({type: 'user', id: user.user_id, identifier: '@' + user.username}))}
+                          underlayColor= '#DDD'
+        >
         <View style={styles.element}>
           <Image
             source={{uri: avatarUrl}}
-            style={styles.thumbnail}
+            style={[styles.thumbnail, styles.thumbnailUser]}
             />
-          <Text style={styles.textElement}>@{user.username}</Text>
+          {realname}
+          <Text style={[styles.textElement, realname && styles.username]}>@{user.username}</Text>
+          <View style={styles.status}>
+            {status}
+          </View>
+          {bio}
         </View>
       </TouchableHighlight>
     );
   }
 
   renderGroupsElement (group) {
-    var avatarUrl = common.cloudinary.prepare(group.avatar, 30)
+    var avatarUrl = common.cloudinary.prepare(group.avatar, 40);
+    var description = null;
+    if (group.description) {
+      description = (
+        <Text style={styles.description}>{_.unescape(group.description).replace(/\n/g, '')}</Text>
+      );
+    }
     return (
-      <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getProfile({type: 'group', id: group.group_id, identifier: group.identifier}))}>
+      <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getProfile({type: 'group', id: group.group_id, identifier: group.identifier}))}
+                          underlayColor= '#DDD'
+        >
         <View style={styles.element}>
           <Image
             source={{uri: avatarUrl}}
             style={styles.thumbnail}
             />
           <Text style={styles.textElement}>#{group.name}</Text>
+          {description}
         </View>
       </TouchableHighlight>
     );
@@ -163,15 +216,17 @@ class SearchView extends Component {
     }
     else if (this.state.more) {
       return (
-        <TouchableHighlight onPress={this.loadMore.bind(this)}>
+        <TouchableHighlight onPress={this.loadMore.bind(this)}
+                            underlayColor= '#DDD'
+          >
           <View style={styles.loadMore}>
-            <Text style={{color:'#fff', textAlign: 'center'}}>Load more</Text>
+            <Text style={{color:'#333', textAlign: 'center'}}>Load more</Text>
 
           </View>
         </TouchableHighlight>
       );
     } else if (this.resultBlob.length) {
-      return (<View style={styles.loadMore}><Text style={{color:'#fff', textAlign: 'center'}}>Aucun résultat</Text></View>);
+      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>Aucun résultat</Text></View>);
     } else {
       return (<View></View>);
     }
@@ -237,30 +292,6 @@ var styles = StyleSheet.create({
   main: {
     flex: 1
   },
-  buttonContainer: {
-    borderTopWidth: 3,
-    borderStyle: 'solid',
-    borderColor: '#DDD',
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  textButton: {
-    padding: 10,
-    textAlign: 'center',
-    color: '#333'
-  },
-  button: {
-    height: 40,
-    flex: 1
-  },
-  buttonActive: {
-    borderBottomWidth:3,
-    borderStyle: 'solid',
-    borderColor: '#3498db'
-  },
-  buttonLast: {
-    borderRightWidth: 0
-  },
   formInputContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -282,13 +313,29 @@ var styles = StyleSheet.create({
     alignSelf: 'center',
     marginRight: 10
   },
-  thumbnail: {
-    width: 40,
-    height: 40,
-    borderColor: '#fff',
-    borderRadius: 20,
-    borderWidth: 1
+
+  buttonContainer: {
+    borderTopWidth: 3,
+    borderStyle: 'solid',
+    borderColor: '#DDD',
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
+  textButton: {
+    padding: 10,
+    textAlign: 'center',
+    color: '#333'
+  },
+  button: {
+    height: 40,
+    flex: 1
+  },
+  buttonActive: {
+    borderBottomWidth:3,
+    borderStyle: 'solid',
+    borderColor: '#3498db'
+  },
+
   searchContainer: {
     flex: 1,
     flexDirection: 'column',
@@ -297,18 +344,54 @@ var styles = StyleSheet.create({
   },
   element: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     height: 60,
-    borderColor: '#000',
+    borderColor: '#DDD',
     borderBottomWidth: 1,
     padding: 10
   },
+  thumbnail: {
+    width: 40,
+    height: 40,
+    borderRadius: 20
+  },
+  thumbnailUser: {
+    borderRadius: 4
+  },
   textElement: {
-    marginLeft: 20,
-    fontWeight: 'bold'
+    fontSize: 16,
+    fontFamily: 'Open Sans',
+    marginLeft: 5,
+    fontWeight: 'bold',
+    color: '#333'
+  },
+  description: {
+    marginLeft: 5,
+    color: '#777',
+    fontFamily: 'Open Sans',
+    fontSize: 16,
+    fontStyle: 'italic'
+  },
+  username: {
+    marginLeft: 5,
+    fontSize: 14,
+    fontFamily: 'Open Sans',
+    color: '#b6b6b6',
+    fontWeight: 'normal'
+  },
+  status: {
+    marginLeft: 5
+  },
+  icon: {
+    width: 14,
+    height: 14,
+    color: '#c7c7c7'
   },
   loadMore: {
     height: 40,
-    backgroundColor: '#000',
+    backgroundColor: '#f5f8fa',
+    color: '#333',
     justifyContent: 'center'
   }
 });
