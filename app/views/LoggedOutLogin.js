@@ -91,12 +91,10 @@ class LoginView extends Component {
     return (
       <View style={styles.main}>
         <View style={styles.logoCtn}>
-          <View style={styles.flexible}>
-            <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
-          </View>
+          <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
         </View>
-        <View style={styles.container}>
 
+        <View style={styles.container}>
           <TouchableHighlight onPress={(this.onFacebookPressed.bind(this))}
                               style={[s.button, styles.buttonFacebook]}
                               underlayColor='#647EB7'
@@ -150,7 +148,7 @@ class LoginView extends Component {
 
         </View>
 
-        <View style={[styles.marginTop5, styles.linkCtn]} >
+        <View style={styles.linkCtn} >
           <Text style={styles.textGray}>Don't have an account ? </Text>
           <TouchableHighlight onPress={(this.onCreatePressed.bind(this))}
                               underlayColor='transparent'
@@ -219,7 +217,8 @@ var styles = StyleSheet.create({
     backgroundColor: '#FFF'
   },
   logoCtn: {
-    flex: 1,
+    marginTop: 50,
+    paddingBottom: 50,
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'center',

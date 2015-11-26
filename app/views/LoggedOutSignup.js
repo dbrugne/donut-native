@@ -56,12 +56,11 @@ class Signup extends Component {
 
     return (
       <View style={styles.main}>
+        <View style={styles.logoCtn}>
+          <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
+        </View>
+
         <View style={styles.container}>
-
-          <View style={styles.flexible}>
-            <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
-          </View>
-
           <TouchableHighlight onPress={(this.onFacebookPressed.bind(this))}
                               style={[s.button, styles.buttonFacebook]}
                               underlayColor='#647EB7'
@@ -149,25 +148,31 @@ var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
     flex:1,
-    backgroundColor: '#F7F7F7'
+    backgroundColor: '#FAF9F5'
   },
   container: {
-    marginHorizontal: 20,
+    paddingLeft:20,
+    paddingRight:20,
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'center',
-    paddingBottom: 40
+    backgroundColor: '#FFF'
   },
   logo: {
     width: 250,
     height: 64,
     alignSelf: 'center'
   },
-  flexible: {
-    flex:1,
+  logoCtn: {
+    marginTop: 50,
+    paddingBottom: 50,
+    flexDirection: 'column',
+    alignItems: 'stretch',
     justifyContent: 'center',
-    alignItems: 'center'
+    borderBottomWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#C3C3C3'
   },
   buttonFacebook: {
     backgroundColor: "#4a649d",
