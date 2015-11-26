@@ -61,7 +61,7 @@ To use your own device :
 
 ## Fix compilation errors (jquery & xmlhttprequest libs)
 
-- /www/donut-native/node_modules/backbone/backbone.js 
+- /www/donut-native/node_modules/backbone/backbone.js (will be fixed in 0.16 https://github.com/facebook/react-native/commit/8db35d492b846f51a758e8ee7e5e402c6bad3785)
 
 comment line 26
 
