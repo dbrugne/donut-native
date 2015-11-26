@@ -37,12 +37,21 @@ class Signup extends Component {
   render () {
     var messages = null;
     if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
-      messages = (
-        <View style={s.alertError}>
-          {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-          {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-        </View>
-      );
+      if (this.state.errors && this.state.errors.length > 0) {
+        messages = (
+          <View style={s.alertError}>
+            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+          </View>
+        );
+      } else {
+        messages = (
+          <View style={s.alertSuccess}>
+            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+          </View>
+        );
+      }
     }
 
     return (

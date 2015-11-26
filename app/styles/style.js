@@ -180,5 +180,18 @@ module.exports = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 12,
     color: '#a94442'
+  },
+  alertSuccess: {
+    backgroundColor: '#dff0d8',
+    borderColor: '#d6e9c6',
+    padding: 10,
+    borderRadius: 4,
+    marginVertical:10,
+    marginHorizontal:10
+  },
+  alertSuccessText: {
+    fontFamily: 'Open Sans',
+    fontSize: 12,
+    color: '#3c763d'
   }
 });

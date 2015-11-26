@@ -71,20 +71,31 @@ class LoginView extends Component {
   render() {
     var messages = null;
     if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
-      messages = (
-        <View style={s.alertError}>
-          {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-          {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-        </View>
-      );
+      if (this.state.errors && this.state.errors.length > 0) {
+        messages = (
+          <View style={s.alertError}>
+            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+          </View>
+        );
+      } else {
+        messages = (
+          <View style={s.alertSuccess}>
+            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+          </View>
+        );
+      }
     }
 
     return (
       <View style={styles.main}>
-        <View style={styles.container}>
+        <View style={styles.logoCtn}>
           <View style={styles.flexible}>
             <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
           </View>
+        </View>
+        <View style={styles.container}>
 
           <TouchableHighlight onPress={(this.onFacebookPressed.bind(this))}
                               style={[s.button, styles.buttonFacebook]}
@@ -137,15 +148,17 @@ class LoginView extends Component {
             <Text style={s.link}>Forgot your password ?</Text>
           </TouchableHighlight>
 
-          <View style={[styles.marginTop5, styles.linkCtn]} >
-            <Text style={styles.textGray}>Don't have an account ? </Text>
-            <TouchableHighlight onPress={(this.onCreatePressed.bind(this))}
-                                underlayColor='transparent'
-                                style={styles.centered}>
-              <Text style={s.link}>Sign Up</Text>
-            </TouchableHighlight>
-          </View>
         </View>
+
+        <View style={[styles.marginTop5, styles.linkCtn]} >
+          <Text style={styles.textGray}>Don't have an account ? </Text>
+          <TouchableHighlight onPress={(this.onCreatePressed.bind(this))}
+                              underlayColor='transparent'
+                              style={styles.centered}>
+            <Text style={s.link}>Sign Up</Text>
+          </TouchableHighlight>
+        </View>
+
       </View>
     );
   }
@@ -156,7 +169,6 @@ class LoginView extends Component {
     }
 
     // @todo : loading screen
-    var that = this;
     currentUser.login(this.state.email, this.state.password, _.bind(function (err) {
       if (err) {
         this._appendError(err);
@@ -181,10 +193,6 @@ class LoginView extends Component {
     });
   }
 
-  _appendMessage(string) {
-    this.setState({messages: this.state.messages.concat(string)});
-  }
-
   _appendError(string) {
     if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
@@ -192,7 +200,6 @@ class LoginView extends Component {
       this.setState({errors: this.state.messages.concat(string)});
     }
   }
-
 }
 ;
 
@@ -200,15 +207,25 @@ var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
     flex:1,
-    backgroundColor: '#F7F7F7',
+    backgroundColor: '#FAF9F5'
   },
   container: {
-    marginHorizontal: 20,
+    paddingLeft:20,
+    paddingRight:20,
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'center',
-    paddingBottom: 40
+    backgroundColor: '#FFF'
+  },
+  logoCtn: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#C3C3C3'
   },
   logo: {
     width: 250,
@@ -284,7 +301,12 @@ var styles = StyleSheet.create({
   linkCtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderTopWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#C3C3C3',
+    paddingTop: 20,
+    paddingBottom: 20
   },
   textGray: {
     fontWeight: 'normal',
