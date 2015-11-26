@@ -104,7 +104,7 @@ class LoginView extends Component {
           </TouchableHighlight>
 
           <View style={styles.orContainer}>
-            <Text style={styles.title}> OR </Text>
+            <Text style={s.title}> OR </Text>
           </View>
 
           {messages}
