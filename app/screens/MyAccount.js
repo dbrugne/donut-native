@@ -2,16 +2,20 @@
 var React = require('react-native');
 var _ = require('underscore');
 var currentUser = require('../models/mobile-current-user');
-var Button = require('react-native-button');
+var s = require('../styles/style');
 
 var {
   Component,
   Text,
   ListView,
+  ScrollView,
   View,
   StyleSheet,
   TouchableHighlight
 } = React;
+var {
+  Icon
+  } = require('react-native-icons');
 
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
@@ -28,18 +32,31 @@ class ForgotView extends Component {
 
   render () {
     return (
-      <ListView style={styles.container}
-        dataSource={this.state.dataSource.cloneWithRows(items)}
-        renderRow={this.renderElement.bind(this)}
-      />
+      <ScrollView style={styles.main}>
+        <View style={s.listGroup}>
+          <ListView dataSource={this.state.dataSource.cloneWithRows(items)}
+            renderRow={this.renderElement.bind(this)}
+          />
+        </View>
+      </ScrollView>
     )
   }
 
   renderElement(item) {
     return (
-      <Button onPress={this[item.fc].bind(this)} style={styles.row}>
-        {item.title}
-      </Button>
+    <TouchableHighlight onPress={this[item.fc].bind(this)}
+                        underlayColor= '#DDD'
+      >
+      <View style={s.listGroupItem}>
+        <Text style={s.listGroupItemText}>{item.title}</Text>
+        <Icon
+          name='fontawesome|chevron-right'
+          size={14}
+          color='#DDD'
+          style={s.listGroupItemIconRight}
+          />
+      </View>
+    </TouchableHighlight>
     );
   }
 
@@ -77,15 +94,10 @@ var items = [
 ];
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  row: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#EEE',
-    color: '#777',
-    lineHeight: 40
+  main: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0'
   }
 });
 

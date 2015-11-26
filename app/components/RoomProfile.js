@@ -19,7 +19,7 @@ var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
 var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
-var s = require('./style');
+var s = require('../styles/style');
 var date = require('../libs/date');
 
 class RoomProfileView extends Component {
