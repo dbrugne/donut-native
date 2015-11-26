@@ -9,7 +9,9 @@ var {
 module.exports = StyleSheet.create({
 
   // colors
+  //clNavLeft: { color: '#434a54'},
   //clText: { color: '#333'},
+  //clClouds: { color: '#ecf0f1'},
   //clSuccess: { color: '#4fedc0'},
   //clWarning: { color: '#ffda3e'},
   //clError: { color: '#ff3838'},
@@ -64,7 +66,7 @@ module.exports = StyleSheet.create({
   },
   // buttons
   button: {
-    height: 36,
+    height: 40,
     backgroundColor: '#f5f8fa',
     borderColor: '#e1e8ed',
     borderWidth: 1,
@@ -85,16 +87,62 @@ module.exports = StyleSheet.create({
     flexWrap: 'nowrap',
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     flex: 1
   },
   buttonText: {
     fontFamily: 'Open Sans',
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333'
+    color: '#333',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonTextLight: {
+    fontFamily: 'Open Sans',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ecf0f1',
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   buttonIcon: {
     width: 20,
     height: 20
+  },
+  buttonBlue: {
+    borderColor: '#4a649d',
+    backgroundColor: "#4a649d"
+  },
+  buttonPink: {
+    borderColor: '#E4396D',
+    backgroundColor: "#fd5286"
+  },
+  // inputs
+  input: {
+    backgroundColor: '#FFF',
+    borderColor: "#DBDBDB",
+    borderWidth: 1,
+    borderRadius: 4,
+    borderStyle: 'solid',
+    color: "#858585",
+    height: 40,
+    paddingBottom: 5,
+    paddingTop: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    textAlign: 'center'
+  },
+  // links
+  link: {
+    fontFamily: 'Open Sans',
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333'
   }
 });
