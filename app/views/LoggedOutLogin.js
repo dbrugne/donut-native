@@ -69,6 +69,16 @@ class LoginView extends Component {
   }
 
   render() {
+    var messages = null;
+    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
+      messages = (
+        <View style={s.alertError}>
+          {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+          {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+        </View>
+      );
+    }
+
     return (
       <View style={styles.main}>
         <View style={styles.container}>
@@ -97,8 +107,7 @@ class LoginView extends Component {
             <Text style={styles.title}> OR </Text>
           </View>
 
-          {this.state.errors.map((m) => <Text>{m}</Text>)}
-          {this.state.messages.map((m) => <Text>{m}</Text>)}
+          {messages}
 
           <TextInput
             placeholder="Email"

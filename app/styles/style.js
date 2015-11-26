@@ -144,5 +144,19 @@ module.exports = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#333'
+  },
+  // alerts
+  alertError: {
+    backgroundColor: '#f2dede',
+    borderColor: '#ebccd1',
+    padding: 10,
+    borderRadius: 4,
+    marginVertical:10,
+    marginHorizontal:10
+  },
+  alertErrorText: {
+    fontFamily: 'Open Sans',
+    fontSize: 12,
+    color: '#a94442'
   }
 });
