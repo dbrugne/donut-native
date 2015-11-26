@@ -17,6 +17,28 @@ module.exports = StyleSheet.create({
   //clError: { color: '#ff3838'},
   //clNeutral: { color: '#777777'},
   //clBackgroundGrayed: { color: '#f0f0f0'},
+  // Common elements
+  h1: {
+    fontFamily: 'Open Sans',
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333'
+  },
+  p: {
+    fontFamily: 'Open Sans',
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#333',
+    marginBottom: 10,
+    marginHorizontal: 10
+  },
+  textCenter: {
+    alignSelf: 'center'
+  },
+  // util elements
+  spacer: {
+    marginTop: 10
+  },
   // List groups
   listGroup: {
     flexWrap: 'wrap',
