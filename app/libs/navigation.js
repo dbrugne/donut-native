@@ -199,7 +199,7 @@ function _logCurrentStack () {
   console.log(stack);
 }
 
-var currentUser = require('../models/current-user');
+var currentUser = require('../models/mobile-current-user');
 var {
   Icon
 } = require('react-native-icons');

@@ -1,7 +1,7 @@
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var client = require('../libs/client');
-var currentUser = require('./current-user');
+var currentUser = require('./mobile-current-user');
 
 var OneToOneModel = Backbone.Model.extend({
   defaults: function () {
