@@ -9,12 +9,36 @@ var {
 module.exports = StyleSheet.create({
 
   // colors
+  //clNavLeft: { color: '#434a54'},
   //clText: { color: '#333'},
+  //clClouds: { color: '#ecf0f1'},
   //clSuccess: { color: '#4fedc0'},
   //clWarning: { color: '#ffda3e'},
   //clError: { color: '#ff3838'},
   //clNeutral: { color: '#777777'},
   //clBackgroundGrayed: { color: '#f0f0f0'},
+  // Common elements
+  h1: {
+    fontFamily: 'Open Sans',
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333'
+  },
+  p: {
+    fontFamily: 'Open Sans',
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#333',
+    marginBottom: 10,
+    marginHorizontal: 10
+  },
+  textCenter: {
+    alignSelf: 'center'
+  },
+  // util elements
+  spacer: {
+    marginTop: 10
+  },
   // List groups
   listGroup: {
     flexWrap: 'wrap',
@@ -64,7 +88,7 @@ module.exports = StyleSheet.create({
   },
   // buttons
   button: {
-    height: 36,
+    height: 40,
     backgroundColor: '#f5f8fa',
     borderColor: '#e1e8ed',
     borderWidth: 1,
@@ -85,16 +109,76 @@ module.exports = StyleSheet.create({
     flexWrap: 'nowrap',
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     flex: 1
   },
   buttonText: {
     fontFamily: 'Open Sans',
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333'
+    color: '#333',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonTextLight: {
+    fontFamily: 'Open Sans',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ecf0f1',
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   buttonIcon: {
     width: 20,
     height: 20
+  },
+  buttonBlue: {
+    borderColor: '#4a649d',
+    backgroundColor: "#4a649d"
+  },
+  buttonPink: {
+    borderColor: '#E4396D',
+    backgroundColor: "#fd5286"
+  },
+  // inputs
+  input: {
+    backgroundColor: '#FFF',
+    borderColor: "#DBDBDB",
+    borderWidth: 1,
+    borderRadius: 4,
+    borderStyle: 'solid',
+    color: "#858585",
+    height: 40,
+    paddingBottom: 5,
+    paddingTop: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    textAlign: 'center'
+  },
+  // links
+  link: {
+    fontFamily: 'Open Sans',
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333'
+  },
+  // alerts
+  alertError: {
+    backgroundColor: '#f2dede',
+    borderColor: '#ebccd1',
+    padding: 10,
+    borderRadius: 4,
+    marginVertical:10,
+    marginHorizontal:10
+  },
+  alertErrorText: {
+    fontFamily: 'Open Sans',
+    fontSize: 12,
+    color: '#a94442'
   }
 });

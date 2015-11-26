@@ -12,6 +12,7 @@ var React = require('react-native');
 var SignupView = require('./LoggedOutSignup');
 var ForgotView = require('./LoggedOutForgot');
 var Platform = require('Platform');
+var s = require('../styles/style');
 
 var {
   Component,
@@ -23,13 +24,18 @@ var {
   Navigator,
   AsyncStorage,
   BackAndroid,
-  ToastAndroid
-} = React;
+  ToastAndroid,
+  Image
+  } = React;
+var {
+  Icon
+  } = require('react-native-icons');
+
 
 var currentUser = require('../models/mobile-current-user');
 
 class LoginView extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       email: '',
@@ -40,7 +46,7 @@ class LoginView extends Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setState({
       email: currentUser.getEmail()
     });
@@ -55,53 +61,96 @@ class LoginView extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (Platform.OS === 'android') {
       BackAndroid.removeEventListener('hardwareBackPress', _.bind(function () {
       }, this));
     }
   }
 
-  render () {
+  render() {
+    var messages = null;
+    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
+      messages = (
+        <View style={s.alertError}>
+          {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+          {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+        </View>
+      );
+    }
+
     return (
-      <View style={styles.container}>
-        <View>
-          <TouchableHighlight onPress={(this.onFacebookPressed.bind(this))} style={styles.buttonFacebook}>
-            <Text style={styles.buttonText}>SIGN IN WITH FACEBOOK</Text>
+      <View style={styles.main}>
+        <View style={styles.container}>
+          <View style={styles.flexible}>
+            <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
+          </View>
+
+          <TouchableHighlight onPress={(this.onFacebookPressed.bind(this))}
+                              style={[s.button, styles.buttonFacebook]}
+                              underlayColor='#647EB7'
+            >
+            <View style={[s.buttonLabel, styles.buttonLabelFacebook]}>
+              <View style={styles.iconContainer}>
+                <Icon
+                  name='fontawesome|facebook'
+                  size={28}
+                  color='#FFF'
+                  style={[styles.icon, styles.iconFacebook]}
+                  />
+              </View>
+              <Text style={[s.buttonText, styles.buttonTextFacebook]}>Sign-in with Facebook</Text>
+            </View>
           </TouchableHighlight>
-          <Text style={styles.title}>
-            OR
-          </Text>
-          {this.state.errors.map((m) => <Text>{m}</Text>)}
-          {this.state.messages.map((m) => <Text>{m}</Text>)}
-          <View>
-            <TextInput
-              placeholder="Email"
-              onChange={(event) => this.setState({email: event.nativeEvent.text})}
-              style={styles.formInput}
-              value={this.state.email} />
-            <TextInput
-              placeholder="Password"
-              secureTextEntry={true}
-              onChange={(event) => this.setState({password: event.nativeEvent.text})}
-              style={styles.formInput}
-              value={this.state.password} />
-            <TouchableHighlight onPress={(this.onForgotPressed.bind(this))} style={styles.forgot}>
-              <Text style={styles.link}>FORGOT PASSWORD</Text>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))} style={styles.button}>
-              <Text style={styles.buttonText}>HERE WE GO!</Text>
+
+          <View style={styles.orContainer}>
+            <Text style={s.title}> OR </Text>
+          </View>
+
+          {messages}
+
+          <TextInput
+            placeholder="Email"
+            onChange={(event) => this.setState({email: event.nativeEvent.text})}
+            style={s.input}
+            value={this.state.email}/>
+
+          <TextInput
+            placeholder="Password"
+            secureTextEntry={true}
+            onChange={(event) => this.setState({password: event.nativeEvent.text})}
+            style={[s.input, styles.marginTop5]}
+            value={this.state.password}/>
+
+          <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
+                              style={[s.button, s.buttonPink, styles.marginTop5]}
+                              underlayColor='#E4396D'
+            >
+              <View style={s.buttonLabel}>
+                <Text style={s.buttonTextLight}>Sign In</Text>
+              </View>
+          </TouchableHighlight>
+
+          <TouchableHighlight onPress={(this.onForgotPressed.bind(this))}
+                              underlayColor='transparent'
+                              style={[styles.marginTop10, styles.centered]}>
+            <Text style={s.link}>Forgot your password ?</Text>
+          </TouchableHighlight>
+
+          <View style={[styles.marginTop5, styles.linkCtn]} >
+            <Text style={styles.textGray}>Don't have an account ? </Text>
+            <TouchableHighlight onPress={(this.onCreatePressed.bind(this))}
+                                underlayColor='transparent'
+                                style={styles.centered}>
+              <Text style={s.link}>Sign Up</Text>
             </TouchableHighlight>
           </View>
-          <TouchableHighlight onPress={(this.onCreatePressed.bind(this))} style={styles.create}>
-            <Text style={styles.link}>I don't have an account yet. Create one</Text>
-          </TouchableHighlight>
         </View>
       </View>
     );
   }
 
-  onSubmitPressed () {
+  onSubmitPressed() {
     if (!this.state.email || !this.state.password) {
       return this._appendError('not-complete');
     }
@@ -115,28 +164,28 @@ class LoginView extends Component {
     }, this));
   }
 
-  onFacebookPressed () {
+  onFacebookPressed() {
   }
 
-  onForgotPressed () {
+  onForgotPressed() {
     this.props.navigator.push({
       title: 'Forgot',
       component: ForgotView
     });
   }
 
-  onCreatePressed () {
+  onCreatePressed() {
     this.props.navigator.push({
       title: 'Create',
       component: SignupView
     });
   }
 
-  _appendMessage (string) {
+  _appendMessage(string) {
     this.setState({messages: this.state.messages.concat(string)});
   }
 
-  _appendError (string) {
+  _appendError(string) {
     if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
@@ -144,68 +193,103 @@ class LoginView extends Component {
     }
   }
 
-};
+}
+;
 
 var styles = StyleSheet.create({
+  main: {
+    flexDirection: 'column',
+    flex:1,
+    backgroundColor: '#F7F7F7',
+  },
   container: {
+    marginHorizontal: 20,
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
+    alignItems: 'stretch',
     justifyContent: 'center',
-    alignItems: 'center'
+    paddingBottom: 40
+  },
+  logo: {
+    width: 250,
+    height: 64,
+    alignSelf: 'center'
+  },
+  orContainer: {
+    padding: 10,
+    marginVertical:10
   },
   link: {
     fontSize: 15,
     marginTop: 10
   },
-  forgot: {
-    alignSelf: 'flex-end',
-    marginRight: 28
-  },
-  create: {
-    marginTop: 20,
+  centered: {
     alignSelf: 'center'
   },
   title: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: '#111',
-    alignSelf: "center",
-    marginTop: 20
-  },
-  formInput: {
-    height: 42,
-    paddingBottom: 10,
-    width: 250,
-    marginRight: 5,
-    flex: 1,
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#555555",
-    borderRadius: 8,
-    color: "#555555"
-  },
-  button: {
-    height: 46,
-    width: 250,
-    backgroundColor: "#fd5286",
-    borderRadius: 3,
-    marginTop: 20,
-    justifyContent: "center",
+    color: '#333',
     alignSelf: "center"
   },
   buttonFacebook: {
-    height: 46,
-    width: 250,
     backgroundColor: "#4a649d",
-    borderRadius: 3,
-    justifyContent: "center",
-    alignSelf: "center"
+    borderColor: "#4a649d",
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 5,
+    marginBottom: 0
   },
-  buttonText: {
+  buttonLabelFacebook: {
+    justifyContent: 'flex-start'
+  },
+  buttonTextFacebook: {
+    fontWeight: 'normal',
     fontSize: 18,
-    color: "#ffffff",
-    alignSelf: "center"
+    color: "#FFF",
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    flex: 1
   },
+  icon: {
+    width: 28,
+    height: 28
+  },
+  iconContainer: {
+    justifyContent: 'flex-end',
+    borderRightWidth: 2,
+    borderColor: '#344B7D',
+    borderStyle: 'solid',
+    marginRight: 5
+  },
+  iconFacebook: {
+    paddingRight: 5,
+    marginRight: 5,
+    alignSelf: 'flex-end'
+  },
+  marginTop5: {
+    marginTop: 5
+  },
+  marginTop10: {
+    marginTop: 10
+  },
+  flexible: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  linkCtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  textGray: {
+    fontWeight: 'normal',
+    color: '#808080'
+  }
 });
 
 module.exports = LoginView;
