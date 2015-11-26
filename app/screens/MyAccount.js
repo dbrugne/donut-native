@@ -2,7 +2,7 @@
 var React = require('react-native');
 var _ = require('underscore');
 var currentUser = require('../models/mobile-current-user');
-var s = require('../components/style');
+var s = require('../styles/style');
 
 var {
   Component,

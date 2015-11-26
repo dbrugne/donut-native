@@ -20,7 +20,7 @@ var app = require('../libs/app');
 var client = require('../libs/client');
 var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../libs/navigation');
-var s = require('../components/style');
+var s = require('../styles/style');
 
 var LIMIT = 25;
 var TIME_SEARCH = 500;
