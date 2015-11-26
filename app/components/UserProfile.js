@@ -193,7 +193,7 @@ class UserProfileView extends Component {
           <Text style={styles.bio}>{bio}</Text>
         </View>
         <View style={styles.container2}>
-          <TouchableHighlight style={s.button} >
+          <TouchableHighlight style={s.button} onPress={() => app.trigger('joinUser', data.user_id)}>
             <View style={s.buttonLabel}>
               <Text style={s.buttonText}>discuter</Text>
             </View>

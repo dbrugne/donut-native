@@ -11,7 +11,7 @@ var onetoones = require('../collections/onetoones');
 var rooms = require('../collections/rooms');
 var app = require('../libs/app');
 var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
 var i18next = require('i18next-client');
 
@@ -28,6 +28,7 @@ class Index extends Component {
     app.on('newEvent', this.onNewEvent, this);
     app.on('viewedEvent', this.computeUnviewed, this);
     app.on('joinRoom', this.onJoinRoom, this);
+    app.on('joinUser', this.onJoinUser, this);
     onetoones.on('remove', this.onRemoveDiscussion, this);
     rooms.on('remove', this.onRemoveDiscussion, this);
     onetoones.on('add', this.onAddDiscussion, this);
@@ -114,6 +115,23 @@ class Index extends Component {
       // response.err === 'group-members-only'
       // response.code === 404
       // response.code === 403 => blocked model handling
+      // response.code === 500
+    });
+  }
+  onJoinUser (id) {
+    if (!id) {
+      return;
+    }
+
+    var model = onetoones.find((m) => m.get('user_id') === id);
+    if (model) {
+      return navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
+    }
+
+    this.nextFocus = id;
+    client.userJoin(id, function (response) {
+      // @todo handle errors
+      // response.code !== 500 usernotexist
       // response.code === 500
     });
   }
