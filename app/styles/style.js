@@ -32,13 +32,11 @@ module.exports = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 10
   },
-  textCenter: {
-    alignSelf: 'center'
-  },
+  textCenter: { alignSelf: 'center'},
   // util elements
-  spacer: {
-    marginTop: 10
-  },
+  marginTop5: { marginTop: 5},
+  marginTop10: { marginTop: 10},
+  marginTop20: { marginTop: 20},
   // List groups
   listGroup: {
     flexWrap: 'wrap',
@@ -47,8 +45,6 @@ module.exports = StyleSheet.create({
     alignItems: 'stretch',
     marginTop: 20,
     marginBottom: 20,
-    marginLeft:10,
-    marginRight:10,
     borderColor: '#DDD',
     borderStyle: 'solid',
     borderWidth: 1
@@ -66,6 +62,15 @@ module.exports = StyleSheet.create({
     borderColor: '#DDD',
     borderTopWidth:1,
     borderStyle: 'solid'
+  },
+  listGroupItemSpacing: {
+    flex: 1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: '#f0f0f0',
+    height: 20
   },
   listGroupItemFirst: {
     borderTopWidth: 0
@@ -124,7 +129,7 @@ module.exports = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#ecf0f1',
+    color: '#FFF',
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center'
@@ -157,8 +162,16 @@ module.exports = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     fontFamily: 'Open Sans',
+    fontSize: 14
+  },
+  inputLabel: {
+    fontFamily: 'Open Sans',
     fontSize: 14,
-    textAlign: 'center'
+    fontWeight: '600',
+    color: '#333',
+    alignSelf: 'flex-start',
+    marginLeft: 10,
+    marginRight: 10
   },
   // links
   link: {

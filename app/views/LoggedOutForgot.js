@@ -57,7 +57,7 @@ class ForgotView extends Component {
               <TextInput
                 placeholder="Email"
                 onChange={(event) => this.setState({email: event.nativeEvent.text})}
-                style={[s.input, s.spacer]}
+                style={[s.input, s.marginTop10]}
                 value={this.state.email}/>
 
               <TouchableHighlight onPress={(this.onResetPressed.bind(this))}

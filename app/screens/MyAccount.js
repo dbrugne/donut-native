@@ -59,6 +59,8 @@ class MyAccountView extends Component {
             </View>
           </TouchableHighlight>
 
+          <Text style={s.listGroupItemSpacing}></Text>
+
           <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getMyAccountPreferences())}
                               underlayColor= '#DDD'
             >
