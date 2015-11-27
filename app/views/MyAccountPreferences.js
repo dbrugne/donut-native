@@ -2,6 +2,9 @@ var React = require('react-native');
 var _ = require('underscore');
 var Platform = require('Platform');
 var client = require('../libs/client');
+var LoadingView = require('../components/LoadingView');
+var s = require('../styles/style');
+var currentUser = require('../models/mobile-current-user');
 
 var {
   Component,
@@ -13,8 +16,6 @@ var {
   ToastAndroid,
   ListView
   } = React;
-
-var currentUser = require('../models/mobile-current-user');
 
 var items = [
   {field: 'notif:channels:email', description: 'on email (only if you are offline)'},
@@ -29,6 +30,7 @@ class UserPreferencesView extends Component {
     this.state = {
       loaded: false,
       errors: [],
+      messages: [],
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       })
@@ -50,15 +52,38 @@ class UserPreferencesView extends Component {
 
   render () {
     if (!this.state.loaded) {
-      return this.renderLoadingView();
+      return (
+        <LoadingView />
+      );
+    }
+
+    var messages = null;
+    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
+      if (this.state.errors && this.state.errors.length > 0) {
+        messages = (
+          <View style={s.alertError}>
+            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+          </View>
+        );
+      } else {
+        messages = (
+          <View style={s.alertSuccess}>
+            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+          </View>
+        );
+      }
     }
 
     return (
       <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>Set preferences</Text>
-          {this.state.errors.map((m) => <Text>{m}</Text>)}
-          <Text style={styles.label}>Notify me:</Text>
+        <Text style={[s.h1, s.textCenter, s.marginTop5]}>Set preferences</Text>
+
+        {messages}
+
+        <Text style={[s.listGroupTitle, s.marginTop20]}>NOTIFY ME</Text>
+        <View style={s.listGroup}>
           <ListView
               dataSource={this.state.dataSource.cloneWithRows(items)}
               renderRow={this.renderElement.bind(this)}
@@ -77,27 +102,15 @@ class UserPreferencesView extends Component {
     }
 
     return (
-      <View style={styles.row}>
-        <Text>{item.description}</Text>
-        <View style={styles.rightContainer}>
-          <SwitchComponent
-            style={styles.switch}
-            onValueChange={this._changePreferences.bind(this, item.field)}
-            value={this.state[item.field]}
-            />
-        </View>
+      <View style={s.listGroupItem}>
+        <Text style={s.listGroupItemText}>{item.description}</Text>
+        <SwitchComponent
+          style={s.listGroupItemToggleRight}
+          onValueChange={this._changePreferences.bind(this, item.field)}
+          value={this.state[item.field]}
+          />
       </View>
     )
-  }
-
-  renderLoadingView () {
-    return (
-      <View style={styles.container}>
-        <Text>
-          Loading...
-        </Text>
-      </View>
-    );
   }
 
   _changePreferences (key) {
@@ -111,7 +124,7 @@ class UserPreferencesView extends Component {
       if (response.err) {
         this._appendError(response.err);
       } else {
-        this._appendError('Success');
+        this._appendMessage('Success');
       }
     }, this));
   }
@@ -123,49 +136,22 @@ class UserPreferencesView extends Component {
       this.setState({errors: this.state.messages.concat(string)});
     }
   }
+
+  _appendMessage(string) {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(string, ToastAndroid.SHORT);
+    } else {
+      this.setState({messages: this.state.messages.concat(string)});
+    }
+  }
 }
 
 var styles = StyleSheet.create({
   container: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  label: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  button: {
-    height: 46,
-    width: 250,
-    backgroundColor: "#fd5286",
-    borderRadius: 3,
-    marginTop: 30,
-    justifyContent: "center",
-    alignSelf: "center"
-  },
-  buttonText: {
-    fontSize: 18,
-    color: "#ffffff",
-    alignSelf: "center"
-  },
-  title: {
-    fontSize: 18,
-    alignSelf: "center",
-    marginBottom: 20,
-    fontWeight: 'bold',
-    color: "#111"
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 50
-  },
-  rightContainer: {
-    flex: 1
+    backgroundColor: '#f0f0f0'
   }
 });
 

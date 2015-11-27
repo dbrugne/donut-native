@@ -5,6 +5,7 @@ var Platform = require('Platform');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
 var LoadingView = require('../components/LoadingView');
+var currentUser = require('../models/mobile-current-user');
 
 var {
   Component,
@@ -16,8 +17,6 @@ var {
   Image,
   ToastAndroid
 } = React;
-
-var currentUser = require('../models/mobile-current-user');
 
 class MyAccountInformation extends Component {
   constructor (props) {
@@ -191,7 +190,6 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     backgroundColor: '#f0f0f0'
-    //backgroundColor: '#fF00FF' // pink
   },
   centered: {
     alignSelf: 'center',

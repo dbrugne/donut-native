@@ -6,6 +6,7 @@ var Platform = require('Platform');
 var currentUser = require('../models/mobile-current-user');
 var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../libs/navigation');
+var LoadingView = require('../components/LoadingView');
 
 var {
   NativeModules,
@@ -62,7 +63,9 @@ class EditProfileView extends Component {
 
   render () {
     if (!this.state.load) {
-      return this.renderLoadingView();
+      return (
+        <LoadingView />
+      );
     }
 
     return (
@@ -152,16 +155,6 @@ class EditProfileView extends Component {
             </View>
           </Button>
         </View>
-      </View>
-    );
-  }
-
-  renderLoadingView () {
-    return (
-      <View style={styles.container}>
-        <Text>
-          Loading...
-        </Text>
       </View>
     );
   }

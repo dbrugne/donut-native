@@ -44,11 +44,17 @@ module.exports = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'stretch',
-    marginTop: 20,
     marginBottom: 20,
     borderColor: '#DDD',
     borderStyle: 'solid',
     borderWidth: 1
+  },
+  listGroupTitle: {
+    color: '#777777',
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    marginHorizontal:10,
+    marginVertical:2
   },
   listGroupItem: {
     flex: 1,
@@ -84,6 +90,9 @@ module.exports = StyleSheet.create({
   listGroupItemIconRight: {
     width: 14,
     height: 14,
+    alignSelf: 'flex-end'
+  },
+  listGroupItemToggleRight: {
     alignSelf: 'flex-end'
   },
   listGroupItemText: {
