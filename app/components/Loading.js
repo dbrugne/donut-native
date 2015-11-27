@@ -18,7 +18,7 @@ class Loading extends Component {
       <View style={styles.container}>
         <View style={styles.centered}>
           <ActivityIndicatorIOS
-            animating='true'
+            animating={true}
             style={styles.loading}
             size='small'
             color='#666666'
