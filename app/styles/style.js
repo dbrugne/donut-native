@@ -33,6 +33,7 @@ module.exports = StyleSheet.create({
     marginHorizontal: 10
   },
   textCenter: { alignSelf: 'center'},
+  filler: { flex:1, alignSelf: 'stretch' },
   // util elements
   marginTop5: { marginTop: 5},
   marginTop10: { marginTop: 10},
@@ -155,23 +156,33 @@ module.exports = StyleSheet.create({
     borderStyle: 'solid',
     color: "#858585",
     height: 40,
-    paddingBottom: 5,
-    paddingTop: 5,
+    paddingBottom: 3,
+    paddingTop: 3,
     paddingLeft: 10,
     paddingRight: 10,
     marginLeft: 10,
     marginRight: 10,
     fontFamily: 'Open Sans',
-    fontSize: 14
+    fontSize: 14,
+    flex:1
   },
   inputLabel: {
     fontFamily: 'Open Sans',
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '400',
     color: '#333',
     alignSelf: 'flex-start',
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
+    width:80,
+    height:40,
+    paddingTop:10
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop:5
   },
   // links
   link: {

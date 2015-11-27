@@ -2,6 +2,7 @@ var React = require('react-native');
 var _ = require('underscore');
 var client = require('../libs/client');
 var Platform = require('Platform');
+var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
 
 var {
@@ -11,6 +12,8 @@ var {
   StyleSheet,
   TextInput,
   TouchableHighlight,
+  ActivityIndicatorIOS,
+  Image,
   ToastAndroid
 } = React;
 
@@ -21,7 +24,7 @@ class MyAccountInformation extends Component {
     super(props);
     this.state = {
       username: currentUser.get('username'),
-      realName: '',
+      realname: '',
       bio: '',
       location: '',
       website: '',
@@ -33,10 +36,11 @@ class MyAccountInformation extends Component {
   componentDidMount () {
     client.userRead(currentUser.get('user_id'), _.bind(function (response) {
       this.setState({
-        realName: response.realname,
+        realname: response.realname,
         bio: response.bio,
         location: response.location,
         website: response.website,
+        picture: common.cloudinary.prepare(response.avatar, 50),
         load: true
       });
     }, this));
@@ -66,23 +70,41 @@ class MyAccountInformation extends Component {
       }
     }
 
+    var realname = null;
+    if (this.state.realname) {
+      realname = (
+        <Text style={styles.username}>{this.state.realname}</Text>
+      );
+    }
+
     return (
-      <View style={styles.main}>
-        <View style={styles.container}>
+      <View style={styles.container}>
 
-          {messages}
+        <View style={styles.containerHorizontal}>
+          <Image
+            style={styles.image}
+            source={{uri: this.state.picture}}
+            />
+          <View style={styles.containerVertical}>
+            {realname}
+            <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
+          </View>
+        </View>
 
-          <Text style={[styles.username, s.marginTop10]}>@{this.state.username}</Text>
+        {messages}
 
-          <Text style={[s.inputLabel, s.marginTop20]}>realname</Text>
+        <View style={[s.inputContainer, s.marginTop20]}>
+          <Text style={s.inputLabel}>realname</Text>
           <TextInput
             placeholder="name and first name"
-            onChange={(event) => this.setState({realName: event.nativeEvent.text})}
-            value={this.state.realName}
-            style={[s.input, s.marginTop5]}
+            onChange={(event) => this.setState({realname: event.nativeEvent.text})}
+            value={this.state.realname}
+            style={s.input}
             maxLength={20}/>
+        </View>
 
-          <Text style={[s.inputLabel, s.marginTop20]}>bio</Text>
+        <View style={s.inputContainer}>
+          <Text style={s.inputLabel}>bio</Text>
           <TextInput
             placeholder="Describe yourself"
             onChange={(event) => this.setState({bio: event.nativeEvent.text})}
@@ -90,32 +112,38 @@ class MyAccountInformation extends Component {
             style={[s.input, s.marginTop5, styles.bio]}
             maxLength={200}
             multiline={true}/>
+         </View>
 
-          <Text style={[s.inputLabel, s.marginTop20]}>place</Text>
+        <View style={s.inputContainer}>
+          <Text style={s.inputLabel}>place</Text>
           <TextInput
             placeholder="City, country where you are"
             onChange={(event) => this.setState({location: event.nativeEvent.text})}
             value={this.state.location}
-            style={[s.input, s.marginTop5]}/>
+            style={s.input}/>
+        </View>
 
-          <Text style={[s.inputLabel, s.marginTop20]}>website</Text>
+        <View style={s.inputContainer}>
+          <Text style={s.inputLabel}>website</Text>
           <TextInput
             placeholder="URL of a website"
             onChange={(event) => this.setState({website: event.nativeEvent.text})}
             value={this.state.website}
-            style={[s.input, s.marginTop5]}/>
-
-
-          <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
-                              style={[s.button, s.buttonPink, s.marginTop10]}
-                              underlayColor='#E4396D'
-            >
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>SAVE</Text>
-            </View>
-          </TouchableHighlight>
-
+            style={s.input}/>
         </View>
+
+        <Text style={s.filler}></Text>
+
+
+        <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
+                            style={[s.button, s.buttonPink, s.marginTop10]}
+                            underlayColor='#E4396D'
+          >
+          <View style={s.buttonLabel}>
+            <Text style={s.buttonTextLight}>SAVE</Text>
+          </View>
+        </TouchableHighlight>
+
       </View>
     )
   }
@@ -124,16 +152,22 @@ class MyAccountInformation extends Component {
   renderLoadingView () {
     return (
       <View style={styles.container}>
-        <Text>
-          Loading...
-        </Text>
+        <View style={styles.centered}>
+          <Text> Loading... </Text>
+          <ActivityIndicatorIOS
+            animating={this.state.load}
+            style={styles.loading}
+            size='small'
+            color='#666666'
+            />
+        </View>
       </View>
     );
   }
 
   onSubmitPressed () {
     var updateData = {
-      realname: this.state.realName,
+      realname: this.state.realname,
       bio: this.state.bio,
       location: this.state.location,
       website: this.state.website
@@ -166,27 +200,63 @@ class MyAccountInformation extends Component {
 }
 
 var styles = StyleSheet.create({
-  main: {
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
-  },
   container: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    flex: 1,
+    backgroundColor: '#f0f0f0'
+    //backgroundColor: '#fF00FF' // pink
+  },
+  centered: {
+    alignSelf: 'center',
+    justifyContent: 'center'
+  },
+  containerHorizontal: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    marginVertical: 10,
+    marginHorizontal: 10
+  },
+  containerVertical: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
-    backgroundColor: '#FFF'
+    paddingTop: 2
+  },
+  image: {
+    height: 80,
+    width: 80,
+    borderRadius: 4,
+    marginRight: 10
   },
   bio: {
-    height:80
+    height:120
   },
   username: {
-    fontWeight: '700',
+    color: '#333333',
     fontFamily: 'Open Sans',
     fontSize: 18,
+    fontWeight: '400'
+  },
+  usernameGray: {
+    color: '#b6b6b6'
+  },
+  realname: {
     color: '#333333',
-    marginTop: 10
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    fontWeight: '400'
+  },
+  icon: {
+    width: 14,
+    height: 14,
+    color: '#c7c7c7'
+  },
+  loading: {
+    height: 120
   }
 });
 

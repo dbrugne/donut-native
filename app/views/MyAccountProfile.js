@@ -3,6 +3,9 @@ var _ = require('underscore');
 var client = require('../libs/client');
 var Button = require('react-native-button');
 var Platform = require('Platform');
+var currentUser = require('../models/mobile-current-user');
+var common = require('@dbrugne/donut-common/mobile');
+var navigation = require('../libs/navigation');
 
 var {
   NativeModules,
@@ -17,10 +20,6 @@ var {
 var {
   Icon
   } = require('react-native-icons');
-
-var currentUser = require('../models/mobile-current-user');
-var common = require('@dbrugne/donut-common/mobile');
-var navigation = require('../libs/navigation');
 
 //@todo yfuks possibility to access camera/library to change poster/avatar
 //@todo yfuks/dbrugne make it work on IOS https://github.com/marcshilling/react-native-image-picker
