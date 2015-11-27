@@ -9,6 +9,7 @@
     "@dbrugne/donut-common": "latest",
     "@exponent/react-native-navigator": "^0.3.0",
     "backbone": "^1.2.3",
+    "sha1": "^1.1.1",
     "i18next-client": "^1.11.0",
     "react-native": "^0.14.2",
     "react-native-button": "^1.3.1",
