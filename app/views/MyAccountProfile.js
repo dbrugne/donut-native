@@ -23,10 +23,6 @@ var {
   Icon
   } = require('react-native-icons');
 
-var currentUser = require('../models/mobile-current-user');
-var common = require('@dbrugne/donut-common/mobile');
-var navigation = require('../libs/navigation');
-
 /* @todo yfuks/dbrugne make it work on IOS
  * https://github.com/marcshilling/react-native-image-picker
  * https://www.npmjs.com/package/react-native-fs (don't thinks it's needed for IOS)
