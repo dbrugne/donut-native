@@ -61,7 +61,7 @@ class ForgotView extends Component {
                 value={this.state.email}/>
 
               <TouchableHighlight onPress={(this.onResetPressed.bind(this))}
-                                  style={[s.button, s.buttonPink, styles.marginTop5]}
+                                  style={[s.button, s.buttonPink, s.marginTop5]}
                                   underlayColor='#E4396D'
                 >
                 <View style={s.buttonLabel}>
@@ -119,9 +119,6 @@ var styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'center',
     paddingBottom: 40
-  },
-  marginTop5: {
-    marginTop: 5
   }
 });
 

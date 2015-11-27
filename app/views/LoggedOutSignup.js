@@ -106,7 +106,7 @@ class Signup extends Component {
 
 
           <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
-                              style={[s.button, s.buttonPink, styles.marginTop5]}
+                              style={[s.button, s.buttonPink, s.marginTop5]}
                               underlayColor='#E4396D'
             >
             <View style={s.buttonLabel}>
@@ -216,9 +216,6 @@ var styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     alignSelf: "center"
-  },
-  marginTop5: {
-    marginTop: 5
   },
   iconFacebook: {
     paddingRight: 5,

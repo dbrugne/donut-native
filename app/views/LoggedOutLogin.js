@@ -128,11 +128,11 @@ class LoginView extends Component {
             placeholder="Password"
             secureTextEntry={true}
             onChange={(event) => this.setState({password: event.nativeEvent.text})}
-            style={[s.input, styles.marginTop5]}
+            style={[s.input, s.marginTop5]}
             value={this.state.password}/>
 
           <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
-                              style={[s.button, s.buttonPink, styles.marginTop5]}
+                              style={[s.button, s.buttonPink, s.marginTop5]}
                               underlayColor='#E4396D'
             >
               <View style={s.buttonLabel}>
@@ -142,7 +142,7 @@ class LoginView extends Component {
 
           <TouchableHighlight onPress={(this.onForgotPressed.bind(this))}
                               underlayColor='transparent'
-                              style={[styles.marginTop10, styles.centered]}>
+                              style={[s.marginTop10, styles.centered]}>
             <Text style={s.link}>Forgot your password ?</Text>
           </TouchableHighlight>
 
@@ -285,12 +285,6 @@ var styles = StyleSheet.create({
     paddingRight: 5,
     marginRight: 5,
     alignSelf: 'flex-end'
-  },
-  marginTop5: {
-    marginTop: 5
-  },
-  marginTop10: {
-    marginTop: 10
   },
   flexible: {
     flex:1,
