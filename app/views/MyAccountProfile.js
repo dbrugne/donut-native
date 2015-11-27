@@ -7,6 +7,7 @@ var currentUser = require('../models/mobile-current-user');
 var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../libs/navigation');
 var LoadingView = require('../components/LoadingView');
+var cloudinary = require('../libs/cloudinary');
 
 var {
   NativeModules,
@@ -22,8 +23,15 @@ var {
   Icon
   } = require('react-native-icons');
 
-//@todo yfuks possibility to access camera/library to change poster/avatar
-//@todo yfuks/dbrugne make it work on IOS https://github.com/marcshilling/react-native-image-picker
+var currentUser = require('../models/mobile-current-user');
+var common = require('@dbrugne/donut-common/mobile');
+var navigation = require('../libs/navigation');
+
+/* @todo yfuks/dbrugne make it work on IOS
+ * https://github.com/marcshilling/react-native-image-picker
+ * https://www.npmjs.com/package/react-native-fs (don't thinks it's needed for IOS)
+ */
+
 let { UIImagePickerManager: ImagePickerManager } = NativeModules;
 
 class EditProfileView extends Component {
@@ -90,7 +98,7 @@ class EditProfileView extends Component {
     if (Platform.OS === 'android') {
       ImagePickerManager.launchCamera({}, (cancelled, response) => {
         if (!cancelled) {
-          this.setState({picture: response.uri});
+          this._updateAvatar(response.path);
         }
       });
     }
@@ -99,12 +107,36 @@ class EditProfileView extends Component {
   _pickFromGallery () {
     if (Platform.OS === 'android') {
       ImagePickerManager.launchImageLibrary({}, (cancelled, response) => {
-        console.log(response);
         if (!cancelled) {
-          this.setState({picture: response.uri});
+          this._updateAvatar(response.path);
         }
       });
     }
+  }
+
+  _updateAvatar (imagePath) {
+    this._appendError('uploading ...');
+    cloudinary.upload(imagePath, _.bind(function (err, data) {
+      if (data.error) {
+        return this._appendError(data.error.message);
+      }
+
+      var pathSplit = data.url.split('/');
+      var updateData = {
+        avatar: {
+          public_id: data.public_id,
+          version: data.version,
+          path: pathSplit[pathSplit.length - 2] + '/' + pathSplit[pathSplit.length - 1]
+        }
+      };
+      client.userUpdate(updateData, _.bind(function (response) {
+        if (response.err) {
+          this._appendError(response.err);
+        } else {
+          this._appendError('Success');
+        }
+      }, this));
+    }, this));
   }
 
   _renderMenu (color) {
