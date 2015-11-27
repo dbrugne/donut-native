@@ -118,18 +118,22 @@ class LoginView extends Component {
 
           {messages}
 
-          <TextInput
-            placeholder="Email"
-            onChange={(event) => this.setState({email: event.nativeEvent.text})}
-            style={s.input}
-            value={this.state.email}/>
+          <View style={[s.inputContainer, s.marginTop5]}>
+            <TextInput
+              placeholder="Email"
+              onChange={(event) => this.setState({email: event.nativeEvent.text})}
+              style={s.input}
+              value={this.state.email}/>
+          </View>
 
-          <TextInput
-            placeholder="Password"
-            secureTextEntry={true}
-            onChange={(event) => this.setState({password: event.nativeEvent.text})}
-            style={[s.input, s.marginTop5]}
-            value={this.state.password}/>
+          <View style={[s.inputContainer, s.marginTop5]}>
+            <TextInput
+              placeholder="Password"
+              secureTextEntry={true}
+              onChange={(event) => this.setState({password: event.nativeEvent.text})}
+              style={[s.input, s.marginTop5]}
+              value={this.state.password}/>
+          </View>
 
           <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
                               style={[s.button, s.buttonPink, s.marginTop5]}

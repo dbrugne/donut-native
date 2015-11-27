@@ -84,25 +84,30 @@ class Signup extends Component {
 
           {messages}
 
-          <TextInput
-            placeholder="Email"
-            onChange={(event) => this.setState({email: event.nativeEvent.text})}
-            style={s.input}
-            value={this.state.email} />
+          <View style={[s.inputContainer, s.marginTop5]}>
+            <TextInput
+              placeholder="Email"
+              onChange={(event) => this.setState({email: event.nativeEvent.text})}
+              style={s.input}
+              value={this.state.email} />
+          </View>
 
-          <TextInput
-            placeholder="Password"
-            secureTextEntry={true}
-            onChange={(event) => this.setState({password: event.nativeEvent.text})}
-            style={s.input}
-            value={this.state.password} />
+          <View style={[s.inputContainer, s.marginTop5]}>
+            <TextInput
+              placeholder="Password"
+              secureTextEntry={true}
+              onChange={(event) => this.setState({password: event.nativeEvent.text})}
+              style={s.input}
+              value={this.state.password} />
+          </View>
 
+          <View style={[s.inputContainer, s.marginTop5]}>
           <TextInput
             placeholder="Username"
             onChange={(event) => this.setState({username: event.nativeEvent.text})}
             style={s.input}
-            value={this.state.username} />
-
+            value=  {this.state.username} />
+          </View>
 
 
           <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
