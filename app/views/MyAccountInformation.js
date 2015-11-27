@@ -33,7 +33,7 @@ class MyAccountInformation extends Component {
   }
 
   componentDidMount () {
-    client.userRead(currentUser.get('user_id'), _.bind(function (response) {
+    client.userRead(currentUser.get('user_id'), {more: true}, (response) => {
       this.setState({
         realname: response.realname,
         bio: response.bio,
@@ -42,7 +42,7 @@ class MyAccountInformation extends Component {
         picture: common.cloudinary.prepare(response.avatar, 50),
         load: true
       });
-    }, this));
+    });
   }
 
   render () {

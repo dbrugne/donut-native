@@ -32,12 +32,12 @@ class ChangePasswordView extends Component {
   }
 
   componentDidMount () {
-    client.userRead(currentUser.get('user_id'), _.bind(function (response) {
+    client.userRead(currentUser.get('user_id'), {more: true}, (response) => {
       this.setState({
         load: true,
         hasPassword: !!response.account.has_password
       });
-    }, this));
+    });
   }
 
   render () {

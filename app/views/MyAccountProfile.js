@@ -45,14 +45,14 @@ class EditProfileView extends Component {
 
   componentDidMount () {
     currentUser.on('change', this.onChange.bind(this));
-    client.userRead(currentUser.get('user_id'), _.bind(function (response) {
+    client.userRead(currentUser.get('user_id'), {more: true}, (response) => {
       this.setState({
         realName: response.realname,
         picture: common.cloudinary.prepare(response.avatar, 180),
         color: response.color,
         load: true
       });
-    }, this));
+    });
   }
   componentWillUnmount () {
     currentUser.off('change');
