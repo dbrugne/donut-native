@@ -36,7 +36,7 @@ public class ImagePickerModule extends ReactContextBaseJavaModule implements Act
   private final ReactApplicationContext mReactContext;
   private final MainActivity mMainActivity;
 
-  private Uri mCameraCaptureURI;
+  public Uri mCameraCaptureURI;
   public Callback mCallback;
 
   public ImagePickerModule(ReactApplicationContext reactContext, MainActivity mainActivity) {
@@ -69,14 +69,17 @@ public class ImagePickerModule extends ReactContextBaseJavaModule implements Act
       }
       if (imageFile != null) {
         mCameraCaptureURI = Uri.fromFile(imageFile);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, this.mCameraCaptureURI);
+
+        Log.v("Image Picker DEBUG", "uri = " + mCameraCaptureURI.toString());
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
         mCallback = callback;
         mMainActivity.startActivityForResult(cameraIntent, REQUEST_LAUNCH_CAMERA);
       } else {
-        callback.invoke("file not save");
+        Log.v("Image Picker DEBUG", "error while creating tmp file");
+        callback.invoke(true, "file not save");
       }
     } else {
-      callback.invoke("error resolve activity");
+      callback.invoke(true, "error resolve activity");
     }
   }
 
@@ -93,24 +96,51 @@ public class ImagePickerModule extends ReactContextBaseJavaModule implements Act
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     Log.v("Image Picker DEBUG", "let s go for result ");
-    if (requestCode == REQUEST_LAUNCH_CAMERA || requestCode == REQUEST_LAUNCH_IMAGE_LIBRARY) {
-      if (resultCode == Activity.RESULT_OK) {
-        Uri uri = requestCode == REQUEST_LAUNCH_CAMERA ? this.mCameraCaptureURI : data.getData();
-        WritableMap response = Arguments.createMap();
-        response.putString("uri", uri.toString());
-        Log.v("Image Picker DEBUG", "get path ");
-        response.putString("path", getRealPathFromURI(uri));
-        Log.v("Image Picker DEBUG", "before response");
-        try {
-          mCallback.invoke(false, response);
-        } catch (Exception e) {
-          return;
-        }
-      } else if (resultCode == Activity.RESULT_CANCELED) {
-        mCallback.invoke(true, Arguments.createMap());
-      }
-    } else {
+
+    if (requestCode != REQUEST_LAUNCH_CAMERA && requestCode != REQUEST_LAUNCH_IMAGE_LIBRARY) {
+      Log.v("Image Picker DEBUG", "bad request code");
       mCallback.invoke(true, Arguments.createMap());
+      return;
+    }
+
+    if (resultCode != Activity.RESULT_OK) {
+      Log.v("Image Picker DEBUG", "canceled");
+      mCallback.invoke(true, Arguments.createMap());
+      return;
+    }
+
+    WritableMap response = Arguments.createMap();
+
+    Log.v("Image Picker DEBUG", "result ok");
+    if (mCameraCaptureURI == null && requestCode == REQUEST_LAUNCH_CAMERA) {
+      Log.v("Image Picker DEBUG", "mCameraCaptureURI null");
+      response.putString("err", "error uri not available");
+      if (mCallback != null) {
+        mCallback.invoke(true, response);
+      }
+      return;
+    }
+    Uri uri = (requestCode == REQUEST_LAUNCH_CAMERA)
+    ? mCameraCaptureURI
+    : data.getData();
+
+    if (uri.toString() == null) {
+      response.putString("err", "error uri not available");
+      mCallback.invoke(true, response);
+      return;
+    }
+
+    Log.v("Image Picker DEBUG", "uri ok : " + uri.toString());
+    response.putString("uri", uri.toString());
+
+    Log.v("Image Picker DEBUG", "get path ");
+    response.putString("path", getRealPathFromURI(uri));
+
+    Log.v("Image Picker DEBUG", "before response");
+    try {
+      mCallback.invoke(false, response);
+    } catch (Exception e) {
+      return;
     }
   }
 
