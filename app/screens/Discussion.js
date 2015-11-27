@@ -24,6 +24,7 @@ class Discussion extends Component {
     this.model = props.model;
   }
   componentDidMount () {
+//    console.log(this.model.get('identifier') + ' mounted');
     this.subscription = [
       DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
         LayoutAnimation.configureNext(animation);
@@ -36,6 +37,7 @@ class Discussion extends Component {
     ];
   }
   componentWillUnmount () {
+//    console.log(this.model.get('identifier') + ' unmounted');
     _.each(this.subscription, (s) => s.remove());
   }
   render() {
