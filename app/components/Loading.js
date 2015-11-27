@@ -8,7 +8,7 @@ var {
   ActivityIndicatorIOS
 } = React;
 
-class LoadingView extends Component {
+class Loading extends Component {
   constructor (props) {
     super(props);
   }
@@ -47,4 +47,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = LoadingView;
+module.exports = Loading;

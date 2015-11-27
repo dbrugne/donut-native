@@ -6,7 +6,7 @@ var Platform = require('Platform');
 var currentUser = require('../models/mobile-current-user');
 var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../libs/navigation');
-var LoadingView = require('../components/LoadingView');
+var LoadingView = require('../components/Loading');
 var cloudinary = require('../libs/cloudinary');
 
 var {

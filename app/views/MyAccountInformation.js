@@ -4,7 +4,7 @@ var client = require('../libs/client');
 var Platform = require('Platform');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
-var LoadingView = require('../components/LoadingView');
+var LoadingView = require('../components/Loading');
 var currentUser = require('../models/mobile-current-user');
 
 var {

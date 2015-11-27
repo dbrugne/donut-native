@@ -3,6 +3,9 @@ var React = require('react-native');
 var _ = require('underscore');
 var currentUser = require('../models/mobile-current-user');
 var s = require('../styles/style');
+var app = require('../libs/app');
+var navigation = require('../libs/navigation');
+var ListGroupItem = require('../components/ListGroupItem');
 
 var {
   Component,
@@ -11,123 +14,66 @@ var {
   View,
   StyleSheet,
   TouchableHighlight
-} = React;
+  } = React;
 var {
   Icon
   } = require('react-native-icons');
 
-var app = require('../libs/app');
-var navigation = require('../libs/navigation');
-
 class MyAccountView extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.data = props.data;
   }
 
-  render () {
+  render() {
     return (
       <ScrollView style={styles.main}>
 
         <View style={s.listGroup}>
-          <Text style={s.listGroupTitle}>MANAGE YOUR PROFILE INFORMATIONS</Text>
-          <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getMyAccountProfile())}
-                              underlayColor= '#DDD'
-            >
-            <View style={[s.listGroupItem, s.listGroupItemFirst]}>
-              <Text style={s.listGroupItemText}>Edit profile</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
 
-          <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
-                              underlayColor= '#DDD'
-            >
-            <View style={s.listGroupItem}>
-              <Text style={s.listGroupItemText}>Edit information</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
+
+          <Text style={s.listGroupTitle}>MANAGE YOUR PROFILE INFORMATIONS</Text>
+          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountProfile())}
+                         text='Edit profile'
+                         action='true'
+                         first='true'
+            />
+          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
+                         text='Edit information'
+                         action='true'
+            />
+          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPassword())}
+                         text='Change password'
+                         action='true'
+            />
 
           <Text style={s.listGroupItemSpacing}></Text>
           <Text style={s.listGroupTitle}>MANAGE YOUR PREFERENCES</Text>
-          <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getMyAccountPreferences())}
-                              underlayColor= '#DDD'
-            >
-            <View style={s.listGroupItem}>
-              <Text style={s.listGroupItemText}>Change preferences</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
+          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPreferences())}
+                         text='Change preferences'
+                         action='true'
+            />
 
           <Text style={s.listGroupItemSpacing}></Text>
           <Text style={s.listGroupTitle}>MANAGE YOUR EMAILS</Text>
-          <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getMyAccountEmail())}
-                              underlayColor= '#DDD'
-            >
-            <View style={s.listGroupItem}>
-              <Text style={s.listGroupItemText}>Change Email</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
 
-          <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getMyAccountPassword())}
-                              underlayColor= '#DDD'
-            >
-            <View style={s.listGroupItem}>
-              <Text style={s.listGroupItemText}>Change password</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
-
-          <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getMyAccountEmails())}
-                              underlayColor= '#DDD'
-            >
-            <View style={s.listGroupItem}>
-              <Text style={s.listGroupItemText}>Manage emails</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
+          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmail())}
+                         text='Change Email'
+                         action='true'
+                         first='true'
+            />
+          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmails())}
+                         text='Manage emails'
+                         action='true'
+                         first='true'
+            />
 
           <Text style={s.listGroupItemSpacing}></Text>
-          <TouchableHighlight onPress={() => currentUser.logout()}
-                              underlayColor= '#DDD'
-            >
-            <View style={s.listGroupItem}>
-              <Text style={[s.listGroupItemText, s.listGroupItemTextWarning]}>Logout</Text>
-            </View>
-          </TouchableHighlight>
+          <ListGroupItem onPress={() => currentUser.logout()}
+                         text='Logout'
+                         warning='true'
+            />
 
         </View>
       </ScrollView>
@@ -141,7 +87,7 @@ var styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     backgroundColor: '#f0f0f0',
-    paddingTop:20
+    paddingTop: 20
   }
 });
 

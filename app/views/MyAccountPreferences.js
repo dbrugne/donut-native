@@ -2,7 +2,7 @@ var React = require('react-native');
 var _ = require('underscore');
 var Platform = require('Platform');
 var client = require('../libs/client');
-var LoadingView = require('../components/LoadingView');
+var LoadingView = require('../components/Loading');
 var s = require('../styles/style');
 var currentUser = require('../models/mobile-current-user');
 
