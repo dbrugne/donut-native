@@ -29,23 +29,24 @@ class MyAccountView extends Component {
   render() {
     return (
       <ScrollView style={styles.main}>
-
         <View style={s.listGroup}>
-
 
           <Text style={s.listGroupTitle}>MANAGE YOUR PROFILE INFORMATIONS</Text>
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountProfile())}
                          text='Edit profile'
+                         type='button'
                          action='true'
                          first='true'
             />
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
                          text='Edit information'
                          action='true'
+                         type='button'
             />
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPassword())}
                          text='Change password'
                          action='true'
+                         type='button'
             />
 
           <Text style={s.listGroupItemSpacing}></Text>
@@ -53,6 +54,7 @@ class MyAccountView extends Component {
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPreferences())}
                          text='Change preferences'
                          action='true'
+                         type='button'
             />
 
           <Text style={s.listGroupItemSpacing}></Text>
@@ -62,16 +64,19 @@ class MyAccountView extends Component {
                          text='Change Email'
                          action='true'
                          first='true'
+                         type='button'
             />
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmails())}
                          text='Manage emails'
                          action='true'
+                         type='button'
                          first='true'
             />
 
           <Text style={s.listGroupItemSpacing}></Text>
           <ListGroupItem onPress={() => currentUser.logout()}
                          text='Logout'
+                         type='button'
                          warning='true'
             />
 

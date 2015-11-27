@@ -2,12 +2,11 @@
 
 var React = require('react-native');
 var Platform = require('Platform');
-var ListGroupItemSwitch = require('../components/ListGroupItem/ListGroupItemSwitch');
-var ListGroupItemButton = require('../components/ListGroupItem/ListGroupItemButton');
 
 var {
   Component,
   View,
+  TouchableHighlight,
   Text,
   StyleSheet
 } = React;
@@ -16,36 +15,12 @@ var {
   } = require('react-native-icons');
 
 
-class ListGroupItem extends Component {
-  /**
-   * @param props = {
-   *  onPress: callback action when component is clicked
-   *  onSwitch: callback action on switch component if any
-   *  switchValue: boolean, value of switch button if any
-   *  text: string to display on element
-   *  action: boolean to display right arrow
-   *  first: boolean if the current element is the first on list
-   *  last: boolean if the current element is the last on list
-   *  warning: boolean if the current item has a warning state
-   * }
-   */
+class ListGroupItemButton extends Component {
   constructor (props) {
     super(props);
   }
 
   render () {
-    if (this.props.type === 'switch') {
-      return (
-        <ListGroupItemSwitch {...this.props} />
-      );
-    }
-
-    if (this.props.type === 'button') {
-      return (
-        <ListGroupItemButton {...this.props} />
-      );
-    }
-
     // Display an arrow on right of the ListGroupItem ?
     var rightIcon = null;
     if (this.props.action) {
@@ -60,12 +35,14 @@ class ListGroupItem extends Component {
     }
 
     return (
-      <View>
+      <TouchableHighlight onPress={() => this.props.onPress()}
+                          underlayColor= '#DDD'
+        >
         <View style={[styles.listGroupItem, this.props.first && styles.listGroupItemFirst, this.props.last && styles.listGroupItemLast]}>
           <Text style={[styles.listGroupItemText, this.props.warning && styles.listGroupItemTextWarning]}>{this.props.text}</Text>
           {rightIcon}
         </View>
-      </View>
+      </TouchableHighlight>
     );
   }
 }
@@ -109,4 +86,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = ListGroupItem;
+module.exports = ListGroupItemButton;
