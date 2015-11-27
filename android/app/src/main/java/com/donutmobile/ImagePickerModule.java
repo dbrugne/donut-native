@@ -8,8 +8,10 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Toast;
+import android.database.Cursor;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -23,6 +25,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.Iterator;
+import android.util.Log;
 
 public class ImagePickerModule extends ReactContextBaseJavaModule implements ActivityResultListener {
   static final int REQUEST_LAUNCH_CAMERA = 1;
@@ -32,7 +37,7 @@ public class ImagePickerModule extends ReactContextBaseJavaModule implements Act
   private final MainActivity mMainActivity;
 
   private Uri mCameraCaptureURI;
-  private Callback mCallback;
+  public Callback mCallback;
 
   public ImagePickerModule(ReactApplicationContext reactContext, MainActivity mainActivity) {
     super(reactContext);
@@ -58,15 +63,20 @@ public class ImagePickerModule extends ReactContextBaseJavaModule implements Act
         imageFile = File.createTempFile("exponent_capture_", ".jpg",
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
       } catch (IOException e) {
-        Toast.makeText(mMainActivity.getApplicationContext(),
-            "Error creating temporary image.", Toast.LENGTH_SHORT)
-            .show();
+        callback.invoke(e.getMessage());
+        Log.v("Image Picker DEBUG", "error while launching camera");
         return;
       }
-      mCameraCaptureURI = Uri.fromFile(imageFile);
-      cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraCaptureURI);
-      mCallback = callback;
-      mMainActivity.startActivityForResult(cameraIntent, REQUEST_LAUNCH_CAMERA);
+      if (imageFile != null) {
+        mCameraCaptureURI = Uri.fromFile(imageFile);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, this.mCameraCaptureURI);
+        mCallback = callback;
+        mMainActivity.startActivityForResult(cameraIntent, REQUEST_LAUNCH_CAMERA);
+      } else {
+        callback.invoke("file not save");
+      }
+    } else {
+      callback.invoke("error resolve activity");
     }
   }
 
@@ -82,19 +92,40 @@ public class ImagePickerModule extends ReactContextBaseJavaModule implements Act
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    Log.v("Image Picker DEBUG", "let s go for result ");
     if (requestCode == REQUEST_LAUNCH_CAMERA || requestCode == REQUEST_LAUNCH_IMAGE_LIBRARY) {
       if (resultCode == Activity.RESULT_OK) {
-        Uri uri = requestCode == REQUEST_LAUNCH_CAMERA ? mCameraCaptureURI : data.getData();
+        Uri uri = requestCode == REQUEST_LAUNCH_CAMERA ? this.mCameraCaptureURI : data.getData();
         WritableMap response = Arguments.createMap();
         response.putString("uri", uri.toString());
-        mCallback.invoke(false, response);
+        Log.v("Image Picker DEBUG", "get path ");
+        response.putString("path", getRealPathFromURI(uri));
+        Log.v("Image Picker DEBUG", "before response");
+        try {
+          mCallback.invoke(false, response);
+        } catch (Exception e) {
+          return;
+        }
       } else if (resultCode == Activity.RESULT_CANCELED) {
         mCallback.invoke(true, Arguments.createMap());
-      } else {
-        Toast.makeText(mMainActivity.getApplicationContext(),
-            "Error reading image.", Toast.LENGTH_SHORT)
-            .show();
       }
+    } else {
+      mCallback.invoke(true, Arguments.createMap());
     }
+  }
+
+  public String getRealPathFromURI(Uri uri) {
+  String result = "error";
+  Cursor cursor = mMainActivity.getContentResolver().query(uri, null, null, null, null);
+  if (cursor == null) { // Source is Dropbox or other similar local file path
+      result = uri.getPath();
+  } else {
+      Log.v("Image Picker DEBUG", "cursor OK");
+      cursor.moveToFirst();
+      int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+      result = cursor.getString(idx);
+      cursor.close();
+  }
+  return result;
   }
 }

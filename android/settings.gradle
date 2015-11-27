@@ -3,3 +3,7 @@ rootProject.name = 'donutMobile'
 include ':app'
 include ':react-native-icons'
 project(':react-native-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-icons/android')
+
+// for Cloudinary (to read file in base64)
+include ':react-native-fs'
+project(':react-native-fs').projectDir = new File(settingsDir, '../node_modules/react-native-fs/android')
