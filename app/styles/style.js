@@ -44,10 +44,7 @@ module.exports = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'stretch',
-    marginBottom: 20,
-    borderColor: '#DDD',
-    borderStyle: 'solid',
-    borderWidth: 1
+    marginBottom: 20
   },
   listGroupTitle: {
     color: '#777777',
@@ -67,6 +64,11 @@ module.exports = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderColor: '#DDD',
+    borderBottomWidth:1,
+    borderStyle: 'solid'
+  },
+  listGroupItemFirst: {
+    borderColor: '#DDD',
     borderTopWidth:1,
     borderStyle: 'solid'
   },
@@ -78,9 +80,6 @@ module.exports = StyleSheet.create({
     paddingRight: 10,
     backgroundColor: '#f0f0f0',
     height: 20
-  },
-  listGroupItemFirst: {
-    borderTopWidth: 0
   },
   listGroupItemIcon: {
     width: 14,
@@ -100,6 +99,9 @@ module.exports = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 14,
     flex: 1
+  },
+  listGroupItemTextWarning: {
+    color: '#ff3838'
   },
   // buttons
   button: {

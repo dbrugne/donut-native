@@ -135,7 +135,6 @@ class MyAccountInformation extends Component {
 
         <Text style={s.filler}></Text>
 
-
         <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
                             style={[s.button, s.buttonPink, s.marginTop10]}
                             underlayColor='#E4396D'
