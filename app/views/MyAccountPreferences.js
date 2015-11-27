@@ -78,6 +78,7 @@ class UserPreferencesView extends Component {
 
     return (
       <View style={styles.row}>
+        <Text>{item.description}</Text>
         <View style={styles.rightContainer}>
           <SwitchComponent
             style={styles.switch}
@@ -85,7 +86,6 @@ class UserPreferencesView extends Component {
             value={this.state[item.field]}
             />
         </View>
-        <Text>{item.description}</Text>
       </View>
     )
   }

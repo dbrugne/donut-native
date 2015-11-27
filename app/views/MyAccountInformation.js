@@ -4,6 +4,7 @@ var client = require('../libs/client');
 var Platform = require('Platform');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
+var LoadingView = require('../components/LoadingView');
 
 var {
   Component,
@@ -12,7 +13,6 @@ var {
   StyleSheet,
   TextInput,
   TouchableHighlight,
-  ActivityIndicatorIOS,
   Image,
   ToastAndroid
 } = React;
@@ -48,7 +48,9 @@ class MyAccountInformation extends Component {
 
   render () {
     if (!this.state.load) {
-      return this.renderLoadingView();
+      return (
+        <LoadingView />
+      );
     }
 
     var messages = null;
@@ -146,23 +148,6 @@ class MyAccountInformation extends Component {
 
       </View>
     )
-  }
-
-  //@todo mutualise loading view
-  renderLoadingView () {
-    return (
-      <View style={styles.container}>
-        <View style={styles.centered}>
-          <Text> Loading... </Text>
-          <ActivityIndicatorIOS
-            animating={this.state.load}
-            style={styles.loading}
-            size='small'
-            color='#666666'
-            />
-        </View>
-      </View>
-    );
   }
 
   onSubmitPressed () {
