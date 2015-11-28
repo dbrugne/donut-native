@@ -5,22 +5,23 @@ var Backbone = require('backbone');
 var storage = require('../libs/storage');
 
 var oauth = _.extend({
-
   email: null,
   token: null,
   code: null,
 
+  facebookToken: null,
   requireUsername: false,
 
   loaded: false,
 
   oauthBaseUrl: 'https://test.donut.me/oauth/',
+//  oauthBaseUrl: 'http://192.168.2.240:3000/oauth/',
 
   oauthHeaders: {
     method: 'post',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     }
   },
 
@@ -100,6 +101,10 @@ var oauth = _.extend({
       }
 
       if (response.validity === true) {
+        if (response.err === 'no-username') {
+          this.requireUsername = true;
+        }
+
         return callback(null, true);
       }
 
@@ -155,6 +160,37 @@ var oauth = _.extend({
   },
 
   /**
+   * Retrieve ws token with Facebook token
+   * @param facebookToken
+   * @param callback
+   */
+  facebookLogin: function (facebookToken, callback) {
+    if (!facebookToken) {
+      return callback('no-facebook-token');
+    }
+
+    this.oauthRequest('get-token-from-facebook', { access_token: facebookToken }, _.bind(function (err, response) {
+      if (err) {
+        return callback(err);
+      }
+      if (response.err && response.err !== 'no-username') {
+        return callback(response.err);
+      }
+
+      if (response.err === 'no-username') {
+        this.requireUsername = true;
+      }
+
+      this.token = response.token;
+      this.code = '';
+      storage.setKeys({
+        token: this.token,
+        code: this.code
+      }, callback);
+    }, this));
+  },
+
+  /**
    * Retrieve token with email and password
    * @param email
    * @param password
@@ -162,12 +198,10 @@ var oauth = _.extend({
    */
   login: function (email, password, callback) {
     this.email = email;
-    console.log(email, this.email);
     storage.setKey('email', email, _.bind(function (err) {
       if (err) {
         return callback(err);
       }
-      console.log(email, this.email);
 
       this.oauthRequest('get-token-from-credentials', { email: email, password: password }, _.bind(function (err, response) {
         if (err) {
@@ -199,12 +233,10 @@ var oauth = _.extend({
 
   signUp: function (email, password, username, callback) {
     this.email = email;
-    console.log(email, this.email);
     storage.setKey('email', email, _.bind(function (err) {
       if (err) {
         return callback(err);
       }
-      console.log(email, this.email);
 
       this.oauthRequest('signup', { email: email, password: password, username: username }, _.bind(function (err, response) {
         if (err) {
@@ -220,6 +252,32 @@ var oauth = _.extend({
         }, callback);
       }, this));
     }, this));
+  },
+
+  /**
+   * Save username on account related to currently stored session token
+   * @param username
+   * @param callback
+   */
+  saveUsername: function (username, callback) {
+    if (!this.token) {
+      return callback('no-token');
+    }
+    if (!username) {
+      return callback('no-username');
+    }
+
+    this.oauthRequest('save-username', { token: this.token, username: username }, (err, response) => {
+      if (err) {
+        return callback(err);
+      }
+      if (response.err) {
+        return callback(response.err);
+      }
+
+      this.requireUsername = false;
+      callback(null);
+    });
   },
 
   forgot: function (email, callback) {

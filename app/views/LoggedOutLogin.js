@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * https://medium.com/@ntoscano/react-native-persistent-user-login-6a48ff380ab8#.ojepkj31k
- * http://wiredify.com/shohey1226/logs/React-Native---Router-for-Login-status-using-Navigator
- * https://github.com/ntoscano/ReactNativePersistentUserLogin/blob/master/persistentUserLogin.js
- * https://blog.nraboy.com/2015/09/using-navigator-routes-in-your-react-native-application/
- */
-
 var _ = require('underscore');
 var React = require('react-native');
 var SignupView = require('./LoggedOutSignup');
@@ -26,13 +19,12 @@ var {
   BackAndroid,
   ToastAndroid,
   Image
-  } = React;
-var {
-  Icon
-  } = require('react-native-icons');
-
+} = React;
 
 var currentUser = require('../models/mobile-current-user');
+var FacebookLogin = require('../components/FacebookLogin');
+
+
 
 class LoginView extends Component {
   constructor(props) {
@@ -51,11 +43,11 @@ class LoginView extends Component {
       email: currentUser.getEmail()
     });
     if (Platform.OS === 'android') {
+      // @todo yfuks : same as app/screens/Discussion.js
       BackAndroid.addEventListener('hardwareBackPress', _.bind(function () {
         var routes = this.props.navigator.getCurrentRoutes();
         if (routes && routes.length > 1) {
-          // @todo yfuks: pourquoi pas juste this.props.navigator.pop() ?
-          this.props.navigator.popToTop().bind(this);
+          this.props.navigator.pop();
         }
       }, this));
     }
@@ -86,22 +78,7 @@ class LoginView extends Component {
             <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
           </View>
 
-          <TouchableHighlight onPress={(this.onFacebookPressed.bind(this))}
-                              style={[s.button, styles.buttonFacebook]}
-                              underlayColor='#647EB7'
-            >
-            <View style={[s.buttonLabel, styles.buttonLabelFacebook]}>
-              <View style={styles.iconContainer}>
-                <Icon
-                  name='fontawesome|facebook'
-                  size={28}
-                  color='#FFF'
-                  style={[styles.icon, styles.iconFacebook]}
-                  />
-              </View>
-              <Text style={[s.buttonText, styles.buttonTextFacebook]}>Sign-in with Facebook</Text>
-            </View>
-          </TouchableHighlight>
+          <FacebookLogin />
 
           <View style={styles.orContainer}>
             <Text style={s.title}> OR </Text>
@@ -162,9 +139,6 @@ class LoginView extends Component {
         this._appendError(err);
       }
     }, this));
-  }
-
-  onFacebookPressed() {
   }
 
   onForgotPressed() {
@@ -232,28 +206,6 @@ var styles = StyleSheet.create({
     color: '#333',
     alignSelf: "center"
   },
-  buttonFacebook: {
-    backgroundColor: "#4a649d",
-    borderColor: "#4a649d",
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: 5,
-    marginBottom: 0
-  },
-  buttonLabelFacebook: {
-    justifyContent: 'flex-start'
-  },
-  buttonTextFacebook: {
-    fontWeight: 'normal',
-    fontSize: 18,
-    color: "#FFF",
-    paddingTop: 5,
-    paddingBottom: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    flex: 1
-  },
   icon: {
     width: 28,
     height: 28
@@ -264,11 +216,6 @@ var styles = StyleSheet.create({
     borderColor: '#344B7D',
     borderStyle: 'solid',
     marginRight: 5
-  },
-  iconFacebook: {
-    paddingRight: 5,
-    marginRight: 5,
-    alignSelf: 'flex-end'
   },
   marginTop5: {
     marginTop: 5

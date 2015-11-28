@@ -27,7 +27,7 @@ currentUser.loadInitialState = function () {
 };
 
 currentUser.isLoggedIn = function () {
-  return (this.oauth.loaded && this.oauth.token);
+  return (this.oauth.loaded && this.oauth.token && this.oauth.requireUsername !== true);
 };
 
 currentUser.getEmail = function () {
@@ -42,6 +42,16 @@ currentUser.isAdmin = function () {
   return (this.get('admin') === true);
 };
 
+currentUser.facebookLogin = function (token, callback) {
+  this.oauth.facebookLogin(token, _.bind(function (err) {
+    if (err) {
+      return callback(err);
+    }
+
+    this.trigger('currentUserStatus');
+  }, this));
+};
+
 currentUser.login = function (email, password, callback) {
   this.oauth.login(email, password, _.bind(function (err) {
     if (err) {
@@ -50,6 +60,16 @@ currentUser.login = function (email, password, callback) {
 
     this.trigger('currentUserStatus');
   }, this));
+};
+
+currentUser.saveUsername = function (username, callback) {
+  this.oauth.saveUsername(username, (err) => {
+    if (err) {
+      return callback(err);
+    }
+
+    this.trigger('currentUserStatus');
+  });
 };
 
 currentUser.logout = function () {

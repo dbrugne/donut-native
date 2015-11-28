@@ -7,15 +7,17 @@ var {
   Navigator
 } = React;
 
-class LoggedOut extends Component {
-  componentDidMount() {
-    // @todo : listen for nav event on app => this.refs.navigator
-  }
-  componentWillUnmount() {
-    // @todo : remove nav event listener
-  }
+var currentUser = require('../models/mobile-current-user');
+var ChooseUsername = require('../views/LoggedOutChooseUsername');
 
+class LoggedOut extends Component {
   render () {
+    if (currentUser.oauth.requireUsername === true) {
+      return (
+        <ChooseUsername />
+      );
+    }
+
     return (
       <View style={styles.appContainer}>
         <Navigator
@@ -23,7 +25,7 @@ class LoggedOut extends Component {
           debugOverlay={false}
           renderScene={this.renderScene}
           initialRoute={{ name: 'login', index: 0, component: require('../views/LoggedOutLogin') }}
-          onBack={() => {navigator.popToTop()}}
+          onBack={() => {navigator.pop()}}
         />
       </View>
     );
