@@ -13,8 +13,6 @@ var LoggedIn = require('./navigation/LoggedIn');
 
 global.currentUser = currentUser;
 
-// @todo handle android return button BackAndroid.addEventListener('hardwareBackPress'...)
-
 class Index extends Component {
   constructor (props) {
     super(props);
