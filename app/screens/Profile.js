@@ -92,7 +92,7 @@ class ProfileView extends Component {
         );
       break;
       default:
-        return navigation.switchTo(navigation.getHome()); // @todo goto home make this work
+        return (<View>Unable to display this profile</View>); // @todo ylastapis skin a reusable error page component
       break;
     }
   }
