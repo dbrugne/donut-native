@@ -53,27 +53,6 @@ class Signup extends Component {
             <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
           </View>
 
-          <TouchableHighlight onPress={(this.onFacebookPressed.bind(this))}
-                              style={[s.button, styles.buttonFacebook]}
-                              underlayColor='#647EB7'
-            >
-            <View style={[s.buttonLabel, styles.buttonLabelFacebook]}>
-              <View style={styles.iconContainer}>
-                <Icon
-                  name='fontawesome|facebook'
-                  size={28}
-                  color='#FFF'
-                  style={[styles.icon, styles.iconFacebook]}
-                  />
-              </View>
-              <Text style={[s.buttonText, styles.buttonTextFacebook]}>Sign-up with Facebook</Text>
-            </View>
-          </TouchableHighlight>
-
-          <View style={styles.orContainer}>
-            <Text style={styles.title}> OR </Text>
-          </View>
-
           {messages}
 
           <TextInput
@@ -123,9 +102,6 @@ class Signup extends Component {
     }, this));
   }
 
-  onFacebookPressed () {
-  }
-
   _appendError (string) {
     if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
@@ -160,28 +136,6 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  buttonFacebook: {
-    backgroundColor: "#4a649d",
-    borderColor: "#4a649d",
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: 5,
-    marginBottom: 0
-  },
-  buttonLabelFacebook: {
-    justifyContent: 'flex-start'
-  },
-  buttonTextFacebook: {
-    fontWeight: 'normal',
-    fontSize: 18,
-    color: "#FFF",
-    paddingTop: 5,
-    paddingBottom: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    flex: 1
-  },
   icon: {
     width: 28,
     height: 28
@@ -193,10 +147,6 @@ var styles = StyleSheet.create({
     borderStyle: 'solid',
     marginRight: 5
   },
-  orContainer: {
-    padding: 10,
-    marginVertical:10
-  },
   title: {
     fontSize: 12,
     fontWeight: 'bold',
@@ -205,11 +155,6 @@ var styles = StyleSheet.create({
   },
   marginTop5: {
     marginTop: 5
-  },
-  iconFacebook: {
-    paddingRight: 5,
-    marginRight: 5,
-    alignSelf: 'flex-end'
   }
 });
 
