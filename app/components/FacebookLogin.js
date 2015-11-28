@@ -2,7 +2,6 @@
 
 var React = require('react-native');
 var FBLogin = require('react-native-facebook-login');
-var FBLoginManager = require('NativeModules').FBLoginManager;
 
 var {
   StyleSheet,
@@ -48,7 +47,6 @@ module.exports = React.createClass({
           <View style={styles.enlargedButton}>
             <FBLogin
               permissions={['email']}
-              loginBehavior={FBLoginManager.LoginBehaviors.Native}
               onLogin={this.onLogin}
               onLogout={this.onLogout}
               onLoginFound={this.onLoginFound}
@@ -63,12 +61,17 @@ module.exports = React.createClass({
     );
   },
   onLogin (data) {
+    // iOS / Android date format difference
+    var token = (data.credentials && data.credentials.token)
+      ? data.credentials.token
+      : data.token;
     console.log('onLogin', data);
-    currentUser.facebookLogin(data.credentials.token, function (err) {
+    currentUser.facebookLogin(token, function (err) {
       console.log('onLogin.onLogin error', err);
     });
-    currentUser.oauth.facebookToken = data.credentials.token;
+    currentUser.oauth.facebookToken = token; // @todo : in oauth.facebookLogin
   },
+  // iOS only
   onLoginFound (data) {
     console.log('onLoginFound', data);
     currentUser.oauth.facebookToken = data.credentials.token;
@@ -76,6 +79,7 @@ module.exports = React.createClass({
       fakeLogin: true
     });
   },
+  // iOS only
   onLoginNotFound () {
     console.log('onLoginNotFound');
   },

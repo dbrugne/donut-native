@@ -1,9 +1,15 @@
 rootProject.name = 'donutMobile'
 
 include ':app'
+
+// @Icons
 include ':react-native-icons'
 project(':react-native-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-icons/android')
 
-// for Cloudinary (to read file in base64)
+// @FacebookLogin
+include ':react-native-facebook-login'
+project(':react-native-facebook-login').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-facebook-login/android')
+
+// @ImagePicker
 include ':react-native-fs'
 project(':react-native-fs').projectDir = new File(settingsDir, '../node_modules/react-native-fs/android')

@@ -1,7 +1,6 @@
 package com.donutmobile;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
@@ -12,21 +11,30 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
+ // @ImagePicker
+import android.content.Intent;
 import java.util.ArrayList;
 import java.util.List;
+import com.rnfs.RNFSPackage;
 
+// @Icons
 import com.smixx.reactnativeicons.ReactNativeIcons;
 import java.util.Arrays;
 import com.smixx.reactnativeicons.IconFont;
-import com.rnfs.RNFSPackage;
+
+// @FacebookLogin
+import com.magus.fblogin.FacebookLoginPackage;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
 
     private ReactInstanceManager mReactInstanceManager;
     private ReactRootView mReactRootView;
 
-    private List<ActivityResultListener> mListeners = new ArrayList<>();
+    // declare package
+    private FacebookLoginPackage mFacebookLoginPackage; // @FacebookLogin
 
+    // @ImagePicker
+    private List<ActivityResultListener> mListeners = new ArrayList<>();
     public void addActivityResultListener(ActivityResultListener listener) {
         mListeners.add(listener);
     }
@@ -36,14 +44,25 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         super.onCreate(savedInstanceState);
         mReactRootView = new ReactRootView(this);
 
+        // @FacebookLogin
+        mFacebookLoginPackage = new FacebookLoginPackage(this);
+
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
                 .setBundleAssetName("index.android.bundle")
                 .setJSMainModuleName("index.android")
                 .addPackage(new MainReactPackage())
+
+                // @Icons
                 .addPackage(new ReactNativeIcons())
+
+                 // @FacebookLogin
+                .addPackage(mFacebookLoginPackage)
+
+                // @ImagePicker
                 .addPackage(new ImagePickerPackage(this))
-                .addPackage(new RNFSPackage()) // for Cloudinary (to read file in base64)
+                .addPackage(new RNFSPackage())
+
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
@@ -96,8 +115,15 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        for (ActivityResultListener listener : mListeners) {
-            listener.onActivityResult(requestCode, resultCode, data);
-        }
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // @ImagePicker
+        // @todo yfuks break all other onActivityResult usages
+//        for (ActivityResultListener listener : mListeners) {
+//            listener.onActivityResult(requestCode, resultCode, data);
+//        }
+
+        // @FacebookLogin
+        mFacebookLoginPackage.handleActivityResult(requestCode, resultCode, data);
     }
 }

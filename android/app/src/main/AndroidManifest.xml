@@ -2,11 +2,14 @@
     package="com.donutmobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- @ImagePicker -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-feature android:name="android.hardware.camera"
                   android:required="true"/>
     <uses-feature android:name="android.hardware.camera.autofocus" />
+    <!-- / @ImagePicker -->
 
     <application
       android:allowBackup="true"
@@ -23,6 +26,18 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+
+      <!-- @FacebookLogin -->
+      <activity
+                android:name="com.facebook.FacebookActivity"
+                android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+                android:label="@string/app_name"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+      <meta-data
+                android:name="com.facebook.sdk.ApplicationId"
+                android:value="@string/fb_app_id"/>
+      <!-- / @FacebookLogin -->
+
     </application>
 
 </manifest>
