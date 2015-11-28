@@ -13,13 +13,21 @@ npm install -g react-native-cli
 
 ## Questions
 
-* [x] authentication (email)
-* [ ] authentication (Facebook)
-* [x] deploy on iOS devices
-* [x] deploy on Android devices
-* [x] ws connectivity
-* [x] multi-view and navigation
 * [ ] push notifications
+* [ ] hyperlink opening
+* [ ] Add i18next usage
+* [ ] Build stand alone APK for testing
+* [ ] Build on iOS for testing
+* [ ] stores submission
+
+  
+## Production build
+ 
+* [ ] debug/test settings and bundle package
+* [ ] Facebook ID ios/donutMobile/Info.plist
+* [ ] Facebook ID android/app/src/main/res/values/strings.xml
+* [ ] WS URL app/libs/client.js
+* [ ] OAUTH URL app/libs/oauth.js
 
 ## Interesting example
 
@@ -42,11 +50,6 @@ npm install -g react-native-cli
     }
   }
 ```
-  
-## Production build
- 
-debug/test settings and bundle package
-FB id in info.plist
 
 ## Android setup for windows
 
