@@ -18,6 +18,7 @@ import java.util.List;
 import com.smixx.reactnativeicons.ReactNativeIcons;
 import java.util.Arrays;
 import com.smixx.reactnativeicons.IconFont;
+import com.rnfs.RNFSPackage;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
 
@@ -42,6 +43,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .addPackage(new MainReactPackage())
                 .addPackage(new ReactNativeIcons())
                 .addPackage(new ImagePickerPackage(this))
+                .addPackage(new RNFSPackage()) // for Cloudinary (to read file in base64)
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();

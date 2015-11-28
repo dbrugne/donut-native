@@ -2,170 +2,165 @@ var React = require('react-native');
 var _ = require('underscore');
 var Platform = require('Platform');
 var client = require('../libs/client');
+var LoadingView = require('../components/Loading');
+var s = require('../styles/style');
+var currentUser = require('../models/mobile-current-user');
+var ListGroupItem = require('../components/ListGroupItem');
 
 var {
   Component,
   Text,
   View,
   StyleSheet,
-  SwitchAndroid,
-  SwitchIOS,
   ToastAndroid,
-  ListView
+  ListView,
+  AlertIOS
   } = React;
 
-var currentUser = require('../models/mobile-current-user');
-
-var items = [
-  {field: 'notif:channels:email', description: 'on email (only if you are offline)'},
-  {field: 'notif:channels:mobile', description: 'on mobile'},
-  {field: 'notif:usermessage', description: 'when a user sends me a private message'},
-  {field: 'notif:invite', description: 'when a user invites me'}
-];
-
 class UserPreferencesView extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       loaded: false,
       errors: [],
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2
-      })
+      messages: [],
+      preferences: {
+        'notif:channels:email': false,
+        'notif:channels:mobile': false,
+        'notif:usermessage': false,
+        'notif:invite': false
+      }
     };
-    _.each(items, _.bind(function (i) {
-      this.state[i.field] = false;
-    }, this));
   }
 
-  componentDidMount () {
-    client.userPreferencesRead(null, _.bind(function (data) {
-      var read = {loaded: true};
-      _.each(items, _.bind(function (i) {
-        read[i.field] = data.preferences[i.field];
-      }, this));
-      this.setState(read);
-    }, this));
-  }
+  componentDidMount() {
+    client.userPreferencesRead(null, (data) => {
+      if (!data.preferences) {
+        return;
+      }
 
-  render () {
-    if (!this.state.loaded) {
-      return this.renderLoadingView();
-    }
+      var preferences = _.clone(this.state.preferences);
 
-    return (
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>Set preferences</Text>
-          {this.state.errors.map((m) => <Text>{m}</Text>)}
-          <Text style={styles.label}>Notify me:</Text>
-          <ListView
-              dataSource={this.state.dataSource.cloneWithRows(items)}
-              renderRow={this.renderElement.bind(this)}
-            />
-        </View>
-      </View>
-    )
-  }
+      _.each(preferences, (val, key) => {
+        if (_.has(data.preferences, key)) {
+          preferences[key] = data.preferences[key];
+        }
+      });
 
-  renderElement (item) {
-    var SwitchComponent;
-    if (Platform.OS === 'android') {
-      SwitchComponent = SwitchAndroid;
-    } else {
-      SwitchComponent = SwitchIOS;
-    }
-
-    return (
-      <View style={styles.row}>
-        <View style={styles.rightContainer}>
-          <SwitchComponent
-            style={styles.switch}
-            onValueChange={this._changePreferences.bind(this, item.field)}
-            value={this.state[item.field]}
-            />
-        </View>
-        <Text>{item.description}</Text>
-      </View>
-    )
-  }
-
-  renderLoadingView () {
-    return (
-      <View style={styles.container}>
-        <Text>
-          Loading...
-        </Text>
-      </View>
-    );
-  }
-
-  _changePreferences (key) {
-    this.setState({
-      [key]: !this.state[key]
+      this.setState({
+        loaded: true,
+        preferences
+      });
     });
+  }
+
+  render() {
+    if (!this.state.loaded) {
+      return (
+        <LoadingView />
+      );
+    }
+
+    var messages = null;
+    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
+      if (this.state.errors && this.state.errors.length > 0) {
+        messages = (
+          <View style={s.alertError}>
+            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+          </View>
+        );
+      } else {
+        messages = (
+          <View style={s.alertSuccess}>
+            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+          </View>
+        );
+      }
+    }
+
+    return (
+      <View style={styles.container}>
+        <Text style={[s.h1, s.textCenter, s.marginTop5]}>Set preferences</Text>
+
+        {messages}
+
+        <Text style={[s.listGroupTitle, s.marginTop20]}>NOTIFY ME</Text>
+        <View style={s.listGroup}>
+
+          <ListGroupItem text='on email (only if you are offline)'
+                         type='switch'
+                         onSwitch={this._changePreferences.bind(this, 'notif:channels:email')}
+                         switchValue={this.state.preferences['notif:channels:email']}
+            />
+
+          <ListGroupItem text='on mobile'
+                         type='switch'
+                         onSwitch={this._changePreferences.bind(this, 'notif:channels:mobile')}
+                         switchValue={this.state.preferences['notif:channels:mobile']}
+            />
+
+          <ListGroupItem text='when a user sends me a private message'
+                         type='switch'
+                         onSwitch={this._changePreferences.bind(this, 'notif:usermessage')}
+                         switchValue={this.state.preferences['notif:usermessage']}
+            />
+
+          <ListGroupItem text='when a user invites me'
+                         type='switch'
+                         onSwitch={this._changePreferences.bind(this, 'notif:invite')}
+                         switchValue={this.state.preferences['notif:invite']}
+            />
+
+        </View>
+      </View>
+    )
+  }
+
+  _changePreferences(key) {
+    var newVal = !this.state.preferences[key];
 
     var update = {};
-    update[key] = this.state[key];
+    update[key] = newVal;
     client.userPreferencesUpdate(update, _.bind(function (response) {
       if (response.err) {
         this._appendError(response.err);
       } else {
-        this._appendError('Success');
+        this._appendMessage('sauvegardé avec success');
       }
+
+      var preferences = _.clone(this.state.preferences);
+      preferences[key] = newVal;
+      this.setState({
+        preferences
+      });
     }, this));
   }
 
-  _appendError (string) {
+  _appendError(string) {
     if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
-      this.setState({errors: this.state.messages.concat(string)});
+      AlertIOS.alert(string)
+    }
+  }
+
+  _appendMessage(string) {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(string, ToastAndroid.SHORT);
+    } else {
+      AlertIOS.alert(string)
     }
   }
 }
 
 var styles = StyleSheet.create({
   container: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  label: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  button: {
-    height: 46,
-    width: 250,
-    backgroundColor: "#fd5286",
-    borderRadius: 3,
-    marginTop: 30,
-    justifyContent: "center",
-    alignSelf: "center"
-  },
-  buttonText: {
-    fontSize: 18,
-    color: "#ffffff",
-    alignSelf: "center"
-  },
-  title: {
-    fontSize: 18,
-    alignSelf: "center",
-    marginBottom: 20,
-    fontWeight: 'bold',
-    color: "#111"
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 50
-  },
-  rightContainer: {
-    flex: 1
+    backgroundColor: '#f0f0f0'
   }
 });
 

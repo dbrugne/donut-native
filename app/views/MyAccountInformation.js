@@ -2,6 +2,10 @@ var React = require('react-native');
 var _ = require('underscore');
 var client = require('../libs/client');
 var Platform = require('Platform');
+var common = require('@dbrugne/donut-common/mobile');
+var s = require('../styles/style');
+var LoadingView = require('../components/Loading');
+var currentUser = require('../models/mobile-current-user');
 
 var {
   Component,
@@ -10,17 +14,16 @@ var {
   StyleSheet,
   TextInput,
   TouchableHighlight,
+  Image,
   ToastAndroid
 } = React;
 
-var currentUser = require('../models/mobile-current-user');
-
-class EditProfileView extends Component {
+class MyAccountInformation extends Component {
   constructor (props) {
     super(props);
     this.state = {
       username: currentUser.get('username'),
-      realName: '',
+      realname: '',
       bio: '',
       location: '',
       website: '',
@@ -30,84 +33,124 @@ class EditProfileView extends Component {
   }
 
   componentDidMount () {
-    client.userRead(currentUser.get('user_id'), _.bind(function (response) {
+    client.userRead(currentUser.get('user_id'), {more: true}, (response) => {
       this.setState({
-        realName: response.realname,
+        realname: response.realname,
         bio: response.bio,
         location: response.location,
         website: response.website,
+        picture: common.cloudinary.prepare(response.avatar, 50),
         load: true
       });
-    }, this));
+    });
   }
 
   render () {
     if (!this.state.load) {
-      return this.renderLoadingView();
+      return (
+        <LoadingView />
+      );
+    }
+
+    var messages = null;
+    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
+      if (this.state.errors && this.state.errors.length > 0) {
+        messages = (
+          <View style={s.alertError}>
+            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+          </View>
+        );
+      } else {
+        messages = (
+          <View style={s.alertSuccess}>
+            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+          </View>
+        );
+      }
+    }
+
+    var realname = null;
+    if (this.state.realname) {
+      realname = (
+        <Text style={styles.username}>{this.state.realname}</Text>
+      );
     }
 
     return (
       <View style={styles.container}>
-        <View style={styles.center}>
-          {this.state.errors.map((m) => <Text>{m}</Text>)}
-          <Text>Username <Text style={styles.username}>@{this.state.username}</Text> <Text style={styles.blur}>(unchangeable)</Text></Text>
-          <View style={styles.row}>
-            <Text style={styles.label}>Real name</Text>
-            <TextInput
-              placeholder="name and first name"
-              onChange={(event) => this.setState({realName: event.nativeEvent.text})}
-              value={this.state.realName}
-              style={styles.formInput}
-              maxLength={20}/>
+
+        <View style={styles.containerHorizontal}>
+          <Image
+            style={styles.image}
+            source={{uri: this.state.picture}}
+            />
+          <View style={styles.containerVertical}>
+            {realname}
+            <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
           </View>
-          <View style={styles.row}>
-            <Text style={styles.label}>Bio</Text>
-            <TextInput
-              placeholder="Describe yourself"
-              onChange={(event) => this.setState({bio: event.nativeEvent.text})}
-              value={this.state.bio}
-              style={styles.formInput}
-              maxLength={200}
-              multiline={true}/>
-          </View>
-          <View style={styles.row}>
-            <Text style={styles.label}>Place</Text>
-            <TextInput
-              placeholder="City, country where you are"
-              onChange={(event) => this.setState({location: event.nativeEvent.text})}
-              value={this.state.location}
-              style={styles.formInput}/>
-          </View>
-          <View style={styles.row}>
-            <Text style={styles.label}>Website</Text>
-            <TextInput
-              placeholder="URL of a website"
-              onChange={(event) => this.setState({website: event.nativeEvent.text})}
-              value={this.state.website}
-              style={styles.formInput}/>
-          </View>
-          <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))} style={styles.button}>
-            <Text style={styles.buttonText}>SAVE</Text>
-          </TouchableHighlight>
         </View>
+
+        {messages}
+
+        <View style={[s.inputContainer, s.marginTop20]}>
+          <Text style={s.inputLabel}>realname</Text>
+          <TextInput
+            placeholder="name and first name"
+            onChange={(event) => this.setState({realname: event.nativeEvent.text})}
+            value={this.state.realname}
+            style={s.input}
+            maxLength={20}/>
+        </View>
+
+        <View style={s.inputContainer}>
+          <Text style={s.inputLabel}>bio</Text>
+          <TextInput
+            placeholder="Describe yourself"
+            onChange={(event) => this.setState({bio: event.nativeEvent.text})}
+            value={this.state.bio}
+            style={[s.input, s.marginTop5, styles.bio]}
+            maxLength={200}
+            multiline={true}/>
+         </View>
+
+        <View style={s.inputContainer}>
+          <Text style={s.inputLabel}>place</Text>
+          <TextInput
+            placeholder="City, country where you are"
+            onChange={(event) => this.setState({location: event.nativeEvent.text})}
+            value={this.state.location}
+            style={s.input}/>
+        </View>
+
+        <View style={s.inputContainer}>
+          <Text style={s.inputLabel}>website</Text>
+          <TextInput
+            placeholder="URL of a website"
+            onChange={(event) => this.setState({website: event.nativeEvent.text})}
+            value={this.state.website}
+            style={s.input}/>
+        </View>
+
+        <Text style={s.filler}></Text>
+
+        <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
+                            style={[s.button, s.buttonPink, s.marginTop10]}
+                            underlayColor='#E4396D'
+          >
+          <View style={s.buttonLabel}>
+            <Text style={s.buttonTextLight}>SAVE</Text>
+          </View>
+        </TouchableHighlight>
+
       </View>
     )
   }
 
-  //@todo mutualise loading view
-  renderLoadingView () {
-    return (
-      <View style={styles.container}>
-        <Text>
-          Loading...
-        </Text>
-      </View>
-    );
-  }
-
   onSubmitPressed () {
     var updateData = {
-      realname: this.state.realName,
+      realname: this.state.realname,
       bio: this.state.bio,
       location: this.state.location,
       website: this.state.website
@@ -117,7 +160,7 @@ class EditProfileView extends Component {
       if (response.err) {
         this._appendError(response.err);
       } else {
-        this._appendError('Success');
+        this._appendMessage('Success');
       }
     }, this));
   }
@@ -129,55 +172,75 @@ class EditProfileView extends Component {
       this.setState({errors: this.state.messages.concat(string)});
     }
   }
+
+  _appendMessage (string) {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(string, ToastAndroid.SHORT);
+    } else {
+      this.setState({messages: this.state.messages.concat(string)});
+    }
+  }
 }
 
 var styles = StyleSheet.create({
-  blur: {
-    color: "#BBB"
-  },
-  row: {
-    marginTop: 20
-  },
-  label: {
-    fontWeight: 'bold',
-    color: "#777"
-  },
-  username: {
-    fontWeight: 'bold',
-    color: "#111"
-  },
   container: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'center',
     flex: 1,
+    backgroundColor: '#f0f0f0'
+  },
+  centered: {
+    alignSelf: 'center',
     justifyContent: 'center'
   },
-  formInput: {
-    height: 42,
-    width: 250,
+  containerHorizontal: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    marginVertical: 10,
+    marginHorizontal: 10
+  },
+  containerVertical: {
     flex: 1,
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    paddingTop: 2
+  },
+  image: {
+    height: 80,
+    width: 80,
+    borderRadius: 4,
+    marginRight: 10
+  },
+  bio: {
+    height:120
+  },
+  username: {
+    color: '#333333',
+    fontFamily: 'Open Sans',
     fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#555555",
-    borderRadius: 8,
-    color: "#555555"
+    fontWeight: '400'
   },
-  button: {
-    height: 46,
-    width: 250,
-    backgroundColor: "#fd5286",
-    borderRadius: 3,
-    marginTop: 30,
-    justifyContent: "center",
-    alignSelf: "center"
+  usernameGray: {
+    color: '#b6b6b6'
   },
-  buttonText: {
-    fontSize: 18,
-    color: "#ffffff",
-    alignSelf: "center"
+  realname: {
+    color: '#333333',
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    fontWeight: '400'
   },
-  center: {
-    alignSelf: "center"
+  icon: {
+    width: 14,
+    height: 14,
+    color: '#c7c7c7'
+  },
+  loading: {
+    height: 120
   }
 });
 
-module.exports = EditProfileView;
+module.exports = MyAccountInformation;
 

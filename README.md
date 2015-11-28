@@ -41,7 +41,12 @@ npm install -g react-native-cli
       console.log(error);
     }
   }
-```  
+```
+  
+## Production build
+ 
+debug/test settings and bundle package
+FB id in info.plist
 
 ## Android setup for windows
 

@@ -40,7 +40,7 @@ class ForgotView extends Component {
   }
 
   componentDidMount () {
-    client.userRead(currentUser.get('user_id'), _.bind(function (response) {
+    client.userRead(currentUser.get('user_id'), {more: true}, (response) => {
       var dataResponse = {};
       _.each(response.account.emails, function (e) {
         dataResponse[e.email] = e;
@@ -50,7 +50,7 @@ class ForgotView extends Component {
         dataSource: this.state.dataSource.cloneWithRows(response.account.emails),
         load: true
       });
-    }, this));
+    });
   }
 
   render () {

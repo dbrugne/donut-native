@@ -2,6 +2,8 @@ var React = require('react-native');
 var _ = require('underscore');
 var client = require('../libs/client');
 var Platform = require('Platform');
+var LoadingView = require('../components/Loading');
+var s = require('../styles/style');
 
 var {
   Component,
@@ -23,66 +25,98 @@ class ChangePasswordView extends Component {
       newPassword: '',
       confirmPassword: '',
       errors: [],
+      messages: [],
       hasPassword: false,
       load: false
     };
   }
 
   componentDidMount () {
-    client.userRead(currentUser.get('user_id'), _.bind(function (response) {
+    client.userRead(currentUser.get('user_id'), {more: true}, (response) => {
       this.setState({
         load: true,
         hasPassword: !!response.account.has_password
       });
-    }, this));
+    });
   }
 
   render () {
     if (!this.state.load) {
-      return this.renderLoadingView();
+      return (
+        <LoadingView />
+      );
+    }
+
+    var messages = null;
+    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
+      if (this.state.errors && this.state.errors.length > 0) {
+        messages = (
+          <View style={s.alertError}>
+            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+          </View>
+        );
+      } else {
+        messages = (
+          <View style={s.alertSuccess}>
+            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+          </View>
+        );
+      }
     }
 
     var inputOldPassword;
     if (this.state.hasPassword) {
-      inputOldPassword = <TextInput
-        placeholder="Old password"
-        secureTextEntry={true}
-        onChange={(event) => this.setState({oldPassword: event.nativeEvent.text})}
-        style={styles.formInput} />
+      inputOldPassword = (
+        <View style={[s.inputContainer, s.marginTop5]}>
+          <TextInput
+          placeholder="old password"
+          secureTextEntry={true}
+          onChange={(event) => this.setState({oldPassword: event.nativeEvent.text})}
+          style={s.input} />
+        </View>
+      );
     }
 
     return (
       <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>Change password</Text>
-          {this.state.errors.map((m) => <Text>{m}</Text>)}
-          {inputOldPassword}
+        <Text style={[s.h1, s.textCenter, s.marginTop5]}>Change password</Text>
+
+        {messages}
+
+        <Text style={s.marginTop20}></Text>
+
+        {inputOldPassword}
+
+        <View style={[s.inputContainer, s.marginTop5]}>
           <TextInput
-            placeholder="New password"
+            placeholder="new password"
             secureTextEntry={true}
             onChange={(event) => this.setState({newPassword: event.nativeEvent.text})}
-            style={styles.formInput} />
+            style={s.input} />
+        </View>
+
+        <View style={[s.inputContainer, s.marginTop5]}>
           <TextInput
-            placeholder="Confirm"
+            placeholder="confirm"
             secureTextEntry={true}
             onChange={(event) => this.setState({confirmPassword: event.nativeEvent.text})}
-            style={styles.formInput} />
-          <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))} style={styles.button}>
-            <Text style={styles.buttonText}>CHANGE</Text>
-          </TouchableHighlight>
+            style={s.input} />
         </View>
+
+        <Text style={s.filler}></Text>
+
+        <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
+                            style={[s.button, s.buttonPink, s.marginTop10]}
+                            underlayColor='#E4396D'
+          >
+          <View style={s.buttonLabel}>
+            <Text style={s.buttonTextLight}>CHANGE</Text>
+          </View>
+        </TouchableHighlight>
       </View>
     )
-  }
-
-  renderLoadingView () {
-    return (
-      <View style={styles.container}>
-        <Text>
-          Loading...
-        </Text>
-      </View>
-    );
   }
 
   onSubmitPressed () {
@@ -98,7 +132,7 @@ class ChangePasswordView extends Component {
       if (response.err) {
         this._appendError(response.err);
       } else {
-        this._appendError('Success');
+        this._appendMessage('Success');
       }
     }, this));
   }
@@ -110,47 +144,23 @@ class ChangePasswordView extends Component {
       this.setState({errors: this.state.messages.concat(string)});
     }
   }
+
+  _appendMessage(string) {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(string, ToastAndroid.SHORT);
+    } else {
+      this.setState({messages: this.state.messages.concat(string)});
+    }
+  }
 }
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
+    alignItems: 'stretch',
     justifyContent: 'center',
-    alignItems: 'center'
-  },
-  formInput: {
-    height: 42,
-    paddingBottom: 10,
-    width: 250,
-    marginRight: 5,
     flex: 1,
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#555555",
-    borderRadius: 8,
-    color: "#555555"
-  },
-  button: {
-    height: 46,
-    width: 250,
-    backgroundColor: "#fd5286",
-    borderRadius: 3,
-    marginTop: 30,
-    justifyContent: "center",
-    alignSelf: "center"
-  },
-  buttonText: {
-    fontSize: 18,
-    color: "#ffffff",
-    alignSelf: "center"
-  },
-  title: {
-    fontSize: 18,
-    alignSelf: "center",
-    marginBottom: 20,
-    fontWeight: 'bold',
-    color: "#111"
+    backgroundColor: '#f0f0f0'
   }
 });
 

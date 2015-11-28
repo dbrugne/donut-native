@@ -32,26 +32,26 @@ module.exports = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 10
   },
-  textCenter: {
-    alignSelf: 'center'
-  },
+  textCenter: { alignSelf: 'center'},
+  filler: { flex:1, alignSelf: 'stretch' },
   // util elements
-  spacer: {
-    marginTop: 10
-  },
+  marginTop5: { marginTop: 5},
+  marginTop10: { marginTop: 10},
+  marginTop20: { marginTop: 20},
   // List groups
   listGroup: {
     flexWrap: 'wrap',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'stretch',
-    marginTop: 20,
-    marginBottom: 20,
-    marginLeft:10,
-    marginRight:10,
-    borderColor: '#DDD',
-    borderStyle: 'solid',
-    borderWidth: 1
+    marginBottom: 20
+  },
+  listGroupTitle: {
+    color: '#777777',
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    marginHorizontal:10,
+    marginVertical:2
   },
   listGroupItem: {
     flex: 1,
@@ -64,11 +64,22 @@ module.exports = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderColor: '#DDD',
-    borderTopWidth:1,
+    borderBottomWidth:1,
     borderStyle: 'solid'
   },
   listGroupItemFirst: {
-    borderTopWidth: 0
+    borderColor: '#DDD',
+    borderTopWidth:1,
+    borderStyle: 'solid'
+  },
+  listGroupItemSpacing: {
+    flex: 1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: '#f0f0f0',
+    height: 20
   },
   listGroupItemIcon: {
     width: 14,
@@ -80,11 +91,17 @@ module.exports = StyleSheet.create({
     height: 14,
     alignSelf: 'flex-end'
   },
+  listGroupItemToggleRight: {
+    alignSelf: 'flex-end'
+  },
   listGroupItemText: {
     color: '#333333',
     fontFamily: 'Open Sans',
     fontSize: 14,
     flex: 1
+  },
+  listGroupItemTextWarning: {
+    color: '#ff3838'
   },
   // buttons
   button: {
@@ -124,7 +141,7 @@ module.exports = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#ecf0f1',
+    color: '#FFF',
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center'
@@ -150,15 +167,33 @@ module.exports = StyleSheet.create({
     borderStyle: 'solid',
     color: "#858585",
     height: 40,
-    paddingBottom: 5,
-    paddingTop: 5,
+    paddingBottom: 3,
+    paddingTop: 3,
     paddingLeft: 10,
     paddingRight: 10,
     marginLeft: 10,
     marginRight: 10,
     fontFamily: 'Open Sans',
     fontSize: 14,
-    textAlign: 'center'
+    flex:1
+  },
+  inputLabel: {
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#333',
+    alignSelf: 'flex-start',
+    marginLeft: 10,
+    marginRight: 10,
+    width:80,
+    height:40,
+    paddingTop:10
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop:5
   },
   // links
   link: {
@@ -180,5 +215,18 @@ module.exports = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 12,
     color: '#a94442'
+  },
+  alertSuccess: {
+    backgroundColor: '#dff0d8',
+    borderColor: '#d6e9c6',
+    padding: 10,
+    borderRadius: 4,
+    marginVertical:10,
+    marginHorizontal:10
+  },
+  alertSuccessText: {
+    fontFamily: 'Open Sans',
+    fontSize: 12,
+    color: '#3c763d'
   }
 });
