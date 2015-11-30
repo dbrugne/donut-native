@@ -40,7 +40,7 @@ class ForgotView extends Component {
   }
 
   componentDidMount () {
-    client.userRead(currentUser.get('user_id'), {more: true}, (response) => {
+    client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
       var dataResponse = {};
       _.each(response.account.emails, function (e) {
         dataResponse[e.email] = e;
