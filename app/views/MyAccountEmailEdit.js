@@ -16,36 +16,52 @@ var {
 
 var currentUser = require('../models/mobile-current-user');
 
-class AddEmailView extends Component {
+class EditEmailView extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      email: '',
       errors: []
     };
   }
 
   render () {
+    var msg = (this.props.email.confirmed)
+      ? 'This email was validated'
+      : 'This email wasn\'t validated';
+
     return (
       <View style={s.main}>
         <View>
-          <Text style={styles.title}>Add email</Text>
+          <Text style={styles.title}>MANAGE EMAIL</Text>
           {this.state.errors.map((m) => <Text>{m}</Text>)}
-          <TextInput
-            placeholder="Email"
-            onChange={(event) => this.setState({email: event.nativeEvent.text})}
-            style={styles.formInput}
-            value={this.state.email} />
-          <TouchableHighlight onPress= {(this.onSubmitPressed.bind(this))}
+          <Text style={[s.textCenter, styles.email]}>
+            {this.props.email.email}
+          </Text>
+          <Text style={s.textCenter}>
+            {msg}
+          </Text>
+          {
+            this.props.email.confirmed
+            ? <View></View>
+            : <TouchableHighlight onPress= {(this.onSendEmail.bind(this))}
+                                  style={[s.button, s.buttonPink, s.marginTop10]}
+                                  underlayColor='#E4396D'
+              >
+                <View style={s.buttonLabel}>
+                  <Text style={s.buttonTextLight}>SEND A VALIDATION EMAIL</Text>
+                </View>
+              </TouchableHighlight>
+          }
+          <TouchableHighlight onPress= {(this.onDeletePressed.bind(this))}
                               style={[s.button, s.buttonPink, s.marginTop10]}
                               underlayColor='#E4396D'
             >
             <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>ADD</Text>
+              <Text style={s.buttonTextLight}>DELETE</Text>
             </View>
           </TouchableHighlight>
           <TouchableHighlight onPress= {() => this.props.navigator.pop()}
-                              style={[s.button, s.buttonPink, s.marginTop10]}
+                              style={[s.button, s.buttonPink, s.marginTop5]}
                               underlayColor='#E4396D'
             >
             <View style={s.buttonLabel}>
@@ -57,18 +73,24 @@ class AddEmailView extends Component {
     )
   }
 
-  onSubmitPressed () {
-    if (!this.state.email) {
-      return this._appendError('not-complete');
-    }
-
-    client.accountEmail(this.state.email, 'add', (response) => {
+  onDeletePressed () {
+    client.accountEmail(this.props.email.email, 'delete', (response) => {
       if (response.err) {
         this._appendError(response.err);
       } else {
         this._appendError('Success');
         this.props.func();
         this.props.navigator.pop();
+      }
+    });
+  }
+
+  onSendEmail () {
+    client.accountEmail(this.props.email.email, 'validate', (response) => {
+      if (response.err) {
+        this._appendError(response.err);
+      } else {
+        this._appendError('A validation email have been sent');
       }
     });
   }
@@ -83,32 +105,20 @@ class AddEmailView extends Component {
 }
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  formInput: {
-    height: 42,
-    paddingBottom: 10,
-    width: 250,
-    marginRight: 5,
-    flex: 1,
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#555555",
-    borderRadius: 8,
-    color: "#555555",
-    alignSelf: 'center'
-  },
   title: {
     fontSize: 18,
     alignSelf: "center",
-    marginBottom: 20,
+    marginBottom: 40,
     fontWeight: 'bold',
     color: "#111"
+  },
+  email: {
+    fontSize: 23,
+    alignSelf: 'center',
+    color: "#444",
+    marginBottom: 40
   }
 });
 
-module.exports = AddEmailView;
+module.exports = EditEmailView;
+

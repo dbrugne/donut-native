@@ -16,7 +16,7 @@ class Home extends Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <Text>Bienvenue</Text>
+        <Text style={{marginVertical: 20, marginHorizontal: 10}}>Bienvenue</Text>
         <HomeFeatured {...this.props} />
       </View>
     );

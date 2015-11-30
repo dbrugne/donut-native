@@ -23,6 +23,7 @@ class ListGroupItemButton extends Component {
   render () {
     // Display an arrow on right of the ListGroupItem ?
     var rightIcon = null;
+    var leftIcon;
     if (this.props.action) {
       rightIcon = (
         <Icon
@@ -34,11 +35,22 @@ class ListGroupItemButton extends Component {
       );
     }
 
+    if (this.props.icon) {
+      leftIcon =
+        <Icon
+          name={this.props.icon}
+          size={14}
+          color='#666'
+          style={styles.listGroupItemIconLeft}
+          />
+    }
+
     return (
       <TouchableHighlight onPress={() => this.props.onPress()}
                           underlayColor= '#DDD'
         >
         <View style={[styles.listGroupItem, this.props.first && styles.listGroupItemFirst, this.props.last && styles.listGroupItemLast]}>
+          {leftIcon}
           <Text style={[styles.listGroupItemText, this.props.warning && styles.listGroupItemTextWarning]}>{this.props.text}</Text>
           {rightIcon}
         </View>
@@ -74,6 +86,11 @@ var styles = StyleSheet.create({
     width: 14,
     height: 14,
     alignSelf: 'flex-end'
+  },
+  listGroupItemIconLeft: {
+    width: 14,
+    height: 14,
+    marginRight: 10
   },
   listGroupItemText: {
     color: '#333333',

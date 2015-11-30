@@ -47,8 +47,14 @@ class CurrentUserView extends Component {
       <View style={styles.main}>
         <View style={styles.content}>
           <View style={styles.avatarCtn}>
-            <Image style={styles.avatar} source={{uri: common.cloudinary.prepare(user.avatar, 50)}} />
-            <Text style={[styles.text, styles.status, user.status === 'connecting' && styles.statusConnecting, user.status === 'offline' && styles.statusOffline, user.status === 'online' && styles.statusOnline]}>{user.status}</Text>
+            <TouchableHighlight style={styles.linkBlock}
+                                underlayColor= '#414041'
+                                onPress={() => navigation.switchTo(navigation.getMyAccount())}>
+              <View style={[styles.linkContainer, {position: 'relative'}]}>
+                <Image style={styles.avatar} source={{uri: common.cloudinary.prepare(user.avatar, 50)}} />
+                <Text style={[styles.text, styles.status, user.status === 'connecting' && styles.statusConnecting, user.status === 'offline' && styles.statusOffline, user.status === 'online' && styles.statusOnline]}>{user.status}</Text>
+              </View>
+            </TouchableHighlight>
           </View>
           <View style={{ flexDirection: 'column', paddingTop:8 }}>
             <Text style={[styles.text, styles.username]}>{username}</Text>
@@ -91,8 +97,7 @@ var styles = StyleSheet.create({
     backgroundColor: '1D1D1D'
   },
   avatarCtn: {
-    flexDirection: 'column',
-    position: 'relative'
+    flexDirection: 'column'
   },
   text: {
     color: '#FFFFFF',
@@ -122,6 +127,7 @@ var styles = StyleSheet.create({
     overflow: 'hidden',
     position: 'absolute',
     bottom: 8,
+    left:0,
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4
   },
