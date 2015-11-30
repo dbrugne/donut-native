@@ -33,18 +33,29 @@ class CurrentUserView extends Component {
     var username = (user.username)
       ? '@' + user.username + ' '
       : '';
+    var realname = null;
+    if (user.realname) {
+      realname = (
+        <Text style={[styles.text, styles.username]}>{user.realname}</Text>
+      );
+    }
     return (
       <View style={styles.main}>
-        <Image style={styles.avatar} source={{uri: common.cloudinary.prepare(user.avatar, 50)}} />
         <View style={styles.content}>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={[styles.text, styles.username]}>{username}</Text>
-            <Text style={[styles.text, styles.status]}>({user.status})</Text>
+          <View style={styles.avatarCtn}>
+            <Image style={styles.avatar} source={{uri: common.cloudinary.prepare(user.avatar, 50)}} />
+            <Text style={[styles.text, styles.status, user.status === 'connecting' && styles.statusConnecting, user.status === 'offline' && styles.statusOffline, user.status === 'online' && styles.statusOnline]}>{user.status}</Text>
           </View>
-          <TouchableHighlight style={styles.myAccount} onPress={() => navigation.switchTo(navigation.getMyAccount())}>
-            <Text style={styles.text}>My account</Text>
-          </TouchableHighlight>
+          <View style={{ flexDirection: 'column', paddingTop:8 }}>
+            <Text style={[styles.text, styles.username]}>{username}</Text>
+            {realname}
+          </View>
         </View>
+        <TouchableHighlight style={styles.myAccount}
+                            underlayColor= '#373737'
+                            onPress={() => navigation.switchTo(navigation.getMyAccount())}>
+          <Text style={styles.text}>My account</Text>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -58,20 +69,51 @@ class CurrentUserView extends Component {
 var styles = StyleSheet.create({
   main: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'column',
+    marginTop: 20,
+    backgroundColor: '#1D1D1D'
   },
   content: {
-    marginVertical: 8
+    flexDirection: 'row'
+  },
+  avatarCtn: {
+    flexDirection: 'column',
+    position: 'relative'
   },
   text: {
     color: '#FFFFFF',
-    fontFamily: 'Open Sans',
+    fontWeight: '500',
+    fontSize: 18,
+    fontFamily: 'Open Sans'
   },
   avatar: {
     width: 50,
     height: 50,
-    margin: 8
+    margin:8,
+    borderRadius: 4
   },
+  status: {
+    marginBottom: 8,
+    alignSelf: 'center',
+    textAlign: 'center',
+    flex:1,
+    fontWeight: '400',
+    fontSize: 12,
+    fontFamily: 'Open Sans',
+    width: 50,
+    paddingLeft:5,
+    paddingRight:5,
+    marginLeft: 8,
+    marginRight: 8,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 8,
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4
+  },
+  statusOnline: { backgroundColor: 'rgba(79, 237, 192, 0.8)' },
+  statusConnecting: { backgroundColor: 'rgba(255, 218, 62, 0.8)' },
+  statusOffline: { backgroundColor: 'rgba(119,119,119,0.8)' },
   username: {
   },
   myAccount: {
