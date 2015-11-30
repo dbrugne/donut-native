@@ -16,6 +16,7 @@ var {
 var client = require('../libs/client');
 var Platform = require('Platform');
 var _ = require('underscore');
+var s = require('../styles/style');
 
 class RoomCreateView extends Component {
   constructor (props) {
@@ -24,7 +25,8 @@ class RoomCreateView extends Component {
       roomName: '',
       public: true,
       private: false,
-      errors: []
+      errors: [],
+      messages: []
     }
   }
 
@@ -36,48 +38,84 @@ class RoomCreateView extends Component {
       SwitchComponent = SwitchIOS;
     }
 
+    var messages = null;
+    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
+      if (this.state.errors && this.state.errors.length > 0) {
+        messages = (
+          <View style={s.alertError}>
+            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
+          </View>
+        );
+      } else {
+        messages = (
+          <View style={s.alertSuccess}>
+            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
+          </View>
+        );
+      }
+    }
+
     return (
       <View style={styles.container}>
-        <TextInput style={styles.inputRoomName}
-           placeholder='name of donut'
-           onChangeText={(text) => this.setState({roomName: text})}
-           value={this.state.roomName}
-          />
-        <Text style={styles.helpRoomName}>
-          Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_)
-        </Text>
-        <Text style={styles.infoRoomName}>
-          You are about to create a donut in the global space, if you want to create a donut in a community you are a member of, go to the community page and click on "Create a donut"
-        </Text>
-        <Text style={styles.title}>
-          Who can join the donut
-        </Text>
-        <View style={styles.modes}>
-          <View style={styles.modeOption}>
-            <SwitchComponent
-              onValueChange={this.onChangeMode.bind(this)}
-              value={this.state.public}
-              disabled={this.state.public}
-              />
-            <Text>Public (default)</Text>
-          </View>
-          <Text style={styles.modeInfo}>Any user can join, participate and access history. Moderation tools available.</Text>
+
+        {messages}
+
+        <View style={s.inputContainer}>
+          <TextInput style={s.input}
+             placeholder='name of donut'
+             onChangeText={(text) => this.setState({roomName: text})}
+             value={this.state.roomName}
+            />
         </View>
-        <View style={styles.modes}>
-          <View style={styles.modeOption}>
-            <SwitchComponent
-              onValueChange={this.onChangeMode.bind(this)}
-              value={this.state.private}
-              disabled={this.state.private}
-              />
-            <Text>Private</Text>
+
+        <View style={{marginHorizontal: 10}}>
+
+          <Text style={styles.help}>
+            Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_)
+          </Text>
+
+          <Text style={styles.infoRoomName}>
+            You are about to create a donut in the global space, if you want to create a donut in a community you are a member of, go to the community page and click on "Create a donut"
+          </Text>
+
+          <Text style={[s.h1, s.marginTop10]}>
+            Who can join the donut
+          </Text>
+
+          <View style={[styles.modes, s.marginTop10]}>
+            <View style={styles.modeOption}>
+              <SwitchComponent
+                onValueChange={this.onChangeMode.bind(this)}
+                value={this.state.public}
+                disabled={this.state.public}
+                />
+              <Text style={{marginLeft:10}}>Public (default)</Text>
+            </View>
+            <Text style={styles.help}>Any user can join, participate and access history. Moderation tools available.</Text>
           </View>
-          <Text style={styles.modeInfo}>Only users you authorize can join, participate and access history. Moderation tools available.</Text>
+          <View style={styles.modes}>
+            <View style={styles.modeOption}>
+              <SwitchComponent
+                onValueChange={this.onChangeMode.bind(this)}
+                value={this.state.private}
+                disabled={this.state.private}
+                />
+              <Text style={{marginLeft:10}}>Private</Text>
+            </View>
+            <Text style={styles.help}>Only users you authorize can join, participate and access history. Moderation tools available.</Text>
+          </View>
         </View>
-        <TouchableHighlight style={styles.button} onPress={(this.onRoomCreate.bind(this))} >
-          <Text style={styles.buttonText}>CREATE</Text>
+
+        <TouchableHighlight style={[s.button, s.buttonGreen, s.marginTop10]}
+                            underlayColor='#50EEC1'
+                            onPress={(this.onRoomCreate.bind(this))} >
+          <View style={s.buttonLabel}>
+            <Text style={s.buttonTextLight}>Créer</Text>
+          </View>
         </TouchableHighlight>
-        {this.state.errors.map((m) => <Text>{m}</Text>)}
+
       </View>
     );
   }
@@ -99,7 +137,7 @@ class RoomCreateView extends Component {
       if (response.err) {
         this._appendError(response.err);
       } else {
-        this._appendError("success");
+        this._appendMessage("success");
       }
     }, this));
   }
@@ -108,28 +146,36 @@ class RoomCreateView extends Component {
     if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
-      this.setState({errors: this.state.messages.concat(string)});
+      this.setState({errors: this.state.errors.concat(string)});
+    }
+  }
+
+  _appendMessage(string) {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(string, ToastAndroid.SHORT);
+    } else {
+      this.setState({messages: this.state.messages.concat(string)});
     }
   }
 }
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexDirection: 'column',
+    flex: 1
   },
   inputRoomName: {
     height: 40,
     borderWidth: 1,
     margin: 10
   },
-  helpRoomName: {
+  help: {
     fontStyle: 'italic',
     color: '#737373',
-    margin: 10
+    marginVertical: 10
   },
   infoRoomName: {
-    color: '#000',
-    margin: 10
+    color: '#000'
   },
   title: {
     color: '#6f6f6f',
@@ -138,13 +184,12 @@ var styles = StyleSheet.create({
   },
   modes: {
     flexDirection: 'column',
-    marginBottom: 20
+    marginBottom: 10
   },
   modeOption: {
-    flexDirection: 'row'
-  },
-  modeInfo: {
-    marginLeft: 40
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    alignItems: 'center'
   },
   button: {
     height: 25,
@@ -153,13 +198,7 @@ var styles = StyleSheet.create({
     borderRadius: 3,
     justifyContent: "center",
     alignSelf: "center"
-  },
-  buttonText: {
-    fontSize: 14,
-    color: "#ffffff",
-    alignSelf: "center"
-  },
-
+  }
 });
 
 module.exports = RoomCreateView;
