@@ -43,7 +43,7 @@ class NavigationOnesView extends Component {
   }
   render () {
     return (
-      <View style={styles.block}>
+      <View>
         <Text style={styles.title}>ONE TO ONES</Text>
         <ListView
           dataSource={this.state.elements}
@@ -70,18 +70,17 @@ class NavigationOnesView extends Component {
     var avatarUrl = common.cloudinary.prepare(e.avatar, 30);
     return (
       <TouchableHighlight
+        style={styles.linkBlock}
         onPress={() => navigation.switchTo(navigation.getDiscussion(model.get('id'), model))}
-        underlayColor='#888888'
+        underlayColor= '#414041'
         >
         <View style={styles.item}>
           <Image
             source={{uri: avatarUrl}}
             style={styles.thumbnail}
             />
-          <View style={styles.rightContainer}>
-              <Text style={styles.itemTitle}>@{e.username}</Text>
-              {badge}
-          </View>
+          <Text style={styles.itemTitle}>@{e.username}</Text>
+          {badge}
         </View>
       </TouchableHighlight>
     );
@@ -89,43 +88,46 @@ class NavigationOnesView extends Component {
 };
 
 var styles = StyleSheet.create({
-  block: {
-    marginBottom: 20
-  },
   title: {
     fontFamily: 'Open Sans',
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 'bold',
-    paddingLeft: 10,
-    marginBottom: 8,
-    color: '#FFFFFF'
+    padding: 10,
+    color: '#FFFFFF',
+    backgroundColor: '#1D1D1D'
   },
   listView: {
   },
   item: {
     paddingLeft: 10,
-    paddingVertical: 3,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   thumbnail: {
     width: 30,
-    height: 30
-  },
-  rightContainer: {
-    flex: 1,
-    paddingLeft: 10
+    height: 30,
+    borderRadius: 4
   },
   itemTitle: {
     fontFamily: 'Open Sans',
     fontSize: 16,
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    marginLeft: 10,
+    flex:1
   },
   unviewed: {
-    position: 'absolute',
-    top: 0,
-    right: 10,
     fontSize: 20,
-    color: '#fc2063'
+    color: '#fc2063',
+    marginRight:10
+  },
+  linkBlock: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    borderTopColor: '#373737',
+    borderTopWidth: 0.5,
+    borderStyle: 'solid',
+    borderBottomColor: '#0E0D0E',
+    borderBottomWidth: 0.5
   }
 });
 

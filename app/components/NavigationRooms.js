@@ -44,7 +44,7 @@ class NavigationRoomsView extends Component {
 
   render () {
     return (
-      <View style={styles.block}>
+      <View>
         <Text style={styles.title}>ROOMS</Text>
         <ListView
           dataSource={this.state.elements}
@@ -60,7 +60,7 @@ class NavigationRoomsView extends Component {
     if (e.blocked) {
       return (
         <View style={[styles.item]}>
-          <Text style={[styles.itemTitle, {color: '#AAAAAA'}]}>{e.identifier} (blocked)</Text>
+          <Text style={[styles.itemTitle, {textDecorationLine: 'line-through'}]}>{e.identifier}</Text>
         </View>
       );
     }
@@ -79,8 +79,9 @@ class NavigationRoomsView extends Component {
 
     return (
       <TouchableHighlight
+        style={styles.linkBlock}
         onPress={() => navigation.switchTo(navigation.getDiscussion(model.get('id'), model))}
-        underlayColor='#888888'
+        underlayColor= '#414041'
         >
         <View style={styles.item}>
           <Text style={styles.itemTitle}>{model.get('identifier')}</Text>
@@ -92,34 +93,46 @@ class NavigationRoomsView extends Component {
 };
 
 var styles = StyleSheet.create({
-  block: {
-    marginBottom: 15,
-  },
   title: {
     fontFamily: 'Open Sans',
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 'bold',
-    paddingLeft: 10,
-    marginBottom: 8,
-    color: '#FFFFFF'
+    padding: 10,
+    color: '#FFFFFF',
+    backgroundColor: '#1D1D1D'
   },
   listView: {
   },
   item: {
-    paddingLeft: 10,
-    paddingVertical: 3,
+    marginVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  thumbnail: {
+    width: 30,
+    height: 30,
+    borderRadius: 4
   },
   itemTitle: {
     fontFamily: 'Open Sans',
     fontSize: 16,
-    color: '#FFFFFF'
+    color: '#ecf0f1',
+    marginLeft: 10,
+    flex:1
   },
   unviewed: {
-    position: 'absolute',
-    top: 0,
-    right: 10,
     fontSize: 20,
-    color: '#fc2063'
+    color: '#fc2063',
+    marginRight:10
+  },
+  linkBlock: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    borderTopColor: '#373737',
+    borderTopWidth: 0.5,
+    borderStyle: 'solid',
+    borderBottomColor: '#0E0D0E',
+    borderBottomWidth: 0.5
   }
 });
 

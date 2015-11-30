@@ -19,6 +19,7 @@ var CurrentUserView = require('../components/CurrentUser');
 var NavigationOnesView = require('./../components/NavigationOnes');
 var NavigationRoomsView = require('./../components/NavigationRooms');
 var navigation = require('../libs/navigation');
+var s = require('../styles/style');
 
 class NavigationView extends Component {
   constructor (props) {
@@ -29,40 +30,56 @@ class NavigationView extends Component {
     return (
       <ScrollView style={styles.main}>
         <CurrentUserView />
-        <View style={{marginVertical: 9}}>
-          <TouchableHighlight style={styles.linkBlock} onPress={() => navigation.switchTo(navigation.getHome())}>
+        <View style={[styles.title, { height:10 }]}></View>
+        <View>
+          <TouchableHighlight style={styles.linkBlock}
+                              underlayColor= '#414041'
+                              onPress={() => navigation.switchTo(navigation.getHome())}>
             <View style={styles.linkContainer}>
-              <Icon
-                name='fontawesome|home'
-                size={20}
-                color='#FFFFFF'
-                style={styles.icon}
-                />
-              <Text style={styles.title}>Découvrir</Text>
+              <View style={styles.iconCtn}>
+                <Icon
+                  name='fontawesome|home'
+                  size={18}
+                  color='#ecf0f1'
+                  style={styles.icon}
+                  />
+              </View>
+              <Text style={styles.linkText}>Découvrir</Text>
             </View>
           </TouchableHighlight>
-          <TouchableHighlight style={styles.linkBlock} onPress={() => navigation.switchTo(navigation.getSearch())}>
+
+          <TouchableHighlight style={styles.linkBlock}
+                              underlayColor= '#414041'
+                              onPress={() => navigation.switchTo(navigation.getSearch())}>
             <View style={styles.linkContainer}>
-              <Icon
-                name='fontawesome|search'
-                size={20}
-                color='#FFFFFF'
-                style={styles.icon}
-                />
-              <Text style={styles.title}>Chercher</Text>
+              <View style={styles.iconCtn}>
+                <Icon
+                  name='fontawesome|search'
+                  size={18}
+                  color='#ecf0f1'
+                  style={styles.icon}
+                  />
+              </View>
+              <Text style={styles.linkText}>Chercher</Text>
             </View>
           </TouchableHighlight>
-          <TouchableHighlight style={styles.linkBlock} onPress={() => navigation.switchTo(navigation.getRoomCreate())}>
+
+          <TouchableHighlight style={styles.linkBlock}
+                              underlayColor= '#414041'
+                              onPress={() => navigation.switchTo(navigation.getRoomCreate())}>
             <View style={styles.linkContainer}>
-              <Icon
-                name='fontawesome|plus'
-                size={20}
-                color='#FFFFFF'
-                style={styles.icon}
-                />
-              <Text style={styles.title}>Create</Text>
+              <View style={styles.iconCtn}>
+                <Icon
+                  name='fontawesome|plus'
+                  size={18}
+                  color='#ecf0f1'
+                  style={styles.icon}
+                  />
+              </View>
+              <Text style={styles.linkText}>Créér</Text>
             </View>
           </TouchableHighlight>
+
         </View>
         <NavigationOnesView />
         <NavigationRoomsView />
@@ -75,25 +92,34 @@ var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
     flexWrap: 'nowrap',
-    backgroundColor: '#585858'
-  },
-  linkBlock: {
+    backgroundColor: '#272627'
   },
   linkContainer: {
-    paddingLeft: 10,
     flexDirection: 'row',
-    marginVertical: 4
+    alignItems: 'center'
   },
-  title: {
+  linkBlock: {
+    borderTopColor: '#373737',
+    borderTopWidth: 0.5,
+    borderStyle: 'solid',
+    borderBottomColor: '#0E0D0E',
+    borderBottomWidth: 0.5
+  },
+  linkText: {
     fontFamily: 'Open Sans',
     fontSize: 14,
-    color: '#FFFFFF',
-    marginLeft: 5
+    color: '#ecf0f1',
+    marginVertical: 8
+  },
+  iconCtn: {
+    marginVertical: 8,
+    marginHorizontal: 10
   },
   icon: {
     width: 18,
     height: 18
-  }
+  },
+  title: { backgroundColor: '#1D1D1D'}
 });
 
 module.exports = NavigationView;

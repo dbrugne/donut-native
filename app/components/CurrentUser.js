@@ -9,11 +9,15 @@ var {
   View,
   Component
 } = React;
+var {
+  Icon
+  } = require('react-native-icons');
 
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
 var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
+var s = require('../styles/style');
 
 class CurrentUserView extends Component {
   constructor (props) {
@@ -51,10 +55,20 @@ class CurrentUserView extends Component {
             {realname}
           </View>
         </View>
-        <TouchableHighlight style={styles.myAccount}
-                            underlayColor= '#373737'
+        <TouchableHighlight style={styles.linkBlock}
+                            underlayColor= '#414041'
                             onPress={() => navigation.switchTo(navigation.getMyAccount())}>
-          <Text style={styles.text}>My account</Text>
+          <View style={styles.linkContainer}>
+            <View style={styles.iconCtn}>
+              <Icon
+                name='fontawesome|gear'
+                size={18}
+                color='#ecf0f1'
+                style={styles.icon}
+                />
+            </View>
+            <Text style={styles.linkText}>My account</Text>
+          </View>
         </TouchableHighlight>
       </View>
     );
@@ -70,11 +84,11 @@ var styles = StyleSheet.create({
   main: {
     flex: 1,
     flexDirection: 'column',
-    marginTop: 20,
-    backgroundColor: '#1D1D1D'
+    marginTop: 20
   },
   content: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor: '1D1D1D'
   },
   avatarCtn: {
     flexDirection: 'column',
@@ -114,11 +128,30 @@ var styles = StyleSheet.create({
   statusOnline: { backgroundColor: 'rgba(79, 237, 192, 0.8)' },
   statusConnecting: { backgroundColor: 'rgba(255, 218, 62, 0.8)' },
   statusOffline: { backgroundColor: 'rgba(119,119,119,0.8)' },
-  username: {
+  linkContainer: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
-  myAccount: {
-    backgroundColor: '#444444',
-    padding: 10
+  linkBlock: {
+    borderTopColor: '#373737',
+    borderTopWidth: 0.5,
+    borderStyle: 'solid',
+    borderBottomColor: '#0E0D0E',
+    borderBottomWidth: 0.5
+  },
+  linkText: {
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    color: '#ecf0f1',
+    marginVertical: 8
+  },
+  iconCtn: {
+    marginVertical: 8,
+    marginHorizontal: 10
+  },
+  icon: {
+    width: 18,
+    height: 18
   }
 });
 
