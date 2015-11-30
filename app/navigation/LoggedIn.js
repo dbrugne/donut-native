@@ -15,6 +15,8 @@ var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
 var i18next = require('i18next-client');
 
+var PushNotifications = require('../libs/pushNotifications');
+
 // @todo : if application is backgrounded for > 5 mn disconnect
 // @todo : when disconnected block every views/navigation
 
@@ -35,6 +37,10 @@ class Index extends Component {
     rooms.on('add', this.onAddDiscussion, this);
     client.on('welcome', this.onWelcome, this);
 
+    // push notifications
+    PushNotifications.componentDidMount();
+
+    // client
     this.client.connect();
   }
   componentWillUnmount () {
@@ -43,6 +49,10 @@ class Index extends Component {
     rooms.off(null, null, this);
     client.off(null, null, this);
 
+    // push notifications
+    PushNotifications.componentWillUnmount();
+
+    // client
     this.client.disconnect();
   }
   render () {
