@@ -178,6 +178,7 @@ routes.removeDiscussionRoute = function (id, model) {
 }
 
 function _logCurrentStack () {
+  return;
   var stack = '\n\u00BB rootNavigator';
   _.each(navigators, function (n) {
     stack += '\n  \u00BB ' + n.id;
@@ -456,7 +457,8 @@ routes.getDiscussion = function (id, model) {
       );
     },
     _onDidFocus: function () {
-      this.scene.refs.events.onFocus();
+      // delay history load to avoid transition impact (visibly onDidFocus is triggered before transition end)
+      setTimeout(() => this.scene.refs.events.onFocus(), 100);
     }
   });
 };
