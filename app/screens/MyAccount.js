@@ -38,6 +38,12 @@ class MyAccountView extends Component {
                          action='true'
                          first='true'
             />
+
+          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPreferences())}
+                         text='Change preferences'
+                         action='true'
+                         type='button'
+            />
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
                          text='Edit information'
                          action='true'
@@ -50,16 +56,7 @@ class MyAccountView extends Component {
             />
 
           <Text style={s.listGroupItemSpacing}></Text>
-          <Text style={s.listGroupTitle}>MANAGE YOUR PREFERENCES</Text>
-          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPreferences())}
-                         text='Change preferences'
-                         action='true'
-                         type='button'
-            />
-
-          <Text style={s.listGroupItemSpacing}></Text>
-          <Text style={s.listGroupTitle}>MANAGE YOUR EMAILS</Text>
-
+          <Text style={s.listGroupTitle}>LOGIN AND EMAILS</Text>
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmail())}
                          text='Change Email'
                          action='true'

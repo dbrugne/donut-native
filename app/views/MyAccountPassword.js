@@ -35,7 +35,7 @@ class ChangePasswordView extends Component {
     client.userRead(currentUser.get('user_id'), {more: true}, (response) => {
       this.setState({
         load: true,
-        hasPassword: !!response.account.has_password
+        hasPassword: !!(response.account && response.account.has_password)
       });
     });
   }
