@@ -81,6 +81,8 @@ var oauth = _.extend({
         return callback(null);
       }
 
+      // @todo : and if no code ?? => Facebook (actually display login page, maybe enough)
+
       this.checkCode(callback);
     }, this));
   },
@@ -121,7 +123,7 @@ var oauth = _.extend({
    * @param callback
    */
   checkCode: function (callback) {
-    if (!this.email && !this.code) {
+    if (!this.email || !this.code) {
       return callback(null);
     }
 
