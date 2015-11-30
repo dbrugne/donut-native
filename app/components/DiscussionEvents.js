@@ -179,7 +179,7 @@ class DiscussionEvents extends Component {
   onFocus () {
     // first focus
     if (!this.wasFocusedAtLeastOneTime) {
-      this._loadHistory()
+      this._loadHistory();
       this.wasFocusedAtLeastOneTime = true;
     }
   }
