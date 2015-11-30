@@ -66,14 +66,13 @@ module.exports = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    borderColor: '#DDD',
-    borderBottomWidth:1,
+    borderTopColor: '#FFF',
+    borderTopWidth: 0.5,
+    borderBottomColor: '#D7D7D7',
+    borderBottomWidth: 0.5,
     borderStyle: 'solid'
   },
   listGroupItemFirst: {
-    borderColor: '#DDD',
-    borderTopWidth:1,
-    borderStyle: 'solid'
   },
   listGroupItemSpacing: {
     flex: 1,

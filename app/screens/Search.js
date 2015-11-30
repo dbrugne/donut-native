@@ -212,7 +212,7 @@ class SearchView extends Component {
 
   _renderLoadMore () {
     if (this.state.loading) {
-      return (<View style={styles.loadMore}><Text style={{color:'#fff', textAlign: 'center'}}>chargement</Text></View>)
+      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>chargement</Text></View>)
     }
     else if (this.state.more) {
       return (
@@ -339,8 +339,7 @@ var styles = StyleSheet.create({
   searchContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
-    marginTop: 10
+    justifyContent: 'center'
   },
   element: {
     flexDirection: 'row',
@@ -348,8 +347,13 @@ var styles = StyleSheet.create({
     justifyContent: 'flex-start',
     height: 60,
     borderColor: '#DDD',
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+    borderTopWidth:1,
+    borderStyle: 'solid',
+    borderTopColor: '#FFF',
     borderBottomWidth: 1,
-    padding: 10
+    borderBottomColor: '#D7D7D7'
   },
   thumbnail: {
     width: 40,
