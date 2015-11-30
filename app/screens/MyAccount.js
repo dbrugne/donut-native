@@ -49,25 +49,19 @@ class MyAccountView extends Component {
                          action='true'
                          type='button'
             />
-          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPassword())}
-                         text='Change password'
-                         action='true'
-                         type='button'
-            />
 
           <Text style={s.listGroupItemSpacing}></Text>
           <Text style={s.listGroupTitle}>LOGIN AND EMAILS</Text>
-          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmail())}
-                         text='Change Email'
-                         action='true'
-                         first='true'
-                         type='button'
-            />
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmails())}
                          text='Manage emails'
                          action='true'
                          type='button'
                          first='true'
+            />
+          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPassword())}
+                         text='Change password'
+                         action='true'
+                         type='button'
             />
 
           <Text style={s.listGroupItemSpacing}></Text>

@@ -318,11 +318,12 @@ routes.getMyAccount = function () {
     }
   });
 };
-routes.getMyAccountEmail = function () {
+routes.getMyAccountEmail = function (email, func) {
   return getRoute({
     id: 'my-account-email',
-    getSceneClass: function () {
-      return require('../views/MyAccountEmail');
+    renderScene: function (navigator) {
+      let EmailMain = require('../views/MyAccountEmail');
+      return <EmailMain navigator={navigator} func={func} email={email} />;
     },
     getTitle: function () {
       return 'My Email';
@@ -340,14 +341,27 @@ routes.getMyAccountEmails = function () {
     }
   });
 };
-routes.getMyAccountEmailsAdd = function () {
+routes.getMyAccountEmailsAdd = function (func) {
   return getRoute({
     id: 'my-account-emails-add',
-    getSceneClass: function () {
-      return require('../views/MyAccountEmailsAdd');
+    renderScene: function (navigator) {
+      let EmailAdd = require('../views/MyAccountEmailsAdd');
+      return <EmailAdd navigator={navigator} func={func} />;
     },
     getTitle: function () {
       return 'Add an email';
+    }
+  });
+};
+routes.getMyAccountEmailEdit = function (element, func) {
+  return getRoute({
+    id: 'edit-email-' + element.email,
+    renderScene: function (navigator) {
+      let EmailEdit = require('../views/MyAccountEmailEdit');
+      return <EmailEdit navigator={navigator} email={element} func={func} />;
+    },
+    getTitle() {
+      return 'Manage email';
     }
   });
 };

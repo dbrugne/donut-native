@@ -11,6 +11,9 @@ var {
   Text,
   StyleSheet
 } = React;
+var {
+  Icon
+  } = require('react-native-icons');
 
 class ListGroupItemSwitch extends Component {
   /**
@@ -29,6 +32,7 @@ class ListGroupItemSwitch extends Component {
 
   render () {
     var swicthComponent = null;
+    var leftIcon;
     if (this.props.onSwitch) {
       var SwitchComponent;
       if (Platform.OS === 'android') {
@@ -46,8 +50,19 @@ class ListGroupItemSwitch extends Component {
       );
     }
 
+    if (this.props.icon) {
+      leftIcon =
+        <Icon
+          name={this.props.icon}
+          size={14}
+          color='#666'
+          style={styles.listGroupItemIconLeft}
+          />
+    }
+
     return (
       <View style={[styles.ListGroupItem, this.props.first && styles.ListGroupItemFirst, this.props.last && styles.ListGroupItemLast]}>
+        {leftIcon}
         <Text style={[styles.ListGroupItemText, this.props.warning && styles.ListGroupItemTextWarning]}>{this.props.text}</Text>
         {swicthComponent}
       </View>
@@ -74,6 +89,11 @@ var styles = StyleSheet.create({
     borderColor: '#DDD',
     borderTopWidth:1,
     borderStyle: 'solid'
+  },
+  listGroupItemIconLeft: {
+    width: 14,
+    height: 14,
+    marginRight: 10
   },
   ListGroupItemLast: {
 

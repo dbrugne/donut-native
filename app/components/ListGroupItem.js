@@ -59,9 +59,21 @@ class ListGroupItem extends Component {
       );
     }
 
+    var leftIcon;
+    if (this.props.icon) {
+      leftIcon =
+        <Icon
+          name={this.props.icon}
+          size={14}
+          color='#666'
+          style={styles.listGroupItemIconLeft}
+          />
+    }
+
     return (
       <View>
         <View style={[styles.listGroupItem, this.props.first && styles.listGroupItemFirst, this.props.last && styles.listGroupItemLast]}>
+          {leftIcon}
           <Text style={[styles.listGroupItemText, this.props.warning && styles.listGroupItemTextWarning]}>{this.props.text}</Text>
           {rightIcon}
         </View>

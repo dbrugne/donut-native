@@ -1,241 +1,124 @@
 'use strict';
 var React = require('react-native');
 var _ = require('underscore');
-var currentUser = require('../models/mobile-current-user');
-var client = require('../libs/client');
-var Platform = require('Platform');
-var Button = require('react-native-button');
+var s = require('../styles/style');
 var navigation = require('../libs/navigation');
+var ListGroupItem = require('../components/ListGroupItem');
+var LoadingView = require('../components/Loading');
+var client = require('../libs/client');
 
 var {
   Component,
   Text,
-  ListView,
   View,
   StyleSheet,
   TextInput,
   TouchableHighlight,
-  SwitchAndroid,
-  SwitchIOS,
-  ToastAndroid
+  ToastAndroid,
+  ScrollView
   } = React;
-var {
-  Icon
-  } = require('react-native-icons');
 
 var app = require('../libs/app');
+var currentUser = require('../models/mobile-current-user');
 
-class ForgotView extends Component {
+class EmailsView extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      emailToAdd: '',
+      currentEmail: '',
+      emails: [],
       errors: [],
-      dataResponse: {},
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2
-      }),
-      load: false
+      loaded: false
     };
   }
 
   componentDidMount () {
+    this.fetchData();
+  }
+
+  fetchData () {
     client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
-      var dataResponse = {};
-      _.each(response.account.emails, function (e) {
-        dataResponse[e.email] = e;
-      });
       this.setState({
-        dataResponse: dataResponse,
-        dataSource: this.state.dataSource.cloneWithRows(response.account.emails),
-        load: true
+        loaded: true,
+        currentEmail: (response.account && response.account.email)
+          ? response.account.email
+          : '',
+        emails: (response.account && response.account.emails)
+          ? response.account.emails
+          : []
       });
     });
   }
 
   render () {
-    if (!this.state.load) {
-      return this.renderLoadingView();
+    if (!this.state.loaded) {
+      return (
+        <LoadingView />
+      );
     }
 
     return (
-      <View style={styles.container}>
-        {this.state.errors.map((m) => <Text>{m}</Text>)}
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this.renderElement.bind(this)}
-        />
+      <ScrollView style={styles.main}>
+        <View style={s.listGroup}>
+          <Text style={s.listGroupTitle}>CURRENT EMAIL</Text>
+          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmail(this.state.currentEmail, this.fetchData.bind(this)))}
+                         text={this.state.currentEmail}
+                         type='button'
+                         action='true'
+                         first='true'
+            />
+          <Text style={s.listGroupItemSpacing}></Text>
+          {this._renderAdditionalEmails()}
+        </View>
+        <TouchableHighlight onPress= {() => this.props.navigator.push(navigation.getMyAccountEmailsAdd(this.fetchData.bind(this)))}
+                            style={[s.button, s.buttonPink, s.marginTop10]}
+                            underlayColor='#E4396D'
+          >
+          <View style={s.buttonLabel}>
+            <Text style={s.buttonTextLight}>ADD EMAIL</Text>
+          </View>
+        </TouchableHighlight>
+      </ScrollView>
+    );
+  }
+
+  _renderAdditionalEmails () {
+    var listRow = [];
+    if (this.state.emails.length < 2) {
+      return (<View></View>);
+    }
+    _.each(this.state.emails, (e, i) => {
+      if (e.main) {
+        return;
+      }
+      listRow.push(
+        <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmailEdit(e, this.fetchData.bind(this)))}
+                       text={e.email}
+                       type='button'
+                       action='true'
+                       icon={(e.confirmed) ? 'fontawesome|check' : 'fontawesome|times'}
+                       first={(i === 0 || (i === 1 && this.state.emails[0].main))}
+          />
+      );
+    });
+    return (
+      <View>
+        <Text style={s.listGroupTitle}>ADDITIONAL EMAILS</Text>
         <View>
-          <Button style={styles.button}
-            onPress={() => this.props.navigator.push(navigation.getMyAccountEmailsAdd())}>
-          Add an address
-          </Button>
+          {listRow}
         </View>
       </View>
-    )
-  }
-
-  renderElement(item) {
-    var SwitchComponent;
-    if (Platform.OS === 'android') {
-      SwitchComponent = SwitchAndroid;
-    } else {
-      SwitchComponent = SwitchIOS;
-    }
-
-    var status;
-    if (item.confirmed && !item.main) {
-      status =  <Button
-        onPress={this._onDelete.bind(this, item)}><Icon
-        name='fontawesome|trash'
-        size={27}
-        color='#888'
-        style={styles.icon}
-        /></Button>;
-    } else if (!item.confirmed) {
-      status =  <Button
-        onPress={this._onSend.bind(this, item)}><Icon
-        name='fontawesome|envelope'
-        size={27}
-        color='#888'
-        style={styles.icon}
-        /></Button>;
-    } else {
-      status =  <Icon
-        name='fontawesome|check'
-        size={27}
-        color='#888'
-        style={styles.icon}
-        />;
-    }
-    var Switch;
-    if (item.confirmed || item.main) {
-      Switch = <SwitchComponent
-        onValueChange={this._changeMain.bind(this, item)}
-        value={this.state.dataResponse[item.email].main}
-        disabled={this.state.dataResponse[item.email].main}
-        />;
-    }
-    return (
-      <View style={styles.row}>
-        <View style={{width: 50}}>
-          {Switch}
-        </View>
-        <Text style={styles.item}>{item.email}</Text>
-        {status}
-      </View>
     );
-  }
-
-  renderLoadingView () {
-    return (
-      <View style={styles.container}>
-        <Text>
-          Loading...
-        </Text>
-      </View>
-    );
-  }
-
-  _changeMain(item) {
-    // @todo yfuks find good pattern
-    var tmpData = this.state.dataResponse;
-    var tmpValues = [];
-    _.each(_.keys(tmpData), function (k) {
-      if (k !== item.email) {
-        tmpData[k].main = false;
-        tmpValues.push(tmpData[k]);
-      } else {
-        tmpData[k].main = true;
-        tmpValues.push(tmpData[k]);
-      }
-    });
-    this.setState({
-      dataResponse: tmpData,
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2
-      })
-    });
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(tmpValues)
-    });
-    client.accountEmail(item.email, 'main', _.bind(function (response) {
-      if (response.err) {
-        this._appendError(response.err);
-      } else {
-        this._appendError('Success');
-      }
-    }, this));
-  }
-
-  _onSend (item) {
-    client.accountEmail(item.email, 'validate', _.bind(function (response) {
-      if (response.err) {
-        this._appendError(response.err);
-      } else {
-        this._appendError('Success');
-      }
-    }, this));
-  }
-
-  _onDelete (item) {
-    var tmpValues = [];
-    _.each(_.keys(this.state.dataResponse), function (k) {
-      if (k !== item.email) {
-        tmpValues.push(this.state.dataResponse[k]);
-      }
-    });
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(tmpValues)
-    });
-    client.accountEmail(item.email, 'delete', _.bind(function (response) {
-      if (response.err) {
-        this._appendError(response.err);
-      } else {
-        this._appendError('Success');
-      }
-    }, this));
-  }
-
-  _appendError (string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({errors: this.state.messages.concat(string)});
-    }
   }
 }
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 80,
-    backgroundColor: '#EEE',
-    borderBottomWidth: 1,
-    borderBottomColor: '#AAA'
-  },
-  item: {
-    flex: 1,
-    fontSize: 20,
-    color: "#888",
-    textAlign: 'center'
-  },
-  icon: {
-    width: 27,
-    height: 27,
-    marginRight: 15
-  },
-  button: {
-    height: 40,
-    backgroundColor: '#EEE',
-    color: "#888"
+  main: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0',
+    paddingTop: 20
   }
 });
 
-module.exports = ForgotView;
+module.exports = EmailsView;
