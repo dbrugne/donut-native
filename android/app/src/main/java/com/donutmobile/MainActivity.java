@@ -25,6 +25,11 @@ import com.smixx.reactnativeicons.IconFont;
 // @FacebookLogin
 import com.magus.fblogin.FacebookLoginPackage;
 
+// @ImagePicker
+import com.donutmobile.ImagePickerPackage;
+
+import android.util.Log;
+
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
 
     private ReactInstanceManager mReactInstanceManager;
@@ -32,6 +37,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     // declare package
     private FacebookLoginPackage mFacebookLoginPackage; // @FacebookLogin
+
+    private ImagePickerPackage mImagePicker;
 
     // @ImagePicker
     private List<ActivityResultListener> mListeners = new ArrayList<>();
@@ -47,6 +54,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         // @FacebookLogin
         mFacebookLoginPackage = new FacebookLoginPackage(this);
 
+        // @ImagePicker
+        mImagePicker = new ImagePickerPackage(this);
+
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
                 .setBundleAssetName("index.android.bundle")
@@ -60,7 +70,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .addPackage(mFacebookLoginPackage)
 
                 // @ImagePicker
-                .addPackage(new ImagePickerPackage(this))
+                .addPackage(mImagePicker)
                 .addPackage(new RNFSPackage())
 
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
@@ -117,13 +127,10 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // @ImagePicker
-        // @todo yfuks break all other onActivityResult usages
-//        for (ActivityResultListener listener : mListeners) {
-//            listener.onActivityResult(requestCode, resultCode, data);
-//        }
-
         // @FacebookLogin
         mFacebookLoginPackage.handleActivityResult(requestCode, resultCode, data);
+
+        // @ImagePicker
+        mImagePicker.handleActivityResult(requestCode, resultCode, data);
     }
 }
