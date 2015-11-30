@@ -209,7 +209,7 @@ var styles = StyleSheet.create({
   },
   orContainer: {
     padding: 10,
-    marginVertical:10
+    marginBottom:10
   },
   link: {
     fontSize: 15,

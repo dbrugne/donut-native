@@ -2,6 +2,7 @@
 
 var React = require('react-native');
 var FBLogin = require('react-native-facebook-login');
+var s = require('../styles/style');
 
 var {
   StyleSheet,
@@ -9,6 +10,9 @@ var {
   TouchableHighlight,
   Text
 } = React;
+var {
+  Icon
+  } = require('react-native-icons');
 
 var currentUser = require('../models/mobile-current-user');
 
@@ -21,30 +25,40 @@ module.exports = React.createClass({
   render () {
     var fakeButton = null;
     if (this.state.fakeLogin) {
-      // @todo : ylastapis : skin this fake button that is diplayed when the user has authenticated with Facebook on mobile, and then logout
       //                     the onLoginFound function is hit on login page display and the native FBLogin display a logout button, so I added
       //                     this fake button
       fakeButton = (
-        <View>
+        <View style={styles.container}>
           <View style={styles.container}>
-            <View style={styles.enlargedButton}>
-              <TouchableHighlight style={styles.fakeButton} onPress={() => currentUser.facebookLogin(currentUser.oauth.facebookToken, (err) => { console.log('FBLogin error', err) })}>
-                <Text style={styles.fakeButtonText}>
-                  Use your existing Facebook credentials
-                </Text>
-              </TouchableHighlight>
-            </View>
+
+            <TouchableHighlight onPress={() => currentUser.facebookLogin(currentUser.oauth.facebookToken, (err) => { console.log('FBLogin error', err) })}
+                                style={[s.button, styles.buttonFacebook]}
+                                underlayColor='#647EB7'
+              >
+              <View style={[s.buttonLabel, styles.buttonLabelFacebook]}>
+                <View style={styles.iconContainer}>
+                  <Icon
+                    name='fontawesome|facebook'
+                    size={28}
+                    color='#FFF'
+                    style={[styles.icon, styles.iconFacebook]}
+                    />
+                </View>
+                <Text style={[s.buttonText, styles.buttonTextFacebook]}>Already identified : log-in</Text>
+              </View>
+            </TouchableHighlight>
+
           </View>
-          <Text>OR</Text>
+          <View style={styles.divider}></View>
         </View>
       );
     }
 
     return (
-      <View>
+      <View style={styles.container}>
         {fakeButton}
         <View style={styles.container}>
-          <View style={styles.enlargedButton}>
+          <View style={[s.button, s.buttonBlue]}>
             <FBLogin
               permissions={['email']}
               onLogin={this.onLogin}
@@ -103,20 +117,49 @@ module.exports = React.createClass({
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 35
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'center'
   },
-  enlargedButton: {
-    flex: 1,
-    height: 45,
+  divider: {
+    marginVertical:10,
+    marginHorizontal:10,
+    height:1,
+    backgroundColor: '#C3C3C3',
+    alignSelf: 'stretch',
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#425eb1',
-    borderRadius: 4
+    flexWrap: 'nowrap',
+    flexDirection: 'row'
   },
-  fakeButtonText: {
-    color: '#FFF'
+  buttonFacebook: {
+    backgroundColor: "#4a649d",
+    borderColor: "#4a649d",
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 5,
+    marginBottom: 0
+  },
+  buttonLabelFacebook: {
+    justifyContent: 'flex-start'
+  },
+  buttonTextFacebook: {
+    fontWeight: 'normal',
+    fontSize: 18,
+    color: "#FFF",
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    flex: 1
+  },
+  iconFacebook: {
+    paddingRight: 5,
+    marginRight: 5,
+    alignSelf: 'flex-end'
+  },
+  icon: {
+    width: 28,
+    height: 28
   }
 });
