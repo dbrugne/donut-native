@@ -46,7 +46,7 @@ public class ImagePickerModule extends ReactContextBaseJavaModule implements Act
     mReactContext = reactContext;
     mMainActivity = mainActivity;
 
-    mMainActivity.addActivityResultListener(this);
+    //mMainActivity.addActivityResultListener(this);
   }
 
   @Override
@@ -100,7 +100,9 @@ public class ImagePickerModule extends ReactContextBaseJavaModule implements Act
 
     if (requestCode != REQUEST_LAUNCH_CAMERA && requestCode != REQUEST_LAUNCH_IMAGE_LIBRARY) {
       Log.v("Image Picker DEBUG", "bad request code");
-      mCallback.invoke(true, Arguments.createMap());
+      if (mCallback != null) {
+        mCallback.invoke(true, Arguments.createMap());
+      }
       return;
     }
 

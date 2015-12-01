@@ -7,12 +7,15 @@ import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 
+import android.content.Intent;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class ImagePickerPackage implements ReactPackage {
   private final MainActivity mMainActivity;
+  private ImagePickerModule mModuleInstance;
 
   public ImagePickerPackage(MainActivity mainActivity) {
     this.mMainActivity = mainActivity;
@@ -20,8 +23,9 @@ public class ImagePickerPackage implements ReactPackage {
 
   @Override
   public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-    return Arrays.<NativeModule>asList(
-        new ImagePickerModule(reactContext, mMainActivity));
+    mModuleInstance = new ImagePickerModule(reactContext, mMainActivity);
+
+    return Arrays.<NativeModule>asList(mModuleInstance);
   }
 
   @Override
@@ -32,5 +36,13 @@ public class ImagePickerPackage implements ReactPackage {
   @Override
   public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
     return Collections.emptyList();
+  }
+
+  public void handleActivityResult(final int requestCode, final int resultCode, final Intent data) {
+      if (mModuleInstance == null) {
+          return;
+      }
+
+      mModuleInstance.onActivityResult(requestCode, resultCode, data);
   }
 }
