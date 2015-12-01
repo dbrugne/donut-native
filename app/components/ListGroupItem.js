@@ -4,6 +4,7 @@ var React = require('react-native');
 var Platform = require('Platform');
 var ListGroupItemSwitch = require('../components/ListGroupItem/ListGroupItemSwitch');
 var ListGroupItemButton = require('../components/ListGroupItem/ListGroupItemButton');
+var ListGroupItemEditButton = require('../components/ListGroupItem/ListGroupItemEditButton');
 
 var {
   Component,
@@ -43,6 +44,12 @@ class ListGroupItem extends Component {
     if (this.props.type === 'button') {
       return (
         <ListGroupItemButton {...this.props} />
+      );
+    }
+
+    if (this.props.type === 'edit-button') {
+      return (
+        <ListGroupItemEditButton {...this.props} />
       );
     }
 

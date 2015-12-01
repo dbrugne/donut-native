@@ -23,9 +23,8 @@ var {
   Icon
   } = require('react-native-icons');
 
-/* @todo yfuks/dbrugne make it work on IOS
+/*
  * https://github.com/marcshilling/react-native-image-picker
- * https://www.npmjs.com/package/react-native-fs (don't thinks it's needed for IOS)
  */
 
 let { UIImagePickerManager: ImagePickerManager } = NativeModules;

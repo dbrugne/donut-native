@@ -6,6 +6,8 @@ var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
 var LoadingView = require('../components/Loading');
 var currentUser = require('../models/mobile-current-user');
+var ListGroupItem = require('../components/ListGroupItem');
+var navigation = require('../libs/navigation');
 
 var {
   Component,
@@ -16,10 +18,10 @@ var {
   TouchableHighlight,
   Image,
   ToastAndroid
-} = React;
+  } = React;
 
 class MyAccountInformation extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       username: currentUser.get('username'),
@@ -28,24 +30,56 @@ class MyAccountInformation extends Component {
       location: '',
       website: '',
       errors: [],
+      messages: [],
       load: false
     };
   }
 
-  componentDidMount () {
-    client.userRead(currentUser.get('user_id'), {more: true}, (response) => {
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    client.userRead(currentUser.get('user_id'), {more: true, admin: true}, (response) => {
       this.setState({
         realname: response.realname,
         bio: response.bio,
         location: response.location,
         website: response.website,
-        picture: common.cloudinary.prepare(response.avatar, 50),
+        picture: common.cloudinary.prepare(response.avatar, 80),
         load: true
       });
     });
   }
 
-  render () {
+  saveUserData(key, value, callback) {
+    var updateData = {};
+    updateData[key] = value;
+
+    client.userUpdate(updateData, _.bind(function (response) {
+      if (response.err) {
+        this._appendError(response.err);
+      } else {
+        var state = {load: true};
+        state[key] = value;
+        this.setState(state);
+        this._appendMessage('Success');
+        callback();
+      }
+    }, this));
+  }
+
+  onUserEdit(key, value, placeholder, multi) {
+    return this.props.navigator.push(navigation.getUserFieldEdit({
+      key,
+      value,
+      placeholder,
+      multi,
+      onSave: this.saveUserData.bind(this)
+    }));
+  }
+
+  render() {
     if (!this.state.load) {
       return (
         <LoadingView />
@@ -92,88 +126,49 @@ class MyAccountInformation extends Component {
           </View>
         </View>
 
+        <ListGroupItem onPress={() => this.onUserEdit('realname', this.state.realname, 'name and first name', false)}
+                       text='Realname'
+                       type='edit-button'
+                       first={true}
+                       value={this.state.realname}
+          />
+
+        <ListGroupItem onPress={() => this.onUserEdit('bio', this.state.bio, 'describe yourself', true)}
+                       text='Biography'
+                       type='edit-button'
+                       value={this.state.bio}
+          />
+
+        <ListGroupItem
+          onPress={() => this.onUserEdit ('location', this.state.location, 'City, country where you are', false)}
+          text='Location'
+          type='edit-button'
+          value={this.state.location}
+          />
+
+        <ListGroupItem onPress={() => this.onUserEdit('website', this.state.website, 'URL of a website', false)}
+                       text='Website'
+                       type='edit-button'
+                       value={this.state.website}
+          />
+
         {messages}
 
-        <View style={[s.inputContainer, s.marginTop20]}>
-          <Text style={s.inputLabel}>realname</Text>
-          <TextInput
-            placeholder="name and first name"
-            onChange={(event) => this.setState({realname: event.nativeEvent.text})}
-            value={this.state.realname}
-            style={s.input}
-            maxLength={20}/>
-        </View>
-
-        <View style={s.inputContainer}>
-          <Text style={s.inputLabel}>bio</Text>
-          <TextInput
-            placeholder="Describe yourself"
-            onChange={(event) => this.setState({bio: event.nativeEvent.text})}
-            value={this.state.bio}
-            style={[s.input, s.marginTop5, styles.bio]}
-            maxLength={200}
-            multiline={true}/>
-         </View>
-
-        <View style={s.inputContainer}>
-          <Text style={s.inputLabel}>place</Text>
-          <TextInput
-            placeholder="City, country where you are"
-            onChange={(event) => this.setState({location: event.nativeEvent.text})}
-            value={this.state.location}
-            style={s.input}/>
-        </View>
-
-        <View style={s.inputContainer}>
-          <Text style={s.inputLabel}>website</Text>
-          <TextInput
-            placeholder="URL of a website"
-            onChange={(event) => this.setState({website: event.nativeEvent.text})}
-            value={this.state.website}
-            style={s.input}/>
-        </View>
-
         <Text style={s.filler}></Text>
-
-        <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
-                            style={[s.button, s.buttonPink, s.marginTop10]}
-                            underlayColor='#E4396D'
-          >
-          <View style={s.buttonLabel}>
-            <Text style={s.buttonTextLight}>SAVE</Text>
-          </View>
-        </TouchableHighlight>
 
       </View>
     )
   }
 
-  onSubmitPressed () {
-    var updateData = {
-      realname: this.state.realname,
-      bio: this.state.bio,
-      location: this.state.location,
-      website: this.state.website
-    };
-
-    client.userUpdate(updateData, _.bind(function (response) {
-      if (response.err) {
-        this._appendError(response.err);
-      } else {
-        this._appendMessage('Success');
-      }
-    }, this));
-  }
-
-  _appendError (string) {
+  _appendError(string) {
     if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
-      this.setState({errors: this.state.messages.concat(string)});
+      this.setState({errors: this.state.errors.concat(string)});
     }
   }
 
-  _appendMessage (string) {
+  _appendMessage(string) {
     if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
@@ -215,7 +210,7 @@ var styles = StyleSheet.create({
     marginRight: 10
   },
   bio: {
-    height:120
+    height: 120
   },
   username: {
     color: '#333333',

@@ -99,7 +99,7 @@ class EditEmailView extends Component {
     if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
-      this.setState({errors: this.state.messages.concat(string)});
+      this.setState({errors: this.state.errors.concat(string)});
     }
   }
 }
