@@ -1,5 +1,5 @@
 // @ImagePicker
-package com.donutmobile;
+package me.donut;
 
 import android.content.Intent;
 
