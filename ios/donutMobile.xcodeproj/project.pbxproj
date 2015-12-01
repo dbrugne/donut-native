@@ -38,6 +38,7 @@
 		6D830AD81C0779C5007AF824 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD51C0779C5007AF824 /* FBSDKShareKit.framework */; };
 		6DCC57EE1C0C689C008F42F0 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCC57ED1C0C6817008F42F0 /* libRCTPushNotification.a */; };
 		6DCC57F51C0CA1FF008F42F0 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCC57F41C0CA1C3008F42F0 /* libRNFS.a */; };
+		6DCC57F91C0CB960008F42F0 /* UIImagePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DCC57F81C0CB960008F42F0 /* UIImagePickerManager.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -178,6 +179,8 @@
 		6D830AD51C0779C5007AF824 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKShareKit.framework"; sourceTree = "<group>"; };
 		6DCC57E81C0C6817008F42F0 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		6DCC57EF1C0CA1C3008F42F0 /* RNFS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
+		6DCC57F71C0CB960008F42F0 /* UIImagePickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImagePickerManager.h; sourceTree = "<group>"; };
+		6DCC57F81C0CB960008F42F0 /* UIImagePickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImagePickerManager.m; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -365,6 +368,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6DCC57F61C0CB960008F42F0 /* UIImagePickerManager */ = {
+			isa = PBXGroup;
+			children = (
+				6DCC57F71C0CB960008F42F0 /* UIImagePickerManager.h */,
+				6DCC57F81C0CB960008F42F0 /* UIImagePickerManager.m */,
+			);
+			name = UIImagePickerManager;
+			path = "../node_modules/react-native-image-picker/UIImagePickerManager";
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,6 +389,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				6DCC57F61C0CB960008F42F0 /* UIImagePickerManager */,
 				6DCC57EF1C0CA1C3008F42F0 /* RNFS.xcodeproj */,
 				6DCC57E81C0C6817008F42F0 /* RCTPushNotification.xcodeproj */,
 				6D830AC51C0769BD007AF824 /* RCTFBLogin.xcodeproj */,
@@ -677,6 +691,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				6DCC57F91C0CB960008F42F0 /* UIImagePickerManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
