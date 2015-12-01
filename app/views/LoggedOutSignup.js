@@ -3,7 +3,7 @@ var React = require('react-native');
 var Platform = require('Platform');
 var currentUser = require('../models/mobile-current-user');
 var s = require('../styles/style');
-var Alert = require('../libs/Alert');
+var Alert = require('../libs/alert');
 
 var {
   Component,
