@@ -1,5 +1,5 @@
 // @ImagePicker
-package com.donutmobile;
+package me.donut;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;

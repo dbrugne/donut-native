@@ -1,4 +1,4 @@
-package com.donutmobile;
+package me.donut;
 
 import android.app.Activity;
 import android.os.Bundle;
