@@ -3,6 +3,7 @@ var React = require('react-native');
 var Platform = require('Platform');
 var currentUser = require('../models/mobile-current-user');
 var s = require('../styles/style');
+var Alert = require('../libs/Alert');
 
 var {
   Component,
@@ -12,7 +13,6 @@ var {
   TouchableHighlight,
   View,
   Image,
-  ToastAndroid
 } = React;
 
 class Signup extends Component {
@@ -22,32 +22,11 @@ class Signup extends Component {
       email: '',
       password: '',
       hasPassword: false,
-      username: false,
-      messages: [],
-      errors: []
+      username: false
     };
   }
 
   render () {
-    var messages = null;
-    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
-      if (this.state.errors && this.state.errors.length > 0) {
-        messages = (
-          <View style={s.alertError}>
-            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-          </View>
-        );
-      } else {
-        messages = (
-          <View style={s.alertSuccess}>
-            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-          </View>
-        );
-      }
-    }
-
     return (
       <View style={styles.main}>
         <View style={styles.logoCtn}>
@@ -55,7 +34,6 @@ class Signup extends Component {
         </View>
 
         <View style={styles.container}>
-          {messages}
 
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
@@ -97,24 +75,15 @@ class Signup extends Component {
 
   onSubmitPressed () {
     if (!this.state.email || !this.state.password || !this.state.username) {
-      return this._appendError('not-complete');
+      return Alert.show('not-complete');
     }
 
     currentUser.signUp(this.state.email, this.state.password, this.state.username, _.bind(function (err) {
       if (err) {
-        this._appendError(err);
+        Alert.show(err);
       }
     }, this));
   }
-
-  _appendError (string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({errors: this.state.messages.concat(string)});
-    }
-  }
-
 }
 
 var styles = StyleSheet.create({

@@ -2,6 +2,7 @@ var React = require('react-native');
 var _ = require('underscore');
 var Platform = require('Platform');
 var s = require('../styles/style');
+var Alert = require('../libs/Alert');
 
 var {
   Component,
@@ -10,7 +11,6 @@ var {
   StyleSheet,
   TextInput,
   TouchableHighlight,
-  ToastAndroid
   } = React;
 
 
@@ -18,32 +18,11 @@ class ForgotView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      messages: [],
-      errors: []
+      email: ''
     };
   }
 
   render() {
-    var messages = null;
-    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
-      if (this.state.errors && this.state.errors.length > 0) {
-        messages = (
-          <View style={s.alertError}>
-            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-          </View>
-        );
-      } else {
-        messages = (
-          <View style={s.alertSuccess}>
-            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-          </View>
-        );
-      }
-    }
-
     return (
       <View style={styles.main}>
         <View style={styles.container}>
@@ -51,8 +30,6 @@ class ForgotView extends Component {
             <View>
               <Text style={[s.h1, s.textCenter]}>Forgot Password</Text>
               <Text style={[s.spacer, s.p, s.textCenter]}>What email address do you use to sign into Donut ?</Text>
-
-              {messages}
 
               <TextInput
                 placeholder="Email"
@@ -77,32 +54,16 @@ class ForgotView extends Component {
 
   onResetPressed() {
     if (!this.state.email) {
-      return this._appendError('not-complete');
+      return Alert.show('not-complete');
     }
 
     currentUser.forgot(this.state.email, _.bind(function (err) {
       if (err) {
-        this._appendError(err);
+        Alert.show(err);
       } else {
-        this._appendMessage('Success');
+        Alert.show('Success');
       }
     }, this));
-  }
-
-  _appendError(string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({errors: this.state.messages.concat(string)});
-    }
-  }
-
-  _appendMessage(string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({messages: this.state.messages.concat(string)});
-    }
   }
 }
 
