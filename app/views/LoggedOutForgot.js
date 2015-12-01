@@ -2,7 +2,7 @@ var React = require('react-native');
 var _ = require('underscore');
 var Platform = require('Platform');
 var s = require('../styles/style');
-var Alert = require('../libs/Alert');
+var Alert = require('../libs/alert');
 
 var {
   Component,
