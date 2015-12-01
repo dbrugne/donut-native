@@ -6,6 +6,7 @@ var SignupView = require('./LoggedOutSignup');
 var ForgotView = require('./LoggedOutForgot');
 var Platform = require('Platform');
 var s = require('../styles/style');
+var Alert = require('../libs/Alert');
 
 var {
   Component,
@@ -17,7 +18,6 @@ var {
   Navigator,
   AsyncStorage,
   BackAndroid,
-  ToastAndroid,
   Image
 } = React;
 
@@ -30,9 +30,7 @@ class LoginView extends Component {
     this.state = {
       email: '',
       password: '',
-      hasPassword: false,
-      messages: [],
-      errors: []
+      hasPassword: false
     };
   }
 
@@ -59,25 +57,6 @@ class LoginView extends Component {
   }
 
   render() {
-    var messages = null;
-    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
-      if (this.state.errors && this.state.errors.length > 0) {
-        messages = (
-          <View style={s.alertError}>
-            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-          </View>
-        );
-      } else {
-        messages = (
-          <View style={s.alertSuccess}>
-            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-          </View>
-        );
-      }
-    }
-
     return (
       <View style={styles.main}>
         <View style={styles.logoCtn}>
@@ -90,8 +69,6 @@ class LoginView extends Component {
           <View style={styles.orContainer}>
             <Text style={styles.title}> OR </Text>
           </View>
-
-          {messages}
 
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
@@ -142,13 +119,13 @@ class LoginView extends Component {
 
   onSubmitPressed() {
     if (!this.state.email || !this.state.password) {
-      return this._appendError('not-complete');
+      return Alert.show('not-complete');
     }
 
     // @todo : loading screen
     currentUser.login(this.state.email, this.state.password, _.bind(function (err) {
       if (err) {
-        this._appendError(err);
+        Alert.show(err);
       }
     }, this));
   }
@@ -166,16 +143,7 @@ class LoginView extends Component {
       component: SignupView
     });
   }
-
-  _appendError(string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({errors: this.state.messages.concat(string)});
-    }
-  }
 }
-;
 
 var styles = StyleSheet.create({
   main: {
