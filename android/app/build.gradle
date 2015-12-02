@@ -92,5 +92,5 @@ dependencies {
     compile project(':react-native-facebook-login')
 
     // @ImagePicker
-    compile project(':react-native-fs')
+    compile project(':react-native-image-picker')
 }

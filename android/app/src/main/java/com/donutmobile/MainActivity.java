@@ -11,12 +11,6 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
- // @ImagePicker
-import android.content.Intent;
-import java.util.ArrayList;
-import java.util.List;
-import com.rnfs.RNFSPackage;
-
 // @Icons
 import com.smixx.reactnativeicons.ReactNativeIcons;
 import java.util.Arrays;
@@ -26,7 +20,10 @@ import com.smixx.reactnativeicons.IconFont;
 import com.magus.fblogin.FacebookLoginPackage;
 
 // @ImagePicker
-import me.donut.ImagePickerPackage;
+import com.imagepicker.ImagePickerPackage;
+
+// @ImagePicker and @FacebookLogin
+import android.content.Intent;
 
 import android.util.Log;
 
@@ -40,10 +37,6 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     // @ImagePicker
     private ImagePickerPackage mImagePicker;
-    private List<ActivityResultListener> mListeners = new ArrayList<>();
-    public void addActivityResultListener(ActivityResultListener listener) {
-        mListeners.add(listener);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +63,6 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
                 // @ImagePicker
                 .addPackage(mImagePicker)
-                .addPackage(new RNFSPackage())
 
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)

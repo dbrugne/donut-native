@@ -59,33 +59,53 @@ class EmailsView extends Component {
     return (
       <ScrollView style={styles.main}>
         <View style={s.listGroup}>
+
+          {this._renderMainEmail()}
+
+          {this._renderAdditionalEmails()}
+
+          <ListGroupItem
+            onPress={() => this.props.navigator.push(navigation.getMyAccountEmailsAdd(this.fetchData.bind(this)))}
+            text='Add email'
+            type='button'
+            action='true'
+            first='true'
+            />
+
+        </View>
+        <View style={s.filler}></View>
+      </ScrollView>
+    );
+  }
+
+  _renderMainEmail () {
+    if (this.state.currentEmail) {
+      return (
+        <View>
           <Text style={s.listGroupTitle}>CURRENT EMAIL</Text>
-          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmail(this.state.currentEmail, this.fetchData.bind(this)))}
-                         text={this.state.currentEmail}
-                         type='button'
-                         action='true'
-                         first='true'
+          <ListGroupItem
+            onPress={() => this.props.navigator.push(navigation.getMyAccountEmail(this.state.currentEmail, this.fetchData.bind(this)))}
+            text={this.state.currentEmail}
+            type='button'
+            action='true'
+            first='true'
             />
           <Text style={s.listGroupItemSpacing}></Text>
-          {this._renderAdditionalEmails()}
         </View>
-        <TouchableHighlight onPress= {() => this.props.navigator.push(navigation.getMyAccountEmailsAdd(this.fetchData.bind(this)))}
-                            style={[s.button, s.buttonPink, s.marginTop10]}
-                            underlayColor='#E4396D'
-          >
-          <View style={s.buttonLabel}>
-            <Text style={s.buttonTextLight}>ADD EMAIL</Text>
-          </View>
-        </TouchableHighlight>
-      </ScrollView>
+      );
+    }
+
+    return (
+      <View>
+        <Text style={s.listGroupTitle}>You do not have entered a main email for this account or no one is still validated.</Text>
+        <Text style={s.listGroupItemSpacing}></Text>
+      </View>
     );
   }
 
   _renderAdditionalEmails () {
     var listRow = [];
-    if (this.state.emails.length < 2) {
-      return (<View></View>);
-    }
+
     _.each(this.state.emails, (e, i) => {
       if (e.main) {
         return;
@@ -100,11 +120,13 @@ class EmailsView extends Component {
           />
       );
     });
+
     return (
       <View>
-        <Text style={s.listGroupTitle}>ADDITIONAL EMAILS</Text>
+        <Text style={s.listGroupTitle}>Additional emails</Text>
         <View>
           {listRow}
+          <Text style={s.listGroupItemSpacing}></Text>
         </View>
       </View>
     );
@@ -116,7 +138,8 @@ var styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     backgroundColor: '#f0f0f0',
-    paddingTop: 20
+    paddingTop: 20,
+    flex:1
   }
 });
 

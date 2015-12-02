@@ -89,30 +89,23 @@ class EditProfileView extends Component {
     )
   }
 
-  _pickFromCamera () {
-    if (Platform.OS === 'android') {
-      ImagePickerManager.launchCamera({}, (cancelled, response) => {
-        if (!cancelled) {
-          this._updateAvatar(response.path);
-        }
-      });
-    }
+  _pickFromImagePicker () {
+    ImagePickerManager.showImagePicker({
+      maxWidth: 500,
+      maxHeight: 500,
+      takePhotoButtonTitle: 'take a picture',
+      chooseFromLibraryButtonTitle: 'choose from gallery'
+    }, (cancelled, response) => {
+      if (!cancelled) {
+        this._updateAvatar(response.data);
+      }
+    });
   }
 
-  _pickFromGallery () {
-    if (Platform.OS === 'android') {
-      ImagePickerManager.launchImageLibrary({}, (cancelled, response) => {
-        if (!cancelled) {
-          this._updateAvatar(response.path);
-        }
-      });
-    }
-  }
-
-  _updateAvatar (imagePath) {
+  _updateAvatar (base64File) {
     this._appendError('uploading ...');
-    cloudinary.upload(imagePath, _.bind(function (err, data) {
-      if (data.error) {
+    cloudinary.upload(base64File, _.bind(function (err, data) {
+      if (data && data.error) {
         return this._appendError(data.error.message);
       }
 
@@ -151,34 +144,18 @@ class EditProfileView extends Component {
           </Button>
         </View>
         <View style={styles.rowAspect}>
-          <Button onPress={this._pickFromGallery.bind(this)}>
+          <Button onPress={this._pickFromImagePicker.bind(this)}>
             <View style={styles.formRow}>
             <View>
-              <Text style={{fontWeight: 'bold', color: '#222', fontSize: 20}}>Gallery</Text>
-              <Text style={{}}>get a picture from gallery</Text>
+              <Text style={{fontWeight: 'bold', color: '#222', fontSize: 20}}>Avatar</Text>
+              <Text style={{}}>edit your avatar</Text>
             </View>
             <Icon
-              name='fontawesome|archive'
+              name='fontawesome|file-image-o'
               size={40}
               color='#888'
               style={styles.icon}
             />
-            </View>
-          </Button>
-        </View>
-        <View style={styles.rowAspect}>
-          <Button onPress={this._pickFromCamera.bind(this)}>
-            <View style={styles.formRow}>
-              <View>
-                <Text style={{fontWeight: 'bold', color: '#222', fontSize: 20}}>Photo</Text>
-                <Text style={{}}>get a picture from camera</Text>
-              </View>
-              <Icon
-                name='fontawesome|camera'
-                size={40}
-                color='#888'
-                style={styles.icon}
-                />
             </View>
           </Button>
         </View>
