@@ -26,7 +26,6 @@
 		6D830AD71C0779C5007AF824 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD41C0779C5007AF824 /* FBSDKLoginKit.framework */; };
 		6D830AD81C0779C5007AF824 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD51C0779C5007AF824 /* FBSDKShareKit.framework */; };
 		6DCC57EE1C0C689C008F42F0 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCC57ED1C0C6817008F42F0 /* libRCTPushNotification.a */; };
-		6DCC57F51C0CA1FF008F42F0 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCC57F41C0CA1C3008F42F0 /* libRNFS.a */; };
 		6DCC57F91C0CB960008F42F0 /* UIImagePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DCC57F81C0CB960008F42F0 /* UIImagePickerManager.m */; };
 		6DF0674C1C0F67020096C874 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DF0674B1C0F67020096C874 /* Default-568h@2x.png */; };
 		6DF0674D1C0F69740096C874 /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6DF067401C0F66F20096C874 /* FontAwesome.otf */; };
@@ -121,13 +120,6 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTPushNotification;
 		};
-		6DCC57F31C0CA1C3008F42F0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6DCC57EF1C0CA1C3008F42F0 /* RNFS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F12AFB9B1ADAF8F800E0535D;
-			remoteInfo = RNFS;
-		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -168,7 +160,6 @@
 		6D830AD41C0779C5007AF824 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		6D830AD51C0779C5007AF824 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKShareKit.framework"; sourceTree = "<group>"; };
 		6DCC57E81C0C6817008F42F0 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
-		6DCC57EF1C0CA1C3008F42F0 /* RNFS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		6DCC57F71C0CB960008F42F0 /* UIImagePickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImagePickerManager.h; sourceTree = "<group>"; };
 		6DCC57F81C0CB960008F42F0 /* UIImagePickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImagePickerManager.m; sourceTree = "<group>"; };
 		6DF067401C0F66F20096C874 /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.otf; path = Fonts/FontAwesome.otf; sourceTree = "<group>"; };
@@ -193,7 +184,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6DCC57EE1C0C689C008F42F0 /* libRCTPushNotification.a in Frameworks */,
-				6DCC57F51C0CA1FF008F42F0 /* libRNFS.a in Frameworks */,
 				6D830ACB1C0769ED007AF824 /* libRCTFBLogin.a in Frameworks */,
 				6D33B3581BF34334004CF107 /* libReactNativeIcons.a in Frameworks */,
 				6D830AD81C0779C5007AF824 /* FBSDKShareKit.framework in Frameworks */,
@@ -363,14 +353,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6DCC57F01C0CA1C3008F42F0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6DCC57F41C0CA1C3008F42F0 /* libRNFS.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		6DCC57F61C0CB960008F42F0 /* UIImagePickerManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -401,7 +383,6 @@
 			isa = PBXGroup;
 			children = (
 				6DCC57F61C0CB960008F42F0 /* UIImagePickerManager */,
-				6DCC57EF1C0CA1C3008F42F0 /* RNFS.xcodeproj */,
 				6DCC57E81C0C6817008F42F0 /* RCTPushNotification.xcodeproj */,
 				6D830AC51C0769BD007AF824 /* RCTFBLogin.xcodeproj */,
 				6D33B3521BF34305004CF107 /* ReactNativeIcons.xcodeproj */,
@@ -548,10 +529,6 @@
 					ProductGroup = 6D33B3531BF34305004CF107 /* Products */;
 					ProjectRef = 6D33B3521BF34305004CF107 /* ReactNativeIcons.xcodeproj */;
 				},
-				{
-					ProductGroup = 6DCC57F01C0CA1C3008F42F0 /* Products */;
-					ProjectRef = 6DCC57EF1C0CA1C3008F42F0 /* RNFS.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -636,13 +613,6 @@
 			fileType = archive.ar;
 			path = libRCTPushNotification.a;
 			remoteRef = 6DCC57EC1C0C6817008F42F0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6DCC57F41C0CA1C3008F42F0 /* libRNFS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNFS.a;
-			remoteRef = 6DCC57F31C0CA1C3008F42F0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
