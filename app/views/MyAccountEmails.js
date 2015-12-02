@@ -14,7 +14,6 @@ var {
   StyleSheet,
   TextInput,
   TouchableHighlight,
-  ToastAndroid,
   ScrollView
   } = React;
 

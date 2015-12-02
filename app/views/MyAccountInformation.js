@@ -1,11 +1,15 @@
 var React = require('react-native');
 var _ = require('underscore');
 var client = require('../libs/client');
+var app = require('../libs/app');
 var Platform = require('Platform');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
 var LoadingView = require('../components/Loading');
+var Alert = require('../libs/alert');
 var currentUser = require('../models/mobile-current-user');
+var ListGroupItem = require('../components/ListGroupItem');
+var navigation = require('../libs/navigation');
 
 var {
   Component,
@@ -16,59 +20,76 @@ var {
   TouchableHighlight,
   Image,
   ToastAndroid
-} = React;
+  } = React;
 
 class MyAccountInformation extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       username: currentUser.get('username'),
       realname: '',
       bio: '',
       location: '',
-      website: '',
-      errors: [],
+      website: {
+        value: ''
+      },
       load: false
     };
+
+    app.on('user:save', (data) => {
+      var state = {load: true};
+      state[data.key] = data.value;
+      this.setState(state);
+    });
   }
 
-  componentDidMount () {
-    client.userRead(currentUser.get('user_id'), {more: true}, (response) => {
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    client.userRead(currentUser.get('user_id'), {more: true, admin: true}, (response) => {
       this.setState({
         realname: response.realname,
         bio: response.bio,
         location: response.location,
-        website: response.website,
-        picture: common.cloudinary.prepare(response.avatar, 50),
+        website: (response.website && response.website.title ? response.website.title : {value: ''}),
+        picture: common.cloudinary.prepare(response.avatar, 80),
         load: true
       });
     });
   }
 
-  render () {
+  saveUserData(key, value, callback) {
+    var updateData = {};
+    updateData[key] = value;
+
+    client.userUpdate(updateData, _.bind(function (response) {
+      if (response.err) {
+        Alert.show(response.err);
+      } else {
+        var state = {load: true};
+        state[key] = value;
+        this.setState(state);
+
+        callback();
+      }
+    }, this));
+  }
+
+  onUserEdit(component, value) {
+    return this.props.navigator.push(navigation.getUserFieldEdit({
+      component,
+      value,
+      onSave: this.saveUserData.bind(this)
+    }));
+  }
+
+  render() {
     if (!this.state.load) {
       return (
         <LoadingView />
       );
-    }
-
-    var messages = null;
-    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
-      if (this.state.errors && this.state.errors.length > 0) {
-        messages = (
-          <View style={s.alertError}>
-            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-          </View>
-        );
-      } else {
-        messages = (
-          <View style={s.alertSuccess}>
-            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-          </View>
-        );
-      }
     }
 
     var realname = null;
@@ -92,93 +113,35 @@ class MyAccountInformation extends Component {
           </View>
         </View>
 
-        {messages}
+        <ListGroupItem text='Realname'
+                       type='edit-button'
+                       first={true}
+                       value={this.state.realname}
+                       onPress={() => this.onUserEdit(require('../components/UserField/Realname'), this.state.realname)}
+          />
 
-        <View style={[s.inputContainer, s.marginTop20]}>
-          <Text style={s.inputLabel}>realname</Text>
-          <TextInput
-            placeholder="name and first name"
-            onChange={(event) => this.setState({realname: event.nativeEvent.text})}
-            value={this.state.realname}
-            style={s.input}
-            maxLength={20}/>
-        </View>
+        <ListGroupItem text='Biography'
+                       type='edit-button'
+                       value={this.state.bio}
+                       onPress={() => this.onUserEdit(require('../components/UserField/Bio'), this.state.bio)}
+          />
 
-        <View style={s.inputContainer}>
-          <Text style={s.inputLabel}>bio</Text>
-          <TextInput
-            placeholder="Describe yourself"
-            onChange={(event) => this.setState({bio: event.nativeEvent.text})}
-            value={this.state.bio}
-            style={[s.input, s.marginTop5, styles.bio]}
-            maxLength={200}
-            multiline={true}/>
-         </View>
+        <ListGroupItem text='Location'
+                       type='edit-button'
+                       value={this.state.location}
+                       onPress={() => this.onUserEdit (require('../components/UserField/Location'), this.state.location)}
+          />
 
-        <View style={s.inputContainer}>
-          <Text style={s.inputLabel}>place</Text>
-          <TextInput
-            placeholder="City, country where you are"
-            onChange={(event) => this.setState({location: event.nativeEvent.text})}
-            value={this.state.location}
-            style={s.input}/>
-        </View>
-
-        <View style={s.inputContainer}>
-          <Text style={s.inputLabel}>website</Text>
-          <TextInput
-            placeholder="URL of a website"
-            onChange={(event) => this.setState({website: event.nativeEvent.text})}
-            value={this.state.website}
-            style={s.input}/>
-        </View>
+        <ListGroupItem text='Website'
+                       type='edit-button'
+                       value={this.state.website}
+                       onPress={() => this.onUserEdit(require('../components/UserField/Website'), this.state.website)}
+          />
 
         <Text style={s.filler}></Text>
 
-        <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
-                            style={[s.button, s.buttonPink, s.marginTop10]}
-                            underlayColor='#E4396D'
-          >
-          <View style={s.buttonLabel}>
-            <Text style={s.buttonTextLight}>SAVE</Text>
-          </View>
-        </TouchableHighlight>
-
       </View>
-    )
-  }
-
-  onSubmitPressed () {
-    var updateData = {
-      realname: this.state.realname,
-      bio: this.state.bio,
-      location: this.state.location,
-      website: this.state.website
-    };
-
-    client.userUpdate(updateData, _.bind(function (response) {
-      if (response.err) {
-        this._appendError(response.err);
-      } else {
-        this._appendMessage('Success');
-      }
-    }, this));
-  }
-
-  _appendError (string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({errors: this.state.messages.concat(string)});
-    }
-  }
-
-  _appendMessage (string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({messages: this.state.messages.concat(string)});
-    }
+    );
   }
 }
 
@@ -215,7 +178,7 @@ var styles = StyleSheet.create({
     marginRight: 10
   },
   bio: {
-    height:120
+    height: 120
   },
   username: {
     color: '#333333',

@@ -164,6 +164,10 @@ module.exports = StyleSheet.create({
     borderColor: '#1DBB8E',
     backgroundColor: "#36D4A7"
   },
+  buttonGray: {
+    borderColor: '#A4AAAE',
+    backgroundColor: "#bdc3c7"
+  },
   // inputs
   input: {
     backgroundColor: '#FFF',

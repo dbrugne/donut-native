@@ -48,11 +48,11 @@ var routes = module.exports = {};
 
 function getRoute (route) {
   // singleton, Navigator compare route as Object reference
-  if (knownRoutes[route.id]) {
+  if (route.id && knownRoutes[route.id]) {
     return knownRoutes[route.id];
   }
 
-  knownRoutes[route.id] = _.defaults(route, _.clone({
+  var _route = _.defaults(route, _.clone({
     __type: 'route',
     id: null,
     // no arrow function, otherwise the parent context is passed as 'this'
@@ -95,7 +95,12 @@ function getRoute (route) {
     }
   }));
 
-  return knownRoutes[route.id];
+  // only if view should be singletoned
+  if (route.id) {
+    knownRoutes[route.id] = _route;
+  }
+
+  return _route;
 }
 
 function _pushOrJumpTo (navigator, route) {
@@ -459,6 +464,17 @@ routes.getDiscussion = function (id, model) {
     _onDidFocus: function () {
       // delay history load to avoid transition impact (visibly onDidFocus is triggered before transition end)
       setTimeout(() => this.scene.refs.events.onFocus(), 100);
+    }
+  });
+};
+
+routes.getUserFieldEdit = function (data) {
+  return getRoute({
+    renderScene: function (navigator) {
+      return (<data.component navigator={navigator} data={data} />);
+    },
+    getTitle: function () {
+      return 'Change a value';
     }
   });
 };
