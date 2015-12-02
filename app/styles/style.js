@@ -113,8 +113,6 @@ module.exports = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
     paddingTop: 5,
     paddingBottom: 5,
     paddingLeft: 10,
@@ -162,7 +160,7 @@ module.exports = StyleSheet.create({
   },
   buttonGreen: {
     borderColor: '#1DBB8E',
-    backgroundColor: "#36D4A7"
+    backgroundColor: "#36D4A7" // lighten 10% #50EEC1
   },
   buttonGray: {
     borderColor: '#A4AAAE',
