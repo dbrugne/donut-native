@@ -21,6 +21,8 @@ import com.magus.fblogin.FacebookLoginPackage;
 
 // @ImagePicker
 import com.imagepicker.ImagePickerPackage;
+
+// @ImagePicker and @FacebookLogin
 import android.content.Intent;
 
 import android.util.Log;
