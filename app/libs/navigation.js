@@ -183,7 +183,7 @@ routes.removeDiscussionRoute = function (id, model) {
 }
 
 function _logCurrentStack () {
-  //return;
+  return;
   var stack = '\n\u00BB rootNavigator';
   _.each(navigators, function (n) {
     stack += '\n  \u00BB ' + n.id;
