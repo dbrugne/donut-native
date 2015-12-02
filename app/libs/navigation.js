@@ -471,14 +471,10 @@ routes.getDiscussion = function (id, model) {
 routes.getUserFieldEdit = function (data) {
   return getRoute({
     renderScene: function (navigator) {
-      let UserFieldEdit = require('../views/UserFieldEdit');
-      return <UserFieldEdit navigator={navigator} data={data} />;
+      return (<data.component navigator={navigator} data={data} />);
     },
     getTitle: function () {
       return 'Change a value';
-    },
-    renderLeftButton: function (navigator) {
-      return (<LeftNavigation navigator={navigator} />);
     }
   });
 };
