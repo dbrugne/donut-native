@@ -1,4 +1,4 @@
-package me.donut;
+package com.donutmobile;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -35,12 +35,11 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     private ReactInstanceManager mReactInstanceManager;
     private ReactRootView mReactRootView;
 
-    // declare package
-    private FacebookLoginPackage mFacebookLoginPackage; // @FacebookLogin
-
-    private ImagePickerPackage mImagePicker;
+    // @FacebookLogin
+    private FacebookLoginPackage mFacebookLoginPackage;
 
     // @ImagePicker
+    private ImagePickerPackage mImagePicker;
     private List<ActivityResultListener> mListeners = new ArrayList<>();
     public void addActivityResultListener(ActivityResultListener listener) {
         mListeners.add(listener);
@@ -119,7 +118,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         super.onResume();
 
         if (mReactInstanceManager != null) {
-            mReactInstanceManager.onResume(this);
+            mReactInstanceManager.onResume(this, this);
         }
     }
 
