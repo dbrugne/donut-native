@@ -1,4 +1,4 @@
-package com.donutmobile;
+package me.donut;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import com.smixx.reactnativeicons.IconFont;
 import com.magus.fblogin.FacebookLoginPackage;
 
 // @ImagePicker
-import com.donutmobile.ImagePickerPackage;
+import me.donut.ImagePickerPackage;
 
 import android.util.Log;
 
