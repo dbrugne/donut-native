@@ -32,20 +32,13 @@ class MyAccountView extends Component {
         <View style={s.listGroup}>
 
           <Text style={s.listGroupTitle}>MANAGE YOUR PROFILE INFORMATIONS</Text>
-          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountProfile())}
-                         text='Edit profile'
-                         type='button'
+          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
+                         text='Edit Profile'
                          action='true'
-                         first='true'
+                         type='button'
             />
-
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPreferences())}
                          text='Change preferences'
-                         action='true'
-                         type='button'
-            />
-          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
-                         text='Edit information'
                          action='true'
                          type='button'
             />
