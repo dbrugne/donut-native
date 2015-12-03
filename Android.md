@@ -5,6 +5,7 @@ Key hashes:
 * Yann: 7/tWINJFkb+GgkDP+zjT7zAmb1I=
 * Seb: HEZ7J3XiTRk0MZ93L126qZ+Nr9M=
 * Yoann: 62a6zyOL4/TN09IEwnUQou6bMZ0=
+* release.keystore: AW/MTPQS+E+uQTrpZppXB7Xx0VM=
 
 ## Android setup for Windows
 
