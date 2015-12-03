@@ -32,9 +32,10 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     private ReactInstanceManager mReactInstanceManager;
     private ReactRootView mReactRootView;
 
-    // declare package
-    private FacebookLoginPackage mFacebookLoginPackage; // @FacebookLogin
+    // @FacebookLogin
+    private FacebookLoginPackage mFacebookLoginPackage;
 
+    // @ImagePicker
     private ImagePickerPackage mImagePicker;
 
     @Override
@@ -109,7 +110,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         super.onResume();
 
         if (mReactInstanceManager != null) {
-            mReactInstanceManager.onResume(this);
+            mReactInstanceManager.onResume(this, this);
         }
     }
 

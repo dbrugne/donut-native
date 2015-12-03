@@ -22,26 +22,37 @@ npm install -g react-native-cli
 
 [Android installation and workaround](./Android.md)
 
-## Run
+## Run iOS
 
-**iOS development**
-* Open Xcode project: ```open /www/donut-native/ios/donutMobile.xcodeproj```
-* Select device in top dropdown and play icon
+For both scenario launch Xcode project and be sure donutMobile scheme is selected (selector is on the right of the stop button).
 
-**iOS device**
-@todo 
+**iOS development (simulator and device)**
+* (be sure Product > Scheme > Edit Scheme... > Run has Build Configuration to **Debug**)
+* Select device in top dropdown and press play button
 
-**Android  development**
-*  Launch Genymotion
-* (on Window launch packager before, react-native start)
-* react-native run-android
+**iOS release**
+* (be sure Product > Scheme > Edit Scheme... > Run has Build Configuration to **Release**)
+* Select device in top dropdown and press play button
 
-**Android device**
-@todo
+## Run Android
+
+**Android  development (Genymotion or device)**
+* Launch Genymotion
+* (on Window you should launch packager manually before with ```react-native start``)
+* ```react-native run-android```
+
+**Android release**
+* (could be done only on MacOSX with android/app/donut-release-key.keystore)
+* ```cd android && ./gradlew assembleRelease && ./gradlew installRelease && cd ..```
 
 ## Production build
  
-* [ ] debug/test settings and bundle package
+* [x] debug/test settings and bundle package
+
+* [ ] Android + Facebook key hashes for devices
+* [ ] Android keyboard close on message send
+* [ ] How to send .apk to David
+
 * [ ] Facebook ID ios/donutMobile/Info.plist
 * [ ] Facebook ID android/app/src/main/res/values/strings.xml
 * [ ] WS URL app/libs/client.js
