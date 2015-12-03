@@ -34,6 +34,7 @@ class MyAccountView extends Component {
           <Text style={s.listGroupTitle}>MANAGE YOUR PROFILE INFORMATIONS</Text>
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
                          text='Edit Profile'
+                         first={true}
                          action='true'
                          type='button'
             />
