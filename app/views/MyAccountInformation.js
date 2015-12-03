@@ -17,9 +17,7 @@ var {
   View,
   StyleSheet,
   TextInput,
-  TouchableHighlight,
-  Image,
-  ToastAndroid
+  Image
   } = React;
 
 class MyAccountInformation extends Component {

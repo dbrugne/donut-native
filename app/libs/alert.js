@@ -14,7 +14,7 @@ module.exports = {
     if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
-      AlertIOS.alert(string)
+      AlertIOS.alert(string);
     }
   }
 };
