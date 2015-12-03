@@ -18,5 +18,5 @@ https://github.com/facebook/react-native/blob/master/ReactAndroid/README.md#prer
 
 To use your own device :
 - https://facebook.github.io/react-native/docs/running-on-device-android.html#content
-- and make sure your device had the correct driver
-- react-native phone menu => dev settings => debug server ... => ipPcOnWifi:8081 
+- make sure your device had the correct driver
+- then lunch the app => react-native phone menu => dev settings => debug server ... => ipPcOnWifi:8081 
