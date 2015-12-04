@@ -99,21 +99,24 @@ var templates = {
         }
         elements.push(element);
       });
-      files = (
-        <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-          {elements}
-        </View>
-      );
-
-      return (
-        <View>
-          <View style={[styles.event, styles.message]}>
-            {message}
+      if (elements.length > 0) {
+        files = (
+          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+            {elements}
           </View>
-          {files}
-        </View>
-      );
+        );
+      }
+
     }
+
+    return (
+      <View>
+        <View style={[styles.event, styles.message]}>
+          {message}
+        </View>
+        {files}
+      </View>
+    );
   },
   'room:topic': false,
   'room:deop': (event) => templates._promote(event),
