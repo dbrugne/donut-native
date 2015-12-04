@@ -90,6 +90,7 @@ class EditEmailView extends Component {
   }
 
   onDeletePressed() {
+    // @todo create a confirmation modal/navigation
     client.accountEmail(this.props.email.email, 'delete', (response) => {
       if (response.err) {
         Alert.show(response.err);
