@@ -64,6 +64,7 @@ class RoomCreateView extends Component {
 
         <View style={s.inputContainer}>
           <TextInput style={s.input}
+             autoFocus={true}
              placeholder='name of donut'
              onChangeText={(text) => this.setState({roomName: text})}
              value={this.state.roomName}

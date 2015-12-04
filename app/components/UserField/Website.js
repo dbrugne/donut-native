@@ -26,6 +26,7 @@ class UserFieldWebsite extends UserField {
   renderField () {
     return (
       <TextInput
+        autoFocus={true}
         placeholder='URL of a website'
         onChangeText={(text) => this.setState({value: text})}
         value={this.state.value}

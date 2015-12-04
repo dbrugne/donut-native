@@ -14,6 +14,7 @@ class UserFieldLocation extends UserField {
   renderField () {
     return (
       <TextInput
+        autoFocus={true}
         placeholder='City, country where you are'
         onChangeText={(text) => this.setState({value: text})}
         value={this.state.value}

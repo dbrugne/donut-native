@@ -22,6 +22,7 @@ class ListGroupItemInputButton extends Component {
     return (
       <View style={styles.listGroupItem}>
         <TextInput
+          autoFocus={true}
           placeholder={this.props.placeholder}
           onChange={this.props.onChange}
           style={[s.input, styles.input]}

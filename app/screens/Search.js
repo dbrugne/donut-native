@@ -48,6 +48,7 @@ class SearchView extends Component {
         <View>
           <View  style={styles.formInputContainer}>
             <TextInput style={styles.formInputFind}
+              autoFocus={true}
               placeholder='Search donut, community or user here'
               onChangeText={(text) => this.setState({findValue: text})}
               value={this.state.findValue}

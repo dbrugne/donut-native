@@ -14,6 +14,7 @@ class UserFieldBio extends UserField {
   renderField () {
     return (
       <TextInput
+        autoFocus={true}
         placeholder='Biography'
         onChangeText={(text) => this.setState({value: text})}
         value={this.state.value}

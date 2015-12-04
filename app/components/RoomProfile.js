@@ -21,6 +21,7 @@ var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');
+var link = require('../libs/link');
 
 class RoomProfileView extends Component {
   constructor(props) {
@@ -36,9 +37,8 @@ class RoomProfileView extends Component {
 
     var website = null;
     if (data.website) {
-      // @todo implement website link
       website = (
-        <TouchableHighlight >
+        <TouchableHighlight onPress={() => link.open(data.website.href)}>
           <View style={[s.listGroupItem, s.listGroupItemFirst]}>
             <Icon
               name='fontawesome|link'

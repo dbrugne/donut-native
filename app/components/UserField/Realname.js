@@ -14,6 +14,7 @@ class UserFieldRealname extends UserField {
   renderField () {
     return (
       <TextInput
+        autoFocus={true}
         placeholder='name and first name'
         onChangeText={(text) => this.setState({value: text})}
         value={this.state.value}

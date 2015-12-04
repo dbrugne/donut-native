@@ -382,17 +382,6 @@ routes.getMyAccountPassword = function () {
     }
   });
 };
-routes.getMyAccountProfile = function () {
-  return getRoute({
-    id: 'my-account-profile',
-    getSceneClass: function () {
-      return require('../views/MyAccountProfile');
-    },
-    getTitle: function () {
-      return 'My Profile';
-    }
-  });
-};
 routes.getMyAccountInformation = function () {
   return getRoute({
     id: 'my-account-informations',
@@ -568,6 +557,7 @@ routes.switchTo = function (route) {
 
 var styles = StyleSheet.create({
   titleName: {
+    alignSelf: 'center'
   },
   titlePhoto: {
     width: 50,

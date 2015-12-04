@@ -10,16 +10,16 @@ var Alert = require('../libs/alert');
 var currentUser = require('../models/mobile-current-user');
 var ListGroupItem = require('../components/ListGroupItem');
 var navigation = require('../libs/navigation');
+var imageUpload = require('../libs/imageUpload');
 
 var {
+  NativeModules,
   Component,
   Text,
   View,
   StyleSheet,
   TextInput,
-  TouchableHighlight,
-  Image,
-  ToastAndroid
+  Image
   } = React;
 
 class MyAccountInformation extends Component {
@@ -29,22 +29,33 @@ class MyAccountInformation extends Component {
       username: currentUser.get('username'),
       realname: '',
       bio: '',
+      color: '',
+      avatar: '',
       location: '',
       website: {
         value: ''
       },
       load: false
     };
+  }
 
-    app.on('user:save', (data) => {
-      var state = {load: true};
-      state[data.key] = data.value;
-      this.setState(state);
-    });
+  componentWillUnmount() {
+    currentUser.off('change:avatar');
+    currentUser.off('change:color');
   }
 
   componentDidMount() {
     this.fetchData();
+    currentUser.on('change:avatar', (model) => {
+      this.setState({
+        avatar: common.cloudinary.prepare(model.get('avatar'), 120)
+      });
+    });
+    currentUser.on('change:color', (model) => {
+      this.setState({
+        color: model.get('color')
+      });
+    });
   }
 
   fetchData() {
@@ -52,9 +63,10 @@ class MyAccountInformation extends Component {
       this.setState({
         realname: response.realname,
         bio: response.bio,
+        color: response.color,
         location: response.location,
         website: (response.website && response.website.title ? response.website.title : {value: ''}),
-        picture: common.cloudinary.prepare(response.avatar, 80),
+        avatar: common.cloudinary.prepare(response.avatar, 120),
         load: true
       });
     });
@@ -64,17 +76,19 @@ class MyAccountInformation extends Component {
     var updateData = {};
     updateData[key] = value;
 
-    client.userUpdate(updateData, _.bind(function (response) {
+    client.userUpdate(updateData, (response) => {
       if (response.err) {
         Alert.show(response.err);
       } else {
         var state = {load: true};
-        state[key] = value;
+        if (key !== 'avatar') {
+          state[key] = value;
+        }
         this.setState(state);
 
         callback();
       }
-    }, this));
+    });
   }
 
   onUserEdit(component, value) {
@@ -105,7 +119,7 @@ class MyAccountInformation extends Component {
         <View style={styles.containerHorizontal}>
           <Image
             style={styles.image}
-            source={{uri: this.state.picture}}
+            source={{uri: this.state.avatar}}
             />
           <View style={styles.containerVertical}>
             {realname}
@@ -113,9 +127,18 @@ class MyAccountInformation extends Component {
           </View>
         </View>
 
-        <ListGroupItem text='Realname'
+        <ListGroupItem text='Avatar'
                        type='edit-button'
                        first={true}
+                       onPress={() => this._updateAvatar()}
+          />
+        <ListGroupItem text='Color'
+                       type='color-button'
+                       color={this.state.color}
+                       onPress={() => this.props.navigator.push(navigation.getColorPicker())}
+          />
+        <ListGroupItem text='Realname'
+                       type='edit-button'
                        value={this.state.realname}
                        onPress={() => this.onUserEdit(require('../components/UserField/Realname'), this.state.realname)}
           />
@@ -142,6 +165,20 @@ class MyAccountInformation extends Component {
 
       </View>
     );
+  }
+
+  _updateAvatar () {
+    imageUpload.getImageAndUpload('user,avatar', (err, response) => {
+      if (err) {
+        return Alert.show(err);
+      }
+
+      if (response === null) {
+        return;
+      }
+
+      this.saveUserData('avatar', response, () => {});
+    });
   }
 }
 
@@ -172,8 +209,8 @@ var styles = StyleSheet.create({
     paddingTop: 2
   },
   image: {
-    height: 80,
-    width: 80,
+    height: 100,
+    width: 100,
     borderRadius: 4,
     marginRight: 10
   },

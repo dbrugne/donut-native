@@ -71,9 +71,11 @@ class ChangePasswordView extends Component {
       inputOldPassword = (
         <View style={[s.inputContainer, s.marginTop5]}>
           <TextInput
+          autoFocus={true}
           placeholder="old password"
           secureTextEntry={true}
           onChange={(event) => this.setState({oldPassword: event.nativeEvent.text})}
+          onSubmitEditing={() => this._focusNextField('1')}
           style={s.input} />
         </View>
       );
@@ -91,14 +93,17 @@ class ChangePasswordView extends Component {
 
         <View style={[s.inputContainer, s.marginTop5]}>
           <TextInput
+            ref='1'
             placeholder="new password"
             secureTextEntry={true}
             onChange={(event) => this.setState({newPassword: event.nativeEvent.text})}
+            onSubmitEditing={() => this._focusNextField('2')}
             style={s.input} />
         </View>
 
         <View style={[s.inputContainer, s.marginTop5]}>
           <TextInput
+            ref='2'
             placeholder="confirm"
             secureTextEntry={true}
             onChange={(event) => this.setState({confirmPassword: event.nativeEvent.text})}
@@ -117,6 +122,10 @@ class ChangePasswordView extends Component {
         </TouchableHighlight>
       </View>
     )
+  }
+
+  _focusNextField(nextField) {
+    this.refs[nextField].focus()
   }
 
   onSubmitPressed () {
