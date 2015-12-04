@@ -51,7 +51,9 @@ class LoginView extends Component {
   }
 
   componentWillUnmount() {
-    _.each(this.subscription, (s) => s.remove());
+    if (this.subscription) {
+      _.each(this.subscription, (s) => s.remove());
+    }
   }
 
   render() {
