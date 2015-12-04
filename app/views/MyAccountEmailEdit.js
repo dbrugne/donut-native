@@ -52,6 +52,7 @@ class EditEmailView extends Component {
       return (
         <View>
           <Text style={s.listGroupTitle}>This email was validated</Text>
+          {this._renderMain()}
           <Text style={s.listGroupItemSpacing}></Text>
         </View>
       );
@@ -65,6 +66,7 @@ class EditEmailView extends Component {
                          type='button'
                          action='true'
                          icon='fontawesome|envelope-o'
+                         first={true}
             />
 
           <Text style={s.listGroupItemSpacing}></Text>
@@ -73,7 +75,19 @@ class EditEmailView extends Component {
     }
   }
 
-;
+  _renderMain() {
+    if (!this.props.email.main) {
+      return (<ListGroupItem onPress={(this.onSetAsMainPressed.bind(this))}
+                     text='Define as main email'
+                     type='button'
+                     action='true'
+                     icon='fontawesome|anchor'
+                     first={true}
+        />);
+    } else {
+      return (<View />);
+    }
+  }
 
   onDeletePressed() {
     client.accountEmail(this.props.email.email, 'delete', (response) => {
@@ -93,6 +107,18 @@ class EditEmailView extends Component {
         Alert.show(response.err);
       } else {
         Alert.show('A validation email have been sent');
+      }
+    });
+  }
+
+  onSetAsMainPressed() {
+    client.accountEmail(this.props.email.email, 'main', (response) => {
+      if (response.err) {
+        Alert.show(response.err);
+      } else {
+        Alert.show('Success');
+        this.props.func();
+        this.props.navigator.pop();
       }
     });
   }
