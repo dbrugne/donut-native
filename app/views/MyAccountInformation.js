@@ -86,7 +86,9 @@ class MyAccountInformation extends Component {
         }
         this.setState(state);
 
-        callback();
+        if (callback) {
+          callback();
+        }
       }
     });
   }
