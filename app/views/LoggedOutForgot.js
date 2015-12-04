@@ -32,6 +32,7 @@ class ForgotView extends Component {
               <Text style={[s.spacer, s.p, s.textCenter]}>What email address do you use to sign into Donut ?</Text>
 
               <TextInput
+                autoFocus={true}
                 placeholder="Email"
                 onChange={(event) => this.setState({email: event.nativeEvent.text})}
                 style={[s.input, s.marginTop10]}
