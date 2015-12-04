@@ -68,10 +68,10 @@ var templates = {
   'room:message': (event) => templates._message(event),
   'user:message': (event) => templates._message(event),
   _message: function (event) {
-    // ({event.data.username})
-    let markup = new RegExp(common.markup.markupPattern); // do not call directly to avoid ES3 regex issues : http://blog.stevenlevithan.com/archives/es3-regexes-broken
-    return (
-      <View style={[styles.event, styles.message]}>
+    let message = null;
+    if (event.data && event.data.message) {
+      let markup = new RegExp(common.markup.markupPattern);
+      message = (
         <ParsedText style={styles.messageContent}
                     parse={[{
                         pattern: markup,
@@ -81,8 +81,39 @@ var templates = {
                     }]}
           >{event.data.message}
         </ParsedText>
-      </View>
-    );
+      );
+    }
+
+    let files = null;
+    if (event.data && event.data.files && event.data.files.length > 0) {
+      let elements = [];
+      _.each(event.data.files, function(e) {
+        let element = null;
+        if (e.type === 'image') {
+          element = (
+            <TouchableHighlight underlayColor='transparent'
+                                onPress={() => link.open(e.href)}>
+              <Image style={{width: 250, height: 250, alignSelf: 'center', marginVertical:10, marginHorizontal:10}} source={{uri: e.thumbnail}}/>
+            </TouchableHighlight>
+          );
+        }
+        elements.push(element);
+      });
+      files = (
+        <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+          {elements}
+        </View>
+      );
+
+      return (
+        <View>
+          <View style={[styles.event, styles.message]}>
+            {message}
+          </View>
+          {files}
+        </View>
+      );
+    }
   },
   'room:topic': false,
   'room:deop': (event) => templates._promote(event),
@@ -252,18 +283,6 @@ exports._data = function (type, data) {
   if (data.message || data.topic) {
     var subject = data.message || data.topic;
     subject = _.unescape(subject);
-    // @todo implement toJSX
-    //subject = common.markup.toText(subject);
-//    subject = common.markup.toHtml(subject, {
-//      template: function (markup) {
-//        return (
-//          <Text style={{fontWeight: 'bold'}}>
-//            {markup.title}
-//          </Text>
-//        );
-//      },
-////      style: 'color: ' + this.discussion.get('color') // @todo
-//    });
 
     // @todo dbr : replace with UTF-8 emojis
 //    subject = $.smilify(subject);
@@ -281,7 +300,7 @@ exports._data = function (type, data) {
     _.each(data.files, function (f) {
       if (f.type !== 'raw') {
         f.href = common.cloudinary.prepare(f.url, 1500, 'limit');
-        f.thumbnail = common.cloudinary.prepare(f.url, 100, 'fill');
+        f.thumbnail = common.cloudinary.prepare(f.url, 250, 'fill');
       }
       files.push(f);
     });
