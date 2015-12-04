@@ -75,11 +75,13 @@ class LoginView extends Component {
               placeholder="Email"
               onChange={(event) => this.setState({email: event.nativeEvent.text})}
               style={s.input}
+              onSubmitEditing={() => this._focusNextField('1')}
               value={this.state.email}/>
           </View>
 
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
+              ref='1'
               placeholder="Password"
               secureTextEntry={true}
               onChange={(event) => this.setState({password: event.nativeEvent.text})}
@@ -142,6 +144,10 @@ class LoginView extends Component {
       title: 'Create',
       component: SignupView
     });
+  }
+
+  _focusNextField(nextField) {
+    this.refs[nextField].focus()
   }
 }
 

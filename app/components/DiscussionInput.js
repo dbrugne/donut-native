@@ -23,6 +23,7 @@ class InputView extends Component {
       <View style={styles.inputContainer}>
         <TextInput style={styles.input}
                    ref='input'
+                   autoFocus={true}
                    onChangeText={(text) => this.setState({text})}
                    onSubmitEditing={this.onSubmit.bind(this)}
                    placeholder='Envoyer un message'

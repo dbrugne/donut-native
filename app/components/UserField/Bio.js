@@ -3,23 +3,35 @@
 var React = require('react-native');
 var s = require('../../styles/style');
 var UserField = require('../UserField');
+var ListGroupItem = require('../ListGroupItem');
 
 var {
   TextInput
 } = React;
 
 class UserFieldBio extends UserField {
+  constructor (props) {
+    super(props);
+  }
   key = 'bio';
 
   renderField () {
     return (
-      <TextInput
-        placeholder='Biography'
-        onChangeText={(text) => this.setState({value: text})}
-        value={this.state.value}
-        multi={true}
-        style={s.input} />
+    <ListGroupItem
+      autoFocus={true}
+      onPress= {() => this.onPress()}
+      placeholder="Biography"
+      value={this.state.value}
+      onChange={(event) => this.setState({value: event.nativeEvent.text})}
+      type='input-button'
+      multi={true}
+      />
     );
+  }
+
+  onPress () {
+    this.props.data.onSave(this.key, this.state.value);
+    this.props.navigator.pop();
   }
 }
 

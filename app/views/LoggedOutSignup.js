@@ -37,23 +37,28 @@ class Signup extends Component {
 
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
+              autoFocus={true}
               placeholder="Email"
               onChange={(event) => this.setState({email: event.nativeEvent.text})}
               style={s.input}
+              onSubmitEditing={() => this._focusNextField('1')}
               value={this.state.email} />
           </View>
 
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
+              ref='1'
               placeholder="Password"
               secureTextEntry={true}
               onChange={(event) => this.setState({password: event.nativeEvent.text})}
               style={s.input}
+              onSubmitEditing={() => this._focusNextField('2')}
               value={this.state.password} />
           </View>
 
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
+              ref='2'
               placeholder="Username"
               onChange={(event) => this.setState({username: event.nativeEvent.text})}
               style={s.input}
@@ -83,6 +88,10 @@ class Signup extends Component {
         Alert.show(err);
       }
     }, this));
+  }
+
+  _focusNextField(nextField) {
+    this.refs[nextField].focus()
   }
 }
 

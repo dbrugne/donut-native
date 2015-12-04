@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react-native');
-var Platform = require('Platform');
 
 var {
   Component,
@@ -9,7 +8,7 @@ var {
   TouchableHighlight,
   Text,
   StyleSheet
-} = React;
+  } = React;
 var {
   Icon
   } = require('react-native-icons');
@@ -21,13 +20,6 @@ class ListGroupItemEditButton extends Component {
   }
 
   render () {
-    var value;
-    if (this.props.value && this.props.value.length < 15) {
-      value = this.props.value;
-    } else if (this.props.value && typeof this.props.value !== 'object') {
-      value = this.props.value.slice(0, 12) + '...';
-    }
-
     return (
       <TouchableHighlight onPress={() => this.props.onPress()}
                           underlayColor= '#DDD'
@@ -37,7 +29,7 @@ class ListGroupItemEditButton extends Component {
             <Text style={styles.listGroupItemText}>{this.props.text}</Text>
           </View>
           <View style={{alignSelf: 'center', flexDirection: 'row', alignItems:'center'}}>
-            <Text style={{color: '#999', fontFamily: 'Open Sans', fontSize: 20, paddingBottom: 1, marginRight: 10}}>{value}</Text>
+            <View style={[styles.color, {backgroundColor: this.props.color}]}/>
             <Icon
               name='fontawesome|chevron-right'
               size={20}
@@ -82,18 +74,13 @@ var styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 20,
     marginRight:10,
-    width: 100
+    width: 90
   },
-  listGroupItemValue: {
-    color: '#777',
-    fontFamily: 'Open Sans',
-    fontSize: 12,
-    marginRight: 10,
-    flex: 1,
-    overflow: 'hidden'
-  },
-  listGroupItemTextWarning: {
-    color: '#ff3838'
+  color: {
+    width: 30,
+    height: 30,
+    borderRadius: 3,
+    marginRight: 10
   }
 });
 

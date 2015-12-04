@@ -6,6 +6,7 @@ var ListGroupItemSwitch = require('../components/ListGroupItem/ListGroupItemSwit
 var ListGroupItemButton = require('../components/ListGroupItem/ListGroupItemButton');
 var ListGroupItemInputButton = require('../components/ListGroupItem/ListGroupItemInputButton');
 var ListGroupItemEditButton = require('../components/ListGroupItem/ListGroupItemEditButton');
+var ListGroupItemColorButton = require('../components/ListGroupItem/ListGroupItemColorButton');
 
 var {
   Component,
@@ -51,6 +52,12 @@ class ListGroupItem extends Component {
     if (this.props.type === 'edit-button') {
       return (
         <ListGroupItemEditButton {...this.props} />
+      );
+    }
+
+    if (this.props.type === 'color-button') {
+      return (
+        <ListGroupItemColorButton {...this.props} />
       );
     }
 

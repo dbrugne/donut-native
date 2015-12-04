@@ -97,7 +97,7 @@ class EmailsView extends Component {
 
     return (
       <View>
-        <Text style={s.listGroupTitle}>You do not have entered a main email for this account or no one is still validated.</Text>
+        <Text style={s.listGroupTitle}>You do not have entered a main email for this account.</Text>
         <Text style={s.listGroupItemSpacing}></Text>
       </View>
     );
@@ -105,11 +105,13 @@ class EmailsView extends Component {
 
   _renderAdditionalEmails () {
     var listRow = [];
+    var numberOfAdditionalEmails = 0;
 
     _.each(this.state.emails, (e, i) => {
       if (e.main) {
         return;
       }
+      numberOfAdditionalEmails++;
       listRow.push(
         <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmailEdit(e, this.fetchData.bind(this)))}
                        text={e.email}
@@ -121,6 +123,9 @@ class EmailsView extends Component {
       );
     });
 
+    if (numberOfAdditionalEmails === 0) {
+      return (<View />);
+    }
     return (
       <View>
         <Text style={s.listGroupTitle}>Additional emails</Text>

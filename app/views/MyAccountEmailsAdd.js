@@ -54,7 +54,7 @@ class AddEmailView extends Component {
       if (response.err) {
         Alert.show(response.err);
       } else {
-        Alert.show('Success');
+        Alert.show('A validation email have been sent');
         this.props.func();
         this.props.navigator.pop();
       }

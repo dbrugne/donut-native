@@ -8,7 +8,7 @@ var config = {
   api_secret: 'ayS9zUnK7sDxkme4sLquIPOmNVU'
 };
 
-var upload = function (fileBase64, callback) {
+var upload = function (fileBase64, tags, callback) {
   var url = 'https://api.cloudinary.com/v1_1/' + config.cloud_name + '/image/upload';
   var header = {
     method: 'post',
@@ -17,7 +17,6 @@ var upload = function (fileBase64, callback) {
       'Content-Type': 'application/json'
     }
   };
-  var tags = 'user,avatar';
   var timestamp = Date.now();
 
   var values = {
