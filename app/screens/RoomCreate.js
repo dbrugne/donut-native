@@ -16,6 +16,8 @@ var {
 var client = require('../libs/client');
 var Platform = require('Platform');
 var s = require('../styles/style');
+var app = require('../libs/app');
+var Alert = require('../libs/alert');
 
 class RoomCreateView extends Component {
   constructor (props) {
@@ -129,33 +131,24 @@ class RoomCreateView extends Component {
 
   onRoomCreate () {
     if (!this.state.roomName) {
-      return this._appendError('not-complete');
+      return Alert.show('not-complete');
     }
 
     var mode = (this.state.public) ? 'public' : 'private';
     client.roomCreate(this.state.roomName, mode, null, null, (response) => {
       if (response.err) {
-        this._appendError(response.err);
+        Alert.show(response.err);
       } else {
-        this._appendMessage("success");
+        Alert.show("joining ...");
+        client.roomId('#' + this.state.roomName, (data) => {
+          if (data.err) {
+            Alert.show(response.err);
+          } else {
+            app.trigger('joinRoom', data.room_id);
+          }
+        });
       }
     });
-  }
-
-  _appendError (string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({errors: this.state.errors.concat(string)});
-    }
-  }
-
-  _appendMessage(string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({messages: this.state.messages.concat(string)});
-    }
   }
 }
 
