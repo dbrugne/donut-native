@@ -1,6 +1,5 @@
 'use strict';
 
-var _ = require('underscore');
 var React = require('react-native');
 var SignupView = require('./LoggedOutSignup');
 var ForgotView = require('./LoggedOutForgot');
@@ -40,19 +39,19 @@ class LoginView extends Component {
     });
     if (Platform.OS === 'android') {
       // @todo yfuks : same as app/screens/Discussion.js
-      BackAndroid.addEventListener('hardwareBackPress', _.bind(function () {
+      BackAndroid.addEventListener('hardwareBackPress', () => {
         var routes = this.props.navigator.getCurrentRoutes();
         if (routes && routes.length > 1) {
           this.props.navigator.pop();
         }
-      }, this));
+      });
     }
   }
 
   componentWillUnmount() {
     if (Platform.OS === 'android') {
-      BackAndroid.removeEventListener('hardwareBackPress', _.bind(function () {
-      }, this));
+      BackAndroid.removeEventListener('hardwareBackPress', () => {
+      });
     }
   }
 
@@ -125,11 +124,11 @@ class LoginView extends Component {
     }
 
     // @todo : loading screen
-    currentUser.login(this.state.email, this.state.password, _.bind(function (err) {
+    currentUser.login(this.state.email, this.state.password, (err) => {
       if (err) {
         Alert.show(err);
       }
-    }, this));
+    });
   }
 
   onForgotPressed() {

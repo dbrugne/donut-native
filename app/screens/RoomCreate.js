@@ -15,7 +15,6 @@ var {
 
 var client = require('../libs/client');
 var Platform = require('Platform');
-var _ = require('underscore');
 var s = require('../styles/style');
 
 class RoomCreateView extends Component {
@@ -134,13 +133,13 @@ class RoomCreateView extends Component {
     }
 
     var mode = (this.state.public) ? 'public' : 'private';
-    client.roomCreate(this.state.roomName, mode, null, null, _.bind(function (response) {
+    client.roomCreate(this.state.roomName, mode, null, null, (response) => {
       if (response.err) {
         this._appendError(response.err);
       } else {
         this._appendMessage("success");
       }
-    }, this));
+    });
   }
 
   _appendError (string) {

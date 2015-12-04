@@ -1,5 +1,4 @@
 var React = require('react-native');
-var _ = require('underscore');
 var client = require('../libs/client');
 var Platform = require('Platform');
 var LoadingView = require('../components/Loading');
@@ -137,13 +136,13 @@ class ChangePasswordView extends Component {
       return this._appendError('not-same-password');
     }
 
-    client.accountPassword(this.state.newPassword, this.state.oldPassword, _.bind(function (response) {
+    client.accountPassword(this.state.newPassword, this.state.oldPassword, (response) => {
       if (response.err) {
         this._appendError(response.err);
       } else {
         this._appendMessage('Success');
       }
-    }, this));
+    });
   }
 
   _appendError (string) {

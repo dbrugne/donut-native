@@ -1,5 +1,4 @@
 var React = require('react-native');
-var _ = require('underscore');
 var Platform = require('Platform');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
@@ -58,13 +57,13 @@ class ForgotView extends Component {
       return Alert.show('not-complete');
     }
 
-    currentUser.forgot(this.state.email, _.bind(function (err) {
+    currentUser.forgot(this.state.email, (err) => {
       if (err) {
         Alert.show(err);
       } else {
         Alert.show('Success');
       }
-    }, this));
+    });
   }
 }
 
