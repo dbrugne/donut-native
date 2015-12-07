@@ -14,9 +14,6 @@ var {
   Image,
   ToastAndroid
   } = React;
-var {
-  Icon
-} = require('react-native-icons');
 
 class ChooseUsername extends Component {
   constructor (props) {
