@@ -10,6 +10,7 @@ var {
 } = React;
 
 var _ = require('underscore');
+var debug = require('../libs/debug')('navigation');
 var EventsView = require('../components/DiscussionEvents');
 var InputView = require('../components/DiscussionInput');
 var animation = require('../libs/animations').keyboard;
@@ -24,7 +25,7 @@ class Discussion extends Component {
     this.model = props.model;
   }
   componentDidMount () {
-//    console.log(this.model.get('identifier') + ' mounted');
+    debug.log(this.model.get('identifier') + ' mounted');
     this.subscription = [
       DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
         LayoutAnimation.configureNext(animation);
@@ -37,7 +38,7 @@ class Discussion extends Component {
     ];
   }
   componentWillUnmount () {
-//    console.log(this.model.get('identifier') + ' unmounted');
+    debug.log(this.model.get('identifier') + ' unmounted');
     _.each(this.subscription, (s) => s.remove());
   }
   render() {

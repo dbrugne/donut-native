@@ -14,6 +14,7 @@ var {
 var Platform = require('Platform');
 
 var _ = require('underscore');
+var debug = require('./debug')('notifications');
 var app = require('./app');
 
 var PushNotifications = {
@@ -44,7 +45,7 @@ if (Platform.OS === 'ios') {
       app.off(null, null, this);
     },
     _onRegister (deviceToken) {
-      console.log('_onRegister', deviceToken);
+      debug.log('_onRegister', deviceToken);
       this._registerInstallation({
         deviceType: 'ios',
         deviceToken: deviceToken,
@@ -52,7 +53,7 @@ if (Platform.OS === 'ios') {
       });
     },
     _onNotification (notification) {
-      console.log('_onNotification', notification);
+      debug.log('_onNotification', notification);
       AlertIOS.alert(
         'Notification Received',
         'Alert message: ' + notification.getMessage(),
@@ -64,7 +65,7 @@ if (Platform.OS === 'ios') {
     },
     _checkPermissions () {
       PushNotificationIOS.checkPermissions((permissions) => {
-        console.log('_checkPermissions', permissions);
+        debug.log('_checkPermissions', permissions);
 
         // @todo store user has already been prompted
         // no push notifications on this device
@@ -81,7 +82,7 @@ if (Platform.OS === 'ios') {
       // inform Parse.com of this device
       var url = 'https://api.parse.com/1/installations';
 
-      console.log('_registerInstallation', url, data);
+      debug.log('_registerInstallation', url, data);
 
       fetch(url, {
         method: 'post',
@@ -93,8 +94,8 @@ if (Platform.OS === 'ios') {
         },
         body: JSON.stringify(data)
       })
-        .then((response) => console.log(response))
-        .catch((err) => console.log(err));
+        .then((response) => debug.log(response))
+        .catch((err) => debug.warn(err));
     }
   };
 }

@@ -3,19 +3,20 @@
 var React = require('react-native');
 var {
   AsyncStorage
-  } = React;
+} = React;
 
 var _ = require('underscore');
+var debug = require('../libs/debug')('storage');
 
 var Storage = {
   getKey: function (keyName, callback) {
     callback = callback || _.noop;
     AsyncStorage.getItem(keyName, function (err, value) { // callback: error, value
       if (err) {
-        console.log('Error getting item (' + keyName + ') from local storage! ' + err.message);
+        debug.log('Error getting item (' + keyName + ') from local storage! ' + err.message);
         callback(err, null);
       } else {
-        console.log('returning value', value);
+        debug.log('returning value', value);
         callback(null, value);
       }
     });
@@ -29,7 +30,7 @@ var Storage = {
 
     AsyncStorage.setItem(keyName, value, function (err) {
       if (err) {
-        console.log('Error setting item (' + keyName + ') in local storage! ' + err.message);
+        debug.log('Error setting item (' + keyName + ') in local storage! ' + err.message);
         callback(err);
       } else {
         callback(null);
@@ -40,7 +41,7 @@ var Storage = {
     callback = callback || _.noop;
     AsyncStorage.removeItem(key, function (err) {
       if (err) {
-        console.log('Error removing item (' + key + ') from local storage! ' + err.message);
+        debug.log('Error removing item (' + key + ') from local storage! ' + err.message);
         callback(err);
       } else {
         callback(null);
@@ -90,7 +91,7 @@ var Storage = {
 
     save(function (err) {
       if (err) {
-        console.warn(err);
+        debug.warn(err);
       }
 
       remove(callback);
@@ -100,7 +101,7 @@ var Storage = {
     callback = callback || _.noop;
     AsyncStorage.multiRemove(keys, function (err) {
       if (err) {
-        console.log('Error removing item (' + key + ') from local storage! ' + err.message);
+        debug.log('Error removing item (' + key + ') from local storage! ' + err.message);
         callback(err);
       } else {
         callback(null);

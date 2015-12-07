@@ -1,7 +1,9 @@
 'use strict';
 var _ = require('underscore');
+var debug = require('./debug')('cloudinary');
 var sha1 = require('sha1');
 
+// @conf
 var config = {
   cloud_name: 'roomly',
   api_key: '962274636195222',
@@ -33,7 +35,7 @@ var upload = function (fileBase64, tags, callback) {
   fetch(url, request)
     .then((response) => response.json())
     .then((data) => {
-      console.log('=> ajax', data);
+      debug.log(data);
       callback(null, data);
     })
     .catch((err) => { callback(new Error(err)) });
