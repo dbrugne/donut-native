@@ -326,7 +326,7 @@ exports._data = function (type, data) {
 function renderClickableUsername(username, user_id, style) {
   return (
     <TouchableHighlight underlayColor='transparent'
-                        onPress={() => innerNavigation(username, user_id)}>
+                        onPress={() => innerNavigation('user', user_id, username)}>
       <Text style={[styles.username, style]}>@{username}</Text>
     </TouchableHighlight>
   );
