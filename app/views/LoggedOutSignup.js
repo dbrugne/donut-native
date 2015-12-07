@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var React = require('react-native');
 var Platform = require('Platform');
 var currentUser = require('../models/mobile-current-user');
@@ -83,11 +82,11 @@ class Signup extends Component {
       return Alert.show('not-complete');
     }
 
-    currentUser.signUp(this.state.email, this.state.password, this.state.username, _.bind(function (err) {
+    currentUser.signUp(this.state.email, this.state.password, this.state.username, (err) => {
       if (err) {
         Alert.show(err);
       }
-    }, this));
+    });
   }
 
   _focusNextField(nextField) {

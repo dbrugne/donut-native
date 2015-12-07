@@ -1,12 +1,12 @@
 'use strict';
 
-var _ = require('underscore');
 var React = require('react-native');
 var SignupView = require('./LoggedOutSignup');
 var ForgotView = require('./LoggedOutForgot');
 var Platform = require('Platform');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
+var _ = require('underscore');
 
 var {
   Component,
@@ -39,20 +39,20 @@ class LoginView extends Component {
       email: currentUser.getEmail()
     });
     if (Platform.OS === 'android') {
-      // @todo yfuks : same as app/screens/Discussion.js
-      BackAndroid.addEventListener('hardwareBackPress', _.bind(function () {
-        var routes = this.props.navigator.getCurrentRoutes();
-        if (routes && routes.length > 1) {
-          this.props.navigator.pop();
-        }
-      }, this));
+      this.subscription = [
+        BackAndroid.addEventListener('hardwareBackPress', () => {
+          var routes = this.props.navigator.getCurrentRoutes();
+          if (routes && routes.length > 1) {
+            this.props.navigator.pop();
+          }
+        })
+      ];
     }
   }
 
   componentWillUnmount() {
-    if (Platform.OS === 'android') {
-      BackAndroid.removeEventListener('hardwareBackPress', _.bind(function () {
-      }, this));
+    if (this.subscription && this.subscription.length > 0) {
+      _.each(this.subscription, (s) => s.remove());
     }
   }
 
@@ -125,11 +125,11 @@ class LoginView extends Component {
     }
 
     // @todo : loading screen
-    currentUser.login(this.state.email, this.state.password, _.bind(function (err) {
+    currentUser.login(this.state.email, this.state.password, (err) => {
       if (err) {
         Alert.show(err);
       }
-    }, this));
+    });
   }
 
   onForgotPressed() {

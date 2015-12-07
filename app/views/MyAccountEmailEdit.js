@@ -5,6 +5,7 @@ var client = require('../libs/client');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var ListGroupItem = require('../components/ListGroupItem');
+var ConfirmationModal = require('../components/ConfirmationModal');
 
 var {
   Component,
@@ -20,9 +21,14 @@ var currentUser = require('../models/mobile-current-user');
 class EditEmailView extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showModal: false
+    }
   }
 
   render() {
+    var modalTitle = "Delete email";
+    var modalDescription = "Are you sure you whant to delete this email ? This action is irreversible and cannot be undone";
     return (
       <View style={styles.main}>
 
@@ -34,15 +40,15 @@ class EditEmailView extends Component {
 
           {this._renderConfirmed()}
 
-          <ListGroupItem onPress={(this.onDeletePressed.bind(this))}
+          <ListGroupItem onPress={() => this.setState({showModal: true})}
                          text='Delete'
                          type='button'
                          warning='true'
             />
-
         </View>
 
         <View style={s.filler}></View>
+        {this.state.showModal ? <ConfirmationModal onCancel={() => this.setState({showModal: false}) } onConfirm={() => this.onDeletePressed()} title={modalTitle} text={modalDescription} /> : null}
       </View>
     )
   }
@@ -90,7 +96,7 @@ class EditEmailView extends Component {
   }
 
   onDeletePressed() {
-    // @todo create a confirmation modal/navigation
+    this.setState({showModal: false});
     client.accountEmail(this.props.email.email, 'delete', (response) => {
       if (response.err) {
         Alert.show(response.err);

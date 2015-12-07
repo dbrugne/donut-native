@@ -240,9 +240,9 @@ class SearchView extends Component {
 
   changeText () {
     clearTimeout(this.timeout);
-    this.timeout = setTimeout(_.bind(function () {
+    this.timeout = setTimeout(() => {
       this.search(this.state.type, null)
-    }, this), TIME_SEARCH);
+    }, TIME_SEARCH);
   }
 
   search (type, skip) {
@@ -274,7 +274,7 @@ class SearchView extends Component {
       },
       skip: skip
     };
-    client.search(this.state.findValue, options, _.bind(function (response) {
+    client.search(this.state.findValue, options, (response) => {
       if (response.err) {
         return this.resetList(null);
       }
@@ -285,7 +285,7 @@ class SearchView extends Component {
         loading: false
       });
       this.render();
-    }, this));
+    });
   }
 }
 
