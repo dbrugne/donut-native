@@ -8,9 +8,7 @@ var {
   Text,
   View,
   Component,
-  ScrollView,
-  ListView,
-  NativeModules
+  ListView
 } = React;
 
 var InvertibleScrollView = require('react-native-invertible-scroll-view');
@@ -166,7 +164,6 @@ class DiscussionEvents extends Component {
   }
   onChangeVisibleRows (visibleRows, changedRows) {
     // @todo implement viewed event sending
-//    console.log(visibleRows, changedRows);
   }
   addFreshEvent (type, data) {
     // add on list top, the inverted view will display on bottom
