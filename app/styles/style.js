@@ -179,8 +179,6 @@ module.exports = StyleSheet.create({
     paddingTop: 3,
     paddingLeft: 10,
     paddingRight: 10,
-    marginLeft: 10,
-    marginRight: 10,
     fontFamily: 'Open Sans',
     fontSize: 14,
     flex:1

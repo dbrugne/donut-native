@@ -13,6 +13,7 @@ var {
   StyleSheet,
   Text,
   TextInput,
+  ScrollView,
   TouchableHighlight,
   View,
   Navigator,
@@ -63,48 +64,50 @@ class LoginView extends Component {
           <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
         </View>
 
-        <View style={styles.container}>
-          <FacebookLogin />
+        <ScrollView>
+          <View style={styles.container}>
+            <FacebookLogin />
 
-          <View style={styles.orContainer}>
-            <Text style={styles.title}> OR </Text>
-          </View>
+            <View style={styles.orContainer}>
+              <Text style={styles.title}> OR </Text>
+            </View>
 
-          <View style={[s.inputContainer, s.marginTop5]}>
-            <TextInput
-              placeholder="Email"
-              onChange={(event) => this.setState({email: event.nativeEvent.text})}
-              style={s.input}
-              onSubmitEditing={() => this._focusNextField('1')}
-              value={this.state.email}/>
-          </View>
+            <View style={[s.inputContainer, s.marginTop5]}>
+              <TextInput
+                placeholder="Email"
+                onChange={(event) => this.setState({email: event.nativeEvent.text})}
+                style={s.input}
+                onSubmitEditing={() => this._focusNextField('1')}
+                value={this.state.email}/>
+            </View>
 
-          <View style={[s.inputContainer, s.marginTop5]}>
-            <TextInput
-              ref='1'
-              placeholder="Password"
-              secureTextEntry={true}
-              onChange={(event) => this.setState({password: event.nativeEvent.text})}
-              style={[s.input, s.marginTop5]}
-              value={this.state.password}/>
-          </View>
+            <View style={[s.inputContainer, s.marginTop5]}>
+              <TextInput
+                ref='1'
+                placeholder="Password"
+                secureTextEntry={true}
+                onChange={(event) => this.setState({password: event.nativeEvent.text})}
+                style={[s.input, s.marginTop5]}
+                value={this.state.password}/>
+            </View>
 
-          <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
-                              style={[s.button, s.buttonPink, s.marginTop5]}
-                              underlayColor='#E4396D'
-            >
+            <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
+                                style={[s.button, s.buttonPink, s.marginTop5]}
+                                underlayColor='#E4396D'
+              >
               <View style={s.buttonLabel}>
                 <Text style={s.buttonTextLight}>Sign In</Text>
               </View>
-          </TouchableHighlight>
+            </TouchableHighlight>
 
-          <TouchableHighlight onPress={(this.onForgotPressed.bind(this))}
-                              underlayColor='transparent'
-                              style={[s.marginTop10, styles.centered]}>
-            <Text style={s.link}>Forgot your password ?</Text>
-          </TouchableHighlight>
-        
-        </View>
+            <TouchableHighlight onPress={(this.onForgotPressed.bind(this))}
+                                underlayColor='transparent'
+                                style={[s.marginTop10, styles.centered]}>
+              <Text style={s.link}>Forgot your password ?</Text>
+            </TouchableHighlight>
+
+          </View>
+        </ScrollView>
         
         <View style={styles.linkCtn} >
           <Text style={styles.textGray}>Don't have an account ? </Text>
@@ -160,6 +163,8 @@ var styles = StyleSheet.create({
   container: {
     paddingLeft:20,
     paddingRight:20,
+    paddingTop:10,
+    paddingBottom:10,
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
@@ -168,7 +173,7 @@ var styles = StyleSheet.create({
   },
   logoCtn: {
     marginTop: 50,
-    paddingBottom: 50,
+    paddingBottom:25,
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'center',
@@ -177,13 +182,13 @@ var styles = StyleSheet.create({
     borderColor: '#C3C3C3'
   },
   logo: {
-    width: 250,
-    height: 64,
+    width: 125,
+    height: 32,
     alignSelf: 'center'
   },
   orContainer: {
-    padding: 10,
-    marginBottom:10
+    padding: 5,
+    marginBottom:5
   },
   link: {
     fontSize: 15,
@@ -221,8 +226,8 @@ var styles = StyleSheet.create({
     borderTopWidth: 1,
     borderStyle: 'solid',
     borderColor: '#C3C3C3',
-    paddingTop: 20,
-    paddingBottom: 20
+    paddingTop: 10,
+    paddingBottom: 10
   },
   textGray: {
     fontWeight: 'normal',
