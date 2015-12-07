@@ -2,12 +2,22 @@
 
 ## Questions & tasks
 
-* [ ] push notifications
+* [ ] push notifications logic implementation
+* [ ] push notifications on android
 * [ ] hyperlink opening
 * [ ] Add i18next usage
-* [ ] Build stand alone APK for testing
-* [ ] Build on iOS for testing
+
+* [ ] Android keyboard close on message send
+* [ ] How to send .apk to David
+* [ ] Load code
+* [ ] Switch configuration
+  - [ ] Facebook ID ios/donutMobile/Info.plist
+  - [ ] Facebook ID android/app/src/main/res/values/strings.xml
+  - [ ] WS URL app/libs/client.js
+  - [ ] OAUTH URL app/libs/oauth.js
 * [ ] stores submission
+
+* solve emoticons
 
 ## Pre-requisites
 
@@ -40,23 +50,11 @@ For both scenario launch Xcode project and be sure donutMobile scheme is selecte
 * Launch Genymotion
 * (on Window you should launch packager manually before with ```react-native start``)
 * ```react-native run-android```
+* (to see log ```adb logcat```)
 
 **Android release**
 * (could be done only on MacOSX with android/app/donut-release-key.keystore)
 * ```cd android && ./gradlew assembleRelease && ./gradlew installRelease && cd ..```
-
-## Production build
- 
-* [x] debug/test settings and bundle package
-
-* [ ] Android + Facebook key hashes for devices
-* [ ] Android keyboard close on message send
-* [ ] How to send .apk to David
-
-* [ ] Facebook ID ios/donutMobile/Info.plist
-* [ ] Facebook ID android/app/src/main/res/values/strings.xml
-* [ ] WS URL app/libs/client.js
-* [ ] OAUTH URL app/libs/oauth.js
 
 ## Fix compilation errors (jquery & xmlhttprequest libs)
 
