@@ -12,10 +12,9 @@ var {
   ActivityIndicatorIOS
 } = React;
 
-var common = require('@dbrugne/donut-common/mobile');
 var _ = require('underscore');
-var client = require('./../libs/client');
-var Button = require('react-native-button');
+var app = require('./../libs/app');
+var common = require('@dbrugne/donut-common/mobile');
 
 var navigation = require('../libs/navigation');
 
@@ -32,15 +31,18 @@ class HomeView extends Component {
     };
   }
   componentDidMount () {
-    client.on('welcome', (data) => this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(data.featured),
-      loaded: true
-    }));
+    app.on('readyToRoute', this.onWelcome, this);
 
     // @todo : refresh on next focus every 5 minutes
   }
   componentWillUnmount () {
-    client.off('welcome');
+    app.off(null, null, this);
+  }
+  onWelcome (data) {
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(data.featured),
+      loaded: true
+    });
   }
   render() {
     if (!this.state.loaded) {

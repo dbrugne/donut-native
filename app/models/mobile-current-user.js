@@ -1,33 +1,60 @@
 var _ = require('underscore');
+var debug = require('../libs/debug')('oauth');
 var client = require('../libs/client'); // @mobile
 var currentUser = require('./current-user');
 
-// @todo:  that is works? that is needed?
-currentUser.defaults = function () {
-  return {
-    token: null,
-    code: null,
-    unviewed: 0
-  };
-};
-
+// mount oauth methods
 currentUser.oauth = require('../libs/oauth');
 
-currentUser.loadInitialState = function () {
-  this.oauth.loadStorage(_.bind(function () {
-    this.oauth.checkStatus(_.bind(function (err) {
-      if (err) {
-        console.warn(err);
-      }
+currentUser.defaults = function () {
+  return {unviewed: 0};
+};
 
-      // trigger LoggedOut navigation tree
-      this.trigger('currentUserStatus');
-    }, this));
-  }, this));
+currentUser.authenticationHasChanged = function () {
+  debug.log(
+    'authenticationChanged', {
+      token: currentUser.oauth.token,
+      email: currentUser.oauth.email,
+      code: currentUser.oauth.code,
+      facebookToken: currentUser.oauth.facebookToken,
+      facebookId: currentUser.oauth.facebookId,
+      facebookData: currentUser.oauth.facebookData
+    }
+  );
+  this.trigger('authenticationChanged');
+};
+
+currentUser.loadInitialState = function () {
+  this.oauth.loadStorage(() => {
+    this.authenticate();
+  });
+};
+
+currentUser.renewToken = function () { // @todo : implement token expiration renewal (need callback)
+  // cleanup stored token
+  currentUser.token = null;
+  storage.removeKey('token', (err) => {
+    if (err) {
+      debug.warn(err);
+    }
+
+    this.authenticate();
+  });
+};
+
+currentUser.authenticate = function () {
+  this.oauth.authenticate((err) => {
+    if (err) {
+      debug.warn(err);
+    }
+
+    // trigger LoggedIn/Out switch
+    this.authenticationHasChanged();
+  });
 };
 
 currentUser.isLoggedIn = function () {
-  return (this.oauth.loaded && this.oauth.token && this.oauth.requireUsername !== true);
+  return (this.oauth.loaded && this.oauth.token);
 };
 
 currentUser.getEmail = function () {
@@ -38,56 +65,62 @@ currentUser.getToken = function () {
   return this.oauth.token;
 };
 
+currentUser.getFacebookData = function () {
+  return this.oauth.facebookData;
+};
+
+currentUser.facebookLoginFound = function (token, userId) {
+  // just save Facebook token, do not run authentication logic
+  // (to allow user to logout from app and stay on this screen)
+  this.oauth.facebookToken = token;
+  this.oauth.facebookId = userId;
+  this.oauth._fetchFacebookProfile(() => this.authenticationHasChanged());
+};
+
+currentUser.hasFacebookToken = function () {
+  return !!(this.oauth.facebookToken);
+};
+
 currentUser.isAdmin = function () {
   return (this.get('admin') === true);
 };
 
-currentUser.facebookLogin = function (token, callback) {
-  this.oauth.facebookLogin(token, _.bind(function (err) {
+currentUser.facebookLogin = function (token, userId, callback) {
+  this.oauth._facebookLogin(token, userId, _.bind(function (err) {
     if (err) {
-      return callback(err);
+      return callback(err); // @todo : so we block user in this state?
     }
 
-    this.trigger('currentUserStatus');
+    this.authenticationHasChanged();
   }, this));
 };
 
-currentUser.login = function (email, password, callback) {
-  this.oauth.login(email, password, _.bind(function (err) {
+currentUser.emailLogin = function (email, password, callback) {
+  this.oauth._emailLogin(email, password, _.bind(function (err) {
     if (err) {
-      return callback(err);
+      return callback(err); // @todo : so we block user in this state?
     }
 
-    this.trigger('currentUserStatus');
+    this.authenticationHasChanged();
   }, this));
 };
 
-currentUser.saveUsername = function (username, callback) {
-  this.oauth.saveUsername(username, (err) => {
+currentUser.emailSignUp = function (email, password, username, callback) {
+  this.oauth._emailSignUp(email, password, username, _.bind(function (err) {
     if (err) {
       return callback(err);
     }
 
-    this.trigger('currentUserStatus');
-  });
+    this.authenticationHasChanged();
+  }, this));
 };
 
 currentUser.logout = function () {
-  this.oauth.logout(() => this.trigger('currentUserStatus'));
+  this.oauth._logout(() => this.authenticationHasChanged());
 };
 
 currentUser.forgot = function (email, callback) {
-  this.oauth.forgot(email, callback);
-};
-
-currentUser.signUp = function (email, password, username, callback) {
-  this.oauth.signUp(email, password, username, _.bind(function (err) {
-    if (err) {
-      return callback(err);
-    }
-
-    this.trigger('currentUserStatus');
-  }, this));
+  this.oauth._forgot(email, callback);
 };
 
 module.exports = currentUser;

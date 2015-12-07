@@ -2,6 +2,11 @@
 
 ## Questions & tasks
 
+* [ ] test choose username logic again
+* [ ] test with user that refuse email permission
+* [ ] test token expiration/renewing
+* [ ] Facebook Login on Android in absence of onLoginFound
+
 * [ ] push notifications logic implementation
 * [ ] push notifications on android
 * [ ] hyperlink opening
@@ -9,12 +14,13 @@
 
 * [ ] Android keyboard close on message send
 * [ ] How to send .apk to David
-* [ ] Load code
+* [ ] Load code from AppHub
 * [ ] Switch configuration
   - [ ] Facebook ID ios/donutMobile/Info.plist
   - [ ] Facebook ID android/app/src/main/res/values/strings.xml
   - [ ] WS URL app/libs/client.js
   - [ ] OAUTH URL app/libs/oauth.js
+  - [ ] Parse
 * [ ] stores submission
 
 * solve emoticons

@@ -4,26 +4,28 @@
 
 window.navigator.userAgent = 'react-native';
 
-var React = require('react-native');
-
+var debug = require('./debug')('client');
 var Client = require('@dbrugne/donut-common/client');
-var currentUser = require('../models/mobile-current-user');
-var storage = require('./storage');
-
-// token retrieving logic
-var getTokenFromSession = function (callback) {
-  // @todo : fix bug when using currentUser directly (probably lifecycle side effect)
-  storage.getKey('token', callback);
-};
 
 module.exports = Client({
   device: 'native',
   host: 'https://test.donut.me',
   debug: function () {
-    console.log(arguments);
+    debug.log.apply(debug.log, arguments);
   },
-  retrieveToken: getTokenFromSession,
-  invalidToken: getTokenFromSession,
+  retrieveToken: (callback) => {
+    // @warning: require must be done later due to react-native package cyclic
+    // reference on startup
+    return callback(null, require('../models/mobile-current-user').getToken());
+  },
+  invalidToken: (callback) => {
+    // try to obtain new token
+    //  currentUser.renewToken(() => {
+    //
+    //  });
+    // @todo : implement token renewal
+    debug.log('TODO TODO TODO');
+  },
   sio: {
     transports: ['websocket']
   }

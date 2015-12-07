@@ -1,8 +1,10 @@
 'use strict';
 
 var _ = require('underscore');
+var async = require('async');
 var Backbone = require('backbone');
-var storage = require('../libs/storage');
+var storage = require('./storage');
+var debug = require('./debug')('oauth');
 
 var oauth = _.extend({
   email: null,
@@ -10,7 +12,8 @@ var oauth = _.extend({
   code: null,
 
   facebookToken: null,
-  requireUsername: false,
+  facebookId: null,
+  facebookData: null,
 
   loaded: false,
 
@@ -25,17 +28,17 @@ var oauth = _.extend({
     }
   },
 
-  oauthRequest: function (endpoint, body, callback) {
+  _oauthRequest: function (endpoint, body, callback) {
     var url = this.oauthBaseUrl + endpoint;
     var request = _.extend({
       body: JSON.stringify(body)
     }, this.oauthHeaders);
 
-    console.log('<= ajax', url, request);
+    debug.log('<= ajax', url, request);
     fetch(url, request)
       .then((response) => response.json())
       .then((data) => {
-        console.log('=> ajax', data)
+        debug.log('=> ajax', data)
         callback(null, data);
       })
       .catch((err) => { throw new Error(err) });
@@ -51,7 +54,7 @@ var oauth = _.extend({
         return callback(err);
       }
 
-      console.log('found in storage', values);
+      debug.log('found in storage', values);
 
       this.email = values.email;
       this.token = values.token;
@@ -63,158 +66,138 @@ var oauth = _.extend({
   },
 
   /**
-   * Determine current token/code validity
-   * @param data
+   * Process stored data (token, facebookToken, email, code) and try to
+   * authenticate user automatically.
    * @param callback
    */
-  checkStatus: function (callback) {
-    if (!this.token && !this.code) {
-      return callback(null);
-    }
+  authenticate: function (callback) {
+    var hasValidToken = false;
 
-    this.checkToken(_.bind(function (err, isTokenValid) {
-      if (err) {
-        return callback(err);
-      }
-
-      if (isTokenValid === true) {
-        return callback(null);
-      }
-
-      // @todo : and if no code ?? => Facebook (actually display login page, maybe enough)
-
-      this.checkCode(callback);
-    }, this));
-  },
-
-  /**
-   * Check token validity
-   * @param token
-   * @param callback
-   */
-  checkToken: function (callback) {
-    if (!this.token) {
-      return callback(null, false);
-    }
-
-    this.oauthRequest('check-token', { token: this.token }, _.bind(function (err, response) {
-      if (err) {
-        return callback(err, false);
-      }
-
-      if (response.validity === true) {
-        if (response.err === 'no-username') {
-          this.requireUsername = true;
+    async.waterfall([
+      // try token (if exists)
+      (cb) => {
+        if (!this.token) {
+          return cb(null);
         }
 
-        return callback(null, true);
-      }
-
-      // unset invalid token
-      this.token = null;
-      storage.removeKey('token', function (err) {
-        return callback(err, false);
-      });
-    }, this));
-  },
-
-  /**
-   * Try to retrieve a token from email and code
-   * @param callback
-   */
-  checkCode: function (callback) {
-    if (!this.email || !this.code) {
-      return callback(null);
-    }
-
-    this.oauthRequest('get-token-from-credentials', { email: this.email, code: this.code }, _.bind(function (err, response) {
-      if (err) {
-        return callback(err);
-      }
-      if (response.err && response.err !== 'no-username') {
-        // unset current code
-        storage.removeKey('code', function (err) {
+        this._oauthRequest('check-token', { token: this.token }, (err, response) => {
           if (err) {
-            return callback(err);
+            return cb(err);
+          }
+          if (response.err) {
+            return cb(response.err);
           }
 
-          return callback(response.err);
+          if (response.validity === true) {
+            hasValidToken = true;
+            return cb(null);
+          }
+
+          // unset invalid token
+          this.token = null;
+          storage.removeKey('token', function (err) {
+            return cb(err);
+          });
+        });
+      },
+      // try with Facebook token (if exists)
+      (cb) => {
+        if (hasValidToken || !this.facebookToken) {
+          return cb(null);
+        }
+
+        this._oauthRequest('get-token-from-facebook', { access_token: this.facebookToken }, (err, response) => {
+          if (err) {
+            return cb(err);
+          }
+          if (response.err) {
+            return cb(response.err);
+          }
+
+          hasValidToken = true;
+          this.token = response.token;
+          this.code = '';
+          storage.setKeys({
+            token: this.token,
+            code: this.code
+          }, () => cb(null));
+        });
+      },
+      // try with code (if exists)
+      (cb) => {
+        if (hasValidToken || !this.email || !this.code) {
+          return cb(null);
+        }
+
+        this._oauthRequest('get-token-from-credentials', { email: this.email, code: this.code }, (err, response) => {
+          if (err) {
+            return cb(err);
+          }
+          if (response.err) {
+            // unset current code
+            storage.removeKey('code', function (err) {
+              if (err) {
+                return cb(err);
+              }
+              return cb(response.err);
+            });
+          }
+
+          hasValidToken = true;
+          this.token = response.token;
+          this.code = response.code;
+          storage.setKeys({
+            token: this.token,
+            code: this.code
+          }, cb);
         });
       }
 
-      if (response.err === 'no-username') {
-        this.requireUsername = true;
-      }
-
-      this.token = response.token;
-      this.code = response.code;
-      storage.setKeys({
-        token: this.token,
-        code: this.code
-      }, function (err) {
-        if (err) {
-          return callback(err);
-        }
-
-        return callback(null);
-      });
-    }, this));
+    ], (err) => callback(err));
   },
 
   /**
    * Retrieve ws token with Facebook token
    * @param facebookToken
+   * @param userId
    * @param callback
    */
-  facebookLogin: function (facebookToken, callback) {
+  _facebookLogin: function (facebookToken, userId, callback) {
     if (!facebookToken) {
-      return callback('no-facebook-token');
+      return callback(null, false);
     }
 
-    this.oauthRequest('get-token-from-facebook', { access_token: facebookToken }, _.bind(function (err, response) {
-      if (err) {
-        return callback(err);
-      }
-      if (response.err && response.err !== 'no-username') {
-        return callback(response.err);
-      }
-
-      if (response.err === 'no-username') {
-        this.requireUsername = true;
-      }
-
-      this.token = response.token;
-      this.code = '';
-      storage.setKeys({
-        token: this.token,
-        code: this.code
-      }, callback);
-    }, this));
+    // @important
+    this.token = null;
+    this.email = null;
+    this.code = null;
+    storage.removeKeys(['token', 'code', 'email'], () => {
+      this.facebookToken = facebookToken;
+      this.facebookId = userId; // only to retrieve user name via GraphAPI
+      this.authenticate(callback);
+    });
   },
 
   /**
-   * Retrieve token with email and password
+   * Retrieve token from email and password
    * @param email
    * @param password
    * @param callback
    */
-  login: function (email, password, callback) {
+  _emailLogin: function (email, password, callback) {
     this.email = email;
+    this.facebookToken = null; // @important
     storage.setKey('email', email, _.bind(function (err) {
       if (err) {
         return callback(err);
       }
 
-      this.oauthRequest('get-token-from-credentials', { email: email, password: password }, _.bind(function (err, response) {
+      this._oauthRequest('get-token-from-credentials', { email: email, password: password }, _.bind(function (err, response) {
         if (err) {
           return callback(err);
         }
-        if (response.err && response.err !== 'no-username') {
+        if (response.err) {
           return callback(response.err);
-        }
-
-        if (response.err === 'no-username') {
-          this.requireUsername = true;
         }
 
         this.token = response.token;
@@ -227,20 +210,23 @@ var oauth = _.extend({
     }, this));
   },
 
-  logout: function (callback) {
-    this.token = null;
-    this.code = null;
-    storage.removeKeys(['token', 'code'], callback);
-  },
-
-  signUp: function (email, password, username, callback) {
+  /**
+   * Try to signup user with email and password
+   * @param email
+   * @param password
+   * @param username
+   * @param callback
+   * @private
+   */
+  _emailSignUp: function (email, password, username, callback) {
     this.email = email;
+    this.facebookToken = null; // @important
     storage.setKey('email', email, _.bind(function (err) {
       if (err) {
         return callback(err);
       }
 
-      this.oauthRequest('signup', { email: email, password: password, username: username }, _.bind(function (err, response) {
+      this._oauthRequest('signup', { email: email, password: password, username: username }, _.bind(function (err, response) {
         if (err) {
           return callback(err);
         }
@@ -257,33 +243,26 @@ var oauth = _.extend({
   },
 
   /**
-   * Save username on account related to currently stored session token
-   * @param username
+   * Logout user by removing token and code data from locale storage
    * @param callback
+   * @private
    */
-  saveUsername: function (username, callback) {
-    if (!this.token) {
-      return callback('no-token');
-    }
-    if (!username) {
-      return callback('no-username');
-    }
-
-    this.oauthRequest('save-username', { token: this.token, username: username }, (err, response) => {
-      if (err) {
-        return callback(err);
-      }
-      if (response.err) {
-        return callback(response.err);
-      }
-
-      this.requireUsername = false;
-      callback(null);
-    });
+  _logout: function (callback) {
+    this.token = null;
+    this.code = null;
+    this.facebookToken = null; // @important
+    this.facebookId = null; // @important
+    storage.removeKeys(['token', 'code'], callback);
   },
 
-  forgot: function (email, callback) {
-    this.oauthRequest('forgot', { email: email }, _.bind(function (err, response) {
+  /**
+   * Send forgot password email to user
+   * @param email
+   * @param callback
+   * @private
+   */
+  _forgot: function (email, callback) {
+    this._oauthRequest('forgot', { email: email }, (err, response) => {
       if (err) {
         return callback(err);
       }
@@ -292,7 +271,20 @@ var oauth = _.extend({
       }
 
       return callback(null);
-    }, this));
+    });
+  },
+
+  _fetchFacebookProfile: function (callback) {
+    if (!this.facebookToken || !this.facebookId) {
+      return callback();
+    }
+    var api = `https://graph.facebook.com/v2.3/${this.facebookId}?fields=name,picture&access_token=${this.facebookToken}`;
+    fetch(api)
+      .then((response) => response.json())
+      .then((data) => {
+        this.facebookData = data;
+        callback();
+      });
   }
 
 }, Backbone.Events);

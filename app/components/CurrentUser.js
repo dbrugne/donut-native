@@ -89,8 +89,7 @@ class CurrentUserView extends Component {
 var styles = StyleSheet.create({
   main: {
     flex: 1,
-    flexDirection: 'column',
-    marginTop: 20
+    flexDirection: 'column'
   },
   content: {
     flexDirection: 'row',

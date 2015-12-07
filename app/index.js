@@ -24,17 +24,19 @@ class Index extends Component {
 
   componentDidMount () {
     // listen for currentUser status change
-    currentUser.on('currentUserStatus', () => this.setState({
-      currentUserReady: true,
-      isLoggedIn: currentUser.isLoggedIn()
-    }));
+    currentUser.on('authenticationChanged', () => {
+      this.setState({
+        currentUserReady: true,
+        isLoggedIn: currentUser.isLoggedIn()
+      });
+    }, this);
 
     // launch
     currentUser.loadInitialState();
   }
 
   componentWillUnmount () {
-    currentUser.off('currentUserStatus');
+    currentUser.off(null, null, this);
   }
 
   render () {

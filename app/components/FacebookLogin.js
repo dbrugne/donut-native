@@ -2,36 +2,40 @@
 
 var React = require('react-native');
 var FBLogin = require('react-native-facebook-login');
+var debug = require('../libs/debug')('oauth');
 var s = require('../styles/style');
 
 var {
   StyleSheet,
   View,
   TouchableHighlight,
-  Text
+  Text,
+  Image
 } = React;
 var {
   Icon
-  } = require('react-native-icons');
+} = require('react-native-icons');
 
 var currentUser = require('../models/mobile-current-user');
 
-// @todo test with user that refuse email permission
-
 module.exports = React.createClass({
-  getInitialState () {
-    return { fakeLogin: false };
-  },
   render () {
-    var fakeButton = null;
-    if (this.state.fakeLogin) {
-      //                     the onLoginFound function is hit on login page display and the native FBLogin display a logout button, so I added
-      //                     this fake button
-      fakeButton = (
+    var useFacebookToken = null;
+    if (currentUser.hasFacebookToken()) {
+      var data = currentUser.getFacebookData();
+      var avatar = (data && data.picture)
+        ? (<Image source={{uri: data.picture.data.url}} style={{width: 50, height: 50}} />)
+        : null;
+      var message = (data && data.name)
+        ? `You are already identified with Facebook as ${data.name}:`
+        : 'You are already identified with Facebook:';
+
+      useFacebookToken = (
         <View style={styles.container}>
           <View style={styles.container}>
-
-            <TouchableHighlight onPress={() => currentUser.facebookLogin(currentUser.oauth.facebookToken, (err) => { console.log('FBLogin error', err) })}
+            {avatar}
+            <Text>{message}</Text>
+            <TouchableHighlight onPress={() => currentUser.authenticate()}
                                 style={[s.button, styles.buttonFacebook]}
                                 underlayColor='#647EB7'
               >
@@ -44,7 +48,7 @@ module.exports = React.createClass({
                     style={[styles.icon, styles.iconFacebook]}
                     />
                 </View>
-                <Text style={[s.buttonText, styles.buttonTextFacebook]}>Already identified : log-in</Text>
+                <Text style={[s.buttonText, styles.buttonTextFacebook]}>Use this Facebook account</Text>
               </View>
             </TouchableHighlight>
 
@@ -56,7 +60,7 @@ module.exports = React.createClass({
 
     return (
       <View style={styles.container}>
-        {fakeButton}
+        {useFacebookToken}
         <View style={styles.container}>
           <View style={[s.button, s.buttonBlue]}>
             <FBLogin
@@ -75,43 +79,41 @@ module.exports = React.createClass({
     );
   },
   onLogin (data) {
-    // iOS / Android date format difference
+    debug.log('onLogin', data);
+    // iOS / Android data format is different
     var token = (data.credentials && data.credentials.token)
       ? data.credentials.token
       : data.token;
-    console.log('onLogin', data);
-    currentUser.facebookLogin(token, function (err) {
-      console.log('onLogin.onLogin error', err);
+    var id = (data.credentials && data.credentials.userId)
+      ? data.credentials.userId
+      : data.userId;
+    currentUser.facebookLogin(token, id, function (err) {
+      if (err) {
+        debug.warn('onLogin.facebookLogin error', err);
+      }
     });
-    currentUser.oauth.facebookToken = token; // @todo : in oauth.facebookLogin
   },
   // iOS only
   onLoginFound (data) {
-    console.log('onLoginFound', data);
-    currentUser.oauth.facebookToken = data.credentials.token;
-    this.setState({
-      fakeLogin: true
-    });
+    debug.log('onLoginFound', data);
+    currentUser.facebookLoginFound(data.credentials.token, data.credentials.userId);
   },
   // iOS only
   onLoginNotFound () {
-    console.log('onLoginNotFound');
+    debug.log('onLoginNotFound');
   },
   onLogout (data) {
-    console.log('onLogout', data);
+    debug.log('onLogout', data);
     currentUser.logout();
-    this.setState({
-      fakeLogin: false
-    });
   },
   onCancel () {
-    console.log('onCancel');
+    debug.log('onCancel');
   },
   onPermissionsMissing (data) {
-    console.log('onPermissionsMissing', data);
+    debug.log('onPermissionsMissing', data);
   },
   onError (data) {
-    console.log('onError', data);
+    debug.log('onError', data);
   }
 });
 

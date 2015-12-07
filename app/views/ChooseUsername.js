@@ -74,11 +74,12 @@ class ChooseUsername extends Component {
       return this._appendError('not-complete');
     }
 
-    currentUser.saveUsername(this.state.username, (err) => {
-      if (err) {
-        this._appendError(err);
-      }
-    });
+    // @todo now use client.userUpdate()
+//    currentUser.saveUsername(this.state.username, (err) => {
+//      if (err) {
+//        this._appendError(err);
+//      }
+//    });
   }
 
   _appendError (string) {

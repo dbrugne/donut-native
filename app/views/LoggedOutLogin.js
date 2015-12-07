@@ -15,8 +15,6 @@ var {
   TextInput,
   TouchableHighlight,
   View,
-  Navigator,
-  AsyncStorage,
   BackAndroid,
   Image
 } = React;
@@ -40,6 +38,7 @@ class LoginView extends Component {
     });
     if (Platform.OS === 'android') {
       // @todo yfuks : same as app/screens/Discussion.js
+      // @todo dbr or => replace with exNavigator
       BackAndroid.addEventListener('hardwareBackPress', _.bind(function () {
         var routes = this.props.navigator.getCurrentRoutes();
         if (routes && routes.length > 1) {
@@ -57,15 +56,9 @@ class LoginView extends Component {
   }
 
   render() {
-    return (
-      <View style={styles.main}>
-        <View style={styles.logoCtn}>
-          <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
-        </View>
-
-        <View style={styles.container}>
-          <FacebookLogin />
-
+    if (!currentUser.hasFacebookToken()) {
+      var loginForm = (
+        <View>
           <View style={styles.orContainer}>
             <Text style={styles.title}> OR </Text>
           </View>
@@ -82,7 +75,7 @@ class LoginView extends Component {
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               ref='1'
-              placeholder="Password"
+              placeholder='Password'
               secureTextEntry={true}
               onChange={(event) => this.setState({password: event.nativeEvent.text})}
               style={[s.input, s.marginTop5]}
@@ -92,10 +85,10 @@ class LoginView extends Component {
           <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
                               style={[s.button, s.buttonPink, s.marginTop5]}
                               underlayColor='#E4396D'
-            >
-              <View style={s.buttonLabel}>
-                <Text style={s.buttonTextLight}>Sign In</Text>
-              </View>
+          >
+            <View style={s.buttonLabel}>
+              <Text style={s.buttonTextLight}>Sign In</Text>
+            </View>
           </TouchableHighlight>
 
           <TouchableHighlight onPress={(this.onForgotPressed.bind(this))}
@@ -103,9 +96,9 @@ class LoginView extends Component {
                               style={[s.marginTop10, styles.centered]}>
             <Text style={s.link}>Forgot your password ?</Text>
           </TouchableHighlight>
-        
         </View>
-        
+      );
+      var signupButton = (
         <View style={styles.linkCtn} >
           <Text style={styles.textGray}>Don't have an account ? </Text>
           <TouchableHighlight onPress={(this.onCreatePressed.bind(this))}
@@ -114,7 +107,19 @@ class LoginView extends Component {
             <Text style={s.link}>Sign Up</Text>
           </TouchableHighlight>
         </View>
+      );
+    }
 
+    return (
+      <View style={styles.main}>
+        <View style={styles.logoCtn}>
+          <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
+        </View>
+        <View style={styles.container}>
+          <FacebookLogin />
+          {loginForm}
+        </View>
+        {signupButton}
       </View>
     );
   }
@@ -125,7 +130,7 @@ class LoginView extends Component {
     }
 
     // @todo : loading screen
-    currentUser.login(this.state.email, this.state.password, _.bind(function (err) {
+    currentUser.emailLogin(this.state.email, this.state.password, _.bind(function (err) {
       if (err) {
         Alert.show(err);
       }

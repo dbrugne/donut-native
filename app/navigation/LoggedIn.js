@@ -5,8 +5,11 @@ var React = require('react-native');
 var {
   Component
 } = React;
+var Loading = require('../components/Loading');
+var ChooseUsername = require('../views/ChooseUsername');
 
 var _ = require('underscore');
+var debug = require('../libs/debug')('navigation');
 var onetoones = require('../collections/onetoones');
 var rooms = require('../collections/rooms');
 var app = require('../libs/app');
@@ -18,12 +21,15 @@ var i18next = require('i18next-client');
 var PushNotifications = require('../libs/pushNotifications');
 
 // @todo : if application is backgrounded for > 5 mn disconnect
-// @todo : when disconnected block every views/navigation
+// @todo : when disconnected block every views/navigation except drawer+my account+logout
 
 class Index extends Component {
   constructor (props) {
     super(props);
-    this.client = client;
+    this.state = {
+      underFirstConnection: true,
+      usernameRequired: false
+    };
     this.nextFocus;
   }
   componentDidMount () {
@@ -41,7 +47,7 @@ class Index extends Component {
     PushNotifications.componentDidMount();
 
     // client
-    this.client.connect();
+    client.connect();
   }
   componentWillUnmount () {
     app.off(null, null, this);
@@ -49,24 +55,55 @@ class Index extends Component {
     rooms.off(null, null, this);
     client.off(null, null, this);
 
+    // empty stores (@logout)
+    onetoones.reset();
+    rooms.reset();
+    currentUser.clear();
+
     // push notifications
     PushNotifications.componentWillUnmount();
 
     // client
-    this.client.disconnect();
+    client.disconnect();
   }
   render () {
+    if (this.state.underFirstConnection === true) {
+      return (
+        <Loading />
+      );
+    }
+    if (this.state.usernameRequired === true) {
+      return (
+        <ChooseUsername />
+      );
+    }
+
     var RootNavigator = require('../libs/navigation').RootNavigator;
     return (
-      <RootNavigator />
+      <RootNavigator featured={this.state.featured} />
     );
   }
   onWelcome (data) {
-    currentUser.onWelcome(data);
-    onetoones.onWelcome(data);
-    rooms.onWelcome(data);
+    // require username welcome
+    if (data.usernameRequired === true) {
+      return this.setState({
+        underFirstConnection: false,
+        usernameRequired: true
+      });
+    }
 
-    this.computeUnviewed();
+    // normal welcome (async to let RootNavigator render)
+    this.setState({
+      underFirstConnection: false,
+      featured: data.featured
+    }, () => {
+      currentUser.onWelcome(data);
+      onetoones.onWelcome(data);
+      rooms.onWelcome(data);
+      this.computeUnviewed();
+      debug.log('trigger readyToRoute');
+      app.trigger('readyToRoute', data);
+    });
   }
   computeUnviewed () {
     var list = onetoones.models.concat(rooms.models);

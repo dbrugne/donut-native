@@ -83,7 +83,7 @@ class Signup extends Component {
       return Alert.show('not-complete');
     }
 
-    currentUser.signUp(this.state.email, this.state.password, this.state.username, _.bind(function (err) {
+    currentUser.emailSignUp(this.state.email, this.state.password, this.state.username, _.bind(function (err) {
       if (err) {
         Alert.show(err);
       }

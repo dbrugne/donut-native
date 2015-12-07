@@ -7,17 +7,8 @@ var {
   Navigator
 } = React;
 
-var currentUser = require('../models/mobile-current-user');
-var ChooseUsername = require('../views/LoggedOutChooseUsername');
-
 class LoggedOut extends Component {
   render () {
-    if (currentUser.oauth.requireUsername === true) {
-      return (
-        <ChooseUsername />
-      );
-    }
-
     return (
       <View style={styles.appContainer}>
         <Navigator
@@ -39,7 +30,7 @@ class LoggedOut extends Component {
 var styles = StyleSheet.create({
   appContainer: {
     flex: 1
-  },
+  }
 });
 
 module.exports = LoggedOut;

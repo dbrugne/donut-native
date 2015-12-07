@@ -1,38 +1,22 @@
 'use strict';
 
-/**
- * /home
- * /search
- * /create-group
- * /create-room
- * /my-account
- *   /my-email
- *   /my-password
- *   /notifications
- *   /profile-edit
- *   /...
- * /discussion
- *   /users
- *   /settings
- *
- * popable
- *   /profile/_id_
- */
-
 var React = require('react-native');
 var {
   StyleSheet,
-  View,
-  Text,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBarIOS
 } = React;
+var {
+  Icon
+} = require('react-native-icons');
 
 var _ = require('underscore');
+var debug = require('../libs/debug')('navigation');
 var Drawer = require('react-native-drawer')
 import ExNavigator from '@exponent/react-native-navigator';
-var Button = require('react-native-button');
 var app = require('./app');
 var Platform = require('Platform');
+var currentUser = require('../models/mobile-current-user');
 
 let navigationBarHeight = ((Platform.OS === 'android')
   ? 56
@@ -64,7 +48,7 @@ function getRoute (route) {
     onDidFocus: function () {
       currentRoute = this;
       _.defer(() => {
-//        console.log('Screen ' + currentNavigator.id + '/' + currentRoute.id + ' is now focused');
+        debug.log('Screen ' + currentNavigator.id + '/' + currentRoute.id + ' is now focused');
         _logCurrentStack();
         if (this._onDidFocus) {
           this._onDidFocus();
@@ -202,13 +186,9 @@ function _logCurrentStack () {
       }
     });
   });
-  console.log(stack);
+  debug.log(stack);
 }
 
-var currentUser = require('../models/mobile-current-user');
-var {
-  Icon
-} = require('react-native-icons');
 var LeftNavigation = React.createClass({
   getInitialState () {
     return {
@@ -220,7 +200,7 @@ var LeftNavigation = React.createClass({
       unviewed: value
     }), this);
   },
-  componentWillMount () {
+  componentWillUnmount () {
     currentUser.off(null, null, this);
   },
   render () {
@@ -456,7 +436,6 @@ routes.getDiscussion = function (id, model) {
     }
   });
 };
-
 routes.getUserFieldEdit = function (data) {
   return getRoute({
     renderScene: function (navigator) {
@@ -467,7 +446,6 @@ routes.getUserFieldEdit = function (data) {
     }
   });
 };
-
 routes.getNavigator = function (initialRoute) {
   // navigator id === initialRoute id
   var id = 'nav-' + initialRoute.id;
@@ -519,23 +497,42 @@ routes.getNavigator = function (initialRoute) {
   }
   return navigators[id];
 };
+routes.switchTo = function (route) {
+  if (!_.isObject(route) || route.__type !== 'route') {
+    return debug.log('switchTo expect a route object');
+  }
+  _pushOrJumpTo(rootNavigator.__navigator, routes.getNavigator(route));
+};
 
 routes.RootNavigator = React.createClass({
   componentDidMount () {
     rootNavigator = this.refs.navigator;
     drawer = this.refs.drawer;
+    debug.log('mount RootNavigator');
+  },
+  componentWillUnmount () {
+    // reset navigation state (@logout)
+    drawer = null;
+    drawerOpened = false;
+    rootNavigator = null;
+    navigators = {};
+    knownRoutes = {};
+    currentNavigator = null;
+    currentRoute = null;
+
+    debug.log('unmount RootNavigator');
   },
   render () {
     var Navigation = require('../navigation/NavigationView');
     var initialRoute = currentNavigator = routes.getNavigator(routes.getHome());
     return (
       <Drawer
-        ref="drawer"
+        ref='drawer'
         content={<Navigation getRootNavigator={() => rootNavigator } />}
-        styles={{main: {shadowColor: "#000000", shadowOpacity: 0.4, shadowRadius: 3}}}
+        styles={{main: {shadowColor: '#000000', shadowOpacity: 0.4, shadowRadius: 3}}}
         openDrawerOffset={50}
-        onOpen={() => drawerOpened = true }
-        onClose={() => drawerOpened = false }
+        onOpen={this.onDrawerOpen}
+        onClose={this.onDrawerClose}
         >
         <ExNavigator
           ref='navigator'
@@ -545,15 +542,22 @@ routes.RootNavigator = React.createClass({
           />
       </Drawer>
     );
+  },
+  onDrawerOpen () {
+    debug.log('onDrawerOpen');
+    drawerOpened = true;
+    if (Platform.OS === 'ios') {
+      StatusBarIOS.setHidden(true, 'slide');
+    }
+  },
+  onDrawerClose () {
+    debug.log('onDrawerClose');
+    drawerOpened = false;
+    if (Platform.OS === 'ios') {
+      StatusBarIOS.setHidden(false, 'slide');
+    }
   }
 });
-
-routes.switchTo = function (route) {
-  if (!_.isObject(route) || route.__type !== 'route') {
-    return console.log('switchTo expect a route object');
-  }
-  _pushOrJumpTo(rootNavigator.__navigator, routes.getNavigator(route));
-};
 
 var styles = StyleSheet.create({
   titleName: {
