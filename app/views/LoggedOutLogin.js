@@ -119,7 +119,7 @@ class LoginView extends Component {
             <FacebookLogin />
             {loginForm}
           </View>
-        <ScrollView>
+        </ScrollView>
         {signupButton}
       </View>
     );

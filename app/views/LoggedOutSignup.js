@@ -1,10 +1,6 @@
-var _ = require('underscore');
-var React = require('react-native');
-var Platform = require('Platform');
-var currentUser = require('../models/mobile-current-user');
-var s = require('../styles/style');
-var Alert = require('../libs/alert');
+'use strict';
 
+var React = require('react-native');
 var {
   Component,
   StyleSheet,
@@ -14,6 +10,11 @@ var {
   View,
   Image,
 } = React;
+
+var Platform = require('Platform');
+var currentUser = require('../models/mobile-current-user');
+var s = require('../styles/style');
+var Alert = require('../libs/alert');
 
 class Signup extends Component {
   constructor (props) {
