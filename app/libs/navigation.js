@@ -458,7 +458,14 @@ routes.getNavigator = function (initialRoute) {
           <ExNavigator
             navigator={navigator}
             initialRoute={initialRoute}
+            style={{flex: 1}}
             sceneStyle={{ paddingTop: navigationBarHeight }}
+            titleStyle={{
+              fontSize: 20,
+              color: '222',
+              alignSelf: 'center',
+              marginTop: 15
+            }}
             />
         );
       },

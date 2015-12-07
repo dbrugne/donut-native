@@ -34,7 +34,6 @@ class Signup extends Component {
         </View>
 
         <View style={styles.container}>
-
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               autoFocus={true}
@@ -74,8 +73,26 @@ class Signup extends Component {
             </View>
           </TouchableHighlight>
         </View>
+
+        <View style={styles.linkCtn} >
+          <Icon
+            name='fontawesome|chevron-left'
+            size={14}
+            color='#808080'
+            style={styles.icon}
+            />
+          <TouchableHighlight onPress={(this.onBack.bind(this))}
+                              underlayColor='transparent'
+                              style={styles.textGray}>
+            <Text style={s.link}>Back to login page</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
+  }
+
+  onBack() {
+    this.props.navigator.pop();
   }
 
   onSubmitPressed () {
@@ -83,11 +100,11 @@ class Signup extends Component {
       return Alert.show('not-complete');
     }
 
-    currentUser.emailSignUp(this.state.email, this.state.password, this.state.username, _.bind(function (err) {
+    currentUser.emailSignUp(this.state.email, this.state.password, this.state.username, (err) => {
       if (err) {
         Alert.show(err);
       }
-    }, this));
+    });
   }
 
   _focusNextField(nextField) {
@@ -104,6 +121,8 @@ var styles = StyleSheet.create({
   container: {
     paddingLeft:20,
     paddingRight:20,
+    paddingTop:10,
+    paddingBottom:10,
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
@@ -111,23 +130,19 @@ var styles = StyleSheet.create({
     backgroundColor: '#FFF'
   },
   logo: {
-    width: 250,
-    height: 64,
+    width: 125,
+    height: 32,
     alignSelf: 'center'
   },
   logoCtn: {
     marginTop: 50,
-    paddingBottom: 50,
+    paddingBottom:25,
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'center',
     borderBottomWidth: 1,
     borderStyle: 'solid',
     borderColor: '#C3C3C3'
-  },
-  icon: {
-    width: 28,
-    height: 28
   },
   iconContainer: {
     justifyContent: 'flex-end',
@@ -142,8 +157,23 @@ var styles = StyleSheet.create({
     color: '#333',
     alignSelf: "center"
   },
-  marginTop5: {
-    marginTop: 5
+  linkCtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#C3C3C3',
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginLeft:5
+  },
+  textGray: {
+    fontWeight: 'normal',
+    color: '#808080'
+  },
+  icon: {
+    width: 14,
+    height: 14
   }
 });
 

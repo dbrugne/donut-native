@@ -124,10 +124,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center'
   },
   divider: {
-    marginVertical:10,
-    marginHorizontal:10,
-    height:1,
-    backgroundColor: '#C3C3C3',
+    marginVertical:5,
     alignSelf: 'stretch',
     justifyContent: 'center',
     flexWrap: 'nowrap',

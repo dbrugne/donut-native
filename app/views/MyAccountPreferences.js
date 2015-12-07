@@ -123,7 +123,7 @@ class UserPreferencesView extends Component {
 
     var update = {};
     update[key] = newVal;
-    client.userPreferencesUpdate(update, _.bind(function (response) {
+    client.userPreferencesUpdate(update, (response) => {
       if (response.err) {
         this._appendError(response.err);
       } else {
@@ -135,7 +135,7 @@ class UserPreferencesView extends Component {
       this.setState({
         preferences
       });
-    }, this));
+    });
   }
 
   _appendError(string) {

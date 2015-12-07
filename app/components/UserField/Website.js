@@ -3,12 +3,16 @@
 var React = require('react-native');
 var s = require('../../styles/style');
 var UserField = require('../UserField');
+var ListGroupItem = require('../ListGroupItem');
 
 var {
   TextInput
 } = React;
 
 class UserFieldWebsite extends UserField {
+  constructor (props) {
+    super(props);
+  }
   key = 'website';
 
   isValid () {
@@ -25,14 +29,21 @@ class UserFieldWebsite extends UserField {
 
   renderField () {
     return (
-      <TextInput
-        autoFocus={true}
-        placeholder='URL of a website'
-        onChangeText={(text) => this.setState({value: text})}
-        value={this.state.value}
-        multi={false}
-        style={s.input} />
+    <ListGroupItem
+      autoFocus={true}
+      onPress= {() => this.onPress()}
+      placeholder="URL of a website"
+      value={this.state.value}
+      onChange={(event) => this.setState({value: event.nativeEvent.text})}
+      type='input-button'
+      multi={false}
+      />
     );
+  }
+
+  onPress () {
+    this.props.data.onSave(this.key, this.state.value);
+    this.props.navigator.pop();
   }
 }
 

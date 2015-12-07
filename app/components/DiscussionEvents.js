@@ -17,6 +17,7 @@ var _ = require('underscore');
 var app = require('../libs/app');
 var client = require('../libs/client');
 var events = require('../libs/events');
+var s = require('../styles/style');
 
 class DiscussionEvents extends Component {
   constructor (props) {
@@ -84,24 +85,24 @@ class DiscussionEvents extends Component {
 
     // rowID is a string
     var isLast = (parseInt(rowID) === (this.eventsBlob.length - 1));
-    return events.render(event, previous, isLast, _.noop);
+    return events.render(event, previous, isLast, this.props.navigator);
   }
   renderHeader () {
     if (!this.state.more) {
       var prefix = (this.model.get('type') === 'room')
         ? 'Your are in'
-        : 'You discuss with'
+        : 'You discuss with';
       return (
-        <Text style={styles.title}>{prefix} {this.props.title}</Text>
+        <Text style={[s.h1, s.textCenter]}>{prefix} {this.props.title}</Text>
       );
     }
 
-    var loading = (<View style={{height: 40}} />);
+    var loading = (<View />);
     if (this.state.loading) {
       loading = (
         <ActivityIndicatorIOS
           animating={this.state.loading}
-          style={[styles.centering, {height: 80}]}
+          style={[styles.centering, {height: 10}]}
           size='small'
           color='#666666'
           />
@@ -111,10 +112,11 @@ class DiscussionEvents extends Component {
     return (
       <View>
         {loading}
-        <TouchableHighlight
-          onPress={this.onLoadMore.bind(this)}
-          style={styles.button}>
-          <Text>Load more</Text>
+        <TouchableHighlight style={[{padding: 10, borderStyle: 'solid', borderBottomWidth: 1}, s.buttonGray]}
+                            underlayColor= '#DDD'
+                            onPress={this.onLoadMore.bind(this)}
+          >
+          <Text style={[s.buttonTextLight, s.textCenter]}>Load more</Text>
         </TouchableHighlight>
       </View>
     );
@@ -186,26 +188,8 @@ var styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  loading: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#424242',
-    fontFamily: 'Open Sans',
-    marginVertical: 15
-  },
   listView: {
     flex: 1
-  },
-  button: {
-  padding: 20,
-  borderStyle: 'solid',
-  borderWidth: 1,
-  borderColor: 'black',
   },
   footer: {
     paddingBottom: 5 // elegant spacer under last event

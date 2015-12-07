@@ -22,7 +22,7 @@ class ListGroupItemEditButton extends Component {
 
   render () {
     var value;
-    if (this.props.value && this.props.value.length < 20) {
+    if (this.props.value && this.props.value.length < 15) {
       value = this.props.value;
     } else if (this.props.value && typeof this.props.value !== 'object') {
       value = this.props.value.slice(0, 12) + '...';

@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var ParsedText = require('react-native-parsed-text');
 var {
   StyleSheet,
   Text,
@@ -13,10 +14,13 @@ var _ = require('underscore');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common');
 var date = require('../libs/date');
+var link = require('../libs/link');
+var alert = require('../libs/alert');
+var navigation = require('../libs/navigation');
 
 var exports = module.exports = {};
 
-var messagesTypes = [ 'room:message', 'user:message' ];
+var messagesTypes = ['room:message', 'user:message'];
 
 var templates = {
   'ping': false,
@@ -24,9 +28,9 @@ var templates = {
   'userBlock': function (event) {
     return (
       <View style={styles.userBlock}>
-        <Image style={styles.userBlockAvatar} source={{uri: common.cloudinary.prepare(event.data.avatar, 30*2)}} />
+        <Image style={styles.userBlockAvatar} source={{uri: common.cloudinary.prepare(event.data.avatar, 30*2)}}/>
         <View style={styles.userBlockUsernameContainer}>
-          {renderClickableUsername(event.data.username, event.data.user_id)}
+          {renderClickableUsername(event.data.username, event.data.user_id, {})}
           <Text style={styles.date}>{event.data.dateshort}</Text>
         </View>
       </View>
@@ -55,19 +59,62 @@ var templates = {
     }
     return (
       <View style={[styles.statusBlock, styles.event]}>
-        <Image style={styles.statusBlockAvatar} source={{uri: common.cloudinary.prepare(event.data.avatar, 20*2)}} />
-        {renderClickableUsername(event.data.username, event.data.user_id)}
-        <Text> {message}</Text>
+        <Image style={styles.statusBlockAvatar} source={{uri: common.cloudinary.prepare(event.data.avatar, 20*2)}}/>
+        {renderClickableUsername(event.data.username, event.data.user_id, styles.statusBlockText)}
+        <Text style={styles.statusBlockText}> {message}</Text>
       </View>
     );
   },
   'room:message': (event) => templates._message(event),
   'user:message': (event) => templates._message(event),
   _message: function (event) {
-    // ({event.data.username})
+    let message = null;
+    if (event.data && event.data.message) {
+      let markup = new RegExp(common.markup.markupPattern);
+      message = (
+        <ParsedText style={styles.messageContent}
+                    parse={[{
+                        pattern: markup,
+                        style: styles.linksRoom,
+                        onPress: exports._handleMarkupPressed,
+                        renderText: exports.renderText
+                    }]}
+          >{event.data.message}
+        </ParsedText>
+      );
+    }
+
+    let files = null;
+    if (event.data && event.data.files && event.data.files.length > 0) {
+      let elements = [];
+      _.each(event.data.files, function(e) {
+        let element = null;
+        if (e.type === 'image') {
+          element = (
+            <TouchableHighlight underlayColor='transparent'
+                                onPress={() => link.open(e.href)}>
+              <Image style={{width: 250, height: 250, alignSelf: 'center', marginVertical:10, marginHorizontal:10}} source={{uri: e.thumbnail}}/>
+            </TouchableHighlight>
+          );
+        }
+        elements.push(element);
+      });
+      if (elements.length > 0) {
+        files = (
+          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+            {elements}
+          </View>
+        );
+      }
+
+    }
+
     return (
-      <View style={[styles.event, styles.message]}>
-        <Text style={styles.messageContent}>{event.data.message}</Text>
+      <View>
+        <View style={[styles.event, styles.message]}>
+          {message}
+        </View>
+        {files}
       </View>
     );
   },
@@ -87,17 +134,18 @@ var templates = {
     // @todo i18next
     return (
       <View style={[styles.promoteBlock, styles.event]}>
-        {renderClickableUsername(event.data.username, event.data.user_id)}
+        {renderClickableUsername(event.data.username, event.data.user_id, {})}
         <Text> a été {event.type} par </Text>
-        {renderClickableUsername(event.data.by_username, event.data.by_user_id)}
+        {renderClickableUsername(event.data.by_username, event.data.by_user_id, {})}
       </View>
     );
   }
 };
 
-var usernameCallback = null;
-exports.render = function (event, previous, isLast, openUserProfile) {
-  usernameCallback = openUserProfile;
+
+var innerNavigation = null;
+exports.render = function (event, previous, isLast, navigator) {
+  innerNavigation = (type, id, identifier) => { navigator.push(navigation.getProfile({type, id, identifier})) };
   var ready = this._data(event.type, event.data);
   var data = ready.data;
 
@@ -154,6 +202,40 @@ exports.block = function (previous, current) {
   return false;
 };
 
+exports._handleMarkupPressed = function (string) {
+  var element = common.markup.toObject(string);
+
+  if (!element || !element.type || _.indexOf(['user', 'group', 'room', 'url', 'email'], element.type) === -1) {
+    return;
+  }
+
+  switch (element.type) {
+    case 'user':
+      innerNavigation('user', element.id, element.title);
+      break;
+    case 'group':
+      innerNavigation('group', element.id, element.title);
+      break;
+    case 'room':
+      innerNavigation('room', element.id, element.title);
+      break;
+    case 'url':
+      link.open(element.href);
+      break;
+    case 'email':
+      link.open(element.href);
+      break;
+  }
+};
+
+exports.renderText = function (string) {
+  var element = common.markup.toObject(string);
+  if (!element || !element.title) {
+    return;
+  }
+  return element.title;
+}
+
 exports._data = function (type, data) {
   if (!type) {
     return;
@@ -204,18 +286,6 @@ exports._data = function (type, data) {
   if (data.message || data.topic) {
     var subject = data.message || data.topic;
     subject = _.unescape(subject);
-    // @todo implement toJSX
-    subject = common.markup.toText(subject);
-//    subject = common.markup.toHtml(subject, {
-//      template: function (markup) {
-//        return (
-//          <Text style={{fontWeight: 'bold'}}>
-//            {markup.title}
-//          </Text>
-//        );
-//      },
-////      style: 'color: ' + this.discussion.get('color') // @todo
-//    });
 
     // @todo dbr : replace with UTF-8 emojis
 //    subject = $.smilify(subject);
@@ -233,7 +303,7 @@ exports._data = function (type, data) {
     _.each(data.files, function (f) {
       if (f.type !== 'raw') {
         f.href = common.cloudinary.prepare(f.url, 1500, 'limit');
-        f.thumbnail = common.cloudinary.prepare(f.url, 100, 'fill');
+        f.thumbnail = common.cloudinary.prepare(f.url, 250, 'fill');
       }
       files.push(f);
     });
@@ -253,10 +323,11 @@ exports._data = function (type, data) {
   };
 };
 
-function renderClickableUsername (username, user_id) {
+function renderClickableUsername(username, user_id, style) {
   return (
-    <TouchableHighlight onPress={() => usernameCallback(username, user_id)}>
-      <Text style={styles.username}>@{username}</Text>
+    <TouchableHighlight underlayColor='transparent'
+                        onPress={() => innerNavigation('user', user_id, username)}>
+      <Text style={[styles.username, style]}>@{username}</Text>
     </TouchableHighlight>
   );
 }
@@ -265,20 +336,36 @@ var styles = StyleSheet.create({
   event: {
     marginHorizontal: 5
   },
-  statusBlock: {
-    flexDirection: 'row'
+
+
+  promoteBlock: {
+    flexDirection: 'row',
+    marginVertical: 2
   },
-  statusBlockAvatar: {
-    width: 20,
-    height: 20,
-    marginRight: 9,
-    marginBottom: 2,
+  statusBlock: {
+    width: 22,
+    height: 22,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 2
   },
   userBlock: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 15,
     marginLeft: 5,
-    marginRight: 5
+    marginRight: 10
+  },
+
+
+  statusBlockAvatar: {
+    width: 20,
+    height: 20,
+    marginRight: 9
+  },
+  statusBlockText: {
+    fontSize: 10,
+    fontFamily: 'Open Sans',
+    color: '#666666'
   },
   userBlockAvatar: {
     width: 30,
@@ -289,28 +376,41 @@ var styles = StyleSheet.create({
   },
   userBlockUsernameContainer: {
     flexDirection: 'row',
-    marginLeft: 38
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    marginLeft: 38,
+    paddingTop: 3
   },
   username: {
     fontWeight: 'bold',
     fontSize: 13,
     fontFamily: 'Open Sans',
-    color: '#333333',
+    color: '#333333'
   },
   date: {
     color: '#666666',
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: 'Open Sans',
-    marginLeft: 5
+    marginLeft: 5,
+    paddingTop: 2
   },
   message: {
-    marginLeft: 45
+    marginLeft: 45,
+    marginVertical: 2
   },
   messageContent: {
     fontSize: 13,
-    fontFamily: 'Open Sans',
+    fontFamily: 'Open Sans'
   },
-  promoteBlock: {
-    flexDirection: 'row'
-  }
+
+
+
+  linksUrl: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
+  linksPhone: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
+  linksEmail: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
+  linksRoom: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
+  linksUser: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
+  linksGroup: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'}
+
+
 });

@@ -15,8 +15,8 @@ exports.pickImage = function (callback) {
   ImagePickerManager.showImagePicker({
     maxWidth: 500,
     maxHeight: 500,
-    takePhotoButtonTitle: 'take a picture',
-    chooseFromLibraryButtonTitle: 'choose from gallery'
+    takePhotoButtonTitle: 'Take a picture',
+    chooseFromLibraryButtonTitle: 'Choose from gallery'
   }, (cancelled, response) => {
     return callback(cancelled, response);
   });
