@@ -1,9 +1,9 @@
 var _ = require('underscore');
 
 var namespaces = [
-  'client',
+//  'client',
 //  'oauth',
-  'navigation',
+//  'navigation',
 //  'storage',
 //  'notifications',
 //  'cloudinary'
