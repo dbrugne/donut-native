@@ -38,21 +38,17 @@ class LoginView extends Component {
       email: currentUser.getEmail()
     });
     if (Platform.OS === 'android') {
-      this.subscription = [
-        BackAndroid.addEventListener('hardwareBackPress', () => {
-          var routes = this.props.navigator.getCurrentRoutes();
-          if (routes && routes.length > 1) {
-            this.props.navigator.pop();
-          }
-        })
-      ];
+      BackAndroid.addEventListener('hardwareBackPress', () => {
+        var routes = this.props.navigator.getCurrentRoutes();
+        if (routes && routes.length > 1) {
+          this.props.navigator.pop();
+        }
+      });
     }
   }
 
   componentWillUnmount() {
-    if (this.subscription && this.subscription.length > 0) {
-      _.each(this.subscription, (s) => s.remove());
-    }
+    BackAndroid.removeEventListener('hardwareBackPress', () => {});
   }
 
   render() {
