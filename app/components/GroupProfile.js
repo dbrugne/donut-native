@@ -161,7 +161,7 @@ class GroupProfileView extends Component {
         <View style={styles.container}>
           <Image style={styles.avatar} source={{uri: avatarUrl}}/>
           <Text style={styles.identifier}>{data.identifier}</Text>
-          <TouchableHighlight onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})); }}>
+          <TouchableHighlight onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})) }}>
             <Text>
               <Text>by </Text>
               <Text style={styles.ownerUsername}>@{data.owner_username}</Text>
