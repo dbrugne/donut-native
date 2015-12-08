@@ -1,56 +1,64 @@
 'use strict';
 
+/**
+ * Inverted ListView is always rendered from last to first chronological event
+ * (from bottom to top)
+ *
+ * Datasource contains event from newer (index 0) to older
+ */
+
 var React = require('react-native');
 var {
   ActivityIndicatorIOS,
-  StyleSheet,
-  TouchableHighlight,
   Text,
   View,
   Component,
   ListView
 } = React;
-
+var Button = require('react-native-button');
 var InvertibleScrollView = require('react-native-invertible-scroll-view');
 
-var _ = require('underscore');
+var debug = require('../libs/debug')('events');
 var app = require('../libs/app');
 var client = require('../libs/client');
-var events = require('../libs/events');
 var s = require('../styles/style');
+
+var prepareEvents = require('../libs/prepareEvents');
+var EventDate = require('./events/Date');
+var EventMessage = require('./events/Message');
+var EventPromote = require('./events/Promote');
+var EventStatus = require('./events/Status');
+var EventTopic = require('./events/Topic');
+var EventUser = require('./events/User');
+
+const HISTORY_LIMIT = 3;//40;
 
 class DiscussionEvents extends Component {
   constructor (props) {
     super(props);
 
-    var ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1.data.id !== r2.data.id
-    });
+    this.eventsDataSource = require('../libs/eventsDataSource')();
     this.state = {
       loading: false,
       more: true,
-      dataSource: ds.cloneWithRows([])
+      dataSource: this.eventsDataSource.dataSource
     };
 
-    this.model = props.model;
-    this.eventsBlob = [];
-    this.topEvent = null;
-    this.bottomEvent = null;
     this.wasFocusedAtLeastOneTime = false;
   }
   componentDidMount () {
-    this.model.on('freshEvent', this.addFreshEvent.bind(this));
+    this.props.model.on('freshEvent', this.addFreshEvent.bind(this), this);
   }
   componentWillUnmount () {
-    this.model.off('freshEvent');
+    this.props.model.off(null, null, this);
   }
   render () {
     return (
-      <View ref='container' style={styles.container}>
+      <View ref='container' style={{flex: 1}}>
         <ListView
           ref='listView'
           renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-          style={styles.listView}
+          style={{flex: 1}}
           dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}
           renderHeader={this.renderFooter.bind(this)}
@@ -70,26 +78,46 @@ class DiscussionEvents extends Component {
      renderSeparator={this.renderSeparator.bind(this)}
      */
   }
-  renderRow (event, sectionID, rowID, highlightRow) {
-    // inverted ListView is always rendered from last to first chronological event
-    // (from bottom to top)
-
-    if (!event.data) {
-      return (<Text/>)
+  renderRow (event) {
+    var ready = prepareEvents(event.type, event.data);
+//    return (<View></View>);
+    var Cmpnt = this.getComponent(event.type);
+    return (
+      <Cmpnt
+        navigator={this.props.navigator}
+        type={event.type}
+        data={ready.data}
+      />
+    );
+  }
+  getComponent (type) {
+    if (type === 'date') {
+      return EventDate;
     }
-    this.topEvent = event.data.id;
-
-    if (rowID > 0) {
-      var previous = this.state.dataSource.getRowData(0, (rowID - 1));
+    if (type === 'user') {
+      return EventUser;
+    }
+    if (type === 'room:topic') {
+      return EventTopic;
+    }
+    if (['room:message', 'user:message'].indexOf(type) !== -1) {
+      return EventMessage;
+    }
+    if (['user:online', 'user:offline', 'room:out', 'room:in'].indexOf(type) !== -1) {
+      return EventStatus;
+    }
+    if (['room:op', 'room:deop', 'room:kick', 'room:ban', 'room:deban',
+        'room:voice', 'room:devoice', 'room:groupban', 'room:groupdisallow',
+        'user:ban', 'user:deban'].indexOf(type) !== -1) {
+      return EventPromote;
     }
 
-    // rowID is a string
-    var isLast = (parseInt(rowID) === (this.eventsBlob.length - 1));
-    return events.render(event, previous, isLast, this.props.navigator);
+    debug.warn('unable to find event component', type);
+    return (<View />);
   }
   renderHeader () {
     if (!this.state.more) {
-      var prefix = (this.model.get('type') === 'room')
+      var prefix = (this.props.model.get('type') === 'room')
         ? 'Your are in'
         : 'You discuss with';
       return (
@@ -102,66 +130,50 @@ class DiscussionEvents extends Component {
       loading = (
         <ActivityIndicatorIOS
           animating={this.state.loading}
-          style={[styles.centering, {height: 10}]}
+          style={[{height: 10}]}
           size='small'
           color='#666666'
-          />
+        />
       );
     }
 
     return (
-      <View>
-        {loading}
-        <TouchableHighlight style={[{padding: 10, borderStyle: 'solid', borderBottomWidth: 1}, s.buttonGray]}
-                            underlayColor= '#DDD'
-                            onPress={this.onLoadMore.bind(this)}
-          >
-          <Text style={[s.buttonTextLight, s.textCenter]}>Load more</Text>
-        </TouchableHighlight>
+      <View style={[s.textCenter, {marginVertical: 15}]}>
+        <View style={[s.textCenter, {marginVertical: 15}]}>
+          {loading}
+        </View>
+        <Button onPress={this.onLoadMore.bind(this)}>
+          Load more
+        </Button>
       </View>
     );
   }
   renderFooter () {
     return (
-      <View style={styles.footer} />
+      <View style={{paddingBottom: 5}} />
     );
   }
-  onLoadMore (event: Object) {
-    this._loadHistory(this.topEvent);
+  onLoadMore () {
+    let end = this.eventsDataSource.getTopItemId();
+    this._loadHistory(end);
   }
   _loadHistory (end) {
     this.setState({
       loading: true
     });
-    this.model.history(null, end, 40, (response) => {
+    this.props.model.history(null, end, HISTORY_LIMIT, (response) => {
       if (!response.history || !response.history.length) {
         return this.setState({
           loading: false,
           more: false
         });
       }
-      this.eventsBlob = this.eventsBlob.concat(response.history);
+
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.eventsBlob),
+        dataSource: this.eventsDataSource.prepend(response.history),
         loading: false,
         more: response.more
       });
-
-      if (!_.isArray(response.history)) {
-        return;
-      }
-
-      // response.history last
-      var last = response.history[response.history.length - 1];
-      this.topEvent = last.id;
-
-      // response.history first
-      if (!this.bottomEvent) {
-        var first = response.history[0];
-        if (first && first.id) {
-          this.bottomEvent = first.id;
-        }
-      }
     });
   }
   onChangeVisibleRows (visibleRows, changedRows) {
@@ -169,11 +181,9 @@ class DiscussionEvents extends Component {
   }
   addFreshEvent (type, data) {
     // add on list top, the inverted view will display on bottom
-    this.eventsBlob = [{type: type, data: data}].concat(this.eventsBlob);
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(this.eventsBlob)
+      dataSource: this.eventsDataSource.append({type: type, data: data})
     });
-    this.bottomEvent = data.id;
   }
   onFocus () {
     // first focus
@@ -183,17 +193,5 @@ class DiscussionEvents extends Component {
     }
   }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  listView: {
-    flex: 1
-  },
-  footer: {
-    paddingBottom: 5 // elegant spacer under last event
-  }
-});
 
 module.exports = DiscussionEvents;

@@ -5,6 +5,7 @@ var namespaces = [
 //  'oauth',
 //  'navigation',
 //  'storage',
+//  'events',
 //  'notifications',
 //  'cloudinary'
 ];

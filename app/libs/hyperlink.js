@@ -1,22 +1,19 @@
 'use strict';
 
 var React = require('react-native');
-var Platform = require('Platform');
-
 var {
-  Component,
   LinkingIOS,
   IntentAndroid,
   AlertIOS,
   ToastAndroid,
-  } = React;
+} = React;
+var Platform = require('Platform');
 
 module.exports = {
-  open: function (url) {
+  open (url) {
     this._openURL(url);
   },
-
-  _openURL: function (url) {
+  _openURL (url) {
     if (Platform.OS === 'android') {
       IntentAndroid.canOpenURL(url, (supported) => {
         if (supported) {
