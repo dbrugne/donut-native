@@ -52,7 +52,7 @@ module.exports = React.createClass({
       </ParsedText>);
     }
     return (
-      <View style={[s.event, s.message]}>
+      <View style={[s.message]}>
         {text}
       </View>);
   },

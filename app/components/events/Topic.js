@@ -7,6 +7,7 @@ var {
   Image,
   Platform
 } = React;
+var date = require('../../libs/date');
 var ParsedText = require('react-native-parsed-text');
 var hyperlink = require('../../libs/hyperlink');
 var navigation = require('../../libs/navigation');
@@ -42,16 +43,25 @@ module.exports = React.createClass({
         {this.props.data.topic}
       </ParsedText>);
     }
+    var time = date.shortTime(this.props.data.time);
     return (
-      <View style={s.topicBlock}>
+      <View style={[{flexDirection: 'row', marginVertical: 0}, s.event]}>
         <Image style={s.topicBlockAvatar} source={{uri: this.props.data.avatar}}/>
-        <Username
-          user_id={this.props.data.user_id}
-          username={this.props.data.username}
-          navigator={this.props.navigator}
-        />
-        <Text>has changed topic for</Text>
-        {topic}
+        <View style={{flexDirection:'column', flex:1, flexWrap: 'wrap'}}>
+          <View style={{flexDirection:'row'}}>
+            <Username
+              style={s.username}
+              user_id={this.props.data.user_id}
+              username={this.props.data.username}
+              navigator={this.props.navigator}
+              />
+            <Text style={{color: '#666666', fontSize: 12, fontFamily: 'Open Sans', marginLeft: 5}}>{time}</Text>
+          </View>
+          <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
+            <Text style={[s.statusBlockText, {flexWrap: 'wrap'}]}>has changed topic for</Text>
+            <Text style={[s.topicContent, {flexWrap: 'wrap'}]}>{topic}</Text>
+          </View>
+        </View>
       </View>
     );
   },
