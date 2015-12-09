@@ -396,7 +396,6 @@ var styles = StyleSheet.create({
   loadMore: {
     height: 40,
     backgroundColor: '#f5f8fa',
-    color: '#333',
     justifyContent: 'center'
   }
 });
