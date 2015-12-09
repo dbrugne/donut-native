@@ -4,7 +4,8 @@ var React = require('react-native');
 var {
   View,
   Text,
-  Image
+  Image,
+  Platform
 } = React;
 var ParsedText = require('react-native-parsed-text');
 var hyperlink = require('../../libs/hyperlink');
@@ -30,6 +31,17 @@ module.exports = React.createClass({
         return markup.title;
       }
     }];
+    var topic;
+    if (Platform.OS === 'android') {
+      // @todo make parsed text work on android
+      topic = (<Text style={s.topicContent}>
+        {common.markup.toText(this.props.data.topic)}
+      </Text>);
+    } else {
+      topic = (<ParsedText style={s.topicContent} parse={parse}>
+        {this.props.data.topic}
+      </ParsedText>);
+    }
     return (
       <View style={s.topicBlock}>
         <Image style={s.topicBlockAvatar} source={{uri: this.props.data.avatar}}/>
@@ -39,9 +51,7 @@ module.exports = React.createClass({
           navigator={this.props.navigator}
         />
         <Text>has changed topic for</Text>
-        <ParsedText style={s.topicContent} parse={parse}>
-          {this.props.data.topic}
-        </ParsedText>
+        {topic}
       </View>
     );
   },

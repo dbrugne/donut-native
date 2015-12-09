@@ -5,7 +5,8 @@ var {
   Text,
   View,
   Image,
-  TouchableHighlight
+  TouchableHighlight,
+  Platform
 } = React;
 var ParsedText = require('react-native-parsed-text');
 var _ = require('underscore');
@@ -39,13 +40,21 @@ module.exports = React.createClass({
         return markup.title;
       }
     }];
+    var text;
+    if (Platform.OS === 'android') {
+      // @todo make parsed text work on android
+      text = (<Text style={s.messageContent}>
+        {common.markup.toText(this.props.data.message)}
+      </Text>);
+    } else {
+      text = (<ParsedText style={s.messageContent} parse={parse}>
+        {this.props.data.message}
+      </ParsedText>);
+    }
     return (
       <View style={[s.event, s.message]}>
-        <ParsedText style={s.messageContent} parse={parse}>
-          {this.props.data.message}
-        </ParsedText>
-      </View>
-    );
+        {text}
+      </View>);
   },
   renderFiles () {
     if (this.props.data.files && this.props.data.files.length > 0) {
