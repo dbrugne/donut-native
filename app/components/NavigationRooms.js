@@ -45,7 +45,9 @@ class NavigationRoomsView extends Component {
   render () {
     return (
       <View>
-        <Text style={styles.title}>ROOMS</Text>
+        <View style={{backgroundColor: '#1D1D1D'}}>
+          <Text style={styles.title}>ROOMS</Text>
+        </View>
         <ListView
           dataSource={this.state.elements}
           renderRow={this.renderElement.bind(this)}
@@ -97,9 +99,8 @@ var styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 10,
     fontWeight: 'bold',
-    padding: 10,
-    color: '#FFFFFF',
-    backgroundColor: '#1D1D1D'
+    margin: 10,
+    color: '#FFFFFF'
   },
   listView: {
   },

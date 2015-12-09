@@ -51,7 +51,7 @@ class CurrentUserView extends Component {
                                 underlayColor= '#414041'
                                 onPress={() => navigation.switchTo(navigation.getMyAccount())}>
               <View style={[styles.linkContainer, {position: 'relative'}]}>
-                <Image style={styles.avatar} source={{uri: common.cloudinary.prepare(user.avatar, 50)}} />
+                <Image style={styles.avatar} source={{uri: common.cloudinary.prepare(user.avatar, 60)}} />
                 <Text style={[styles.text, styles.status, user.status === 'connecting' && styles.statusConnecting, user.status === 'offline' && styles.statusOffline, user.status === 'online' && styles.statusOnline]}>{user.status}</Text>
               </View>
             </TouchableHighlight>
