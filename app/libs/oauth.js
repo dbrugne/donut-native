@@ -164,7 +164,14 @@ var oauth = _.extend({
         });
       }
 
-    ], (err) => callback(err));
+    ], (err) => {
+      if (err) {
+        return callback(err);
+      }
+
+      this.facebookAvoidAutoLogin = false;
+      callback(null);
+    });
   },
 
   /**
@@ -278,7 +285,7 @@ var oauth = _.extend({
     this.id = null;
     this.token = null;
     this.code = null;
-    this.facebookAvoidAutoLogin = false;
+    this.facebookAvoidAutoLogin = true;
     storage.removeKeys(['id', 'token', 'code'], callback);
   },
 
