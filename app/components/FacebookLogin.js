@@ -24,17 +24,17 @@ module.exports = React.createClass({
     if (currentUser.hasFacebookToken()) {
       var data = currentUser.getFacebookData();
       var avatar = (data && data.picture)
-        ? (<Image source={{uri: data.picture.data.url}} style={{width: 50, height: 50}} />)
+        ? (<Image source={{uri: data.picture.data.url}} style={{width: 50, height: 50, marginBottom:10, alignSelf: 'center'}} />)
         : null;
       var message = (data && data.name)
-        ? `You are already identified with Facebook as ${data.name}:`
-        : 'You are already identified with Facebook:';
+        ? `You are already identified with Facebook as ${data.name}`
+        : 'You are already identified with Facebook';
 
       useFacebookToken = (
         <View style={styles.container}>
           <View style={styles.container}>
             {avatar}
-            <Text>{message}</Text>
+            <Text style={{marginBottom: 10, textAlign: 'center'}}>{message}</Text>
             <TouchableHighlight onPress={() => currentUser.authenticate()}
                                 style={[s.button, styles.buttonFacebook]}
                                 underlayColor='#647EB7'
