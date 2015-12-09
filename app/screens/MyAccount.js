@@ -1,6 +1,5 @@
 'use strict';
 var React = require('react-native');
-var _ = require('underscore');
 var currentUser = require('../models/mobile-current-user');
 var s = require('../styles/style');
 var app = require('../libs/app');
@@ -17,7 +16,7 @@ var {
   } = React;
 var {
   Icon
-  } = require('react-native-icons');
+} = require('react-native-icons');
 
 class MyAccountView extends Component {
   constructor(props) {
