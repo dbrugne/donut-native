@@ -61,6 +61,7 @@ if (Platform.OS === 'android') {
           if (err) {
             return debug.log(err);
           }
+          this._setUid();
         });
       });
     }
