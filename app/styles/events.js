@@ -7,72 +7,82 @@ var {
 
 module.exports = StyleSheet.create({
   event: {
-    marginHorizontal: 5
-  },
-  promoteBlock: {
-    flexDirection: 'row',
-    marginVertical: 2
+    marginHorizontal: 10,
+    marginVertical: 10
   },
   statusBlock: {
-    width: 22,
-    height: 22,
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 2
   },
-  userBlock: {
-    flexDirection: 'row',
-    marginTop: 15,
-    marginLeft: 5,
-    marginRight: 10
+  topicBlockAvatar: {
+    width: 30,
+    height: 30,
+    borderRadius:4,
+    marginRight:10
+  },
+  topicContent: {
+    fontSize: 12,
+    fontFamily: 'Open Sans',
+    fontStyle: 'italic',
+    color: '#666666',
+    marginLeft:5
   },
   dateBlock: {
+    height:20,
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'center'
   },
   dateContent: {
     fontFamily: 'Open Sans',
     color: '#666666',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginLeft:10,
+    marginRight:10
   },
   statusBlockAvatar: {
-    width: 20,
-    height: 20,
-    marginRight: 9
+    width: 30,
+    height: 30,
+    borderRadius:4,
+    marginRight:10
   },
   statusBlockText: {
     fontSize: 12,
     fontFamily: 'Open Sans',
     color: '#666666'
   },
+  userBlock: {
+    flexDirection: 'row',
+    marginTop: 20,
+    height:40
+  },
   userBlockAvatar: {
     width: 30,
     height: 30,
     position: 'absolute',
-    top: 5,
-    left: 0
+    top: 0,
+    left: 10,
+    borderRadius:4
   },
   userBlockUsernameContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    marginLeft: 38,
+    marginLeft: 50,
     paddingTop: 3
   },
   username: {
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Open Sans',
     color: '#333333'
   },
   date: {
-    color: '#666666',
-    fontSize: 14,
-    fontFamily: 'Open Sans',
-    marginLeft: 5,
-    paddingTop: 2
+    color: '#666666', fontSize: 12, fontFamily: 'Open Sans'
   },
   message: {
-    marginLeft: 45,
-    marginVertical: 2
+    marginLeft: 50
   },
   messageContent: {
     fontSize: 14,
