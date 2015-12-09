@@ -48,7 +48,10 @@ class LoginView extends Component {
   }
 
   componentWillUnmount() {
-    BackAndroid.removeEventListener('hardwareBackPress', () => {});
+    if (Platform.OS === 'android') {
+      BackAndroid.removeEventListener('hardwareBackPress', () => {
+      });
+    }
   }
 
   render() {
