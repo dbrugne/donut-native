@@ -47,8 +47,5 @@ module.exports = function (type, data) {
     });
   }
 
-  return {
-    type: type,
-    data: data
-  };
+  return data;
 };

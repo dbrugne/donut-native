@@ -23,7 +23,7 @@ var app = require('../libs/app');
 var client = require('../libs/client');
 var s = require('../styles/style');
 
-var prepareEvents = require('../libs/prepareEvents');
+var eventsPrepare = require('../libs/eventsPrepare');
 var EventDate = require('./events/Date');
 var EventMessage = require('./events/Message');
 var EventPromote = require('./events/Promote');
@@ -31,7 +31,7 @@ var EventStatus = require('./events/Status');
 var EventTopic = require('./events/Topic');
 var EventUser = require('./events/User');
 
-const HISTORY_LIMIT = 3;//40;
+const HISTORY_LIMIT = 40;
 
 class DiscussionEvents extends Component {
   constructor (props) {
@@ -79,14 +79,14 @@ class DiscussionEvents extends Component {
      */
   }
   renderRow (event) {
-    var ready = prepareEvents(event.type, event.data);
-//    return (<View></View>);
-    var Cmpnt = this.getComponent(event.type);
+    // @todo : big bug for user:message, we should use from_user_id => refactor whole user message for having the same form as room:message + a to_user_id field?
+    var data = eventsPrepare(event.type, event.data);
+    var Comp = this.getComponent(event.type);
     return (
-      <Cmpnt
+      <Comp
         navigator={this.props.navigator}
         type={event.type}
-        data={ready.data}
+        data={data}
       />
     );
   }
