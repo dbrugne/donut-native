@@ -27,6 +27,7 @@ var eventsPrepare = require('../libs/eventsPrepare');
 var EventDate = require('./events/Date');
 var EventMessage = require('./events/Message');
 var EventPromote = require('./events/Promote');
+var EventUserPromote = require('./events/UserPromote');
 var EventStatus = require('./events/Status');
 var EventTopic = require('./events/Topic');
 var EventUser = require('./events/User');
@@ -106,9 +107,11 @@ class DiscussionEvents extends Component {
     if (['user:online', 'user:offline', 'room:out', 'room:in'].indexOf(type) !== -1) {
       return EventStatus;
     }
+    if (['user:ban', 'user:deban'].indexOf(type) !== -1) {
+      return EventUserPromote;
+    }
     if (['room:op', 'room:deop', 'room:kick', 'room:ban', 'room:deban',
-        'room:voice', 'room:devoice', 'room:groupban', 'room:groupdisallow',
-        'user:ban', 'user:deban'].indexOf(type) !== -1) {
+        'room:voice', 'room:devoice', 'room:groupban', 'room:groupdisallow'].indexOf(type) !== -1) {
       return EventPromote;
     }
 

@@ -10,14 +10,6 @@ module.exports = function (type, data) {
 
   data = (!data) ? {} : _.clone(data);
 
-  // ones
-  if (type === 'user:message') {
-    data.user_id = data.from_user_id;
-    data.username = data.from_username;
-    data.avatar = data.from_avatar;
-    data.color = data.from_color;
-  }
-
   // unviewed & spammed & edited
   data.unviewed = (data.unviewed === true);
   data.spammed = (data.spammed === true);
@@ -28,6 +20,9 @@ module.exports = function (type, data) {
   }
   if (data.by_avatar) {
     data.by_avatar = common.cloudinary.prepare(data.by_avatar, 30);
+  }
+  if (data.to_avatar) {
+    data.to_avatar = common.cloudinary.prepare(data.to_avatar, 30);
   }
   if (data.message) {
     data.message = _.unescape(data.message);
