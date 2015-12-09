@@ -79,6 +79,7 @@ if (Platform.OS === 'ios') {
       PushNotificationIOS.addEventListener('notification', this._onNotification.bind(this));
 
       app.on('_checkPermissions', this._checkPermissions, this);
+      app.on('_requestPermissions', this._requestPermissions, this);
     },
     componentWillUnmount () {
       PushNotificationIOS.removeEventListener('register', this._onRegister.bind(this));
@@ -120,8 +121,12 @@ if (Platform.OS === 'ios') {
         }
 
         // @todo : is the requestPersmission() sync or async? how to call following only on getting permissions
-        PushNotificationIOS.requestPermissions({alert: true, badge: true});
+        PushNotificationIOS.requestPermissions();
       });
+    },
+    _requestPermissions () {
+      debug.log('_requestPermissions');
+      PushNotificationIOS.requestPermissions();
     },
     _registerInstallation (data) {
       // inform Parse.com of this device
