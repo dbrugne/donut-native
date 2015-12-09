@@ -13,6 +13,7 @@ currentUser.defaults = function () {
 currentUser.authenticationHasChanged = function () {
   debug.log(
     'authenticationChanged', {
+      id: currentUser.oauth.id,
       token: currentUser.oauth.token,
       email: currentUser.oauth.email,
       code: currentUser.oauth.code,
@@ -55,6 +56,10 @@ currentUser.authenticate = function () {
 
 currentUser.isLoggedIn = function () {
   return (this.oauth.loaded && this.oauth.token);
+};
+
+currentUser.getId = function () {
+  return this.oauth.id;
 };
 
 currentUser.getEmail = function () {

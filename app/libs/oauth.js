@@ -7,6 +7,7 @@ var storage = require('./storage');
 var debug = require('./debug')('oauth');
 
 var oauth = _.extend({
+  id: null,
   email: null,
   token: null,
   code: null,
@@ -49,13 +50,14 @@ var oauth = _.extend({
       return callback(null);
     }
 
-    storage.getKeys(['email', 'token', 'code'], _.bind(function (err, values) {
+    storage.getKeys(['id', 'email', 'token', 'code'], _.bind(function (err, values) {
       if (err) {
         return callback(err);
       }
 
       debug.log('found in storage', values);
 
+      this.id = values.id;
       this.email = values.email;
       this.token = values.token;
       this.code = values.code;
@@ -115,9 +117,11 @@ var oauth = _.extend({
           }
 
           hasValidToken = true;
+          this.id = response.id;
           this.token = response.token;
           this.code = '';
           storage.setKeys({
+            id: this.id,
             token: this.token,
             code: this.code
           }, () => cb(null));
@@ -143,10 +147,11 @@ var oauth = _.extend({
             });
           }
 
-          hasValidToken = true;
+          this.id = response.id;
           this.token = response.token;
           this.code = response.code;
           storage.setKeys({
+            id: this.id,
             token: this.token,
             code: this.code
           }, cb);
@@ -200,9 +205,11 @@ var oauth = _.extend({
           return callback(response.err);
         }
 
+        this.id = response.id;
         this.token = response.token;
         this.code = response.code;
         storage.setKeys({
+          id: this.id,
           token: this.token,
           code: this.code
         }, callback);
@@ -234,9 +241,13 @@ var oauth = _.extend({
           return callback(response.err);
         }
 
+        this.id = response.id;
         this.token = response.token;
+        this.code = response.code;
         storage.setKeys({
-          token: this.token
+          id: this.id,
+          token: this.token,
+          code: this.code
         }, callback);
       }, this));
     }, this));
@@ -248,11 +259,12 @@ var oauth = _.extend({
    * @private
    */
   _logout: function (callback) {
+    this.id = null;
     this.token = null;
     this.code = null;
     this.facebookToken = null; // @important
     this.facebookId = null; // @important
-    storage.removeKeys(['token', 'code'], callback);
+    storage.removeKeys(['id', 'token', 'code'], callback);
   },
 
   /**

@@ -17,6 +17,7 @@ var Platform = require('Platform');
 var _ = require('underscore');
 var debug = require('./debug')('notifications');
 var app = require('./app');
+var currentUser = require('../models/mobile-current-user');
 
 var PushNotifications = {
   componentDidMount: _.noop,
@@ -31,7 +32,7 @@ if (Platform.OS === 'android') {
     componentWillUnmount () {
 
     },
-    _setUid (uid) {
+    _setUid () {
       ParseManagerAndroid.getId((id) => {
         var url = 'https://api.parse.com/1/installations/' + id;
 
@@ -44,21 +45,21 @@ if (Platform.OS === 'android') {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            uid: uid
+            uid: currentUser.getId()
           })
         })
-        .then((response) => console.log(response))
-        .catch((err) => console.log(err));
+        .then((response) => debug.log(response))
+        .catch((err) => debug.log(err));
       });
     },
     _registerDevice() {
       ParseManagerAndroid.authenticate((err) => {
         if (err) {
-          return console.log(err);
+          return debug.log(err);
         }
         ParseManagerAndroid.subscribeToChannel('global', (err) => {
           if (err) {
-            return console.log(err);
+            return debug.log(err);
           }
         });
       });
@@ -74,7 +75,7 @@ if (Platform.OS === 'ios') {
 
       PushNotificationIOS.addEventListener('register', this._onRegister.bind(this));
 
-      // always mount listener (@todo: maybe only if we have permission?)
+      // always mount listener
       PushNotificationIOS.addEventListener('notification', this._onNotification.bind(this));
 
       app.on('_checkPermissions', this._checkPermissions, this);
@@ -92,7 +93,8 @@ if (Platform.OS === 'ios') {
         appVersion: '1.0', // @conf
         deviceType: 'ios',
         deviceToken: deviceToken,
-        channels: ["global"]
+        channels: ['global'],
+        uid: currentUser.getId()
       });
     },
     _onNotification (notification) {
