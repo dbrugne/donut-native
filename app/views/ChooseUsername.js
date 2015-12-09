@@ -1,7 +1,7 @@
-var _ = require('underscore');
+var common = require('@dbrugne/donut-common');
 var React = require('react-native');
 var Platform = require('Platform');
-var currentUser = require('../models/mobile-current-user');
+var client = require('../libs/client');
 var s = require('../styles/style');
 
 var {
@@ -13,7 +13,7 @@ var {
   View,
   Image,
   ToastAndroid
-  } = React;
+} = React;
 
 class ChooseUsername extends Component {
   constructor (props) {
@@ -70,13 +70,17 @@ class ChooseUsername extends Component {
     if (!this.state.username) {
       return this._appendError('not-complete');
     }
+    if (!common.validate.username(this.state.username)) {
+      return this._appendError('invalid');
+    }
 
-    // @todo now use client.userUpdate()
-//    currentUser.saveUsername(this.state.username, (err) => {
-//      if (err) {
-//        this._appendError(err);
-//      }
-//    });
+    client.userUpdate({username: this.state.username}, (response) => {
+      if (response.err) {
+        return this._appendError(response.err);;
+      }
+
+      client.connect();
+    });
   }
 
   _appendError (string) {

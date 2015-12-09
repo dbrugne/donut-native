@@ -95,7 +95,8 @@ class Index extends Component {
     // normal welcome (async to let RootNavigator render)
     this.setState({
       underFirstConnection: false,
-      featured: data.featured
+      featured: data.featured,
+      usernameRequired: false // @important
     }, () => {
       currentUser.onWelcome(data);
       onetoones.onWelcome(data);
