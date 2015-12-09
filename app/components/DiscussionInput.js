@@ -3,7 +3,6 @@
 var React = require('react-native');
 var {
   StyleSheet,
-  TouchableHighlight,
   View,
   Component,
   TextInput,
