@@ -74,10 +74,13 @@ module.exports = function () {
     decorate (item, previous) {
       var list = [item];
 
+      var isDifferentDay = (!previous || !date.isSameDay(previous.data.time, item.data.time));
+
       // user-block
-      if (messagesTypes.indexOf(item.type) !== -1 &&
+      if (isDifferentDay ||
+        (messagesTypes.indexOf(item.type) !== -1 &&
         (!previous || previous.data.user_id !== item.data.user_id ||
-        previous.type !== item.type)) {
+        previous.type !== item.type))) {
         list = list.concat([{type: 'user', data: {
           id: 'user' + item.data.id,
           user_id: item.data.user_id,
@@ -88,7 +91,7 @@ module.exports = function () {
       }
 
       // date
-      if (!previous || !date.isSameDay(previous.data.time, item.data.time)) {
+      if (isDifferentDay) {
         list = list.concat([{type: 'date', data: {
           id: 'date' + item.data.id,
           time: item.data.time,
