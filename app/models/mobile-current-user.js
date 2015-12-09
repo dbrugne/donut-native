@@ -13,13 +13,14 @@ currentUser.defaults = function () {
 currentUser.authenticationHasChanged = function () {
   debug.log(
     'authenticationChanged', {
-      id: currentUser.oauth.id,
-      token: currentUser.oauth.token,
-      email: currentUser.oauth.email,
-      code: currentUser.oauth.code,
-      facebookToken: currentUser.oauth.facebookToken,
-      facebookId: currentUser.oauth.facebookId,
-      facebookData: currentUser.oauth.facebookData
+      id: this.oauth.id,
+      token: this.oauth.token,
+      email: this.oauth.email,
+      code: this.oauth.code,
+      facebookToken: this.oauth.facebookToken,
+      facebookId: this.oauth.facebookId,
+      facebookData: this.oauth.facebookData,
+      facebookAvoidAutoLogin: this.oauth.facebookAvoidAutoLogin
     }
   );
   this.trigger('authenticationChanged');
