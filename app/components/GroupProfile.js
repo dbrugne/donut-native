@@ -21,6 +21,7 @@ var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');
+var hyperlink = require('../libs/hyperlink');
 
 class GroupProfileView extends Component {
   constructor(props) {
@@ -37,9 +38,9 @@ class GroupProfileView extends Component {
 
     var website = null;
     if (data.website) {
-      // @todo implement website link
       website = (
-        <TouchableHighlight >
+        <TouchableHighlight underlayColor='transparent'
+                            onPress={() => hyperlink.open(data.website.href)}>
           <View style={[s.listGroupItem, s.listGroupItemFirst]}>
             <Icon
               name='fontawesome|link'
@@ -70,26 +71,6 @@ class GroupProfileView extends Component {
           />
         <Text style={s.listGroupItemText}> créé le {date.longDateTime(data.created)}</Text>
       </View>
-    );
-
-    var permalink = (
-      <TouchableHighlight >
-        <View style={s.listGroupItem}>
-          <Icon
-            name='fontawesome|link'
-            size={14}
-            color='#333'
-            style={s.listGroupItemIcon}
-            />
-          <Text style={s.listGroupItemText}> permalien de ce profil</Text>
-          <Icon
-            name='fontawesome|chevron-right'
-            size={14}
-            color='#DDD'
-            style={s.listGroupItemIconRight}
-            />
-        </View>
-      </TouchableHighlight>
     );
 
     var links = null;
@@ -154,7 +135,6 @@ class GroupProfileView extends Component {
       );
     }
 
-    // @todo implement permalink link
     // @todo implement joinGroup
     return (
       <ScrollView style={styles.main}>
@@ -184,7 +164,6 @@ class GroupProfileView extends Component {
           <View style={s.listGroup}>
             {website}
             {createdAt}
-            {permalink}
             {links}
           </View>
         </View>

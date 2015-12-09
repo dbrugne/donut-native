@@ -11,10 +11,10 @@ var {
   TextInput,
   TouchableHighlight,
   Image
-  } = React;
+} = React;
 var {
   Icon
-  } = require('react-native-icons');
+} = require('react-native-icons');
 
 
 class ForgotView extends Component {

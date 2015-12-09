@@ -22,6 +22,7 @@ var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');
+var hyperlink = require('../libs/hyperlink');
 
 class UserProfileView extends Component {
   constructor (props) {
@@ -84,9 +85,9 @@ class UserProfileView extends Component {
 
     var website = null;
     if (data.website) {
-      // @todo implement website link
       website = (
-        <TouchableHighlight >
+        <TouchableHighlight underlayColor='transparent'
+                            onPress={() => hyperlink.open(data.website.href)}>
           <View style={[s.listGroupItem, !data.location && s.listGroupItemFirst]}>
             <Icon
               name='fontawesome|link'
@@ -182,7 +183,6 @@ class UserProfileView extends Component {
       );
     }
 
-    // @todo implement joinOne
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>

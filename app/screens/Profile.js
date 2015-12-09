@@ -91,9 +91,6 @@ class ProfileView extends Component {
           <GroupProfile data={this.state.data} navigator={this.props.navigator} />
         );
       break;
-      default:
-        return (<View>Unable to display this profile</View>); // @todo ylastapis skin a reusable error page component
-      break;
     }
   }
 }
@@ -113,7 +110,7 @@ var styles = StyleSheet.create({
   },
   loading: {
     height: 120
-  },
+  }
 });
 
 module.exports = ProfileView;
