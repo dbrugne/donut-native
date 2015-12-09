@@ -16,9 +16,9 @@ module.exports = React.createClass({
     return (
       <View style={s.userBlock}>
         <Image style={s.userBlockAvatar} source={{uri: this.props.data.avatar}} />
-        <View style={s.userBlockUsernameContainer}>
-          <Username user_id={this.props.data.user_id} username={this.props.data.username} navigator={this.props.navigator} />
-          <Text style={s.date}>{time}</Text>
+        <View style={{flexDirection:'row', marginLeft:50}}>
+          <Username style={s.username} user_id={this.props.data.user_id} username={this.props.data.username} navigator={this.props.navigator} />
+          <Text style={{color: '#666666', fontSize: 12, fontFamily: 'Open Sans', marginLeft: 5}}>{time}</Text>
         </View>
       </View>
     );
