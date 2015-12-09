@@ -11,6 +11,7 @@ var {
   AlertIOS,
   PushNotificationIOS
 } = React;
+var ParseManagerAndroid = require('NativeModules').NotificationAndroidManager;
 var Platform = require('Platform');
 
 var _ = require('underscore');
@@ -23,7 +24,46 @@ var PushNotifications = {
 };
 
 if (Platform.OS === 'android') {
-  // @todo : Push notifications on Android
+  PushNotifications = {
+    componentDidMount () {
+      this._registerDevice();
+    },
+    componentWillUnmount () {
+
+    },
+    _setUid (uid) {
+      ParseManagerAndroid.getId((id) => {
+        var url = 'https://api.parse.com/1/installations/' + id;
+
+        fetch(url, {
+          method: 'put',
+          headers: {
+            'Accept': 'application/json',
+            'X-Parse-Application-Id': 'HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g', // @conf
+            'X-Parse-Master-Key': '7c6ycSLa7gBHzQ9w2KMJBKoVWrVwBw8606x7PtVA', // @conf
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            uid: uid
+          })
+        })
+        .then((response) => console.log(response))
+        .catch((err) => console.log(err));
+      });
+    },
+    _registerDevice() {
+      ParseManagerAndroid.authenticate((err) => {
+        if (err) {
+          return console.log(err);
+        }
+        ParseManagerAndroid.subscribeToChannel('global', (err) => {
+          if (err) {
+            return console.log(err);
+          }
+        });
+      });
+    }
+  };
 }
 
 if (Platform.OS === 'ios') {
@@ -47,6 +87,9 @@ if (Platform.OS === 'ios') {
     _onRegister (deviceToken) {
       debug.log('_onRegister', deviceToken);
       this._registerInstallation({
+        appIdentifier: 'me.donut', // @conf
+        appName: 'donutMobile', // @conf
+        appVersion: '1.0', // @conf
         deviceType: 'ios',
         deviceToken: deviceToken,
         channels: ["global"]

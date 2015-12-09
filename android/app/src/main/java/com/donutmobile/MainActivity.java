@@ -25,6 +25,10 @@ import com.imagepicker.ImagePickerPackage;
 // @ImagePicker and @FacebookLogin
 import android.content.Intent;
 
+// @Parse
+import com.parse.Parse;
+import com.notificationandroid.NotificationAndroidPackage;
+
 import android.util.Log;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
@@ -38,6 +42,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     // @ImagePicker
     private ImagePickerPackage mImagePicker;
 
+    // @Parse
+    private NotificationAndroidPackage mNotificationAndroid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +55,10 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         // @ImagePicker
         mImagePicker = new ImagePickerPackage(this);
+
+        // @Parse
+        mNotificationAndroid = new NotificationAndroidPackage(this);
+        Parse.initialize(this, "HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g", "scK5G6HLyEATHuytp74POetQozngZBhs9eUmnp4q");
 
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
@@ -63,6 +74,9 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
                 // @ImagePicker
                 .addPackage(mImagePicker)
+
+                // @Parse
+                 .addPackage(mNotificationAndroid)
 
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)

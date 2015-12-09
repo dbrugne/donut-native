@@ -10,6 +10,9 @@ var {
   View,
   Image,
 } = React;
+var {
+  Icon
+  } = require('react-native-icons');
 
 var Platform = require('Platform');
 var currentUser = require('../models/mobile-current-user');

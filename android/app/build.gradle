@@ -93,4 +93,9 @@ dependencies {
 
     // @ImagePicker
     compile project(':react-native-image-picker')
+
+    // @Parse
+    compile project(':react-native-parse-notification-android')
+    compile 'com.parse.bolts:bolts-android:1.+'
+    compile 'com.parse:parse-android:1.+'
 }

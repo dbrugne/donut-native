@@ -44,7 +44,9 @@ class NavigationOnesView extends Component {
   render () {
     return (
       <View>
-        <Text style={styles.title}>ONE TO ONES</Text>
+        <View style={{backgroundColor: '#1D1D1D'}}>
+          <Text style={styles.title}>ONE TO ONES</Text>
+        </View>
         <ListView
           dataSource={this.state.elements}
           renderRow={this.renderElement.bind(this)}
@@ -67,7 +69,7 @@ class NavigationOnesView extends Component {
       );
     }
 
-    var avatarUrl = common.cloudinary.prepare(e.avatar, 30);
+    var avatarUrl = common.cloudinary.prepare(e.avatar, 50);
     return (
       <TouchableHighlight
         style={styles.linkBlock}
@@ -92,9 +94,8 @@ var styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 10,
     fontWeight: 'bold',
-    padding: 10,
-    color: '#FFFFFF',
-    backgroundColor: '#1D1D1D'
+    margin: 10,
+    color: '#FFFFFF'
   },
   listView: {
   },
