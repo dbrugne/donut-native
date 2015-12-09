@@ -38,7 +38,8 @@ class RoomProfileView extends Component {
     var website = null;
     if (data.website) {
       website = (
-        <TouchableHighlight onPress={() => hyperlink.open(data.website.href)}>
+        <TouchableHighlight underlayColor='transparent'
+                            onPress={() => hyperlink.open(data.website.href)}>
           <View style={[s.listGroupItem, s.listGroupItemFirst]}>
             <Icon
               name='fontawesome|link'
@@ -69,26 +70,6 @@ class RoomProfileView extends Component {
           />
         <Text style={s.listGroupItemText}> créé le {date.longDateTime(data.created)}</Text>
       </View>
-    );
-
-    var permalink = (
-      <TouchableHighlight >
-        <View style={s.listGroupItem}>
-          <Icon
-            name='fontawesome|link'
-            size={14}
-            color='#333'
-            style={s.listGroupItemIcon}
-            />
-          <Text style={s.listGroupItemText}> permalien de ce profil</Text>
-          <Icon
-            name='fontawesome|chevron-right'
-            size={14}
-            color='#DDD'
-            style={s.listGroupItemIconRight}
-            />
-        </View>
-      </TouchableHighlight>
     );
 
     var links = null;
@@ -171,7 +152,6 @@ class RoomProfileView extends Component {
       );
     }
 
-    // @todo implement permalink link
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
@@ -200,7 +180,6 @@ class RoomProfileView extends Component {
           <View style={s.listGroup}>
             {website}
             {createdAt}
-            {permalink}
             {links}
           </View>
         </View>
