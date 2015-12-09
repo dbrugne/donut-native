@@ -2,7 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var client = require('../libs/client');
-var currentUser = require('./mobile-current-user');
+var currentUser = require('./current-user');
 var RoomUsersCollection = require('../collections/room-users');
 
 var RoomModel = Backbone.Model.extend({
