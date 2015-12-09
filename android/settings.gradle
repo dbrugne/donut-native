@@ -13,3 +13,7 @@ project(':react-native-facebook-login').projectDir = new File(rootProject.projec
 // @ImagePicker
 include ':react-native-image-picker'
 project(':react-native-image-picker').projectDir = new File(settingsDir, '../node_modules/react-native-image-picker/android')
+
+// @ParseNotification
+include ':react-native-parse-notification-android'
+project(':react-native-parse-notification-android').projectDir = new File(settingsDir, '../node_modules/react-native-parse-notification-android/android')
