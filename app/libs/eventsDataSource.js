@@ -11,29 +11,43 @@ module.exports = function () {
   var eds = {
     blob: [],
     getTopItemId () {
+      var top = this.getTopItem();
+      if (!top || !top.data) {
+        return;
+      }
+      return top.data.id;
+    },
+    getTopItem () {
       if (!this.blob.length) {
         return;
       }
 
-      var lastId;
-      for (let idx = 0; idx < this.blob.length; idx++) {
-        var item = this.blob[idx];
-        if (item.type === 'date' || item.type === 'user' || !item.data) {
+      var top;
+      for (let idx = this.blob.length - 1; idx >= 0 ; idx--) {
+        top = this.blob[idx];
+        if (top.type === 'date' || top.type === 'user' || !top.data) {
           continue;
         }
-        lastId = item.data.id;
+        break;
       }
-      return lastId;
+      return top;
     },
     prepend (items) {
-      // @todo avoid user-block is new event is same user as last event
-
       // items comes in ante-chronological order
       items.reverse(); // @important, before date.isSameDay test
 
-      // systematically remove top date block if top event is older than today
+      // remove top date block if top event is older than today
       if (!date.isSameDay(this.blob[this.blob.length - 1], items[items.length - 1])) {
         this.blob.pop();
+      }
+
+      // remove user block if top event is from the same user as newer
+      if (this.blob.length) {
+        var _top = this.blob[this.blob.length - 1]; // date block was removed above
+        var _newest = items[items.length - 1];
+        if (_top.type === 'user' && _top.data.user_id === _newest.data.user_id) {
+          this.blob.pop();
+        }
       }
 
       // add new events at the end of this.blob
