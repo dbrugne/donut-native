@@ -44,7 +44,7 @@ module.exports = React.createClass({
     if (Platform.OS === 'android') {
       // @todo make parsed text work on android
       text = (<Text style={s.messageContent}>
-        {this.props.data.message}
+        {common.markup.toText(this.props.data.message)}
       </Text>);
     } else {
       text = (<ParsedText style={s.messageContent} parse={parse}>
