@@ -20,11 +20,7 @@ module.exports = Client({
   },
   invalidToken: (callback) => {
     // try to obtain new token
-    //  currentUser.renewToken(() => {
-    //
-    //  });
-    // @todo : implement token renewal
-    debug.log('TODO TODO TODO');
+    currentUser.renewToken(callback);
   },
   sio: {
     transports: ['websocket']

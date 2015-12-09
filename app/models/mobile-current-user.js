@@ -32,15 +32,20 @@ currentUser.loadInitialState = function () {
   });
 };
 
-currentUser.renewToken = function () { // @todo : implement token expiration renewal (need callback)
-  // cleanup stored token
-  currentUser.token = null;
-  storage.removeKey('token', (err) => {
+currentUser.renewToken = function (callback) {
+  this.oauth.authenticate((err) => {
     if (err) {
       debug.warn(err);
+      return this.authenticationHasChanged();
+    }
+    if (!this.oauth.token) {
+      debug.warn('unable to renew token');
+
+      // trigger loggedOut screen
+      return this.authenticationHasChanged();
     }
 
-    this.authenticate();
+    return callback(null, this.oauth.token);
   });
 };
 
