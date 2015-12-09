@@ -24,7 +24,6 @@ var PushNotifications = {
 };
 
 if (Platform.OS === 'android') {
-  // @todo : Push notifications on Android
   PushNotifications = {
     componentDidMount () {
       this._registerDevice();
