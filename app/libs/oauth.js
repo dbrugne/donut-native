@@ -15,6 +15,7 @@ var oauth = _.extend({
   facebookToken: null,
   facebookId: null,
   facebookData: null,
+  facebookAvoidAutoLogin: false, // handle lack of FacebookLogin.onLoginFound() on Android
 
   loaded: false,
 
@@ -50,7 +51,7 @@ var oauth = _.extend({
       return callback(null);
     }
 
-    storage.getKeys(['id', 'email', 'token', 'code'], _.bind(function (err, values) {
+    storage.getKeys(['id', 'email', 'token', 'code', 'facebookToken', 'facebookId'], _.bind(function (err, values) {
       if (err) {
         return callback(err);
       }
@@ -61,6 +62,11 @@ var oauth = _.extend({
       this.email = values.email;
       this.token = values.token;
       this.code = values.code;
+
+      this.facebookToken = values.facebookToken;
+      this.facebookId = values.facebookId;
+      this.facebookAvoidAutoLogin = true;
+
       this.loaded = true;
 
       return callback(null);
@@ -104,7 +110,7 @@ var oauth = _.extend({
       },
       // try with Facebook token (if exists)
       (cb) => {
-        if (hasValidToken || !this.facebookToken) {
+        if (hasValidToken || this.facebookAvoidAutoLogin || !this.facebookToken) {
           return cb(null);
         }
 
@@ -176,10 +182,14 @@ var oauth = _.extend({
     this.token = null;
     this.email = null;
     this.code = null;
-    storage.removeKeys(['token', 'code', 'email'], () => {
+    storage.removeKeys(['id', 'token', 'code', 'email'], () => {
       this.facebookToken = facebookToken;
       this.facebookId = userId; // only to retrieve user name via GraphAPI
-      this.authenticate(callback);
+      this.facebookAvoidAutoLogin = false;
+      storage.setKeys({
+        facebookToken: this.facebookToken,
+        facebookId: this.facebookId
+      }, () => this.authenticate(callback));
     });
   },
 
@@ -192,29 +202,32 @@ var oauth = _.extend({
   _emailLogin: function (email, password, callback) {
     this.email = email;
     this.facebookToken = null; // @important
-    storage.setKey('email', email, _.bind(function (err) {
-      if (err) {
-        return callback(err);
-      }
-
-      this._oauthRequest('get-token-from-credentials', { email: email, password: password }, _.bind(function (err, response) {
+    this.facebookId = null; // @important
+    storage.removeKeys(['facebookToken', 'facebookId'], () => {
+      storage.setKey('email', email, _.bind(function (err) {
         if (err) {
           return callback(err);
         }
-        if (response.err) {
-          return callback(response.err);
-        }
 
-        this.id = response.id;
-        this.token = response.token;
-        this.code = response.code;
-        storage.setKeys({
-          id: this.id,
-          token: this.token,
-          code: this.code
-        }, callback);
+        this._oauthRequest('get-token-from-credentials', { email: email, password: password }, _.bind(function (err, response) {
+          if (err) {
+            return callback(err);
+          }
+          if (response.err) {
+            return callback(response.err);
+          }
+
+          this.id = response.id;
+          this.token = response.token;
+          this.code = response.code;
+          storage.setKeys({
+            id: this.id,
+            token: this.token,
+            code: this.code
+          }, callback);
+        }, this));
       }, this));
-    }, this));
+    });
   },
 
   /**
@@ -228,29 +241,32 @@ var oauth = _.extend({
   _emailSignUp: function (email, password, username, callback) {
     this.email = email;
     this.facebookToken = null; // @important
-    storage.setKey('email', email, _.bind(function (err) {
-      if (err) {
-        return callback(err);
-      }
-
-      this._oauthRequest('signup', { email: email, password: password, username: username }, _.bind(function (err, response) {
+    this.facebookId = null; // @important
+    storage.removeKeys(['facebookToken', 'facebookId'], () => {
+      storage.setKey('email', email, _.bind(function (err) {
         if (err) {
           return callback(err);
         }
-        if (response.err) {
-          return callback(response.err);
-        }
 
-        this.id = response.id;
-        this.token = response.token;
-        this.code = response.code;
-        storage.setKeys({
-          id: this.id,
-          token: this.token,
-          code: this.code
-        }, callback);
+        this._oauthRequest('signup', { email: email, password: password, username: username }, _.bind(function (err, response) {
+          if (err) {
+            return callback(err);
+          }
+          if (response.err) {
+            return callback(response.err);
+          }
+
+          this.id = response.id;
+          this.token = response.token;
+          this.code = response.code;
+          storage.setKeys({
+            id: this.id,
+            token: this.token,
+            code: this.code
+          }, callback);
+        }, this));
       }, this));
-    }, this));
+    })
   },
 
   /**
@@ -262,9 +278,21 @@ var oauth = _.extend({
     this.id = null;
     this.token = null;
     this.code = null;
-    this.facebookToken = null; // @important
-    this.facebookId = null; // @important
+    this.facebookAvoidAutoLogin = false;
     storage.removeKeys(['id', 'token', 'code'], callback);
+  },
+
+  /**
+   * Handle Facebook Logout event by removing Facebook keys
+   * @param callback
+   * @private
+   */
+  _facebookLogout: function (callback) {
+    this.facebookToken = null;
+    this.facebookId = null;
+    storage.removeKeys(['facebookToken', 'facebookId'], () => {
+      this._logout(callback);
+    });
   },
 
   /**

@@ -35,7 +35,7 @@ module.exports = React.createClass({
           <View style={styles.container}>
             {avatar}
             <Text style={{marginBottom: 10, textAlign: 'center'}}>{message}</Text>
-            <TouchableHighlight onPress={() => currentUser.authenticate()}
+            <TouchableHighlight onPress={() => currentUser.useFacebookToken()}
                                 style={[s.button, styles.buttonFacebook]}
                                 underlayColor='#647EB7'
               >
@@ -104,7 +104,7 @@ module.exports = React.createClass({
   },
   onLogout (data) {
     debug.log('onLogout', data);
-    currentUser.logout();
+    currentUser.facebookLogout();
   },
   onCancel () {
     debug.log('onCancel');

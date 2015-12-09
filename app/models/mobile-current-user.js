@@ -43,6 +43,11 @@ currentUser.renewToken = function () { // @todo : implement token expiration ren
   });
 };
 
+currentUser.useFacebookToken = function () {
+  this.oauth.facebookAvoidAutoLogin = false;
+  this.authenticate();
+};
+
 currentUser.authenticate = function () {
   this.oauth.authenticate((err) => {
     if (err) {
@@ -122,6 +127,10 @@ currentUser.emailSignUp = function (email, password, username, callback) {
 
 currentUser.logout = function () {
   this.oauth._logout(() => this.authenticationHasChanged());
+};
+
+currentUser.facebookLogout = function () {
+  this.oauth._facebookLogout(() => this.authenticationHasChanged());
 };
 
 currentUser.forgot = function (email, callback) {
