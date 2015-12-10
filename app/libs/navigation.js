@@ -461,12 +461,10 @@ routes.getNavigator = function (initialRoute) {
             style={{flex: 1}}
             sceneStyle={{ paddingTop: navigationBarHeight }}
             titleStyle={{
-              flex: 1,
               fontSize: 20,
               color: '222',
               alignSelf: 'center',
-              marginTop: 15,
-              marginRight: 72
+              marginTop: 15
             }}
             />
         );
