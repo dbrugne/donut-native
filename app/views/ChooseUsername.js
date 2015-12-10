@@ -15,6 +15,24 @@ var {
   Image
   } = React;
 
+var i18next = require('i18next-client');
+var _localRes = { // current page locales
+  'choose': 'It\'s time to choose a username!',
+  'disclaimer': 'This username will be your identity on DONUT and will be public. You cannot edit it later.',
+  'save': 'save',
+  'username': 'username'
+};
+
+i18next.init({
+  fallbackLng: 'en',
+  lng: 'en',
+  debug: true,
+  resStore: {
+    en: {translation: _localRes}
+  }
+});
+
+
 class ChooseUsername extends Component {
   constructor (props) {
     super(props);
@@ -32,12 +50,12 @@ class ChooseUsername extends Component {
             <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
           </View>
 
-          <Text style={s.h1}>Il est temps de choisir un nom d'utilisateur !</Text>
-          <Text style={[s.h2, s.marginTop10]}>Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.</Text>
+          <Text style={s.h1}>{i18next.t('choose')}</Text>
+          <Text style={[s.h2, s.marginTop10]}>{i18next.t('disclaimer')}</Text>
 
           <View style={[s.inputContainer, s.marginTop10]}>
             <TextInput
-              placeholder="Username"
+              placeholder={i18next.t('username')}
               onChange={(event) => this.setState({username: event.nativeEvent.text})}
               style={s.input}
               value={this.state.username} />
@@ -47,7 +65,7 @@ class ChooseUsername extends Component {
                               style={[s.button, s.buttonPink, styles.marginTop5]}
                               underlayColor='#E4396D' >
             <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>Save</Text>
+              <Text style={s.buttonTextLight}>{i18next.t('save')}</Text>
             </View>
           </TouchableHighlight>
         </View>

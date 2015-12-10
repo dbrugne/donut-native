@@ -17,6 +17,23 @@ var {
 
 var currentUser = require('../models/mobile-current-user');
 
+var i18next = require('i18next-client');
+var locales = require('../locales/en/translation.json'); // global locales
+var _localRes = { // current page locales
+  'add-email': 'Add a new email ?',
+  'email': 'Email',
+  'validation-sent': 'A validation email have been sent',
+};
+
+i18next.init({
+  fallbackLng: 'en',
+  lng: 'en',
+  debug: true,
+  resStore: {
+    en: {translation: _.extend(locales, _localRes)}
+  }
+});
+
 class AddEmailView extends Component {
   constructor (props) {
     super(props);
@@ -29,11 +46,11 @@ class AddEmailView extends Component {
     return (
       <View style={styles.main}>
         <View style={s.listGroup}>
-          <Text style={s.listGroupTitle}>Add a new email</Text>
+          <Text style={s.listGroupTitle}>{i18next.t('add-email')}</Text>
 
           <ListGroupItem
             onPress= {(this.onSubmitPressed.bind(this))}
-            placeholder="Email"
+            placeholder={i18next.t('email')}
             value={this.state.email}
             onChange={(event) => this.setState({email: event.nativeEvent.text})}
             type='input-button'
@@ -47,14 +64,14 @@ class AddEmailView extends Component {
 
   onSubmitPressed () {
     if (!this.state.email) {
-      return Alert.show('not-complete');
+      return Alert.show(i18next.t('global.not-complete'));
     }
 
     client.accountEmail(this.state.email, 'add', (response) => {
       if (response.err) {
         Alert.show(response.err);
       } else {
-        Alert.show('A validation email have been sent');
+        Alert.show(i18next.t('validation-sent'));
         this.props.func();
         this.props.navigator.pop();
       }

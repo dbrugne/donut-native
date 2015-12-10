@@ -16,7 +16,6 @@ var app = require('../libs/app');
 var client = require('../libs/client');
 var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
-var i18next = require('i18next-client');
 
 var PushNotifications = require('../libs/pushNotifications');
 
