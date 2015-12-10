@@ -1,6 +1,14 @@
 'use strict';
 
 var React = require('react-native');
+var Platform = require('Platform');
+
+var client = require('../libs/client');
+var app = require('../libs/app');
+var alert = require('../libs/alert');
+
+var s = require('../styles/style');
+
 var {
   StyleSheet,
   TouchableHighlight,
@@ -9,29 +17,20 @@ var {
   SwitchAndroid,
   SwitchIOS,
   View,
-  Component,
-  ToastAndroid
-} = React;
-
-var client = require('../libs/client');
-var Platform = require('Platform');
-var s = require('../styles/style');
-var app = require('../libs/app');
-var Alert = require('../libs/alert');
+  Component
+  } = React;
 
 class RoomCreateView extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       roomName: '',
       public: true,
-      private: false,
-      errors: [],
-      messages: []
+      private: false
     }
   }
 
-  render () {
+  render() {
     var SwitchComponent;
     if (Platform.OS === 'android') {
       SwitchComponent = SwitchAndroid;
@@ -39,36 +38,15 @@ class RoomCreateView extends Component {
       SwitchComponent = SwitchIOS;
     }
 
-    var messages = null;
-    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
-      if (this.state.errors && this.state.errors.length > 0) {
-        messages = (
-          <View style={s.alertError}>
-            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-          </View>
-        );
-      } else {
-        messages = (
-          <View style={s.alertSuccess}>
-            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-          </View>
-        );
-      }
-    }
-
     return (
       <View style={styles.container}>
 
-        {messages}
-
         <View style={s.inputContainer}>
           <TextInput style={s.input}
-             autoFocus={true}
-             placeholder='name of donut'
-             onChangeText={(text) => this.setState({roomName: text})}
-             value={this.state.roomName}
+                     autoFocus={true}
+                     placeholder='name of donut'
+                     onChangeText={(text) => this.setState({roomName: text})}
+                     value={this.state.roomName}
             />
         </View>
 
@@ -79,7 +57,8 @@ class RoomCreateView extends Component {
           </Text>
 
           <Text style={styles.infoRoomName}>
-            You are about to create a donut in the global space, if you want to create a donut in a community you are a member of, go to the community page and click on "Create a donut"
+            You are about to create a donut in the global space, if you want to create a donut in a community you are a
+            member of, go to the community page and click on "Create a donut"
           </Text>
 
           <Text style={[s.h1, s.marginTop10]}>
@@ -95,7 +74,8 @@ class RoomCreateView extends Component {
                 />
               <Text style={{marginLeft:10}}>Public (default)</Text>
             </View>
-            <Text style={styles.help}>Any user can join, participate and access history. Moderation tools available.</Text>
+            <Text style={styles.help}>Any user can join, participate and access history. Moderation tools
+              available.</Text>
           </View>
           <View style={styles.modes}>
             <View style={styles.modeOption}>
@@ -106,13 +86,14 @@ class RoomCreateView extends Component {
                 />
               <Text style={{marginLeft:10}}>Private</Text>
             </View>
-            <Text style={styles.help}>Only users you authorize can join, participate and access history. Moderation tools available.</Text>
+            <Text style={styles.help}>Only users you authorize can join, participate and access history. Moderation
+              tools available.</Text>
           </View>
         </View>
 
         <TouchableHighlight style={[s.button, s.buttonGreen, s.marginTop10]}
                             underlayColor='#50EEC1'
-                            onPress={(this.onRoomCreate.bind(this))} >
+                            onPress={(this.onRoomCreate.bind(this))}>
           <View style={s.buttonLabel}>
             <Text style={s.buttonTextLight}>Créer</Text>
           </View>
@@ -122,27 +103,27 @@ class RoomCreateView extends Component {
     );
   }
 
-  onChangeMode () {
+  onChangeMode() {
     this.setState({
       public: !this.state.public,
       private: !this.state.private
     });
   }
 
-  onRoomCreate () {
+  onRoomCreate() {
     if (!this.state.roomName) {
-      return Alert.show('not-complete');
+      return alert.show('not-complete');
     }
 
     var mode = (this.state.public) ? 'public' : 'private';
     client.roomCreate(this.state.roomName, mode, null, null, (response) => {
       if (response.err) {
-        Alert.show(response.err);
+        alert.show(response.err);
       } else {
-        Alert.show("joining ...");
+        alert.show("joining ...");
         client.roomId('#' + this.state.roomName, (data) => {
           if (data.err) {
-            Alert.show(response.err);
+            alert.show(response.err);
           } else {
             app.trigger('joinRoom', data.room_id);
           }

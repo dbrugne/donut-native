@@ -1,20 +1,21 @@
-var React = require('react-native');
 var _ = require('underscore');
+var React = require('react-native');
 var Platform = require('Platform');
-var client = require('../libs/client');
-var LoadingView = require('../components/Loading');
-var s = require('../styles/style');
+
 var currentUser = require('../models/mobile-current-user');
+
+var LoadingView = require('../components/Loading');
 var ListGroupItem = require('../components/ListGroupItem');
+
+var client = require('../libs/client');
+var alert = require('../libs/alert');
+
+var s = require('../styles/style');
 
 var {
   Component,
   Text,
-  View,
-  StyleSheet,
-  ToastAndroid,
-  ListView,
-  AlertIOS
+  View
   } = React;
 
 class UserPreferencesView extends Component {
@@ -22,8 +23,6 @@ class UserPreferencesView extends Component {
     super(props);
     this.state = {
       loaded: false,
-      errors: [],
-      messages: [],
       preferences: {
         'notif:channels:email': false,
         'notif:channels:mobile': false,
@@ -61,30 +60,9 @@ class UserPreferencesView extends Component {
       );
     }
 
-    var messages = null;
-    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
-      if (this.state.errors && this.state.errors.length > 0) {
-        messages = (
-          <View style={s.alertError}>
-            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-          </View>
-        );
-      } else {
-        messages = (
-          <View style={s.alertSuccess}>
-            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-          </View>
-        );
-      }
-    }
-
     return (
-      <View style={styles.container}>
+      <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1, backgroundColor: '#f0f0f0' }}>
         <Text style={[s.h1, s.textCenter, s.marginTop5]}>Set preferences</Text>
-
-        {messages}
 
         <Text style={[s.listGroupTitle, s.marginTop20]}>NOTIFY ME</Text>
         <View style={s.listGroup}>
@@ -125,9 +103,9 @@ class UserPreferencesView extends Component {
     update[key] = newVal;
     client.userPreferencesUpdate(update, (response) => {
       if (response.err) {
-        this._appendError(response.err);
+        alert.show(response.err);
       } else {
-        this._appendMessage('sauvegardé avec success');
+        alert.show('sauvegardé avec success');
       }
 
       var preferences = _.clone(this.state.preferences);
@@ -137,31 +115,6 @@ class UserPreferencesView extends Component {
       });
     });
   }
-
-  _appendError(string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      AlertIOS.alert(string)
-    }
-  }
-
-  _appendMessage(string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      AlertIOS.alert(string)
-    }
-  }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    flex: 1,
-    backgroundColor: '#f0f0f0'
-  }
-});
 
 module.exports = UserPreferencesView;

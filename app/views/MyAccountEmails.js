@@ -1,41 +1,41 @@
 'use strict';
-var React = require('react-native');
+
 var _ = require('underscore');
-var s = require('../styles/style');
-var navigation = require('../libs/navigation');
-var ListGroupItem = require('../components/ListGroupItem');
+var React = require('react-native');
+
+var currentUser = require('../models/mobile-current-user');
+
 var LoadingView = require('../components/Loading');
+var ListGroupItem = require('../components/ListGroupItem');
+
+var app = require('../libs/app');
+var navigation = require('../libs/navigation');
 var client = require('../libs/client');
+
+var s = require('../styles/style');
 
 var {
   Component,
   Text,
   View,
-  StyleSheet,
-  TextInput,
-  TouchableHighlight,
   ScrollView
   } = React;
 
-var app = require('../libs/app');
-var currentUser = require('../models/mobile-current-user');
-
 class EmailsView extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       currentEmail: '',
       emails: [],
-      errors: [],
       loaded: false
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetchData();
   }
 
-  fetchData () {
+  fetchData() {
     client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
       this.setState({
         loaded: true,
@@ -49,7 +49,7 @@ class EmailsView extends Component {
     });
   }
 
-  render () {
+  render() {
     if (!this.state.loaded) {
       return (
         <LoadingView />
@@ -57,7 +57,8 @@ class EmailsView extends Component {
     }
 
     return (
-      <ScrollView style={styles.main}>
+      <ScrollView
+        style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0', paddingTop: 20, flex:1 }}>
         <View style={s.listGroup}>
 
           {this._renderMainEmail()}
@@ -78,7 +79,7 @@ class EmailsView extends Component {
     );
   }
 
-  _renderMainEmail () {
+  _renderMainEmail() {
     if (this.state.currentEmail) {
       return (
         <View>
@@ -103,7 +104,7 @@ class EmailsView extends Component {
     );
   }
 
-  _renderAdditionalEmails () {
+  _renderAdditionalEmails() {
     var listRow = [];
     var numberOfAdditionalEmails = 0;
 
@@ -113,12 +114,13 @@ class EmailsView extends Component {
       }
       numberOfAdditionalEmails++;
       listRow.push(
-        <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmailEdit(e, this.fetchData.bind(this)))}
-                       text={e.email}
-                       type='button'
-                       action='true'
-                       icon={(e.confirmed) ? 'fontawesome|check' : 'fontawesome|times'}
-                       first={(i === 0 || (i === 1 && this.state.emails[0].main))}
+        <ListGroupItem
+          onPress={() => this.props.navigator.push(navigation.getMyAccountEmailEdit(e, this.fetchData.bind(this)))}
+          text={e.email}
+          type='button'
+          action='true'
+          icon={(e.confirmed) ? 'fontawesome|check' : 'fontawesome|times'}
+          first={(i === 0 || (i === 1 && this.state.emails[0].main))}
           />
       );
     });
@@ -137,15 +139,5 @@ class EmailsView extends Component {
     );
   }
 }
-
-var styles = StyleSheet.create({
-  main: {
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0',
-    paddingTop: 20,
-    flex:1
-  }
-});
 
 module.exports = EmailsView;
