@@ -17,7 +17,27 @@ var {
 var Platform = require('Platform');
 var currentUser = require('../models/mobile-current-user');
 var s = require('../styles/style');
+var _ = require('underscore');
 var Alert = require('../libs/alert');
+
+var i18next = require('i18next-client');
+var locales = require('../locales/en/translation.json'); // global locales
+var _localRes = { // current page locales
+  'back': 'Back',
+  'signup': 'Sign up',
+  'username': 'Username',
+  'password': 'Password',
+  'mail': 'Mail'
+};
+
+i18next.init({
+  fallbackLng: 'en',
+  lng: 'en',
+  debug: true,
+  resStore: {
+    en: {translation: _.extend(locales, _localRes)}
+  }
+});
 
 class Signup extends Component {
   constructor (props) {
@@ -41,7 +61,7 @@ class Signup extends Component {
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               autoFocus={true}
-              placeholder="Email"
+              placeholder={i18next.t('mail')}
               onChange={(event) => this.setState({email: event.nativeEvent.text})}
               style={s.input}
               onSubmitEditing={() => this._focusNextField('1')}
@@ -51,7 +71,7 @@ class Signup extends Component {
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               ref='1'
-              placeholder="Password"
+              placeholder={i18next.t('password')}
               secureTextEntry={true}
               onChange={(event) => this.setState({password: event.nativeEvent.text})}
               style={s.input}
@@ -62,7 +82,7 @@ class Signup extends Component {
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               ref='2'
-              placeholder="Username"
+              placeholder={i18next.t('username')}
               onChange={(event) => this.setState({username: event.nativeEvent.text})}
               style={s.input}
               value=  {this.state.username} />
@@ -73,7 +93,7 @@ class Signup extends Component {
                               style={[s.button, s.buttonPink, s.marginTop5]}
                               underlayColor='#E4396D' >
             <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>Sign Up</Text>
+              <Text style={s.buttonTextLight}>{i18next.t('signup')}</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -88,7 +108,7 @@ class Signup extends Component {
           <TouchableHighlight onPress={(this.onBack.bind(this))}
                               underlayColor='transparent'
                               style={styles.textGray}>
-            <Text style={s.link}>Back to login page</Text>
+            <Text style={s.link}>{i18next.t('back')}</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -101,7 +121,7 @@ class Signup extends Component {
 
   onSubmitPressed () {
     if (!this.state.email || !this.state.password || !this.state.username) {
-      return Alert.show('not-complete');
+      return Alert.show(i18next.t('global.errors.not-complete'));
     }
 
     currentUser.emailSignUp(this.state.email, this.state.password, this.state.username, (err) => {

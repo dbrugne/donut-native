@@ -7,6 +7,27 @@ var Platform = require('Platform');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var _ = require('underscore');
+var $ = require('jquery');
+
+var i18next = require('i18next-client');
+var locales = require('../locales/en/translation.json'); // global locales
+var _localRes = { // current page locales
+  'forgot': 'Forgot your password ?',
+  'account': 'Don\'t have an account ? ',
+  'signup': 'Sign up',
+  'signin': 'Sign in',
+  'password': 'Password',
+  'mail': 'Mail'
+};
+
+i18next.init({
+  fallbackLng: 'en',
+  lng: 'en',
+  debug: true,
+  resStore: {
+    en: {translation: _.extend(locales, _localRes)}
+  }
+});
 
 var {
   Component,
@@ -18,14 +39,16 @@ var {
   View,
   BackAndroid,
   Image
-} = React;
+  } = React;
 
 var currentUser = require('../models/mobile-current-user');
 var FacebookLogin = require('../components/FacebookLogin');
+var t = null;
 
 class LoginView extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       email: '',
       password: '',
@@ -59,11 +82,11 @@ class LoginView extends Component {
       var loginForm = (
         <View>
           <View style={styles.orContainer}>
-            <Text style={styles.title}> OR </Text>
+            <Text style={styles.title}> {i18next.t('global.or')} </Text>
           </View>
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
-              placeholder="Email"
+              placeholder={i18next.t('mail')}
               onChange={(event) => this.setState({email: event.nativeEvent.text})}
               style={s.input}
               onSubmitEditing={() => this._focusNextField('1')}
@@ -72,7 +95,7 @@ class LoginView extends Component {
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               ref='1'
-              placeholder='Password'
+              placeholder={i18next.t('password')}
               secureTextEntry={true}
               onChange={(event) => this.setState({password: event.nativeEvent.text})}
               style={[s.input, s.marginTop5]}
@@ -82,27 +105,27 @@ class LoginView extends Component {
           <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
                               style={[s.button, s.buttonPink, s.marginTop5]}
                               underlayColor='#E4396D'
-          >
+            >
             <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>Sign In</Text>
+              <Text style={s.buttonTextLight}>{i18next.t('signin')}</Text>
             </View>
           </TouchableHighlight>
 
           <TouchableHighlight onPress={(this.onForgotPressed.bind(this))}
                               underlayColor='transparent'
                               style={[s.marginTop10, styles.centered]}>
-            <Text style={s.link}>Forgot your password ?</Text>
+            <Text style={s.link}>{i18next.t('forgot')}</Text>
           </TouchableHighlight>
         </View>
       );
 
       var signupButton = (
-        <View style={styles.linkCtn} >
-          <Text style={styles.textGray}>Don't have an account ? </Text>
+        <View style={styles.linkCtn}>
+          <Text style={styles.textGray}>{i18next.t('account')}</Text>
           <TouchableHighlight onPress={(this.onCreatePressed.bind(this))}
                               underlayColor='transparent'
                               style={styles.centered}>
-            <Text style={s.link}>Sign Up</Text>
+            <Text style={s.link}>{i18next.t('signup')}</Text>
           </TouchableHighlight>
         </View>
       );
@@ -126,13 +149,13 @@ class LoginView extends Component {
 
   onSubmitPressed() {
     if (!this.state.email || !this.state.password) {
-      return Alert.show('not-complete');
+      return Alert.show(i18next.t('global.errors.not-complete'));
     }
 
     // @todo : loading screen
     currentUser.emailLogin(this.state.email, this.state.password, (err) => {
       if (err) {
-        Alert.show(err);
+        Alert.show(i18next.t('global.errors.' + err));
       }
     });
   }
@@ -159,14 +182,14 @@ class LoginView extends Component {
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flex:1,
+    flex: 1,
     backgroundColor: '#FAF9F5'
   },
   container: {
-    paddingLeft:20,
-    paddingRight:20,
-    paddingTop:10,
-    paddingBottom:10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
@@ -175,7 +198,7 @@ var styles = StyleSheet.create({
   },
   logoCtn: {
     marginTop: 50,
-    paddingBottom:25,
+    paddingBottom: 25,
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'center',
@@ -190,7 +213,7 @@ var styles = StyleSheet.create({
   },
   orContainer: {
     padding: 5,
-    marginBottom:5
+    marginBottom: 5
   },
   link: {
     fontSize: 15,
@@ -217,7 +240,7 @@ var styles = StyleSheet.create({
     marginRight: 5
   },
   flexible: {
-    flex:1,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },

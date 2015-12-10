@@ -1,0 +1,11 @@
+{
+  "global": {
+    "or": "or",
+    "save": "save",
+    "success": "success",
+    "errors": {
+      "not-complete" : "not-complete",
+      "not-same-password" : "Both passwords must be the same"
+    }
+  }
+}

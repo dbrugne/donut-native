@@ -3,6 +3,7 @@ var React = require('react-native');
 var _ = require('underscore');
 var currentUser = require('../models/mobile-current-user');
 var Button = require('react-native-button');
+var app = require('../libs/app');
 
 var {
   Component,
@@ -13,8 +14,22 @@ var {
   TouchableHighlight
 } = React;
 
-var app = require('../libs/app');
-var Button = require('react-native-button');
+var i18next = require('i18next-client');
+var locales = require('../locales/en/translation.json'); // global locales
+var _localRes = { // current page locales
+  'settings': 'settings',
+  'leave': 'Leave this donut',
+  'close': 'Close this private discussion'
+};
+
+i18next.init({
+  fallbackLng: 'en',
+  lng: 'en',
+  debug: true,
+  resStore: {
+    en: {translation: _.extend(locales, _localRes)}
+  }
+});
 
 class RoomSettings extends Component {
   constructor (props) {
@@ -24,18 +39,18 @@ class RoomSettings extends Component {
     if (this.props.model.get('type') === 'room') {
       return (
         <View>
-          <Text>{this.props.model.get('identifier')} settings</Text>
+          <Text>{this.props.model.get('identifier')} {i18next.t('settings')}</Text>
           <Button onPress={() => this.props.model.leave()} style={styles.row}>
-            Leave this donut
+            {i18next.t('leave')}
           </Button>
         </View>
       );
     } else {
       return (
         <View>
-          <Text>{this.props.model.get('identifier')} settings</Text>
+          <Text>{this.props.model.get('identifier')} {i18next.t('settings')}</Text>
           <Button onPress={() => this.props.model.leave()} style={styles.row}>
-            Close this private discussion
+            {i18next.t('close')}
           </Button>
         </View>
       );

@@ -17,6 +17,22 @@ var {
   View
   } = React;
 
+var i18next = require('i18next-client');
+var locales = require('../locales/en/translation.json'); // global locales
+var _localRes = { // current page locales 
+  'change': 'Change main email',
+  'mail': 'Mail'
+};
+
+i18next.init({
+  fallbackLng: 'en',
+  lng: 'en',
+  debug: true,
+  resStore: {
+    en: {translation: _.extend(locales, _localRes)}
+  }
+});
+
 
 class ChangeEmailView extends Component {
   constructor(props) {
@@ -30,11 +46,11 @@ class ChangeEmailView extends Component {
     return (
       <View style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0', paddingTop: 20, flex: 1 }}>
         <View style={s.listGroup}>
-          <Text style={s.listGroupTitle}>Change main email</Text>
+          <Text style={s.listGroupTitle}>{i18next.t('change')}</Text>
 
           <ListGroupItem
             onPress={(this.onSubmitPressed.bind(this))}
-            placeholder="Email"
+            placeholder={i18next.t('mail')}
             value={this.state.email}
             onChange={(event) => this.setState({email: event.nativeEvent.text})}
             type='input-button'
@@ -48,14 +64,14 @@ class ChangeEmailView extends Component {
 
   onSubmitPressed() {
     if (!this.state.email) {
-      return alert.show('not-complete');
+      return alert.show(i18next.t('global.errors.not-complete'));
     }
 
     client.accountEmail(this.state.email, 'main', (response) => {
       if (response.err) {
         alert.show(response.err);
       } else {
-        alert.show('Success');
+        alert.show(i18next.t('global.success'));
         this.props.func();
         this.props.navigator.pop();
       }
