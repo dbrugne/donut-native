@@ -1,4 +1,6 @@
 'use strict';
+
+var _ = require('underscore');
 var React = require('react-native');
 var currentUser = require('../models/mobile-current-user');
 var s = require('../styles/style');
@@ -18,6 +20,26 @@ var {
   Icon
 } = require('react-native-icons');
 
+var i18next = require('i18next-client');
+var locales = require('../locales/en/translation.json'); // global locales
+var _localRes = { // current page locales
+  'manage': 'MANAGE YOUR PROFILE INFORMATIONS',
+  'edit': 'Edit Profile',
+  'change-preferences': 'Change preferences',
+  'login': 'LOGIN AND EMAILS',
+  'manage-emails': 'Manage emails',
+  'change-password': 'Change password',
+  'logout': 'Logout'
+};
+i18next.init({
+  fallbackLng: 'en',
+  lng: 'en',
+  debug: true,
+  resStore: {
+    en: {translation: _.extend(locales, _localRes)}
+  }
+});
+
 class MyAccountView extends Component {
   constructor(props) {
     super(props);
@@ -30,36 +52,36 @@ class MyAccountView extends Component {
       <ScrollView style={styles.main}>
         <View style={s.listGroup}>
 
-          <Text style={s.listGroupTitle}>MANAGE YOUR PROFILE INFORMATIONS</Text>
+          <Text style={s.listGroupTitle}>{i18next.t('manage')}</Text>
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
-                         text='Edit Profile'
+                         text={i18next.t('edit')}
                          first={true}
                          action='true'
                          type='button'
             />
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPreferences())}
-                         text='Change preferences'
+                         text={i18next.t('change-preferences')}
                          action='true'
                          type='button'
             />
 
           <Text style={s.listGroupItemSpacing}></Text>
-          <Text style={s.listGroupTitle}>LOGIN AND EMAILS</Text>
+          <Text style={s.listGroupTitle}>{i18next.t('login')}</Text>
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmails())}
-                         text='Manage emails'
+                         text={i18next.t('manage-emails')}
                          action='true'
                          type='button'
                          first='true'
             />
           <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPassword())}
-                         text='Change password'
+                         text={i18next.t('change-password')}
                          action='true'
                          type='button'
             />
 
           <Text style={s.listGroupItemSpacing}></Text>
           <ListGroupItem onPress={() => currentUser.logout()}
-                         text='Logout'
+                         text={i18next.t('logout')}
                          type='button'
                          warning='true'
             />

@@ -19,6 +19,21 @@ var GroupProfile = require('../components/GroupProfile');
 var UserProfile = require('../components/UserProfile');
 var navigation = require('../libs/navigation');
 
+var i18next = require('i18next-client');
+var locales = require('../locales/en/translation.json'); // global locales
+var _localRes = { // current page locales
+  'unable-load': 'Unable to load profile, please try again later',
+  'loading-profile': 'Chargement du profil de'
+};
+i18next.init({
+  fallbackLng: 'en',
+  lng: 'en',
+  debug: true,
+  resStore: {
+    en: {translation: _.extend(locales, _localRes)}
+  }
+});
+
 // @todo unmount component when navigating (even from drawer)
 // @todo on unmouting stop current loading and pending callbacks
 
@@ -48,7 +63,7 @@ class ProfileView extends Component {
   onData (response) {
     if (response.err) {
       return this.setState({
-        error: 'Impossible de charger ce profil, veuillez ré-essayer plus tard'
+        error: i18next.t('unable-load')
       });
     }
     this.setState({
@@ -57,12 +72,11 @@ class ProfileView extends Component {
     });
   }
   render () {
-    // @todo i18next
     if (this.state.loading) {
       return (
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>
-            <Text>Chargement du profil de{"\n"}</Text>
+            <Text>{i18next.t('loading-profile')}</Text>
             <Text>{this.props.element.identifier}</Text>
           </Text>
           <ActivityIndicatorIOS
@@ -74,7 +88,6 @@ class ProfileView extends Component {
         </View>
       );
     }
-
     switch (this.type) {
       case 'room':
         return (
