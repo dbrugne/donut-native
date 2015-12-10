@@ -3,6 +3,7 @@ var React = require('react-native');
 var Platform = require('Platform');
 var client = require('../libs/client');
 var s = require('../styles/style');
+var alert = require('../libs/alert');
 
 var {
   Component,
@@ -11,31 +12,18 @@ var {
   TextInput,
   TouchableHighlight,
   View,
-  Image,
-  ToastAndroid
-} = React;
+  Image
+  } = React;
 
 class ChooseUsername extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      username: '',
-      messages: [],
-      errors: []
+      username: ''
     };
   }
 
   render () {
-    var messages = null;
-    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
-      messages = (
-        <View style={s.alertError}>
-          {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-          {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-        </View>
-      );
-    }
-
     return (
       <View style={styles.main}>
         <View style={styles.container}>
@@ -44,15 +32,16 @@ class ChooseUsername extends Component {
             <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
           </View>
 
-          {messages}
+          <Text style={s.h1}>Il est temps de choisir un nom d'utilisateur !</Text>
+          <Text style={[s.h2, s.marginTop10]}>Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.</Text>
 
-          <Text>Choisi ton username gros!</Text>
-
-          <TextInput
-            placeholder="Username"
-            onChange={(event) => this.setState({username: event.nativeEvent.text})}
-            style={s.input}
-            value={this.state.username} />
+          <View style={[s.inputContainer, s.marginTop10]}>
+            <TextInput
+              placeholder="Username"
+              onChange={(event) => this.setState({username: event.nativeEvent.text})}
+              style={s.input}
+              value={this.state.username} />
+          </View>
 
           <TouchableHighlight onPress={(this.onSubmit.bind(this))}
                               style={[s.button, s.buttonPink, styles.marginTop5]}
@@ -68,29 +57,20 @@ class ChooseUsername extends Component {
 
   onSubmit () {
     if (!this.state.username) {
-      return this._appendError('not-complete');
+      return alert.show('not-complete');
     }
     if (!common.validate.username(this.state.username)) {
-      return this._appendError('invalid');
+      return alert.show('invalid');
     }
 
     client.userUpdate({username: this.state.username}, (response) => {
       if (response.err) {
-        return this._appendError(response.err);;
+        return alert.show(response.err);
       }
 
       client.connect();
     });
   }
-
-  _appendError (string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({errors: this.state.messages.concat(string)});
-    }
-  }
-
 }
 
 var styles = StyleSheet.create({
