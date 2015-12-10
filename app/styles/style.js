@@ -27,6 +27,12 @@ module.exports = StyleSheet.create({
     fontWeight: '600',
     color: '#333'
   },
+  h2: {
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#666'
+  },
   p: {
     fontFamily: 'Open Sans',
     fontSize: 12,
@@ -191,8 +197,6 @@ module.exports = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: 10,
     marginRight: 10,
-    width:80,
-    height:40,
     paddingTop:10
   },
   inputContainer: {

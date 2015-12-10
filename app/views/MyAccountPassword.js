@@ -1,20 +1,22 @@
 var React = require('react-native');
-var client = require('../libs/client');
 var Platform = require('Platform');
+
+var currentUser = require('../models/mobile-current-user');
+
 var LoadingView = require('../components/Loading');
+
+var client = require('../libs/client');
+var alert = require('../libs/alert');
+
 var s = require('../styles/style');
 
 var {
   Component,
   Text,
   View,
-  StyleSheet,
   TextInput,
-  TouchableHighlight,
-  ToastAndroid
+  TouchableHighlight
   } = React;
-
-var currentUser = require('../models/mobile-current-user');
 
 class ChangePasswordView extends Component {
   constructor (props) {
@@ -23,46 +25,25 @@ class ChangePasswordView extends Component {
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
-      errors: [],
-      messages: [],
       hasPassword: false,
-      load: false
+      loaded: false
     };
   }
 
   componentDidMount () {
     client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
       this.setState({
-        load: true,
+        loaded: true,
         hasPassword: !!(response.account && response.account.has_password)
       });
     });
   }
 
   render () {
-    if (!this.state.load) {
+    if (!this.state.loaded) {
       return (
         <LoadingView />
       );
-    }
-
-    var messages = null;
-    if ((this.state.errors && this.state.errors.length > 0) || (this.state.messages && this.state.messages.length > 0)) {
-      if (this.state.errors && this.state.errors.length > 0) {
-        messages = (
-          <View style={s.alertError}>
-            {this.state.errors.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertErrorText}>{m}</Text>)}
-          </View>
-        );
-      } else {
-        messages = (
-          <View style={s.alertSuccess}>
-            {this.state.errors.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-            {this.state.messages.map((m) => <Text style={s.alertSuccessText}>{m}</Text>)}
-          </View>
-        );
-      }
     }
 
     var inputOldPassword;
@@ -81,10 +62,8 @@ class ChangePasswordView extends Component {
     }
 
     return (
-      <View style={styles.container}>
+      <View style={{ flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center', flex: 1, backgroundColor: '#f0f0f0' }}>
         <Text style={[s.h1, s.textCenter, s.marginTop5]}>Change password</Text>
-
-        {messages}
 
         <Text style={s.marginTop20}></Text>
 
@@ -129,48 +108,22 @@ class ChangePasswordView extends Component {
 
   onSubmitPressed () {
     if (!this.state.newPassword || (this.state.hasPassword && !this.state.oldPassword)) {
-      return this._appendError('not-complete');
+      return alert.show('not-complete');
     }
 
     if (!this.state.newPassword !== this.state.confirmPassword) {
-      return this._appendError('not-same-password');
+      return alert.show('not-same-password');
     }
 
     client.accountPassword(this.state.newPassword, this.state.oldPassword, (response) => {
       if (response.err) {
-        this._appendError(response.err);
+        alert.show(response.err);
       } else {
-        this._appendMessage('Success');
+        alert.show('Success');
       }
     });
   }
-
-  _appendError (string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({errors: this.state.messages.concat(string)});
-    }
-  }
-
-  _appendMessage(string) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(string, ToastAndroid.SHORT);
-    } else {
-      this.setState({messages: this.state.messages.concat(string)});
-    }
-  }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-    flex: 1,
-    backgroundColor: '#f0f0f0'
-  }
-});
 
 module.exports = ChangePasswordView;
 

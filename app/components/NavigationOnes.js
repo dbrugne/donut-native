@@ -42,11 +42,17 @@ class NavigationOnesView extends Component {
     });
   }
   render () {
-    return (
-      <View>
+    var title = null;
+    if (onetoones.length > 0) {
+      title = (
         <View style={{backgroundColor: '#1D1D1D'}}>
           <Text style={styles.title}>ONE TO ONES</Text>
         </View>
+      );
+    }
+    return (
+      <View>
+        {title}
         <ListView
           dataSource={this.state.elements}
           renderRow={this.renderElement.bind(this)}
