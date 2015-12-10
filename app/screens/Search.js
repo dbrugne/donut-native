@@ -22,6 +22,26 @@ var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 
+var i18next = require('i18next-client');
+var locales = require('../locales/en/translation.json'); // global locales
+var _localRes = { // current page locales
+  'search': 'Search donut, community or user here',
+  'donuts': 'donuts',
+  'users': 'users',
+  'communities': 'communities',
+  'loading': 'loading',
+  'load-more': 'load more',
+  'no-results': 'no results'
+};
+i18next.init({
+  fallbackLng: 'en',
+  lng: 'en',
+  debug: true,
+  resStore: {
+    en: {translation: _.extend(locales, _localRes)}
+  }
+});
+
 var LIMIT = 25;
 var TIME_SEARCH = 500;
 
@@ -49,7 +69,7 @@ class SearchView extends Component {
           <View  style={styles.formInputContainer}>
             <TextInput style={styles.formInputFind}
               autoFocus={true}
-              placeholder='Search donut, community or user here'
+              placeholder={i18next.t('search')}
               onChangeText={(text) => this.setState({findValue: text})}
               value={this.state.findValue}
               onChange={this.changeText.bind(this)}
@@ -66,17 +86,17 @@ class SearchView extends Component {
             <TouchableHighlight onPress={this.search.bind(this, 'rooms', null)}
                                 underlayColor= '#DDD'
                                 style={[styles.button, this.state.type === 'rooms' && styles.buttonActive]}>
-              <Text style={styles.textButton}>donuts</Text>
+              <Text style={styles.textButton}>{i18next.t('donuts')}</Text>
             </TouchableHighlight>
             <TouchableHighlight onPress={this.search.bind(this, 'users', null)}
                                 underlayColor= '#DDD'
                                 style={[styles.button, this.state.type === 'users' && styles.buttonActive]}>
-              <Text style={styles.textButton}>users</Text>
+              <Text style={styles.textButton}>{i18next.t('users')}</Text>
             </TouchableHighlight>
             <TouchableHighlight onPress={this.search.bind(this, 'groups', null)}
                                 underlayColor= '#DDD'
                                 style={[styles.button, this.state.type === 'groups' && styles.buttonActive]}>
-              <Text style={styles.textButton}>community</Text>
+              <Text style={styles.textButton}>{i18next.t('communities')}</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -213,7 +233,7 @@ class SearchView extends Component {
 
   _renderLoadMore () {
     if (this.state.loading) {
-      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>chargement</Text></View>)
+      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('loading')}</Text></View>)
     }
     else if (this.state.more) {
       return (
@@ -221,13 +241,13 @@ class SearchView extends Component {
                             underlayColor= '#DDD'
           >
           <View style={styles.loadMore}>
-            <Text style={{color:'#333', textAlign: 'center'}}>Load more</Text>
+            <Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('load-more')}</Text>
 
           </View>
         </TouchableHighlight>
       );
     } else if (this.resultBlob.length) {
-      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>Aucun résultat</Text></View>);
+      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('no-results')}</Text></View>);
     } else {
       return (<View></View>);
     }

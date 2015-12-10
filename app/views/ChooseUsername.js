@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var common = require('@dbrugne/donut-common');
 var React = require('react-native');
 var Platform = require('Platform');
@@ -16,6 +17,7 @@ var {
   } = React;
 
 var i18next = require('i18next-client');
+var locales = require('../locales/en/translation.json'); // global locales
 var _localRes = { // current page locales
   'choose': 'It\'s time to choose a username!',
   'disclaimer': 'This username will be your identity on DONUT and will be public. You cannot edit it later.',
@@ -28,7 +30,7 @@ i18next.init({
   lng: 'en',
   debug: true,
   resStore: {
-    en: {translation: _localRes}
+    en: {translation: _.extend(locales, _localRes)}
   }
 });
 
