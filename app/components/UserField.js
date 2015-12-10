@@ -11,8 +11,7 @@ var {
   Component,
   View,
   Text,
-  StyleSheet,
-  TouchableHighlight
+  StyleSheet
 } = React;
 
 class UserField extends Component {

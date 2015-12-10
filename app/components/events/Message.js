@@ -14,6 +14,7 @@ var navigation = require('../../libs/navigation');
 var hyperlink = require('../../libs/hyperlink');
 var common = require('@dbrugne/donut-common');
 var s = require('../../styles/events');
+var app = require('../../libs/app');
 
 module.exports = React.createClass({
   render () {
@@ -41,20 +42,39 @@ module.exports = React.createClass({
       }
     }];
     var text;
-    if (Platform.OS === 'android') {
-      // @todo make parsed text work on android
-      text = (<Text style={s.messageContent}>
-        {common.markup.toText(this.props.data.message)}
-      </Text>);
+
+    // Check if message is spammed
+    // @todo add toggle on viewed spammed messages
+    if (this.props.data.spammed) {
+      text = (
+        <TouchableHighlight
+          key={this.props.data.id}
+          underlayColor='transparent'
+          onPress={() => this._onUnspam(this.props.data.id)}
+        >
+          <Text>Message indésirable d'après le modérateur [Afficher]</Text>
+        </TouchableHighlight>
+      );
     } else {
-      text = (<ParsedText style={s.messageContent} parse={parse}>
-        {this.props.data.message}
-      </ParsedText>);
+      if (Platform.OS === 'android') {
+        // @todo make parsed text work on android
+        text = (<Text style={s.messageContent}>
+          {common.markup.toText(this.props.data.message)}
+        </Text>);
+      } else {
+        text = (<ParsedText style={s.messageContent} parse={parse}>
+          {this.props.data.message}
+        </ParsedText>);
+      }
     }
+
     return (
       <View style={[s.message]}>
         {text}
       </View>);
+  },
+  _onUnspam (id) {
+    app.trigger('messageUnspam', id);
   },
   renderFiles () {
     if (this.props.data.files && this.props.data.files.length > 0) {

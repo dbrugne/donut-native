@@ -46,6 +46,8 @@ class DiscussionEvents extends Component {
     };
 
     this.wasFocusedAtLeastOneTime = false;
+
+    app.on('room:join', this.onJoin, this);
   }
   componentDidMount () {
     this.props.model.on('freshEvent', this.addFreshEvent.bind(this), this);
