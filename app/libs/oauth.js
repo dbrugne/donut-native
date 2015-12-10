@@ -20,7 +20,7 @@ var oauth = _.extend({
   loaded: false,
 
   oauthBaseUrl: 'https://test.donut.me/oauth/',
-//  oauthBaseUrl: 'http://192.168.2.240:3000/oauth/',
+//  oauthBaseUrl: 'http://192.168.1.240:3000/oauth/',
 
   oauthHeaders: {
     method: 'post',
@@ -43,7 +43,11 @@ var oauth = _.extend({
         debug.log('=> ajax', data)
         callback(null, data);
       })
-      .catch((err) => { throw new Error(err) });
+      .catch((err) => {
+        debug.warn('=> error', err);
+        // @todo : handle this error in each caller to reset data
+        return callback(err);
+      });
   },
 
   loadStorage: function (callback) {
@@ -119,7 +123,22 @@ var oauth = _.extend({
             return cb(err);
           }
           if (response.err) {
-            return cb(response.err);
+            // passport-facebook-token-invalid
+            // suspended
+            // unknown
+            // deleted
+            debug.warn(response.err);
+            this.id = null;
+            this.facebookToken = null;
+            this.facebookId = null;
+            this.facebookData = null;
+            return storage.removeKeys(['id', 'facebookToken', 'facebookId', 'facebookData'], (err) => {
+              if (err) {
+                logger.warn(err);
+              }
+
+              cb(null);
+            });
           }
 
           hasValidToken = true;
@@ -164,14 +183,7 @@ var oauth = _.extend({
         });
       }
 
-    ], (err) => {
-      if (err) {
-        return callback(err);
-      }
-
-      this.facebookAvoidAutoLogin = false;
-      callback(null);
-    });
+    ], callback);
   },
 
   /**
