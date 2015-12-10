@@ -43,11 +43,17 @@ class NavigationRoomsView extends Component {
   }
 
   render () {
-    return (
-      <View>
+    var title = null;
+    if (rooms.length > 0) {
+      title = (
         <View style={{backgroundColor: '#1D1D1D'}}>
           <Text style={styles.title}>ROOMS</Text>
         </View>
+      );
+    }
+    return (
+      <View>
+        {title}
         <ListView
           dataSource={this.state.elements}
           renderRow={this.renderElement.bind(this)}
