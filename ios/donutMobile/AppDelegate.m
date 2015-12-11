@@ -36,7 +36,7 @@
     jsCodeLocation = [NSURL URLWithString:jsBundleUrlString];
   #endif
   #else
-  #warning "PRODUCTION DEVICE"
+    #warning "PRODUCTION DEVICE"
     jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
   #endif
 

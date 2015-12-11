@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
                BuildableName = "donutMobile.app"
-               BlueprintName = "donutMobile"
-               ReferencedContainer = "container:donutMobile.xcodeproj">
+               BlueprintName = "DONUT"
+               ReferencedContainer = "container:DONUT.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -31,7 +31,7 @@
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
                BuildableName = "donutMobileTests.xctest"
                BlueprintName = "donutMobileTests"
-               ReferencedContainer = "container:donutMobile.xcodeproj">
+               ReferencedContainer = "container:DONUT.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,7 +49,7 @@
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
                BuildableName = "donutMobileTests.xctest"
                BlueprintName = "donutMobileTests"
-               ReferencedContainer = "container:donutMobile.xcodeproj">
+               ReferencedContainer = "container:DONUT.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -58,15 +58,15 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "donutMobile.app"
-            BlueprintName = "donutMobile"
-            ReferencedContainer = "container:donutMobile.xcodeproj">
+            BlueprintName = "DONUT"
+            ReferencedContainer = "container:DONUT.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -81,8 +81,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "donutMobile.app"
-            BlueprintName = "donutMobile"
-            ReferencedContainer = "container:donutMobile.xcodeproj">
+            BlueprintName = "DONUT"
+            ReferencedContainer = "container:DONUT.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -100,8 +100,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "donutMobile.app"
-            BlueprintName = "donutMobile"
-            ReferencedContainer = "container:donutMobile.xcodeproj">
+            BlueprintName = "DONUT"
+            ReferencedContainer = "container:DONUT.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
