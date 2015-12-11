@@ -7,7 +7,7 @@ var {
 } = React;
 
 var currentUser = require('./models/mobile-current-user');
-var Launch = require('./views/Launching');
+var Launching = require('./views/Launching');
 var LoggedOut = require('./navigation/LoggedOut');
 var LoggedIn = require('./navigation/LoggedIn');
 
@@ -42,7 +42,7 @@ class Index extends Component {
   render () {
     if (!this.state.currentUserReady) {
       // wait for ready to launch state
-      return (<Launch ref='current'/>);
+      return (<Launching ref='current' text="chargement ..." />);
     }
     if (!this.state.isLoggedIn) {
       return (

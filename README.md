@@ -1,29 +1,25 @@
 # donut-native
 
-## Questions & tasks
+## TODO
 
-* [ ] test choose username logic again
-* [ ] test with user that refuse email permission
-* [ ] test token expiration/renewing
-* [ ] Facebook Login on Android in absence of onLoginFound
-
-* [ ] push notifications logic implementation
-* [ ] push notifications on android
-* [ ] hyperlink opening
-* [ ] Add i18next usage
-
-* [ ] Android keyboard close on message send
-* [ ] How to send .apk to David
-* [ ] Load code from AppHub
-* [ ] Switch configuration
+* [ ] Switch configuration iOS
   - [ ] Facebook ID ios/donutMobile/Info.plist
   - [ ] Facebook ID android/app/src/main/res/values/strings.xml
   - [ ] WS URL app/libs/client.js
   - [ ] OAUTH URL app/libs/oauth.js
   - [ ] Parse
+* [ ] Load code from AppHub (broken?)
 * [ ] stores submission
 
-* solve emoticons
+* [ ] fix android discussion (need to test RN0.0.16 ? but react-native-parsed-text block RN0.16.0 migration ...)
+* [ ] Icon and splashscreen Android
+* [ ] Switch configuration Android
+* [ ] Send .apk to David
+
+* [ ] solve emoticons
+* [ ] push notifications logic implementation
+* [ ] Android keyboard close on message send
+* [ ] Close keyboard (unfocus field?) on drawer open
 
 ## Pre-requisites
 
@@ -34,6 +30,7 @@ Requirements: https://facebook.github.io/react-native/docs/getting-started.html
 ```
 brew install watchman
 npm install -g react-native-cli
+npm install -g babel-cli # react-native-parsed-text
 ```
 
 [Android installation and workaround](./Android.md)

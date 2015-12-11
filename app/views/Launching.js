@@ -1,25 +1,28 @@
 var React = require('react-native');
-var _ = require('underscore');
 
 var {
   Text,
   View,
   StyleSheet,
-  Image
+  Image,
+  ActivityIndicatorIOS
 } = React;
-
-var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
-  'launching': 'Launching DONUT ...'
-});
 
 var Launch = React.createClass({
   render: function() {
-    console.log(i18next.t('local:launching'));
+    let text = (this.props.text)
+      ? (<Text style={{color:'#666666'}}>{this.props.text}</Text>)
+      : null;
     return (
       <View style={styles.container}>
-        <Image source={require('../assets/donut-eyes.jpg')} style={{width: 200, height: 200}} />
-      <Text style={styles.text}>{i18next.t('local:launching')}</Text>
+        <Image source={require('../assets/logo.png')} resizeMode='contain' style={{width: 350, height: 100}} />
+        {text}
+        <ActivityIndicatorIOS
+          animating={true}
+          style={[{height: 10, marginTop: 40}]}
+          size='small'
+          color='#666666'
+        />
       </View>
     )
   }
