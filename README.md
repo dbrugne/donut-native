@@ -95,3 +95,25 @@ Change path to XMLHttpRequest
 // var XMLHttpRequest = require('xmlhttprequest');
 var XMLHttpRequest = require('../xmlhttprequest');
 ```
+
+Allow react-native packager to support other env than Debug and Release 
+
+- /www/donut-native/node_modules/react-native/packager/react-native-xcode.sh
+
+```
+#  Debug)
+#    DEV=true
+#    ;;
+#  Release)
+#    DEV=false
+#    ;;
+  DEV)
+    DEV=true
+    ;;
+  TEST)
+    DEV=true
+    ;;
+  PROD)
+    DEV=false
+    ;;
+```

@@ -34,7 +34,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		6D0530DF1C1B146200A9A042 /* environment.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D0530DE1C1B146200A9A042 /* environment.plist */; };
+		6D0531211C1B1FF500A9A042 /* environment.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D0531201C1B1FF500A9A042 /* environment.plist */; };
 		6D33B3581BF34334004CF107 /* libReactNativeIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D33B3571BF34306004CF107 /* libReactNativeIcons.a */; };
 		6D830ACB1C0769ED007AF824 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830ACA1C0769BD007AF824 /* libRCTFBLogin.a */; };
 		6D830AD61C0779C5007AF824 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */; };
@@ -167,7 +167,7 @@
 		00E356F21AD99517003FC87E /* donutMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = donutMobileTests.m; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* DONUT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DONUT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* donutMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = donutMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = donutMobile/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = donutMobile/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -175,10 +175,10 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = donutMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = donutMobile/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		6D0530DA1C1B09E300A9A042 /* environment_DEV.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = environment_DEV.plist; sourceTree = "<group>"; };
-		6D0530DB1C1B0A1500A9A042 /* environment_TEST.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = environment_TEST.plist; sourceTree = "<group>"; };
-		6D0530DC1C1B0A2F00A9A042 /* environment_PROD.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = environment_PROD.plist; sourceTree = "<group>"; };
-		6D0530DE1C1B146200A9A042 /* environment.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = environment.plist; sourceTree = "<group>"; };
+		6D05311C1C1B1FC400A9A042 /* environment_PROD.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = environment_PROD.plist; path = donutMobile/environment_PROD.plist; sourceTree = "<group>"; };
+		6D05311D1C1B1FC400A9A042 /* environment_TEST.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = environment_TEST.plist; path = donutMobile/environment_TEST.plist; sourceTree = "<group>"; };
+		6D05311F1C1B1FE200A9A042 /* environment_DEV.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = environment_DEV.plist; path = donutMobile/environment_DEV.plist; sourceTree = "<group>"; };
+		6D0531201C1B1FF500A9A042 /* environment.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = environment.plist; path = donutMobile/environment.plist; sourceTree = "<group>"; };
 		6D33B3521BF34305004CF107 /* ReactNativeIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeIcons.xcodeproj; path = "../node_modules/react-native-icons/ios/ReactNativeIcons.xcodeproj"; sourceTree = "<group>"; };
 		6D830AC51C0769BD007AF824 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBLogin.xcodeproj; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; };
 		6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
@@ -327,10 +327,10 @@
 		6D0530DD1C1B143900A9A042 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				6D0530DC1C1B0A2F00A9A042 /* environment_PROD.plist */,
-				6D0530DA1C1B09E300A9A042 /* environment_DEV.plist */,
-				6D0530DB1C1B0A1500A9A042 /* environment_TEST.plist */,
-				6D0530DE1C1B146200A9A042 /* environment.plist */,
+				6D0531201C1B1FF500A9A042 /* environment.plist */,
+				6D05311F1C1B1FE200A9A042 /* environment_DEV.plist */,
+				6D05311C1C1B1FC400A9A042 /* environment_PROD.plist */,
+				6D05311D1C1B1FC400A9A042 /* environment_TEST.plist */,
 			);
 			name = Configurations;
 			sourceTree = "<group>";
@@ -451,7 +451,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* DONUT.app */,
+				13B07F961A680F5B00A75B9A /* donutMobile.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -459,9 +459,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* DONUT */ = {
+		13B07F861A680F5B00A75B9A /* donutMobile */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DONUT" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "donutMobile" */;
 			buildPhases = (
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -474,9 +474,9 @@
 			dependencies = (
 				6D0530E61C1B166900A9A042 /* PBXTargetDependency */,
 			);
-			name = DONUT;
+			name = donutMobile;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* DONUT.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* donutMobile.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -496,7 +496,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DONUT" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "donutMobile" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -563,7 +563,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* DONUT */,
+				13B07F861A680F5B00A75B9A /* donutMobile */,
 				6D0530E01C1B164A00A9A042 /* Environment Switch Script */,
 			);
 		};
@@ -680,7 +680,7 @@
 				6DF067561C0F69740096C874 /* OpenSans-Semibold.ttf in Resources */,
 				6DF067571C0F69740096C874 /* OpenSans-SemiboldItalic.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				6D0530DF1C1B146200A9A042 /* environment.plist in Resources */,
+				6D0531211C1B1FF500A9A042 /* environment.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -713,7 +713,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "dir=${PROJECT_DIR}\necho \"Starting environment configuration for project: \" $dir\n\n# environment variable from value passed in to xcodebuild.\n# if not specified, we default to DEV\nenv=${DONUT_ENVIRONMENT}\nif [ -z \"$env\" ]\nthen\nenv=\"DEV\"\nfi\necho \"Using $env environment\"\n\n# copy the environment-specific file\ncp $dir/environment_$env.plist $dir/environment.plist\n\n# Date and time that we are running this build\nbuildDate=`date \"+%F %H:%M:%S\"`\ntodaysDay=`date \"+%d\"`\n\n# app settings\nappName=`/usr/libexec/PlistBuddy -c \"Print :appName\" \"$dir/environment.plist\"`\nversion=`/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" \"${PROJECT_DIR}/${PROJECT_NAME}/Info.plist\"`\n\nif [ \"$env\" != \"PROD\" ]\nthen\n# need to dynamically append today's day for non-prod\nappName=\"$appName $todaysDay\"\n# Last hash from the current branch\nversion=`git log --pretty=format:\"%h\" -1`\nfi\n\n# Build the preprocess file\ncd ${PROJECT_DIR}/${PROJECT_NAME}\npreprocessFile=\"environment_preprocess.h\"\necho \"Creating header file\"\n\necho -e \"//-----------------------------------------\" > $preprocessFile\necho -e \"// Auto generated file\" >> $preprocessFile\necho -e \"// Created $buildDate\" >> $preprocessFile\necho -e \"//-----------------------------------------\" >> $preprocessFile\necho -e \"\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT              $env\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_VERSION_NUMBER  $version\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_APP_NAME     $appName\" >> $preprocessFile\n\n# dump out file to build log\ncat $preprocessFile\n\n# Force the system to process the plist file\necho \"Touching plist at: \" ${PROJECT_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-Info.plist\ntouch ${PROJECT_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-Info.plist\n\n# done\necho \"Done.\"";
+			shellScript = "dir=${PROJECT_DIR}/${PROJECT_NAME}\necho \"Starting environment configuration for project: \" $dir\n\n# environment variable from value passed in to xcodebuild.\n# if not specified, we default to DEV\nenv=${DONUT_ENVIRONMENT}\nif [ -z \"$env\" ]\nthen\nenv=\"DEV\"\nfi\necho \"Using $env environment\"\n\n# copy the environment-specific file\ncp $dir/environment_$env.plist $dir/environment.plist\n\n# Date and time that we are running this build\nbuildDate=`date \"+%F %H:%M:%S\"`\ntodaysDay=`date \"+%d\"`\n\n# app settings\nappName=`/usr/libexec/PlistBuddy -c \"Print :appName\" \"$dir/environment.plist\"`\nversion=`/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" \"${PROJECT_DIR}/${PROJECT_NAME}/Info.plist\"`\n\nif [ \"$env\" != \"PROD\" ]\nthen\n# need to dynamically append today's day for non-prod\nappName=\"$appName $todaysDay\"\n# Last hash from the current branch\nversion=`git log --pretty=format:\"%h\" -1`\nfi\n\n# Build the preprocess file\ncd ${PROJECT_DIR}/${PROJECT_NAME}\npreprocessFile=\"environment_preprocess.h\"\necho \"Creating header file\"\n\necho -e \"//-----------------------------------------\" > $preprocessFile\necho -e \"// Auto generated file\" >> $preprocessFile\necho -e \"// Created $buildDate\" >> $preprocessFile\necho -e \"//-----------------------------------------\" >> $preprocessFile\necho -e \"\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT              $env\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_VERSION_NUMBER  $version\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_APP_NAME     $appName\" >> $preprocessFile\n\n# dump out file to build log\ncat $preprocessFile\n\n# Force the system to process the plist file\necho \"Touching plist at: \" ${PROJECT_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-Info.plist\ntouch ${PROJECT_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-Info.plist\n\n# done\necho \"Done.\"";
 		};
 		6D4E7E141C0E1CE8009C5F98 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -780,13 +780,13 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
 				);
 				INFOPLIST_FILE = donutMobile/Info.plist;
-				INFOPLIST_PREFIX_HEADER = environment_preprocess.h;
+				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = me.donut.native;
-				PRODUCT_NAME = DONUT;
+				PRODUCT_NAME = donutMobile;
 				PROVISIONING_PROFILE = "";
 			};
 			name = DEV;
@@ -805,13 +805,13 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
 				);
 				INFOPLIST_FILE = donutMobile/Info.plist;
-				INFOPLIST_PREFIX_HEADER = environment_preprocess.h;
+				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = me.donut.native;
-				PRODUCT_NAME = DONUT;
+				PRODUCT_NAME = donutMobile;
 				PROVISIONING_PROFILE = "";
 			};
 			name = PROD;
@@ -836,7 +836,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: me.donut.native.test";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: me.donut.native.test";
 				COPY_PHASE_STRIP = NO;
-				DONUT_BUNDLE_ID = me.donut.test;
+				DONUT_BUNDLE_ID = me.donut.mobile.test;
 				DONUT_ENVIRONMENT = TEST;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -882,13 +882,13 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
 				);
 				INFOPLIST_FILE = donutMobile/Info.plist;
-				INFOPLIST_PREFIX_HEADER = environment_preprocess.h;
+				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = me.donut.native;
-				PRODUCT_NAME = DONUT;
+				PRODUCT_NAME = donutMobile;
 				PROVISIONING_PROFILE = "";
 			};
 			name = TEST;
@@ -934,7 +934,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: me.donut.native.test";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: me.donut.native.test";
 				COPY_PHASE_STRIP = NO;
-				DONUT_BUNDLE_ID = me.donut.dev;
+				DONUT_BUNDLE_ID = me.donut.mobile.dev;
 				DONUT_ENVIRONMENT = DEV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -985,7 +985,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: me.donut.native.test";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: me.donut.native.test";
 				COPY_PHASE_STRIP = YES;
-				DONUT_BUNDLE_ID = me.donut;
+				DONUT_BUNDLE_ID = me.donut.mobile;
 				DONUT_ENVIRONMENT = PROD;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1012,7 +1012,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DONUT" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "donutMobile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* DEV */,
@@ -1030,8 +1030,9 @@
 				6D0530E41C1B164A00A9A042 /* PROD */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = PROD;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DONUT" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "donutMobile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* DEV */,
