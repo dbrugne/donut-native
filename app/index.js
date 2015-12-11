@@ -17,7 +17,7 @@ global.currentUser = currentUser;
 class Index extends Component {
   constructor (props) {
     super(props);
-    debug('RN ENV FROM XCODE IS', this.props);
+    debug.log('RN ENV FROM XCODE IS', this.props);
     this.state = {
       currentUserReady: false,
       isLoggedIn: false
