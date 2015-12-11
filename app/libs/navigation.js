@@ -18,9 +18,8 @@ var app = require('./app');
 var Platform = require('Platform');
 var currentUser = require('../models/mobile-current-user');
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'discover': 'Discover',
   'search': 'Search',
   'create-donut': 'Create a donut',
@@ -34,15 +33,7 @@ var _localRes = { // current page locales
   'my-preferences': 'My Preferences',
   'color-picker': 'Color picker',
   'settings': 'Settings',
-  'change-value': 'Change a value',
-};
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
+  'change-value': 'Change a value'
 });
 
 let navigationBarHeight = ((Platform.OS === 'android')
@@ -261,7 +252,7 @@ routes.getHome = function () {
       return require('../screens/Home');
     },
     getTitle: function () {
-      return i18next.t('discover');
+      return i18next.t('local:discover');
     },
     configureScene: function () {
       return ExNavigator.SceneConfigs.FloatFromRight;
@@ -278,7 +269,7 @@ routes.getSearch = function () {
       return require('../screens/Search');
     },
     getTitle: function () {
-      return i18next.t('search');
+      return i18next.t('local:search');
     },
     configureScene: function () {
       return ExNavigator.SceneConfigs.FloatFromRight;
@@ -295,7 +286,7 @@ routes.getRoomCreate = function () {
       return require('../screens/RoomCreate');
     },
     getTitle: function () {
-      return i18next.t('create-donut');
+      return i18next.t('local:create-donut');
     },
     configureScene: function () {
       return ExNavigator.SceneConfigs.FloatFromRight;
@@ -324,7 +315,7 @@ routes.getMyAccount = function () {
       return require('../screens/MyAccount');
     },
     getTitle: function () {
-      return i18next.t('my-account');
+      return i18next.t('local:my-account');
     },
     renderLeftButton: function (navigator) {
       return (<LeftNavigation navigator={navigator} />);
@@ -339,7 +330,7 @@ routes.getMyAccountEmail = function (email, func) {
       return <EmailMain navigator={navigator} func={func} email={email} />;
     },
     getTitle: function () {
-      return i18next.t('my-email');
+      return i18next.t('local:my-email');
     }
   });
 };
@@ -350,7 +341,7 @@ routes.getMyAccountEmails = function () {
       return require('../views/MyAccountEmails');
     },
     getTitle: function () {
-      return i18next.t('my-emails');
+      return i18next.t('local:my-emails');
     }
   });
 };
@@ -362,7 +353,7 @@ routes.getMyAccountEmailsAdd = function (func) {
       return <EmailAdd navigator={navigator} func={func} />;
     },
     getTitle: function () {
-      return i18next.t('add-email');
+      return i18next.t('local:add-email');
     }
   });
 };
@@ -374,7 +365,7 @@ routes.getMyAccountEmailEdit = function (element, func) {
       return <EmailEdit navigator={navigator} email={element} func={func} />;
     },
     getTitle() {
-      return i18next.t('manage-email');
+      return i18next.t('local:manage-email');
     }
   });
 };
@@ -385,7 +376,7 @@ routes.getMyAccountPassword = function () {
       return require('../views/MyAccountPassword');
     },
     getTitle: function () {
-      return i18next.t('my-password');
+      return i18next.t('local:my-password');
     }
   });
 };
@@ -396,7 +387,7 @@ routes.getMyAccountInformation = function () {
       return require('../views/MyAccountInformation');
     },
     getTitle: function () {
-      return i18next.t('my-informations');
+      return i18next.t('local:my-informations');
     }
   });
 };
@@ -407,7 +398,7 @@ routes.getMyAccountPreferences = function () {
       return require('../views/MyAccountPreferences');
     },
     getTitle: function () {
-      return i18next.t('my-preferences');
+      return i18next.t('local:my-preferences');
     }
   });
 };
@@ -418,7 +409,7 @@ routes.getColorPicker = function () {
       return require('../views/ColorPicker');
     },
     getTitle: function () {
-      return i18next.t('color-picker');
+      return i18next.t('local:color-picker');
     }
   });
 };
@@ -430,7 +421,7 @@ routes.getDiscussionSettings = function (id, model) {
       return <Settings navigator={navigator} model={model} />;
     },
     getTitle: function () {
-      return i18next.t('settings');
+      return i18next.t('local:settings');
     }
   });
 };
@@ -469,7 +460,7 @@ routes.getUserFieldEdit = function (data) {
       return (<data.component navigator={navigator} data={data} />);
     },
     getTitle: function () {
-      return i18next.t('change-value');
+      return i18next.t('local:change-value');
     }
   });
 };

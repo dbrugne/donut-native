@@ -17,6 +17,11 @@ var app = require('../libs/app');
 var onetoones = require('../collections/onetoones');
 var navigation = require('../libs/navigation');
 
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'ones': 'ONE TO ONES'
+});
+
 class NavigationOnesView extends Component {
   constructor (props) {
     super(props);
@@ -46,7 +51,7 @@ class NavigationOnesView extends Component {
     if (onetoones.length > 0) {
       title = (
         <View style={{backgroundColor: '#1D1D1D'}}>
-          <Text style={styles.title}>ONE TO ONES</Text>
+          <Text style={styles.title}>{i18next.t('local:ones')}</Text>
         </View>
       );
     }

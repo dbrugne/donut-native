@@ -16,6 +16,12 @@ var common = require('@dbrugne/donut-common');
 var s = require('../../styles/events');
 var app = require('../../libs/app');
 
+var i18next = require('../../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'spammed' : 'Message indésirable d\'après le modérateur [Afficher]',
+  'placeholder' : 'PLACEHOLDER FOR DOCUMENTS'
+});
+
 module.exports = React.createClass({
   render () {
     return (
@@ -52,7 +58,7 @@ module.exports = React.createClass({
           underlayColor='transparent'
           onPress={() => this._onUnspam(this.props.data.id)}
         >
-          <Text>Message indésirable d'après le modérateur [Afficher]</Text>
+          <Text>{i18next.t('local:spammed')}</Text>
         </TouchableHighlight>
       );
     } else {
@@ -101,7 +107,7 @@ module.exports = React.createClass({
         key={this.props.data.id + '-' + index}
         underlayColor='transparent'
         onPress={() => hyperlink.open(element.href)}>
-        <Text>PLACEHOLDER FOR DOCUMENTS</Text>
+        <Text>{i18next.t('local:placeholder')}</Text>
       </TouchableHighlight>
     );
   },

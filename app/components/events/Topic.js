@@ -15,6 +15,11 @@ var Username = require('./Username');
 var common = require('@dbrugne/donut-common');
 var s = require('../../styles/events');
 
+var i18next = require('../../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'topic': 'has changed topic for'
+});
+
 module.exports = React.createClass({
   render () {
     if (!this.props.data.topic) {
@@ -58,7 +63,7 @@ module.exports = React.createClass({
             <Text style={{color: '#666666', fontSize: 12, fontFamily: 'Open Sans', marginLeft: 5}}>{time}</Text>
           </View>
           <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
-            <Text style={[s.statusBlockText, {flexWrap: 'wrap'}]}>has changed topic for</Text>
+            <Text style={[s.statusBlockText, {flexWrap: 'wrap'}]}>{i18next.t('local:topic')}</Text>
             <Text style={[s.topicContent, {flexWrap: 'wrap'}]}>{topic}</Text>
           </View>
         </View>

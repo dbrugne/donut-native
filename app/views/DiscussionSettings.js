@@ -14,21 +14,11 @@ var {
   TouchableHighlight
 } = React;
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'settings': 'settings',
   'leave': 'Leave this donut',
   'close': 'Close this private discussion'
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
 });
 
 class RoomSettings extends Component {
@@ -39,18 +29,18 @@ class RoomSettings extends Component {
     if (this.props.model.get('type') === 'room') {
       return (
         <View>
-          <Text>{this.props.model.get('identifier')} {i18next.t('settings')}</Text>
+          <Text>{this.props.model.get('identifier')} {i18next.t('local:settings')}</Text>
           <Button onPress={() => this.props.model.leave()} style={styles.row}>
-            {i18next.t('leave')}
+            {i18next.t('local:leave')}
           </Button>
         </View>
       );
     } else {
       return (
         <View>
-          <Text>{this.props.model.get('identifier')} {i18next.t('settings')}</Text>
+          <Text>{this.props.model.get('identifier')} {i18next.t('local:settings')}</Text>
           <Button onPress={() => this.props.model.leave()} style={styles.row}>
-            {i18next.t('close')}
+            {i18next.t('local:close')}
           </Button>
         </View>
       );

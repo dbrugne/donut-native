@@ -9,21 +9,10 @@ var {
 } = React;
 var Platform = require('Platform');
 
-var _ = require('underscore');
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'error': 'Can\'t open URL: __url__'
-};
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
 });
-
 
 module.exports = {
   open (url) {
@@ -35,7 +24,7 @@ module.exports = {
         if (supported) {
           IntentAndroid.openURL(url);
         } else {
-          ToastAndroid.show(i18next.t('error', {url}), ToastAndroid.SHORT);
+          ToastAndroid.show(i18next.t('local:error', {url}), ToastAndroid.SHORT);
         }
       });
     } else {
@@ -43,7 +32,7 @@ module.exports = {
         if (supported) {
           LinkingIOS.openURL(url);
         } else {
-          AlertIOS.alert(i18next.t('error', {url}));
+          AlertIOS.alert(i18next.t('local:error', {url}));
         }
       });
     }

@@ -22,20 +22,11 @@ var NavigationRoomsView = require('./../components/NavigationRooms');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'discover': 'discover',
   'search': 'search',
   'create': 'create'
-};
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
 });
 
 class NavigationView extends Component {
@@ -61,7 +52,7 @@ class NavigationView extends Component {
                   style={styles.icon}
                   />
               </View>
-              <Text style={styles.linkText}>{i18next.t('discover')}</Text>
+              <Text style={styles.linkText}>{i18next.t('local:discover')}</Text>
             </View>
           </TouchableHighlight>
 
@@ -77,7 +68,7 @@ class NavigationView extends Component {
                   style={styles.icon}
                   />
               </View>
-              <Text style={styles.linkText}>{i18next.t('search')}</Text>
+              <Text style={styles.linkText}>{i18next.t('local:search')}</Text>
             </View>
           </TouchableHighlight>
 
@@ -93,7 +84,7 @@ class NavigationView extends Component {
                   style={styles.icon}
                   />
               </View>
-              <Text style={styles.linkText}>{i18next.t('create')}</Text>
+              <Text style={styles.linkText}>{i18next.t('local:create')}</Text>
             </View>
           </TouchableHighlight>
 

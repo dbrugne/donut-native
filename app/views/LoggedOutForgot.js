@@ -17,23 +17,13 @@ var {
   Icon
 } = require('react-native-icons');
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'forgot': 'Forgot Password',
   'what': 'What email address do you use to sign into Donut ?',
   'reset': 'Reset',
   'email': 'Email',
   'back': 'back'
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
 });
 
 class ForgotView extends Component {
@@ -52,13 +42,13 @@ class ForgotView extends Component {
         </View>
 
         <View style={styles.container}>
-          <Text style={[s.h1, s.textCenter]}>{i18next.t('forgot')}</Text>
-          <Text style={[s.spacer, s.p, s.textCenter]}>{i18next.t('what')}</Text>
+          <Text style={[s.h1, s.textCenter]}>{i18next.t('local:forgot')}</Text>
+          <Text style={[s.spacer, s.p, s.textCenter]}>{i18next.t('local:what')}</Text>
 
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               autoFocus={true}
-              placeholder={i18next.t('email')}
+              placeholder={i18next.t('local:email')}
               onChange={(event) => this.setState({email: event.nativeEvent.text})}
               style={[s.input, s.marginTop10]}
               value={this.state.email}/>
@@ -68,7 +58,7 @@ class ForgotView extends Component {
                               underlayColor='#E4396D'
             >
             <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>{i18next.t('reset')}</Text>
+              <Text style={s.buttonTextLight}>{i18next.t('local:reset')}</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -83,7 +73,7 @@ class ForgotView extends Component {
           <TouchableHighlight onPress={(this.onBack.bind(this))}
                               underlayColor='transparent'
                               style={styles.textGray}>
-            <Text style={s.link}>{i18next.t('back')}</Text>
+            <Text style={s.link}>{i18next.t('local:back')}</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -96,14 +86,14 @@ class ForgotView extends Component {
 
   onResetPressed() {
     if (!this.state.email) {
-      return Alert.show(i18next.t('global.errors.not-complete'));
+      return Alert.show(i18next.t('messages.not-complete'));
     }
 
     currentUser.forgot(this.state.email, (err) => {
       if (err) {
-        Alert.show(i18next.t('global.errors.' + err));
+        Alert.show(i18next.t('messages.' + err));
       } else {
-        Alert.show(i18next.t('global.success'));
+        Alert.show(i18next.t('messages.success'));
       }
     });
   }

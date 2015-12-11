@@ -19,23 +19,13 @@ var {
   TouchableHighlight
   } = React;
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'old-password': 'old password',
   'change-password': 'Change password',
   'new-password': 'new password',
   'confirm': 'confirm',
   'change': 'CHANGE'
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
 });
 
 class ChangePasswordView extends Component {
@@ -72,7 +62,7 @@ class ChangePasswordView extends Component {
         <View style={[s.inputContainer, s.marginTop5]}>
           <TextInput
           autoFocus={true}
-          placeholder={i18next.t('old-password')}
+          placeholder={i18next.t('local:old-password')}
           secureTextEntry={true}
           onChange={(event) => this.setState({oldPassword: event.nativeEvent.text})}
           onSubmitEditing={() => this._focusNextField('1')}
@@ -83,7 +73,7 @@ class ChangePasswordView extends Component {
 
     return (
       <View style={{ flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center', flex: 1, backgroundColor: '#f0f0f0' }}>
-        <Text style={[s.h1, s.textCenter, s.marginTop5]}>{i18next.t('change-password')}</Text>
+        <Text style={[s.h1, s.textCenter, s.marginTop5]}>{i18next.t('local:change-password')}</Text>
 
         <Text style={s.marginTop20}></Text>
 
@@ -92,7 +82,7 @@ class ChangePasswordView extends Component {
         <View style={[s.inputContainer, s.marginTop5]}>
           <TextInput
             ref='1'
-            placeholder={i18next.t('new-password')}
+            placeholder={i18next.t('local:new-password')}
             secureTextEntry={true}
             onChange={(event) => this.setState({newPassword: event.nativeEvent.text})}
             onSubmitEditing={() => this._focusNextField('2')}
@@ -102,7 +92,7 @@ class ChangePasswordView extends Component {
         <View style={[s.inputContainer, s.marginTop5]}>
           <TextInput
             ref='2'
-            placeholder={i18next.t('confirm')}
+            placeholder={i18next.t('local:confirm')}
             secureTextEntry={true}
             onChange={(event) => this.setState({confirmPassword: event.nativeEvent.text})}
             style={s.input} />
@@ -115,7 +105,7 @@ class ChangePasswordView extends Component {
                             underlayColor='#E4396D'
           >
           <View style={s.buttonLabel}>
-            <Text style={s.buttonTextLight}>{i18next.t('change')}</Text>
+            <Text style={s.buttonTextLight}>{i18next.t('local:change')}</Text>
           </View>
         </TouchableHighlight>
       </View>
@@ -128,18 +118,18 @@ class ChangePasswordView extends Component {
 
   onSubmitPressed () {
     if (!this.state.newPassword || (this.state.hasPassword && !this.state.oldPassword)) {
-      return alert.show(i18next.t('global.not-complete'));
+      return alert.show(i18next.t('messages.not-complete'));
     }
 
     if (!this.state.newPassword !== this.state.confirmPassword) {
-      return alert.show(i18next.t('global.not-same-password'));
+      return alert.show(i18next.t('messages.not-same-password'));
     }
 
     client.accountPassword(this.state.newPassword, this.state.oldPassword, (response) => {
       if (response.err) {
         alert.show(response.err);
       } else {
-        alert.show(i18next.t('global.success'));
+        alert.show(i18next.t('messages.success'));
       }
     });
   }

@@ -21,22 +21,12 @@ var {
   ScrollView
   } = React;
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'add-email': 'Add email',
   'current-email': 'CURRENT EMAIL',
   'missing-email': 'You do not have entered a main email for this account.',
   'additional-emails': 'Additional emails.'
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
 });
 
 class EmailsView extends Component {
@@ -85,7 +75,7 @@ class EmailsView extends Component {
 
           <ListGroupItem
             onPress={() => this.props.navigator.push(navigation.getMyAccountEmailsAdd(this.fetchData.bind(this)))}
-            text={i18next.t('add-email')}
+            text={i18next.t('local:add-email')}
             type='button'
             action='true'
             first='true'
@@ -101,7 +91,7 @@ class EmailsView extends Component {
     if (this.state.currentEmail) {
       return (
         <View>
-          <Text style={s.listGroupTitle}>{i18next.t('current-email')}</Text>
+          <Text style={s.listGroupTitle}>{i18next.t('local:current-email')}</Text>
           <ListGroupItem
             onPress={() => this.props.navigator.push(navigation.getMyAccountEmail(this.state.currentEmail, this.fetchData.bind(this)))}
             text={this.state.currentEmail}
@@ -116,7 +106,7 @@ class EmailsView extends Component {
 
     return (
       <View>
-        <Text style={s.listGroupTitle}>{i18next.t('missing-email')}</Text>
+        <Text style={s.listGroupTitle}>{i18next.t('local:missing-email')}</Text>
         <Text style={s.listGroupItemSpacing}></Text>
       </View>
     );
@@ -148,7 +138,7 @@ class EmailsView extends Component {
     }
     return (
       <View>
-        <Text style={s.listGroupTitle}>{i18next.t('additional-emails')}</Text>
+        <Text style={s.listGroupTitle}>{i18next.t('local:additional-emails')}</Text>
         <View>
           {listRow}
           <Text style={s.listGroupItemSpacing}></Text>

@@ -22,24 +22,14 @@ var {
   Image
   } = React;
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'avatar': 'Avatar',
   'color': 'Color',
   'realname': 'Realname',
   'biography': 'Biography',
   'location': 'Location',
-  'website': 'Website',
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
+  'website': 'Website'
 });
 
 class MyAccountInformation extends Component {
@@ -149,35 +139,35 @@ class MyAccountInformation extends Component {
           </View>
         </View>
 
-        <ListGroupItem text={i18next.t('avatar')}
+        <ListGroupItem text={i18next.t('local:avatar')}
                        type='edit-button'
                        first={true}
                        onPress={() => this._updateAvatar()}
           />
-        <ListGroupItem text={i18next.t('color')}
+        <ListGroupItem text={i18next.t('local:color')}
                        type='color-button'
                        color={this.state.color}
                        onPress={() => this.props.navigator.push(navigation.getColorPicker())}
           />
-        <ListGroupItem text={i18next.t('realname')}
+        <ListGroupItem text={i18next.t('local:realname')}
                        type='edit-button'
                        value={this.state.realname}
                        onPress={() => this.onUserEdit(require('../components/UserField/Realname'), this.state.realname)}
           />
 
-        <ListGroupItem text={i18next.t('biography')}
+        <ListGroupItem text={i18next.t('local:biography')}
                        type='edit-button'
                        value={this.state.bio}
                        onPress={() => this.onUserEdit(require('../components/UserField/Bio'), this.state.bio)}
           />
 
-        <ListGroupItem text={i18next.t('location')}
+        <ListGroupItem text={i18next.t('local:location')}
                        type='edit-button'
                        value={this.state.location}
                        onPress={() => this.onUserEdit (require('../components/UserField/Location'), this.state.location)}
           />
 
-        <ListGroupItem text={i18next.t('website')}
+        <ListGroupItem text={i18next.t('local:website')}
                        type='edit-button'
                        value={this.state.website}
                        onPress={() => this.onUserEdit(require('../components/UserField/Website'), this.state.website)}

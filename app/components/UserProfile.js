@@ -14,7 +14,6 @@ var {
   Icon
 } = require('react-native-icons');
 
-
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
@@ -23,6 +22,15 @@ var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
+
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'registered': 'registered on',
+  'unlock': 'débloquer cet utilisateur',
+  'lock': 'bloquer cet utilisateur',
+  'blocked': 'cet utilisateur vous a bloqué',
+  'discuss': 'discuter'
+});
 
 class UserProfileView extends Component {
   constructor (props) {
@@ -49,7 +57,7 @@ class UserProfileView extends Component {
           color='#c7c7c7'
           style={[styles.icon, (data.status && data.status === 'online') && styles.iconOnline]}
           />
-        <Text style={styles.statusText}> Offline</Text>
+        <Text style={styles.statusText}> {i18next.t('offline')}</Text>
       </View>
     );
     if (data.status && data.status === 'online') {
@@ -61,7 +69,7 @@ class UserProfileView extends Component {
             color='#4fedc0'
             style={[styles.icon, (data.status && data.status === 'online') && styles.iconOnline]}
             />
-          <Text style={styles.statusText}> Online</Text>
+          <Text style={styles.statusText}> {i18next.t('online')}</Text>
         </View>
       );
     }
@@ -116,7 +124,7 @@ class UserProfileView extends Component {
           color='#333'
           style={s.listGroupItemIcon}
           />
-        <Text style={s.listGroupItemText}> inscrit le {date.longDateTime(data.registered)}</Text>
+        <Text style={s.listGroupItemText}> {i18next.t('local:registered')} {date.longDateTime(data.registered)}</Text>
       </View>
     );
 
@@ -133,7 +141,7 @@ class UserProfileView extends Component {
                 color='#ff3838'
                 style={s.listGroupItemIcon}
                 />
-              <Text style={s.listGroupItemText}> débloquer cet utilisateur</Text>
+              <Text style={s.listGroupItemText}> {i18next.t('local:unlock')}</Text>
               <Icon
                 name='fontawesome|chevron-right'
                 size={14}
@@ -156,7 +164,7 @@ class UserProfileView extends Component {
                 color='#ff3838'
                 style={s.listGroupItemIcon}
                 />
-              <Text style={s.listGroupItemText}> bloquer cet utilisateur</Text>
+              <Text style={s.listGroupItemText}> {i18next.t('local:lock')}</Text>
               <Icon
                 name='fontawesome|chevron-right'
                 size={14}
@@ -176,7 +184,7 @@ class UserProfileView extends Component {
         <View>
           <TouchableHighlight>
             <View style={s.listGroupItem}>
-              <Text style={[s.listGroupItemText, s.clError]}>cet utilisateur vous a bloqué</Text>
+              <Text style={[s.listGroupItemText, s.clError]}>{i18next.t('local:blocked')}</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -195,7 +203,7 @@ class UserProfileView extends Component {
         <View style={styles.container2}>
           <TouchableHighlight style={s.button} onPress={() => app.trigger('joinUser', data.user_id)}>
             <View style={s.buttonLabel}>
-              <Text style={s.buttonText}>discuter</Text>
+              <Text style={s.buttonText}>{i18next.t('discuss')}</Text>
             </View>
           </TouchableHighlight>
           <View style={s.listGroup}>

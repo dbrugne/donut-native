@@ -13,6 +13,11 @@ var {
   StyleSheet
 } = React;
 
+var i18next = require('../../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'save': 'Save'
+});
+
 class ListGroupItemInputButton extends Component {
   constructor (props) {
     super(props);
@@ -33,7 +38,7 @@ class ListGroupItemInputButton extends Component {
                             underlayColor='#50EEC1'
           >
           <View style={s.buttonLabel}>
-            <Text style={s.buttonTextLight}>Save</Text>
+            <Text style={s.buttonTextLight}>{i18next.t('local:save')}</Text>
           </View>
         </TouchableHighlight>
       </View>

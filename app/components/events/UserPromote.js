@@ -8,9 +8,13 @@ var {
 var Username = require('./Username');
 var s = require('../../styles/events');
 
+var i18next = require('../../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'action': 'has been __what__ by'
+});
+
 module.exports = React.createClass({
   render () {
-    // @todo i18next
     return (
       <View style={[s.promoteBlock, s.event]}>
         <Username
@@ -18,7 +22,7 @@ module.exports = React.createClass({
           username={this.props.data.to_username}
           navigator={this.props.navigator}
         />
-        <Text> a été {this.props.type} par </Text>
+        <Text> {i18next.t('local:action', { what: this.props.type })} </Text>
         <Username
           user_id={this.props.data.user_id}
           username={this.props.data.username}

@@ -8,7 +8,6 @@ var {
   ActivityIndicatorIOS
 } = React;
 
-
 var Launch = React.createClass({
   render: function() {
     let text = (this.props.text)

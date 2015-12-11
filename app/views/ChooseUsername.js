@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var common = require('@dbrugne/donut-common');
 var React = require('react-native');
 var Platform = require('Platform');
@@ -16,24 +15,13 @@ var {
   Image
   } = React;
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'choose': 'It\'s time to choose a username!',
   'disclaimer': 'This username will be your identity on DONUT and will be public. You cannot edit it later.',
   'save': 'save',
   'username': 'username'
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
 });
-
 
 class ChooseUsername extends Component {
   constructor (props) {
@@ -52,12 +40,12 @@ class ChooseUsername extends Component {
             <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
           </View>
 
-          <Text style={s.h1}>{i18next.t('choose')}</Text>
-          <Text style={[s.h2, s.marginTop10]}>{i18next.t('disclaimer')}</Text>
+          <Text style={s.h1}>{i18next.t('local:choose')}</Text>
+          <Text style={[s.h2, s.marginTop10]}>{i18next.t('local:disclaimer')}</Text>
 
           <View style={[s.inputContainer, s.marginTop10]}>
             <TextInput
-              placeholder={i18next.t('username')}
+              placeholder={i18next.t('local:username')}
               onChange={(event) => this.setState({username: event.nativeEvent.text})}
               style={s.input}
               value={this.state.username} />
@@ -67,7 +55,7 @@ class ChooseUsername extends Component {
                               style={[s.button, s.buttonPink, styles.marginTop5]}
                               underlayColor='#E4396D' >
             <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>{i18next.t('save')}</Text>
+              <Text style={s.buttonTextLight}>{i18next.t('local:save')}</Text>
             </View>
           </TouchableHighlight>
         </View>

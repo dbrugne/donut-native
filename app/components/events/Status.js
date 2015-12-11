@@ -13,20 +13,27 @@ var date = require('../../libs/date');
 var Username = require('./Username');
 var s = require('../../styles/events');
 
+var i18next = require('../../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'online': 'is now online',
+  'offline': 'is now offline',
+  'out': 'just gone out',
+  'in': 'just entered'
+});
+
 module.exports = React.createClass({
   render () {
-    // @todo i18next
     var message;
     var icon = null;
     switch (this.props.type) {
       case 'user:online':
-        message = 'est maintenant en ligne';
+        message = i18next.t('local:online');
         break;
       case 'user:offline':
-        message = 'est maintenant hors ligne';
+        message = i18next.t('local:offline');
         break;
       case 'room:out':
-        message = 'vient de sortir';
+        message = i18next.t('local:out');
         icon = (
           <Icon
             name='fontawesome|sign-out'
@@ -37,7 +44,7 @@ module.exports = React.createClass({
         );
         break;
       case 'room:in':
-        message = 'vient de rentrer';
+        message = i18next.t('local:in');
         icon = (
           <Icon
             name='fontawesome|sign-in'
