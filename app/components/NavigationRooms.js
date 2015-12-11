@@ -25,6 +25,7 @@ class NavigationRoomsView extends Component {
         }
       })
     };
+    this.lastGroup =  null;
   }
 
   componentDidMount () {
@@ -37,6 +38,7 @@ class NavigationRoomsView extends Component {
   }
 
   refreshData () {
+    this.lastGroup = null;
     this.setState({
       elements: this.state.elements.cloneWithRows(rooms.toJSON())
     });
@@ -65,17 +67,33 @@ class NavigationRoomsView extends Component {
   }
 
   renderElement (e) {
+    var group = null;
+    if (e.group_id && e.group_name && e.group_id !== this.lastGroup) {
+      this.lastGroup =  e.group_id
+      group = (
+        <TouchableHighlight
+          style={styles.linkBlock}
+          underlayColor= '#414041'
+          >
+          <View style={styles.item}>
+            <Text style={styles.itemTitle}>#{e.group_name}</Text>
+          </View>
+        </TouchableHighlight>
+      );
+    }
     if (e.blocked) {
       return (
-        <View style={[styles.item]}>
-          <Text style={[styles.itemTitle, {textDecorationLine: 'line-through'}]}>{e.identifier}</Text>
+        <View style={(e.group_id) ? styles.itemGroup : styles.item}>
+          <Text style={[styles.itemTitle, {textDecorationLine: 'line-through'}]}>
+            {(e.group_id) ? '/' + e.name : '#' + e.name}
+          </Text>
         </View>
       );
     }
 
     var model = rooms.get(e.room_id);
     if (!model) {
-      return;
+      return(<View></View>);
     }
 
     var badge = null;
@@ -86,16 +104,21 @@ class NavigationRoomsView extends Component {
     }
 
     return (
+      <View>
+        {group}
       <TouchableHighlight
         style={styles.linkBlock}
         onPress={() => navigation.switchTo(navigation.getDiscussion(model.get('id'), model))}
         underlayColor= '#414041'
         >
-        <View style={styles.item}>
-          <Text style={styles.itemTitle}>{model.get('identifier')}</Text>
+        <View style={(model.get('group_id')) ? styles.itemGroup : styles.item}>
+          <Text style={styles.itemTitle}>
+            {(model.get('group_id')) ? '/' + model.get('name') : '#' + model.get('name')}
+          </Text>
           {badge}
         </View>
       </TouchableHighlight>
+      </View>
     );
   }
 };
@@ -114,6 +137,12 @@ var styles = StyleSheet.create({
     marginVertical: 5,
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  itemGroup: {
+    marginVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 20
   },
   thumbnail: {
     width: 30,
