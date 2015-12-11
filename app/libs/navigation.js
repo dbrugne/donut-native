@@ -23,6 +23,7 @@ i18next.addResourceBundle('en', 'local', {
   'discover': 'Discover',
   'search': 'Search',
   'create-donut': 'Create a donut',
+  'create-group': 'Create a community',
   'my-account': 'My Account',
   'my-email': 'My Email',
   'my-emails': 'My Emails',
@@ -287,6 +288,23 @@ routes.getRoomCreate = function () {
     },
     getTitle: function () {
       return i18next.t('local:create-donut');
+    },
+    configureScene: function () {
+      return ExNavigator.SceneConfigs.FloatFromRight;
+    },
+    renderLeftButton: function (navigator) {
+      return (<LeftNavigation navigator={navigator} />);
+    }
+  });
+};
+routes.getGroupCreate = function () {
+  return getRoute({
+    id: 'create-group',
+    getSceneClass: function () {
+      return require('../screens/GroupCreate');
+    },
+    getTitle: function () {
+      return i18next.t('local:create-group');
     },
     configureScene: function () {
       return ExNavigator.SceneConfigs.FloatFromRight;

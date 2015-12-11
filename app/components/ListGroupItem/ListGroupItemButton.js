@@ -46,6 +46,7 @@ class ListGroupItemButton extends Component {
 
     return (
       <TouchableHighlight onPress={() => this.props.onPress()}
+                          style={this.props.style}
                           underlayColor= '#DDD'
         >
         <View style={[styles.listGroupItem, this.props.first && styles.listGroupItemFirst, this.props.last && styles.listGroupItemLast]}>

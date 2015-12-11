@@ -3,11 +3,11 @@
 var React = require('react-native');
 var Platform = require('Platform');
 var _ = require('underscore');
+
 var client = require('../libs/client');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
-var navigation = require('../libs/navigation');
-var Link = require('../components/Link');
+
 var s = require('../styles/style');
 
 var {
@@ -19,7 +19,7 @@ var {
   SwitchIOS,
   View,
   Component
-} = React;
+  } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -34,7 +34,7 @@ i18next.addResourceBundle('en', 'local', {
   'create': 'Créer',
   'joining': 'joining ...',
   'community': 'Already lead a community ? Want your users to feel home ?',
-  'create-community': 'Create a DONUT community'
+  'create-community': 'Create a DONUT communitY'
 });
 
 class RoomCreateView extends Component {
@@ -72,7 +72,7 @@ class RoomCreateView extends Component {
             {i18next.t('local:help')}
           </Text>
 
-          <Text style={[styles.infoRoomName, s.marginTop10]}>
+          <Text style={styles.infoRoomName}>
             {i18next.t('local:disclaimer')}
           </Text>
 
@@ -104,13 +104,13 @@ class RoomCreateView extends Component {
 
         <View style={[s.marginTop10, {marginHorizontal: 10}]}>
           <Text>{i18next.t('local:community')}</Text>
-          <Link onPress={() => navigation.switchTo(navigation.getGroupCreate())}
-                text={i18next.t('local:create-community')}
-                style={s.marginTop10}
-                linkStyle={{textAlign: 'center'}}
-            >
-          </Link>
+          <TouchableHighlight style={[s.button, s.buttonGreen, s.marginTop10, {marginHorizontal: 10}]}
+                              underlayColor='transparent'
+                              onPress={(this.onRoomCreate.bind(this))}>
+            <Text>{i18next.t('local:create-community')}</Text>
+          </TouchableHighlight>
         </View>
+
 
       </View>
     );
@@ -142,8 +142,7 @@ class RoomCreateView extends Component {
 var styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    flex: 1,
-    marginTop:10
+    flex: 1
   },
   inputRoomName: {
     height: 40,
@@ -151,9 +150,9 @@ var styles = StyleSheet.create({
     margin: 10
   },
   help: {
-    fontSize:10,
+    fontStyle: 'italic',
     color: '#737373',
-    marginVertical: 5
+    marginVertical: 10
   },
   infoRoomName: {
     color: '#000'
