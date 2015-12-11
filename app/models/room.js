@@ -50,6 +50,9 @@ var RoomModel = Backbone.Model.extend({
   leave: function () {
     client.roomLeave(this.get('id'));
   },
+  leaveBlocked: function () {
+    client.roomLeaveBlock(this.get('id'));
+  },
   currentUserIsOwner: function () {
     if (!this.get('owner_id')) {
       return false;

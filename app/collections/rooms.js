@@ -97,7 +97,7 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:devoice', this.onDevoice);
     this.listenTo(client, 'room:join', this.onJoin);
     this.listenTo(client, 'room:leave', this.onLeave);
-    this.listenTo(client, 'room:leave:block', this.onLeaveBlock);
+    this.listenTo(client, 'room:leave:block', this.onLeaveBlock); // @todo a quoi ça sert ? l'event n'est jamais lancé, la méthode jamais appelée
     this.listenTo(client, 'room:viewed', this.onViewed);
     this.listenTo(client, 'room:set:private', this.onSetPrivate);
     this.listenTo(client, 'room:message:spam', this.onMessageSpam);

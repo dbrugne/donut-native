@@ -22,6 +22,7 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
+  "by": "by",
   "allowed": "This donut is private.",
   "request": "To request access, ",
   "click": "click here.",
@@ -80,18 +81,13 @@ class Discussion extends Component {
           {banned}
           {kicked}
 
-          <Link onPress={(this.onClose.bind(this))}
+          <Link onPress={() => this.props.model.leaveBlocked()}
                 text={i18next.t('local:close')}
             />
 
         </View>
       </ScrollView>
     );
-  }
-
-  // @todo implement close this window
-  onClose () {
-    console.log('implement close')
   }
 
   // @todo implement allow user request link

@@ -169,7 +169,10 @@ function _popNicely (navigator, index) {
 }
 
 routes.removeDiscussionRoute = function (id, model) {
-  var route = routes.getNavigator(routes.getDiscussion(id));
+  var _route = (!model.get('blocked'))
+    ? routes.getDiscussion(id)
+    : routes.getBlockedDiscussion(id);
+  var route = routes.getNavigator(_route);
   var existingRoute = rootNavigator.getCurrentRoutes().find((element) => element === route);
   if (!existingRoute) {
     return; // view is not mounted, no op
@@ -444,18 +447,6 @@ routes.getDiscussionSettings = function (id, model) {
     }
   });
 };
-routes.getDiscussionBlockedSettings = function (id, model) {
-  return getRoute({
-    id: 'discussion-blocked-settings-' + id,
-    renderScene: function (navigator) {
-      let Settings = require('../views/DiscussionBlockedSettings');
-      return <Settings navigator={navigator} model={model} />;
-    },
-    getTitle: function () {
-      return i18next.t('local:settings-blocked');
-    }
-  });
-};
 routes.getDiscussion = function (id, model) {
   return getRoute({
     id: 'discussion-' + id,
@@ -497,16 +488,6 @@ routes.getBlockedDiscussion = function (id, model) {
     },
     renderLeftButton: function (navigator) {
       return (<LeftNavigation navigator={navigator} />);
-    },
-    renderRightButton: function (navigator) {
-      return (
-        <TouchableOpacity
-          touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
-          onPress={() => navigator.push(routes.getDiscussionBlockedSettings(id, model))}
-          style={ExNavigator.Styles.barRightButton} >
-          <Icon name='fontawesome|cog' size={25} style={styles.settings} />
-        </TouchableOpacity>
-      );
     }
   });
 };

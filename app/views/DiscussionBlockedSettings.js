@@ -26,25 +26,14 @@ class DiscussionBlockedSettings extends Component {
     super(props);
   }
   render () {
-    if (this.props.model.get('type') === 'room') {
-      return (
-        <View>
-          <Text>{this.props.model.get('identifier')} {i18next.t('local:settings')}</Text>
-          <Button onPress={() => this.props.model.leave()} style={styles.row}>
-            {i18next.t('local:close-donut')}
-          </Button>
-        </View>
-      );
-    } else {
-      return (
-        <View>
-          <Text>{this.props.model.get('identifier')} {i18next.t('local:settings')}</Text>
-          <Button onPress={() => this.props.model.leave()} style={styles.row}>
-            {i18next.t('local:close-community')}
-          </Button>
-        </View>
-      );
-    }
+    return (
+      <View>
+        <Text>{this.props.model.get('identifier')} {i18next.t('local:settings')}</Text>
+        <Button onPress={() => this.props.model.leaveBlocked()} style={styles.row}>
+          {i18next.t('local:close-donut')}
+        </Button>
+      </View>
+    );
   }
 }
 
