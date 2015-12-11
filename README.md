@@ -3,8 +3,6 @@
 ## TODO
 
 * [ ] Switch configuration iOS
-  - [ ] Facebook ID ios/donutMobile/Info.plist
-  - [ ] Facebook ID android/app/src/main/res/values/strings.xml
   - [ ] WS URL app/libs/client.js
   - [ ] OAUTH URL app/libs/oauth.js
   - [ ] Parse
@@ -14,6 +12,7 @@
 * [ ] fix android discussion (need to test RN0.0.16 ? but react-native-parsed-text block RN0.16.0 migration ...)
 * [ ] Icon and splashscreen Android
 * [ ] Switch configuration Android
+  - [ ] Facebook ID android/app/src/main/res/values/strings.xml
 * [ ] Send .apk to David
 
 * [ ] solve emoticons
