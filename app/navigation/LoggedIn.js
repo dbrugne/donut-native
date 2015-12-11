@@ -5,7 +5,7 @@ var React = require('react-native');
 var {
   Component
 } = React;
-var Loading = require('../components/Loading');
+var Launching = require('../views/Launching');
 var ChooseUsername = require('../views/ChooseUsername');
 
 var _ = require('underscore');
@@ -69,7 +69,7 @@ class Index extends Component {
   render () {
     if (this.state.underFirstConnection === true) {
       return (
-        <Loading />
+        <Launching text='connexion ...' />
       );
     }
     if (this.state.usernameRequired === true) {
