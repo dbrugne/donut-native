@@ -12,11 +12,6 @@ var debug = require('./debug')('notifications');
 var app = require('./app');
 var currentUser = require('../models/mobile-current-user');
 
-var PushNotifications = {
-  componentDidMount: _.noop,
-  componentWillUnmount: _.noop
-};
-
 module.exports = {
   componentDidMount () {
     this._registerDevice();

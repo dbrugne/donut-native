@@ -16,14 +16,10 @@ var _ = require('underscore');
 var debug = require('./debug')('notifications');
 var app = require('./app');
 var currentUser = require('../models/mobile-current-user');
-
-var PushNotifications = {
-  componentDidMount: _.noop,
-  componentWillUnmount: _.noop
-};
+var storage = require('./libs/storage');
 
 // @source: http://stackoverflow.com/questions/29683720/react-native-push-notifications-parse/30287223#30287223
-PushNotifications = {
+module.exports = {
   componentDidMount () {
     this._checkPermissions();
     PushNotificationIOS.addEventListener('register', this._onRegister.bind(this));
@@ -38,14 +34,12 @@ PushNotifications = {
   },
   _onRegister (deviceToken) {
     debug.log('_onRegister', deviceToken);
-    this._registerInstallation({
-      appIdentifier: 'me.donut', // @conf
-      appName: 'donutMobile', // @conf
-      appVersion: '1.0', // @conf
-      deviceType: 'ios',
-      deviceToken: deviceToken,
-      channels: ['global'],
-      uid: currentUser.getId()
+    storage.setKey({deviceToken: deviceToken}, (err) => {
+      if (err) {
+        debug.warn(err);
+      }
+
+      this._registerInstallation(deviceToken);
     });
   },
   _onNotification (notification) {
@@ -78,7 +72,17 @@ PushNotifications = {
     debug.log('_requestPermissions');
     PushNotificationIOS.requestPermissions();
   },
-  _registerInstallation (data) {
+  _registerInstallation (deviceToken) {
+    var data = {
+      appIdentifier: 'me.donut', // @conf
+      appName: 'donutMobile', // @conf
+      appVersion: '1.0', // @conf
+      deviceType: 'ios',
+      deviceToken: deviceToken,
+      channels: ['global'],
+      uid: currentUser.getId()
+    };
+
     // inform Parse.com of this device
     var url = 'https://api.parse.com/1/installations';
 
@@ -98,5 +102,3 @@ PushNotifications = {
       .catch((err) => debug.warn(err));
   }
 };
-
-module.exports = PushNotifications;
