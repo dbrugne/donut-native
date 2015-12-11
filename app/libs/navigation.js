@@ -34,6 +34,7 @@ i18next.addResourceBundle('en', 'local', {
   'my-preferences': 'My Preferences',
   'color-picker': 'Color picker',
   'settings': 'Settings',
+  'settings-blocked': 'Settings',
   'change-value': 'Change a value'
 });
 
@@ -443,6 +444,18 @@ routes.getDiscussionSettings = function (id, model) {
     }
   });
 };
+routes.getDiscussionBlockedSettings = function (id, model) {
+  return getRoute({
+    id: 'discussion-blocked-settings-' + id,
+    renderScene: function (navigator) {
+      let Settings = require('../views/DiscussionBlockedSettings');
+      return <Settings navigator={navigator} model={model} />;
+    },
+    getTitle: function () {
+      return i18next.t('local:settings-blocked');
+    }
+  });
+};
 routes.getDiscussion = function (id, model) {
   return getRoute({
     id: 'discussion-' + id,
@@ -469,6 +482,31 @@ routes.getDiscussion = function (id, model) {
     _onDidFocus: function () {
       // delay history load to avoid transition impact (visibly onDidFocus is triggered before transition end)
       setTimeout(() => this.scene.refs.events.onFocus(), 100);
+    }
+  });
+};
+routes.getBlockedDiscussion = function (id, model) {
+  return getRoute({
+    id: 'discussion-blocked-' + id,
+    renderScene: function (navigator) {
+      let DiscussionBlocked = require('../screens/DiscussionBlocked');
+      return <DiscussionBlocked navigator={navigator} model={model} />;
+    },
+    getTitle: function () {
+      return model.get('identifier');
+    },
+    renderLeftButton: function (navigator) {
+      return (<LeftNavigation navigator={navigator} />);
+    },
+    renderRightButton: function (navigator) {
+      return (
+        <TouchableOpacity
+          touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
+          onPress={() => navigator.push(routes.getDiscussionBlockedSettings(id, model))}
+          style={ExNavigator.Styles.barRightButton} >
+          <Icon name='fontawesome|cog' size={25} style={styles.settings} />
+        </TouchableOpacity>
+      );
     }
   });
 };

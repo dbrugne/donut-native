@@ -108,8 +108,7 @@ class RoomCreateView extends Component {
                 text={i18next.t('local:create-community')}
                 style={s.marginTop10}
                 linkStyle={{textAlign: 'center'}}
-            >
-          </Link>
+            />
         </View>
 
       </View>
