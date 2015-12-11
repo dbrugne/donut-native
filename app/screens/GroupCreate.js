@@ -15,45 +15,27 @@ var {
   TouchableHighlight,
   Text,
   TextInput,
-  SwitchAndroid,
-  SwitchIOS,
   View,
   Component
   } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'name': 'name of donut',
-  'help': 'Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_)',
-  'disclaimer': 'You are about to create a donut in the global space, if you want to create a donut in a community you are a member of, go to the community page and click on "Create a donut"',
-  'who': 'Who can join the donut',
-  'public': 'Public',
-  'any': 'Any user can join, participate and access history. Moderation tools available.',
-  'private': 'Private',
-  'only': 'Only users you authorize can join, participate and access history. Moderation tools available.',
-  'create': 'Créer',
-  'joining': 'joining ...',
-  'community': 'Already lead a community ? Want your users to feel home ?',
-  'create-community': 'Create a DONUT communitY'
+  'name': 'name of community',
+  'help': 'Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_). Caution the community name cannot be changed',
+  'disclaimer': 'A community is a place where your members can gather and create donuts to chat with each other and external users if they want.',
+  'create': 'create'  
 });
 
 class RoomCreateView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      roomName: '',
-      public: true
+      groupName: ''
     }
   }
 
   render() {
-    var SwitchComponent;
-    if (Platform.OS === 'android') {
-      SwitchComponent = SwitchAndroid;
-    } else {
-      SwitchComponent = SwitchIOS;
-    }
-
     return (
       <View style={styles.container}>
 
@@ -61,8 +43,8 @@ class RoomCreateView extends Component {
           <TextInput style={s.input}
                      autoFocus={true}
                      placeholder={i18next.t('local:name')}
-                     onChangeText={(text) => this.setState({roomName: text})}
-                     value={this.state.roomName}
+                     onChangeText={(text) => this.setState({groupName: text})}
+                     value={this.state.groupName}
             />
         </View>
 
@@ -76,65 +58,45 @@ class RoomCreateView extends Component {
             {i18next.t('local:disclaimer')}
           </Text>
 
-          <Text style={[s.h2, s.marginTop10]}>
-            {i18next.t('local:who')}
-          </Text>
-
-          <View style={[styles.modes, s.marginTop10]}>
-            <View style={styles.modeOption}>
-              <Text style={{flex:1}}>{ this.state.public ? i18next.t('local:public') : i18next.t('local:private')}</Text>
-              <SwitchComponent
-                style={{alignSelf:'flex-end'}}
-                onValueChange={(value) => this.setState({public: value})}
-                value={this.state.public}
-                />
-            </View>
-            <Text style={styles.help}>{ this.state.public ? i18next.t('local:any') : i18next.t('local:only')}</Text>
-          </View>
-
         </View>
 
         <TouchableHighlight style={[s.button, s.buttonGreen, s.marginTop10, {marginHorizontal: 10}]}
                             underlayColor='#50EEC1'
-                            onPress={(this.onRoomCreate.bind(this))}>
+                            onPress={(this.onGroupCreate.bind(this))}>
           <View style={s.buttonLabel}>
             <Text style={s.buttonTextLight}>{i18next.t('local:create')}</Text>
           </View>
         </TouchableHighlight>
 
-        <View style={[s.marginTop10, {marginHorizontal: 10}]}>
-          <Text>{i18next.t('local:community')}</Text>
-          <TouchableHighlight style={[s.button, s.buttonGreen, s.marginTop10, {marginHorizontal: 10}]}
-                              underlayColor='transparent'
-                              onPress={(this.onRoomCreate.bind(this))}>
-            <Text>{i18next.t('local:create-community')}</Text>
-          </TouchableHighlight>
-        </View>
-
-
       </View>
     );
   }
 
-  onRoomCreate() {
-    if (!this.state.roomName) {
+  onGroupCreate() {
+    if (!this.state.groupName) {
       return alert.show(i18next.t('messages.not-complete'));
     }
 
-    var mode = (this.state.public) ? 'public' : 'private';
-    client.roomCreate(this.state.roomName, mode, null, null, (response) => {
-      if (response.err) {
-        alert.show(response.err);
-      } else {
-        alert.show(i18next.t('local:joining'));
-        client.roomId('#' + this.state.roomName, (data) => {
-          if (data.err) {
-            alert.show(response.err);
-          } else {
-            app.trigger('joinRoom', data.room_id);
-          }
-        });
+    client.groupCreate(this.state.groupName, (response) => {
+      if (!response.success) {
+        if (response.err === 'group-name-already-exist') {
+          return alert.show(i18next.t('messages.group-name-already-exist', {name: this.state.groupName}));
+        }
+        if (response.err === 'not-confirmed') {
+          return alert.show(i18next.t('messages.not-confirmed'));
+        }
+        return alert.show(i18next.t('messages.unknownerror'));
       }
+
+      alert.show(i18next.t('local:joining'));
+      client.groupId('#' + this.state.groupName, (data) => {
+        if (data.err) {
+          alert.show(response.err);
+        } else {
+          // @todo spariaud finish joinGroup implementation
+          app.trigger('joinGroup', data.group_id);
+        }
+      });
     });
   }
 }
@@ -144,11 +106,6 @@ var styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1
   },
-  inputRoomName: {
-    height: 40,
-    borderWidth: 1,
-    margin: 10
-  },
   help: {
     fontStyle: 'italic',
     color: '#737373',
@@ -156,20 +113,6 @@ var styles = StyleSheet.create({
   },
   infoRoomName: {
     color: '#000'
-  },
-  title: {
-    color: '#6f6f6f',
-    fontWeight: 'bold',
-    margin: 10
-  },
-  modes: {
-    flexDirection: 'column',
-    marginBottom: 10
-  },
-  modeOption: {
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-    alignItems: 'center'
   },
   button: {
     height: 25,

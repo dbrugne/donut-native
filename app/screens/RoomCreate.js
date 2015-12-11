@@ -31,7 +31,7 @@ i18next.addResourceBundle('en', 'local', {
   'any': 'Any user can join, participate and access history. Moderation tools available.',
   'private': 'Private',
   'only': 'Only users you authorize can join, participate and access history. Moderation tools available.',
-  'create': 'Créer',
+  'create': 'create',
   'joining': 'joining ...',
   'community': 'Already lead a community ? Want your users to feel home ?',
   'create-community': 'Create a DONUT community'
@@ -145,11 +145,6 @@ var styles = StyleSheet.create({
     flex: 1,
     marginTop:10
   },
-  inputRoomName: {
-    height: 40,
-    borderWidth: 1,
-    margin: 10
-  },
   help: {
     fontSize:10,
     color: '#737373',
@@ -157,11 +152,6 @@ var styles = StyleSheet.create({
   },
   infoRoomName: {
     color: '#000'
-  },
-  title: {
-    color: '#6f6f6f',
-    fontWeight: 'bold',
-    margin: 10
   },
   modes: {
     flexDirection: 'column',
