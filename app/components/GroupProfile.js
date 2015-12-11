@@ -29,6 +29,16 @@ class GroupProfileView extends Component {
 
     this.data = props.data;
     this.members_count = (this.data.members && this.data.members.length) ? this.data.members.length : 0;
+
+    // ... grade  ...
+    this.isMember = (this.members_count) ? !!(_.indexOf(this.data.members, currentUser.get('user_id'))) : false;
+    this.isOwner = currentUser.get('user_id') === this.data.owner_id;
+    this.isAdmin = currentUser.isAdmin();
+    this.isOp = this.isCurrentUserIsOP();
+    console.log('isMember: ' + this.isMember);
+    console.log('isOwner: ' + this.isOwner);
+    console.log('isAdmin: ' + this.isAdmin);
+    console.log('isOp: ' + this.isOp);
   }
 
   render() {
@@ -141,7 +151,7 @@ class GroupProfileView extends Component {
         <View style={styles.container}>
           <Image style={styles.avatar} source={{uri: avatarUrl}}/>
           <Text style={styles.identifier}>{data.identifier}</Text>
-          <TouchableHighlight onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})) }}>
+          <TouchableHighlight onPress={() => { navigation.switchTo(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})) }}>
             <Text>
               <Text>by </Text>
               <Text style={styles.ownerUsername}>@{data.owner_username}</Text>
@@ -150,15 +160,14 @@ class GroupProfileView extends Component {
           <Text style={styles.description}>{description}</Text>
         </View>
         <View style={styles.container2}>
-          <TouchableHighlight style={s.button}>
+          <TouchableHighlight style={s.button} onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(data.group_id))}>
             <View style={s.buttonLabel}>
               <Text style={s.buttonText}>Devenir membre</Text>
-              <Icon
-                name='fontawesome|user'
-                size={20}
-                color='#ffda3e'
-                style={s.buttonIcon}
-                />
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight style={s.button}>
+            <View style={s.buttonLabel}>
+              <Text style={s.buttonText}>Liste des donuts</Text>
             </View>
           </TouchableHighlight>
           <View style={s.listGroup}>
@@ -169,6 +178,15 @@ class GroupProfileView extends Component {
         </View>
       </ScrollView>
     );
+  }
+
+  isCurrentUserIsOP () {
+    if (!this.members_count) {
+      return false;
+    }
+    return !!_.find(this.data.members, function (item) {
+      return (item.user_id === currentUser.get('user_id') && item.is_op === true);
+    });
   }
 }
 

@@ -10,34 +10,42 @@ var {
 } = React;
 
 var client = require('../libs/client');
-var GroupProfile = require('../components/GroupProfile');
 
-class GroupHomeView extends Component {
+class GroupAskMembership extends Component {
 
   constructor (props) {
     super(props);
-    this.id = props.element.id;
     this.state = {
       loading: true,
-      data: null,
+      success: false,
       error: null
     };
+    this.data = null;
+    this.id = props.id;
   }
   componentDidMount () {
     if (this.id) {
-      client.groupRead(this.id, {users: true}, this.onData.bind(this));
+      client.groupJoin(this.id, null, this.onData.bind(this));
     }
   }
   onData (response) {
     if (response.err) {
-      return this.setState({
+      this.setState({
         error: 'error'
       });
     }
-    this.setState({
-      loading: false,
-      data: response
-    });
+    if (!response.success) {
+      this.setState({
+        loading: false
+      });
+      this.data = response
+    } else {
+      this.setState({
+        loading: false,
+        success: true
+      });
+      this.data = response
+    }
   }
   render () {
     if (this.state.loading) {
@@ -45,7 +53,6 @@ class GroupHomeView extends Component {
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>
             <Text>loading</Text>
-            <Text>#{this.props.element.name}</Text>
           </Text>
           <ActivityIndicatorIOS
             animating={this.state.loading}
@@ -56,9 +63,26 @@ class GroupHomeView extends Component {
         </View>
       );
     }
-    return (
-      <GroupProfile data={this.state.data} navigator={this.props.navigator} />
-    );
+    if (!this.state.success) {
+      console.log('dfgdfdfd');
+      return (
+        <View>
+          {this.renderDisclaimer.bind(this)}
+        </View>
+      );
+    }
+  }
+
+  renderDisclaimer () {
+    console.log('ddffdf');
+    if (this.data.disclaimer) {
+      return (
+        <View>
+          <Text>{this.data.disclaimer}</Text>
+        </View>
+      );
+    }
+    return null;
   }
 }
 
@@ -80,4 +104,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = GroupHomeView;
+module.exports = GroupAskMembership;

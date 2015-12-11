@@ -35,6 +35,7 @@ var _localRes = { // current page locales
   'color-picker': 'Color picker',
   'settings': 'Settings',
   'change-value': 'Change a value',
+  'ask-membership': 'ask membership'
 };
 i18next.init({
   fallbackLng: 'en',
@@ -305,21 +306,6 @@ routes.getRoomCreate = function () {
     }
   });
 };
-routes.getGroup = function (element) {
-  return getRoute({
-    id: 'group-home',
-    renderScene: function (navigator) {
-      let GroupHome = require('../screens/GroupHome');
-      return <GroupHome navigator={navigator} element={element}/>
-    },
-    getTitle: function () {
-      return '#' + element.name;
-    },
-    renderLeftButton: function (navigator) {
-      return (<LeftNavigation navigator={navigator} />);
-    }
-  });
-};
 routes.getProfile = function (element) {
   return getRoute({
     id: 'profile-' + element.id,
@@ -329,6 +315,33 @@ routes.getProfile = function (element) {
     },
     getTitle() {
       return element.identifier;
+    }
+  });
+};
+routes.getGroup = function (element) {
+  return getRoute({
+    id: 'group-home',
+    renderScene: function (navigator) {
+      let GroupHome = require('../screens/GroupHome');
+      return <GroupHome navigator={navigator} element={element} />;
+    },
+    getTitle: function () {
+      return '#' + element.name;
+    },
+    renderLeftButton: function (navigator) {
+      return (<LeftNavigation navigator={navigator} />);
+    }
+  });
+};
+routes.getGroupAskMembership = function (id) {
+  return getRoute({
+    id: 'group-ask-membership',
+    renderScene: function (navigator) {
+      let GroupAskMembership = require('../views/GroupAskMembership');
+      return <GroupAskMembership navigator={navigator} id={id}/>;
+    },
+    getTitle: function () {
+      return i18next.t('ask-membership');
     }
   });
 };
