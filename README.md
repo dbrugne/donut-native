@@ -9,7 +9,7 @@
   - [ ] OAUTH URL app/libs/oauth.js
   - [ ] Parse
 * [ ] Load code from AppHub (broken?)
-* [ ] stores submission
+* [ ] AppStore store submission
 
 * [ ] fix android discussion (need to test RN0.0.16 ? but react-native-parsed-text block RN0.16.0 migration ...)
 * [ ] Icon and splashscreen Android
