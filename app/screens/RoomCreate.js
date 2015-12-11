@@ -26,7 +26,7 @@ var i18next = require('i18next-client');
 var locales = require('../locales/en/translation.json'); // global locales
 var _localRes = { // current page locales
   'name': 'name of donut',
-  'help ': 'Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_)',
+  'help': 'Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_)',
   'disclaimer': 'You are about to create a donut in the global space, if you want to create a donut in a community you are a member of, go to the community page and click on "Create a donut"',
   'who': 'Who can join the donut',
   'public': 'Public (default)',
