@@ -22,6 +22,7 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 ios/environment.plist
+environment_preprocess.h
 
 # Android/IJ
 #
