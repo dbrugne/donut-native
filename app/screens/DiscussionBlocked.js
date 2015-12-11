@@ -5,6 +5,7 @@ var s = require('../styles/style');
 var Link = require('../components/Link');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
+var DiscussionBlockedJoin = require('./DiscussionBlockedJoin');
 
 var {
   StyleSheet,
@@ -37,8 +38,7 @@ i18next.addResourceBundle('en', 'local', {
   "close": "Close this donut"
 });
 
-
-class Discussion extends Component {
+class DiscussionBlocked extends Component {
   constructor (props) {
     super(props);
   }
@@ -54,11 +54,16 @@ class Discussion extends Component {
       );
     }
 
-    let allowUserRequest = this._renderAllowUserRequest();
-    let password = this._renderPassword();
+
     let disclaimer = this._renderDisclaimer();
     let banned = this._renderBanned();
     let kicked = this._renderKicked();
+    let join = null;
+    if (!banned && !kicked) {
+      join = (
+        <DiscussionBlockedJoin {...this.props} />
+      );
+    }
 
     return (
       <ScrollView style={styles.main}>
@@ -75,11 +80,10 @@ class Discussion extends Component {
         </View>
         <View style={styles.container2}>
 
-          {allowUserRequest}
-          {password}
           {disclaimer}
           {banned}
           {kicked}
+          {join}
 
           <Link onPress={() => this.props.model.leaveBlocked()}
                 text={i18next.t('local:close')}
@@ -88,69 +92,6 @@ class Discussion extends Component {
         </View>
       </ScrollView>
     );
-  }
-
-  // @todo implement allow user request link
-  _renderAllowUserRequest() {
-    if (this.props.model.get('mode') != 'private' || this.props.model.get('blocked') === 'groupbanned' || this.props.model.get('blocked') === 'banned' || this.props.model.get('blocked') === 'kicked') {
-      return null;
-    }
-
-    let allowUserRequest = null;
-
-    if (this.props.model.get('allow_user_request')) {
-      allowUserRequest = (
-        <View>
-          <Text>{i18next.t('local:request')}</Text>
-          <Link onPress={(this.onUserRequest.bind(this))}
-                text={i18next.t('local:click')}
-            />
-        </View>
-      );
-    }
-
-    return (
-      <View>
-        <Text>{i18next.t('local:allowed')}</Text>
-        {allowUserRequest}
-      </View>
-    );
-  }
-
-  // @todo implement user request
-  onUserRequest() {
-    console.log('implement user request');
-  }
-
-  // @todo implement join request with password
-  _renderPassword() {
-    if (this.props.model.get('mode') != 'private' || this.props.model.get('blocked') === 'groupbanned' || this.props.model.get('blocked') === 'banned' || this.props.model.get('blocked') === 'kicked' || !this.props.model.get('hasPassword')) {
-      return null;
-    }
-
-    return (
-      <View>
-        <View style={{marginTop:10}}>
-          <Text>{i18next.t('local:password')}</Text>
-          <TextInput style={s.input}
-                     autoFocus={true}
-                     placeholder={i18next.t('local:password-placeholder')}
-                     onChangeText={(text) => this.setState({password: text})}
-            />
-          <TouchableHighlight style={[s.button, s.buttonGreen, {marginHorizontal: 10}]}
-                              underlayColor='#50EEC1'
-                              onPress={(this.onValidatePassword.bind(this))}>
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>{i18next.t('local:join')}</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-      </View>
-    );
-  }
-
-  onValidatePassword() {
-    console.log('onValidatePassword');
   }
 
   _renderDisclaimer() {
@@ -284,4 +225,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = Discussion;
+module.exports = DiscussionBlocked;
