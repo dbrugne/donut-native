@@ -21,8 +21,8 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
-ios/environment.plist
-environment_preprocess.h
+ios/donutMobile/environment.plist
+ios/donutMobile/environment_preprocess.h
 
 # Android/IJ
 #
