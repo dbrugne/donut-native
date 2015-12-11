@@ -2,10 +2,27 @@
 var React = require('react-native');
 var Alert = require('./alert');
 var cloudinary = require('./cloudinary');
+var _ = require('underscore');
 
 var {
   NativeModules
   } = React;
+
+var i18next = require('i18next-client');
+var locales = require('../locales/en/translation.json'); // global locales
+var _localRes = { // current page locales
+  'take': 'Take a picture',
+  'chose': 'Choose from gallery',
+  'uploading': 'uploading ...'
+};
+i18next.init({
+  fallbackLng: 'en',
+  lng: 'en',
+  debug: true,
+  resStore: {
+    en: {translation: _.extend(locales, _localRes)}
+  }
+});
 
 let { UIImagePickerManager: ImagePickerManager } = NativeModules;
 
@@ -15,15 +32,15 @@ exports.pickImage = function (callback) {
   ImagePickerManager.showImagePicker({
     maxWidth: 500,
     maxHeight: 500,
-    takePhotoButtonTitle: 'Take a picture',
-    chooseFromLibraryButtonTitle: 'Choose from gallery'
+    takePhotoButtonTitle: i18next.t('take'),
+    chooseFromLibraryButtonTitle: i18next.t('choose')
   }, (cancelled, response) => {
     return callback(cancelled, response);
   });
 };
 
 exports.uploadToCloudinary = function (base64File, tags, callback) {
-  Alert.show('uploading ...');
+  Alert.show(i18next.t('uploading'));
   cloudinary.upload(base64File, tags, (err, data) => {
     if (data && data.error) {
       return callback(data.error.message);

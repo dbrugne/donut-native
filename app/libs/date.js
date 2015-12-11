@@ -1,5 +1,8 @@
-// @todo
+var _ = require('underscore');
 var i18next = require('i18next-client');
+var dates = require('../locales/en/dates.json'); // global locales
+i18next.addResourceBundle('en', 'translation', dates);
+
 
 var ONE_DAY = 60 * 60 * 24; // in seconds
 

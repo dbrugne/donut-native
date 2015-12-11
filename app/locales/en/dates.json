@@ -1,0 +1,43 @@
+{
+  "date": {
+    "days": {
+      "0": "sunday",
+      "1": "monday",
+      "2": "tuesday",
+      "3": "wednesday",
+      "4": "thursday",
+      "5": "friday",
+      "6": "saturday"
+    },
+    "months": {
+      "0": "january",
+      "1": "february",
+      "2": "march",
+      "3": "april",
+      "4": "may",
+      "5": "june",
+      "6": "july",
+      "7": "august",
+      "8": "september",
+      "9": "october",
+      "10": "november",
+      "11": "december"
+    },
+    "relativetime": {
+      "s": "a few seconds",
+      "m": "a minute",
+      "mm": "__minutes__ minutes",
+      "h": "a hour",
+      "hh": "__hours__ hours",
+      "d": "a day",
+      "dd": "__days__ days",
+      "M": "a month",
+      "MM": "__months__ month",
+      "y": "a year",
+      "yy": "__years__ years"
+    },
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "the-day-before": "The day before"
+  }
+}

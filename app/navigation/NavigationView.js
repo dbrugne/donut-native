@@ -14,12 +14,29 @@ var {
   Icon
 } = require('react-native-icons');
 
+var _ = require('underscore');
 var app = require('../libs/app');
 var CurrentUserView = require('../components/CurrentUser');
 var NavigationOnesView = require('./../components/NavigationOnes');
 var NavigationRoomsView = require('./../components/NavigationRooms');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
+
+var i18next = require('i18next-client');
+var locales = require('../locales/en/translation.json'); // global locales
+var _localRes = { // current page locales
+  'discover': 'discover',
+  'search': 'search',
+  'create': 'create'
+};
+i18next.init({
+  fallbackLng: 'en',
+  lng: 'en',
+  debug: true,
+  resStore: {
+    en: {translation: _.extend(locales, _localRes)}
+  }
+});
 
 class NavigationView extends Component {
   constructor (props) {
@@ -44,7 +61,7 @@ class NavigationView extends Component {
                   style={styles.icon}
                   />
               </View>
-              <Text style={styles.linkText}>Découvrir</Text>
+              <Text style={styles.linkText}>{i18next.t('discover')}</Text>
             </View>
           </TouchableHighlight>
 
@@ -60,7 +77,7 @@ class NavigationView extends Component {
                   style={styles.icon}
                   />
               </View>
-              <Text style={styles.linkText}>Chercher</Text>
+              <Text style={styles.linkText}>{i18next.t('search')}</Text>
             </View>
           </TouchableHighlight>
 
@@ -76,7 +93,7 @@ class NavigationView extends Component {
                   style={styles.icon}
                   />
               </View>
-              <Text style={styles.linkText}>Créér</Text>
+              <Text style={styles.linkText}>{i18next.t('create')}</Text>
             </View>
           </TouchableHighlight>
 
