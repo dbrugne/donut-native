@@ -305,6 +305,21 @@ routes.getRoomCreate = function () {
     }
   });
 };
+routes.getGroup = function (element) {
+  return getRoute({
+    id: 'group-home',
+    renderScene: function (navigator) {
+      let GroupHome = require('../screens/GroupHome');
+      return <GroupHome navigator={navigator} element={element}/>
+    },
+    getTitle: function () {
+      return '#' + element.name;
+    },
+    renderLeftButton: function (navigator) {
+      return (<LeftNavigation navigator={navigator} />);
+    }
+  });
+};
 routes.getProfile = function (element) {
   return getRoute({
     id: 'profile-' + element.id,
@@ -434,6 +449,7 @@ routes.getDiscussionSettings = function (id, model) {
     }
   });
 };
+
 routes.getDiscussion = function (id, model) {
   return getRoute({
     id: 'discussion-' + id,

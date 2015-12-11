@@ -206,7 +206,7 @@ class SearchView extends Component {
       );
     }
     return (
-      <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getProfile({type: 'group', id: group.group_id, identifier: group.identifier}))}
+      <TouchableHighlight onPress={() => navigation.switchTo(navigation.getGroup({name: group.name, id: group.id}))}
                           underlayColor= '#DDD'
         >
         <View style={styles.element}>

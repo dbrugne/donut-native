@@ -152,7 +152,7 @@ class GroupProfileView extends Component {
         <View style={styles.container2}>
           <TouchableHighlight style={s.button}>
             <View style={s.buttonLabel}>
-              <Text style={s.buttonText}>Rejoindre {this.members_count} </Text>
+              <Text style={s.buttonText}>Devenir membre</Text>
               <Icon
                 name='fontawesome|user'
                 size={20}

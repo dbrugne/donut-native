@@ -55,8 +55,6 @@ class ProfileView extends Component {
         client.roomRead(this.id, {more: true}, this.onData.bind(this));
       } else if (this.type === 'user') {
         client.userRead(this.id, {more: true}, this.onData.bind(this));
-      } else if (this.type === 'group') {
-        client.groupRead(this.id, {}, this.onData.bind(this));
       }
     }
   }
@@ -97,11 +95,6 @@ class ProfileView extends Component {
       case 'user':
         return (
           <UserProfile data={this.state.data} navigator={this.props.navigator} />
-        );
-      break;
-      case 'group':
-        return (
-          <GroupProfile data={this.state.data} navigator={this.props.navigator} />
         );
       break;
     }
