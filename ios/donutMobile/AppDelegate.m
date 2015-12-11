@@ -25,15 +25,15 @@
   // @source: http://moduscreate.com/automated-ip-configuration-for-react-native-development/
   NSURL *jsCodeLocation;
   #if DEBUG
-  #if TARGET_OS_SIMULATOR
-    #warning "DEBUG SIMULATOR"
-    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
-  #else
-    #warning "DEBUG DEVICE"
-    NSString *serverIP = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SERVER_IP"];
-    NSString *jsCodeUrlString = [NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios&dev=true", serverIP];
-    NSString *jsBundleUrlString = [jsCodeUrlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    jsCodeLocation = [NSURL URLWithString:jsBundleUrlString];
+    #if TARGET_OS_SIMULATOR
+      #warning "DEBUG SIMULATOR"
+      jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+    #else
+      #warning "DEBUG DEVICE"
+      NSString *serverIP = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SERVER_IP"];
+      NSString *jsCodeUrlString = [NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios&dev=true", serverIP];
+      NSString *jsBundleUrlString = [jsCodeUrlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+      jsCodeLocation = [NSURL URLWithString:jsBundleUrlString];
   #endif
   #else
     #warning "PRODUCTION DEVICE"

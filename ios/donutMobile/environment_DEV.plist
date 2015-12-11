@@ -9,10 +9,15 @@
 -->
 <plist version="1.0">
     <dict>
-      <key>environment</key>
-      <string>DEV</string>
-      
-      <key>appName</key>
-      <string>DONUT (dev)</string>
+        <key>environment</key>
+        <string>DEV</string>
+        <key>appName</key>
+        <string>DONUT (dev)</string>
+        <key>FacebookAppID</key>
+        <string>400694556754416</string>
+        <key>FacebookURLScheme</key>
+        <string>fb400694556754416</string>
+        <key>FacebookDisplayName</key>
+        <string>DONUT.me test</string>
     </dict>
 </plist>
