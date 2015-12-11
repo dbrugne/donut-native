@@ -10,12 +10,14 @@ var currentUser = require('./models/mobile-current-user');
 var Launching = require('./views/Launching');
 var LoggedOut = require('./navigation/LoggedOut');
 var LoggedIn = require('./navigation/LoggedIn');
+var debug = require('./libs/debug')('system');
 
 global.currentUser = currentUser;
 
 class Index extends Component {
   constructor (props) {
     super(props);
+    debug('RN ENV FROM XCODE IS', this.props);
     this.state = {
       currentUserReady: false,
       isLoggedIn: false
