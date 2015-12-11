@@ -15,6 +15,11 @@ var app = require('../libs/app');
 var rooms = require('../collections/rooms');
 var navigation = require('../libs/navigation');
 
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'rooms': 'ROOMS'
+});
+
 class NavigationRoomsView extends Component {
   constructor (props) {
     super(props);
@@ -49,7 +54,7 @@ class NavigationRoomsView extends Component {
     if (rooms.length > 0) {
       title = (
         <View style={{backgroundColor: '#1D1D1D'}}>
-          <Text style={styles.title}>ROOMS</Text>
+          <Text style={styles.title}>{i18next.t('local:rooms')}</Text>
         </View>
       );
     }

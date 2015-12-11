@@ -1,11 +1,12 @@
 {
-  "global": {
-    "or": "or",
-    "save": "save",
+  "or": "or",
+  "save": "save",
+  "online": "online",
+  "offline": "offline",
+  "messages": {
     "success": "success",
-    "errors": {
-      "not-complete" : "not-complete",
-      "not-same-password" : "Both passwords must be the same"
-    }
+    "validation-email-sent" : "A validation email have been sent",
+    "not-complete" : "not-complete",
+    "not-same-password" : "Both passwords must be the same"
   }
 }

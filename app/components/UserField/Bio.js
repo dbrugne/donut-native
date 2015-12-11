@@ -9,6 +9,11 @@ var {
   TextInput
 } = React;
 
+var i18next = require('../../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'placeholder': 'Biography'
+});
+
 class UserFieldBio extends UserField {
   constructor (props) {
     super(props);
@@ -20,7 +25,7 @@ class UserFieldBio extends UserField {
     <ListGroupItem
       autoFocus={true}
       onPress= {() => this.onPress()}
-      placeholder="Biography"
+      placeholder={i18next.t('local:placeholder')}
       value={this.state.value}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'

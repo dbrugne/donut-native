@@ -21,10 +21,8 @@ var {
   Component
   } = React;
 
-
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'name': 'name of donut',
   'help': 'Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_)',
   'disclaimer': 'You are about to create a donut in the global space, if you want to create a donut in a community you are a member of, go to the community page and click on "Create a donut"',
@@ -35,16 +33,7 @@ var _localRes = { // current page locales
   'only': 'Only users you authorize can join, participate and access history. Moderation tools available.',
   'create': 'Créer',
   'joining': 'joining ...'
-};
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
 });
-
 
 class RoomCreateView extends Component {
   constructor(props) {
@@ -70,7 +59,7 @@ class RoomCreateView extends Component {
         <View style={s.inputContainer}>
           <TextInput style={s.input}
                      autoFocus={true}
-                     placeholder={i18next.t('name')}
+                     placeholder={i18next.t('local:name')}
                      onChangeText={(text) => this.setState({roomName: text})}
                      value={this.state.roomName}
             />
@@ -79,15 +68,15 @@ class RoomCreateView extends Component {
         <View style={{marginHorizontal: 10}}>
 
           <Text style={styles.help}>
-            {i18next.t('help')}
+            {i18next.t('local:help')}
           </Text>
 
           <Text style={styles.infoRoomName}>
-            {i18next.t('disclaimer')}
+            {i18next.t('local:disclaimer')}
           </Text>
 
           <Text style={[s.h1, s.marginTop10]}>
-            {i18next.t('who')}
+            {i18next.t('local:who')}
           </Text>
 
           <View style={[styles.modes, s.marginTop10]}>
@@ -97,9 +86,9 @@ class RoomCreateView extends Component {
                 value={this.state.public}
                 disabled={this.state.public}
                 />
-              <Text style={{marginLeft:10}}>{i18next.t('public')}</Text>
+              <Text style={{marginLeft:10}}>{i18next.t('local:public')}</Text>
             </View>
-            <Text style={styles.help}>{i18next.t('any')}</Text>
+            <Text style={styles.help}>{i18next.t('local:any')}</Text>
           </View>
           <View style={styles.modes}>
             <View style={styles.modeOption}>
@@ -108,9 +97,9 @@ class RoomCreateView extends Component {
                 value={this.state.private}
                 disabled={this.state.private}
                 />
-              <Text style={{marginLeft:10}}>{i18next.t('private')}</Text>
+              <Text style={{marginLeft:10}}>{i18next.t('local:private')}</Text>
             </View>
-            <Text style={styles.help}>{i18next.t('only')}</Text>
+            <Text style={styles.help}>{i18next.t('local:only')}</Text>
           </View>
         </View>
 
@@ -118,7 +107,7 @@ class RoomCreateView extends Component {
                             underlayColor='#50EEC1'
                             onPress={(this.onRoomCreate.bind(this))}>
           <View style={s.buttonLabel}>
-            <Text style={s.buttonTextLight}>{i18next.t('create')}</Text>
+            <Text style={s.buttonTextLight}>{i18next.t('local:create')}</Text>
           </View>
         </TouchableHighlight>
 
@@ -135,7 +124,7 @@ class RoomCreateView extends Component {
 
   onRoomCreate() {
     if (!this.state.roomName) {
-      return alert.show(i18next.t('global.not-complete'));
+      return alert.show(i18next.t('messages.not-complete'));
     }
 
     var mode = (this.state.public) ? 'public' : 'private';
@@ -143,7 +132,7 @@ class RoomCreateView extends Component {
       if (response.err) {
         alert.show(response.err);
       } else {
-        alert.show(i18next.t('joining'));
+        alert.show(i18next.t('local:joining'));
         client.roomId('#' + this.state.roomName, (data) => {
           if (data.err) {
             alert.show(response.err);

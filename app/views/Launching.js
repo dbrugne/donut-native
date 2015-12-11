@@ -8,27 +8,18 @@ var {
   Image
 } = React;
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
-  'launching': 'Lancement de DONUT ...'
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'launching': 'Launching DONUT ...'
 });
 
 var Launch = React.createClass({
   render: function() {
+    console.log(i18next.t('local:launching'));
     return (
       <View style={styles.container}>
         <Image source={require('../assets/donut-eyes.jpg')} style={{width: 200, height: 200}} />
-      <Text style={styles.text}>{i18next.t('launching')}</Text>
+      <Text style={styles.text}>{i18next.t('local:launching')}</Text>
       </View>
     )
   }

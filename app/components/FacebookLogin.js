@@ -18,6 +18,13 @@ var {
 
 var currentUser = require('../models/mobile-current-user');
 
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'already-logged-as': 'You are already identified with Facebook as __username__',
+  'already-logged': 'You are already identified with Facebook',
+  'use': 'Use this Facebook account'
+});
+
 module.exports = React.createClass({
   render () {
     var useFacebookToken = null;
@@ -27,8 +34,8 @@ module.exports = React.createClass({
         ? (<Image source={{uri: data.picture.data.url}} style={{width: 50, height: 50, marginBottom:10, alignSelf: 'center'}} />)
         : null;
       var message = (data && data.name)
-        ? `You are already identified with Facebook as ${data.name}`
-        : 'You are already identified with Facebook';
+        ? i18next.t('local:already-logged-as', {username: data.name})
+        : i18next.t('local:already-logged');
 
       useFacebookToken = (
         <View style={styles.container}>
@@ -48,7 +55,7 @@ module.exports = React.createClass({
                     style={[styles.icon, styles.iconFacebook]}
                     />
                 </View>
-                <Text style={[s.buttonText, styles.buttonTextFacebook]}>Use this Facebook account</Text>
+                <Text style={[s.buttonText, styles.buttonTextFacebook]}>{i18next.t('local:use')}</Text>
               </View>
             </TouchableHighlight>
 

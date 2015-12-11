@@ -15,19 +15,9 @@ var {
   StyleSheet
   } = React;
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'select': 'Select a color'
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
 });
 
 class ColorPickerView extends Component {
@@ -41,7 +31,7 @@ class ColorPickerView extends Component {
   render () {
     return (
       <ScrollView>
-        <Text style={styles.title}>{i18next.t('select')}</Text>
+        <Text style={styles.title}>{i18next.t('local:select')}</Text>
         <View style={styles.colorPicker}>
           {this.state.colors.map((c) =>
             <Button key={c.name} onPress={this._colorPressed.bind(this, c)}>
