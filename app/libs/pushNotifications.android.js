@@ -39,7 +39,7 @@ module.exports = {
         headers: {
           'Accept': 'application/json',
           'X-Parse-Application-Id': config.parse.appId,
-          'X-Parse-Master-Key': config.parse.masterKey,
+          'X-Parse-Master-Key': config.parse.masterKey, // @todo yfuks tu utilise la master key, mais elle doit rester secrete (voir documentation parse), Il ne faut pas l'utiliser dans un client. Tu dois pouvoir utiliser 'X-Parse-REST-API-Key': config.parse.restApiKey, comme dans IOS (supprimer ensuite la master key de config.js)
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
