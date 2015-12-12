@@ -7,9 +7,9 @@
 
 var ParseManagerAndroid = require('NativeModules').NotificationAndroidManager;
 
-var _ = require('underscore');
-var debug = require('./debug')('notifications');
 var app = require('./app');
+var config = require('./config')();
+var debug = require('./debug')('notifications');
 var currentUser = require('../models/mobile-current-user');
 
 module.exports = {
@@ -17,39 +17,37 @@ module.exports = {
     this._registerDevice();
   },
   componentWillUnmount () {
-
+    // @todo yfuks : ParseManagerAndroid.unsubscribeToChannel ??
+  },
+  _registerDevice() {
+    ParseManagerAndroid.authenticate((err) => {
+      if (err) {
+        return debug.warn(err);
+      }
+      ParseManagerAndroid.subscribeToChannel('global', (err) => {
+        if (err) {
+          return debug.warn(err);
+        }
+        this._setUid();
+      });
+    });
   },
   _setUid () {
-    ParseManagerAndroid.getId((id) => {
-      var url = 'https://api.parse.com/1/installations/' + id;
-
-      fetch(url, {
+    ParseManagerAndroid.getId((ID_TO_RENAME) => { // @todo : ID_TO_RENAME what is it? deviceToken, installationId, ... ??
+      fetch(config.parse.url + ID_TO_RENAME, {
         method: 'put',
         headers: {
           'Accept': 'application/json',
-          'X-Parse-Application-Id': 'HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g', // @conf
-          'X-Parse-Master-Key': '7c6ycSLa7gBHzQ9w2KMJBKoVWrVwBw8606x7PtVA', // @conf
+          'X-Parse-Application-Id': config.parse.appId,
+          'X-Parse-Master-Key': config.parse.masterKey,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           uid: currentUser.getId()
         })
       })
-      .then((response) => debug.log(response))
-      .catch((err) => debug.log(err));
+        .then((response) => debug.log(response)) // @todo : maybe something to save in local storage from response? (to save use storage.setKey('key', 'value', callback))
+        .catch((err) => debug.log(err));
     });
   },
-  _registerDevice() {
-    ParseManagerAndroid.authenticate((err) => {
-      if (err) {
-        return debug.log(err);
-      }
-      ParseManagerAndroid.subscribeToChannel('global', (err) => {
-        if (err) {
-          return debug.log(err);
-        }
-        this._setUid();
-      });
-    });
-  }
 };

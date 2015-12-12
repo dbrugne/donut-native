@@ -1,31 +1,21 @@
 'use strict';
 
 var React = require('react-native');
-
-var {
-  Component,
-} = React;
-
-var currentUser = require('./models/mobile-current-user');
-var Launching = require('./views/Launching');
-var LoggedOut = require('./navigation/LoggedOut');
-var LoggedIn = require('./navigation/LoggedIn');
 var debug = require('./libs/debug')('system');
 
-global.currentUser = currentUser;
+module.exports = React.createClass({
+  getInitialState () {
+    // init configuration from initialProps from native
+    require('./libs/config')(this.props);
 
-class Index extends Component {
-  constructor (props) {
-    super(props);
-    debug.log('RN ENV FROM XCODE IS', this.props);
-    this.state = {
+    return {
       currentUserReady: false,
       isLoggedIn: false
     };
-  }
-
+  },
   componentDidMount () {
     // listen for currentUser status change
+    var currentUser = require('./models/mobile-current-user');
     currentUser.on('authenticationChanged', () => {
       this.setState({
         currentUserReady: true,
@@ -35,27 +25,28 @@ class Index extends Component {
 
     // launch
     currentUser.loadInitialState();
-  }
-
+  },
   componentWillUnmount () {
+    var currentUser = require('./models/mobile-current-user');
     currentUser.off(null, null, this);
-  }
-
+  },
   render () {
     if (!this.state.currentUserReady) {
-      // wait for ready to launch state
-      return (<Launching ref='current' text="chargement ..." />);
+      var Launching = require('./views/Launching');
+      return (
+        <Launching ref='current' text="chargement ..." />
+      );
     }
     if (!this.state.isLoggedIn) {
+      var LoggedOut = require('./navigation/LoggedOut'); // @important, lazy load
       return (
         <LoggedOut ref='current' />
       );
     } else {
+      var LoggedIn = require('./navigation/LoggedIn'); // @important, lazy load
       return (
         <LoggedIn ref='current' />
       );
     }
   }
-}
-
-module.exports = Index;
+});

@@ -12,7 +12,7 @@ var {
   PushNotificationIOS
 } = React;
 
-var _ = require('underscore');
+var config = require('./config')();
 var debug = require('./debug')('notifications');
 var app = require('./app');
 var currentUser = require('../models/mobile-current-user');
@@ -34,7 +34,7 @@ module.exports = {
   },
   _onRegister (deviceToken) {
     debug.log('_onRegister', deviceToken);
-    storage.setKey({deviceToken: deviceToken}, (err) => {
+    storage.setKey('deviceToken', deviceToken, (err) => {
       if (err) {
         debug.warn(err);
       }
@@ -83,17 +83,13 @@ module.exports = {
       uid: currentUser.getId()
     };
 
-    // inform Parse.com of this device
-    var url = 'https://api.parse.com/1/installations';
-
-    debug.log('_registerInstallation', url, data);
-
-    fetch(url, {
+    debug.log('_registerInstallation', config.parse.url, data);
+    fetch(config.parse.url, {
       method: 'post',
       headers: {
         'Accept': 'application/json',
-        'X-Parse-Application-Id': 'HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g', // @conf
-        'X-Parse-REST-API-Key': 'cm5inOyCRXVRDAhQVsVvKgSmjvz7qJ9lwgm8niwk', // @conf
+        'X-Parse-Application-Id': config.parse.appId,
+        'X-Parse-REST-API-Key': config.parse.restApiKey,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)

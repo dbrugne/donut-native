@@ -5,6 +5,7 @@ var async = require('async');
 var Backbone = require('backbone');
 var storage = require('./storage');
 var debug = require('./debug')('oauth');
+var config = require('./config')();
 
 var oauth = _.extend({
   id: null,
@@ -19,22 +20,17 @@ var oauth = _.extend({
 
   loaded: false,
 
-  oauthBaseUrl: 'https://test.donut.me/oauth/',
-//  oauthBaseUrl: 'http://192.168.1.240:3000/oauth/',
-
-  oauthHeaders: {
-    method: 'post',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }
-  },
-
   _oauthRequest: function (endpoint, body, callback) {
-    var url = this.oauthBaseUrl + endpoint;
+    var url = config.oauth + endpoint;
     var request = _.extend({
       body: JSON.stringify(body)
-    }, this.oauthHeaders);
+    }, {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
 
     debug.log('<= ajax', url, request);
     fetch(url, request)

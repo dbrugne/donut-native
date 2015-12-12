@@ -7,6 +7,7 @@ var s = require('../styles/style');
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
 var ListGroupItem = require('../components/ListGroupItem');
+var config = require('../libs/config')();
 
 var {
   Component,
@@ -76,6 +77,7 @@ class MyAccountView extends Component {
                          type='button'
                          warning='true'
             />
+          <Text>{JSON.stringify(config)}</Text>
 
         </View>
       </ScrollView>
