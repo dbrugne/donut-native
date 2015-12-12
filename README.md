@@ -36,15 +36,11 @@ npm install -g babel-cli # react-native-parsed-text
 
 ## Run iOS
 
-For both scenario launch Xcode project and be sure donutMobile scheme is selected (selector is on the right of the stop button).
-
-**iOS development (simulator and device)**
-* (be sure Product > Scheme > Edit Scheme... > Run has Build Configuration to **Debug**)
-* Select device in top dropdown and press play button
-
-**iOS release**
-* (be sure Product > Scheme > Edit Scheme... > Run has Build Configuration to **Release**)
-* Select device in top dropdown and press play button
+For both scenario launch Xcode project select a scheme (listed above), select a d
+device and run:
+* Debug: with debug tools, connect to test.donut.me, both on simulator or devices (with LAN IP)
+* Debug (standalone): without debug tools, connect to test.donut.me, standalone bundle
+* Release: without debug tools, connect to donut.me, standalone bundle
 
 ## Run Android
 
