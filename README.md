@@ -2,14 +2,14 @@
 
 ## TODO
 
-* [ ] Switch configuration iOS
-  - [ ] WS URL app/libs/client.js
-  - [ ] OAUTH URL app/libs/oauth.js
-  - [ ] Parse
 * [ ] Load code from AppHub (broken?)
 * [ ] AppStore store submission
+* [ ] Test Android (default conf?)
+* [ ] APK David
+* [ ] GH tasks reviews
+* [ ] @dbrugne/donut-client
 
-* [ ] fix android discussion (need to test RN0.0.16 ? but react-native-parsed-text block RN0.16.0 migration ...)
+* [ ] fix android discussion (need to test RN0.0.16 ? but react-native-parsed-text block RN0.16.0 migration ... => test with 0.7.0)
 * [ ] Icon and splashscreen Android
 * [ ] Switch configuration Android
   - [ ] Facebook ID android/app/src/main/res/values/strings.xml
@@ -100,19 +100,32 @@ Allow react-native packager to support other env than Debug and Release
 - /www/donut-native/node_modules/react-native/packager/react-native-xcode.sh
 
 ```
+#case "$CONFIGURATION" in
 #  Debug)
 #    DEV=true
 #    ;;
 #  Release)
 #    DEV=false
 #    ;;
-  DEV)
+#  "")
+#    echo "$0 must be invoked by Xcode"
+#    exit 1
+#    ;;
+#  *)
+#    echo "Unsupported value of \$CONFIGURATION=$CONFIGURATION"
+#    exit 1
+#    ;;
+#esac
+case "$CONFIGURATION" in
+  Debug)
     DEV=true
     ;;
-  TEST)
-    DEV=true
+  "")
+    echo "$0 must be invoked by Xcode"
+    exit 1
     ;;
-  PROD)
+  *)
     DEV=false
     ;;
+esac
 ```
