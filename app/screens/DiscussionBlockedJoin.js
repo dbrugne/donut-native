@@ -6,6 +6,9 @@ var Link = require('../elements/Link');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
 var Button = require('../elements/Button');
+var client = require('../libs/client');
+var Alert = require('../libs/alert');
+var app = require('../libs/app');
 
 var {
   StyleSheet,
@@ -25,7 +28,8 @@ i18next.addResourceBundle('en', 'local', {
   "click": "click here.",
   "password": "direct access",
   "password-placeholder": "password",
-  "join": "join"
+  "join": "join",
+  "request-send" : "Request send"
 });
 
 class DiscussionBlockedJoin extends Component {
@@ -36,7 +40,6 @@ class DiscussionBlockedJoin extends Component {
   }
 
   render() {
-
     let allowUserRequest = this._renderAllowUserRequest();
     let password = this._renderPassword();
 
@@ -48,7 +51,6 @@ class DiscussionBlockedJoin extends Component {
     );
   }
 
-  // @todo implement allow user request link
   _renderAllowUserRequest() {
     let allowUserRequest = null;
 
@@ -72,9 +74,14 @@ class DiscussionBlockedJoin extends Component {
     );
   }
 
-  // @todo implement user request
   onUserRequest() {
-    console.log('implement user request');
+    client.roomJoinRequest(this.props.model.get('id'), null, (response) => {
+      if (response.err) {
+        Alert.show(response.err);
+      } else {
+        Alert.show(i18next.t('local:request-send'));
+      }
+    });
   }
 
   // @todo implement join request with password
@@ -104,7 +111,13 @@ class DiscussionBlockedJoin extends Component {
   }
 
   onValidatePassword() {
-    console.log('onValidatePassword');
+    client.roomJoin(this.props.model.get('id'), this.state.password, (repsonse) => {
+      if (repsonse.err) {
+        Alert.show(repsonse.err);
+      } else {
+        app.trigger('joinRoom', this.props.model.get('id'));
+      }
+    });
   }
 }
 

@@ -30,17 +30,17 @@ module.exports = React.createClass({
   render () {
     var message;
     switch (this.props.type) {
-      case 'room:op':            message = i18next('local:room:op'); break;
-      case 'room:deop':          message = i18next('local:room:deop'); break;
-      case 'room:kick':          message = i18next('local:room:kick'); break;
-      case 'room:ban':           message = i18next('local:room:ban'); break;
-      case 'room:deban':         message = i18next('local:room:deban'); break;
-      case 'room:voice':         message = i18next('local:room:voice'); break;
-      case 'room:devoice':       message = i18next('local:room:devoice'); break;
-      case 'room:groupban':      message = i18next('local:room:groupban'); break;
-      case 'room:groupdisallow': message = i18next('local:room:groupdisallow'); break;
-      case 'user:ban':           message = i18next('local:user:ban'); break;
-      case 'user:deban':         message = i18next('local:user:deban'); break;
+      case 'room:op':            message = i18next.t('local:room:op'); break;
+      case 'room:deop':          message = i18next.t('local:room:deop'); break;
+      case 'room:kick':          message = i18next.t('local:room:kick'); break;
+      case 'room:ban':           message = i18next.t('local:room:ban'); break;
+      case 'room:deban':         message = i18next.t('local:room:deban'); break;
+      case 'room:voice':         message = i18next.t('local:room:voice'); break;
+      case 'room:devoice':       message = i18next.t('local:room:devoice'); break;
+      case 'room:groupban':      message = i18next.t('local:room:groupban'); break;
+      case 'room:groupdisallow': message = i18next.t('local:room:groupdisallow'); break;
+      case 'user:ban':           message = i18next.t('local:user:ban'); break;
+      case 'user:deban':         message = i18next.t('local:user:deban'); break;
     }
     var time = date.shortTime(this.props.data.time);
     // @todo check how to wrap <Text> tag, currently not wrapping correctly

@@ -167,9 +167,8 @@ class DiscussionBlocked extends Component {
     );
   }
 
-  // @todo implement join room
   onJoin() {
-    console.log('todo implement join room')
+    app.trigger('joinRoom', this.props.model.get('id'));
   }
 }
 
