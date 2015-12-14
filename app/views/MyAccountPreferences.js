@@ -114,8 +114,6 @@ class UserPreferencesView extends Component {
     client.userPreferencesUpdate(update, (response) => {
       if (response.err) {
         alert.show(response.err);
-      } else {
-        alert.show(i18next.t('messages.success'));
       }
 
       var preferences = _.clone(this.state.preferences);
