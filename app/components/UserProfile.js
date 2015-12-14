@@ -27,10 +27,10 @@ var Button = require('../elements/Button');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'registered': 'registered on',
-  'unlock': 'débloquer cet utilisateur',
-  'lock': 'bloquer cet utilisateur',
-  'blocked': 'cet utilisateur vous a bloqué',
-  'discuss': 'discuter'
+  'unlock': 'unblock this user',
+  'lock': 'block this user',
+  'blocked': 'this user blocked you',
+  'discuss': 'discuss'
 });
 
 class UserProfileView extends Component {
