@@ -9,7 +9,7 @@ var Alert = require('../libs/alert');
 var _ = require('underscore');
 var $ = require('jquery');
 var Button = require('../elements/Button');
-var Link = require('../components/Link');
+var Link = require('../elements/Link');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -102,6 +102,7 @@ class LoginView extends Component {
                 text={i18next.t('local:forgot')}
                 style={[s.marginTop10, styles.centered]}
                 linkStyle={s.link}
+                type='bold'
             />
 
         </View>
@@ -115,6 +116,7 @@ class LoginView extends Component {
                 text={i18next.t('local:signup')}
                 style={[s.marginTop10, styles.centered]}
                 linkStyle={s.link}
+                type='bold'
             />
         </View>
       );

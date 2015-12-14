@@ -3,7 +3,7 @@ var Platform = require('Platform');
 var s = require('../styles/style');
 var _ = require('underscore');
 var Alert = require('../libs/alert');
-var Link = require('../components/Link');
+var Link = require('../elements/Link');
 var Button = require('../elements/Button');
 
 var {
@@ -74,6 +74,7 @@ class ForgotView extends Component {
           <Link onPress={(this.onBack.bind(this))}
                 text={i18next.t('local:back')}
                 linkStyle={s.link}
+                type='bold'
             />
         </View>
       </View>

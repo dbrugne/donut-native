@@ -20,7 +20,7 @@ var s = require('../styles/style');
 var _ = require('underscore');
 var Alert = require('../libs/alert');
 var Button = require('../elements/Button');
-var Link = require('../components/Link');
+var Link = require('../elements/Link');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -98,6 +98,7 @@ class Signup extends Component {
                 text={i18next.t('local:back')}
                 style={[styles.textGray]}
                 linkStyle={s.link}
+                type='bold'
             />
         </View>
       </View>

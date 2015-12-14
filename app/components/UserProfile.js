@@ -22,6 +22,7 @@ var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
+var Button = require('../elements/Button');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -201,11 +202,12 @@ class UserProfileView extends Component {
           <Text style={styles.bio}>{bio}</Text>
         </View>
         <View style={styles.container2}>
-          <TouchableHighlight style={s.button} onPress={() => app.trigger('joinUser', data.user_id)}>
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonText}>{i18next.t('discuss')}</Text>
-            </View>
-          </TouchableHighlight>
+
+          <Button onPress={() => app.trigger('joinUser', data.user_id)}
+                  type='white'
+                  label={i18next.t('local:discuss')}
+            />
+
           <View style={s.listGroup}>
             {location}
             {website}

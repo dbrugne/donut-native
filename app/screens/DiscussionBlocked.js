@@ -2,7 +2,7 @@
 
 var React = require('react-native');
 var s = require('../styles/style');
-var Link = require('../components/Link');
+var Link = require('../elements/Link');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
 var DiscussionBlockedJoin = require('./DiscussionBlockedJoin');
@@ -87,6 +87,7 @@ class DiscussionBlocked extends Component {
 
           <Link onPress={() => this.props.model.leaveBlocked()}
                 text={i18next.t('local:close')}
+                type='underlined'
             />
 
         </View>

@@ -23,7 +23,7 @@ var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
 var Button = require('../elements/Button');
-var Link = require('../components/Link');
+var Link = require('../elements/Link');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -152,9 +152,10 @@ class GroupProfileView extends Component {
         <View style={styles.container}>
           <Image style={styles.avatar} source={{uri: avatarUrl}}/>
           <Text style={styles.identifier}>{data.identifier}</Text>
-          <Text>{i18next.t('local:by')} </Text>
           <Link onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})) }}
+                prepend={i18next.t('local:by')}
                 text={'@' + data.owner_username}
+                type='bold'
             />
           <Text style={styles.description}>{description}</Text>
         </View>
