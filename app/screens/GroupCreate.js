@@ -15,6 +15,7 @@ var {
   TouchableHighlight,
   Text,
   TextInput,
+  ScrollView,
   View,
   Component
   } = React;
@@ -37,7 +38,7 @@ class RoomCreateView extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
 
         <View style={[s.inputContainer, {marginHorizontal: 10}]}>
           <TextInput style={s.input}
@@ -68,7 +69,7 @@ class RoomCreateView extends Component {
           </View>
         </TouchableHighlight>
 
-      </View>
+      </ScrollView>
     );
   }
 
