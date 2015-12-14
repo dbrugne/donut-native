@@ -2,7 +2,8 @@ var React = require('react-native');
 var _ = require('underscore');
 var Platform = require('Platform');
 var client = require('../libs/client');
-var ListGroupItem = require('../components/ListGroupItem');
+var Input = require('../elements/Input');
+var Button = require('../elements/Button');
 var Alert = require('../libs/alert');
 var s = require('../styles/style');
 
@@ -19,8 +20,9 @@ var currentUser = require('../models/mobile-current-user');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'add-email': 'Add a new email ?',
-  'email': 'Email'
+  'add-email': 'Add a new email',
+  'email': 'Email',
+  'save': 'save'
 });
 
 class AddEmailView extends Component {
@@ -37,13 +39,18 @@ class AddEmailView extends Component {
         <View style={s.listGroup}>
           <Text style={s.listGroupTitle}>{i18next.t('local:add-email')}</Text>
 
-          <ListGroupItem
-            onPress= {(this.onSubmitPressed.bind(this))}
-            placeholder={i18next.t('local:email')}
-            value={this.state.email}
-            onChange={(event) => this.setState({email: event.nativeEvent.text})}
-            type='input-button'
-            />
+          <View style={[s.inputContainer, s.marginTop5]}>
+            <Input
+              placeholder={i18next.t('local:email')}
+              value={this.state.email}
+              onChangeText={(text) => this.setState({email: text})}
+              />
+          </View>
+
+          <Button onPress={(this.onSubmitPressed.bind(this))}
+                  type='green'
+                  style={[s.marginTop5]}
+                  label={i18next.t('local:save')} />
 
         </View>
         <View style={s.filler}></View>

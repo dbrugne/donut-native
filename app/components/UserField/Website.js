@@ -3,7 +3,7 @@
 var React = require('react-native');
 var s = require('../../styles/style');
 var UserField = require('../UserField');
-var ListGroupItem = require('../ListGroupItem');
+var ListItem = require('../../elements/ListItem');
 
 var {
   TextInput
@@ -34,7 +34,7 @@ class UserFieldWebsite extends UserField {
 
   renderField () {
     return (
-    <ListGroupItem
+    <ListItem
       autoFocus={true}
       onPress= {() => this.onPress()}
       placeholder={i18next.t('local:placeholder')}

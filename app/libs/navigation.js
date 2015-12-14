@@ -12,7 +12,7 @@ var {
 
 var _ = require('underscore');
 var debug = require('../libs/debug')('navigation');
-var Drawer = require('react-native-drawer')
+var Drawer = require('react-native-drawer');
 import ExNavigator from '@exponent/react-native-navigator';
 var app = require('./app');
 var Platform = require('Platform');
@@ -545,10 +545,9 @@ routes.getNavigator = function (initialRoute) {
             style={{flex: 1}}
             sceneStyle={{ paddingTop: navigationBarHeight }}
             titleStyle={{
-              fontSize: 20,
+              fontSize: 16,
               color: '222',
-              alignSelf: 'center',
-              marginTop: 15
+              alignSelf: 'center'
             }}
             />
         );

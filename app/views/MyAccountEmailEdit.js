@@ -4,7 +4,7 @@ var Platform = require('Platform');
 var client = require('../libs/client');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
-var ListGroupItem = require('../components/ListGroupItem');
+var ListItem = require('../elements/ListItem');
 var ConfirmationModal = require('../components/ConfirmationModal');
 
 var {
@@ -51,7 +51,7 @@ class EditEmailView extends Component {
 
           {this._renderConfirmed()}
 
-          <ListGroupItem onPress={() => this.setState({showModal: true})}
+          <ListItem onPress={() => this.setState({showModal: true})}
                          text={i18next.t('local:delete')}
                          type='button'
                          warning='true'
@@ -78,7 +78,7 @@ class EditEmailView extends Component {
         <View>
           <Text style={s.listGroupTitle}>{i18next.t('local:not-validated')}</Text>
 
-          <ListGroupItem onPress={(this.onSendEmail.bind(this))}
+          <ListItem onPress={(this.onSendEmail.bind(this))}
                          text={i18next.t('local:send-validation')}
                          type='button'
                          action='true'
@@ -94,7 +94,7 @@ class EditEmailView extends Component {
 
   _renderMain() {
     if (!this.props.email.main) {
-      return (<ListGroupItem onPress={(this.onSetAsMainPressed.bind(this))}
+      return (<ListItem onPress={(this.onSetAsMainPressed.bind(this))}
                      text={i18next.t('local:define')}
                      type='button'
                      action='true'

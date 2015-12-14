@@ -11,7 +11,7 @@ var {
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'take': 'Take a picture',
-  'chose': 'Choose from gallery',
+  'choose': 'Choose from gallery',
   'uploading': 'uploading ...'
 });
 

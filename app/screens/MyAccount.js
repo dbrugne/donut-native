@@ -6,7 +6,7 @@ var currentUser = require('../models/mobile-current-user');
 var s = require('../styles/style');
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
-var ListGroupItem = require('../components/ListGroupItem');
+var ListItem = require('../elements/ListItem');
 var config = require('../libs/config')();
 
 var {
@@ -45,13 +45,13 @@ class MyAccountView extends Component {
         <View style={s.listGroup}>
 
           <Text style={s.listGroupTitle}>{i18next.t('local:manage')}</Text>
-          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
+          <ListItem onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
                          text={i18next.t('local:edit')}
                          first={true}
                          action='true'
                          type='button'
             />
-          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPreferences())}
+          <ListItem onPress={() => this.props.navigator.push(navigation.getMyAccountPreferences())}
                          text={i18next.t('local:change-preferences')}
                          action='true'
                          type='button'
@@ -59,20 +59,20 @@ class MyAccountView extends Component {
 
           <Text style={s.listGroupItemSpacing}></Text>
           <Text style={s.listGroupTitle}>{i18next.t('local:login')}</Text>
-          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmails())}
+          <ListItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmails())}
                          text={i18next.t('local:manage-emails')}
                          action='true'
                          type='button'
                          first='true'
             />
-          <ListGroupItem onPress={() => this.props.navigator.push(navigation.getMyAccountPassword())}
+          <ListItem onPress={() => this.props.navigator.push(navigation.getMyAccountPassword())}
                          text={i18next.t('local:change-password')}
                          action='true'
                          type='button'
             />
 
           <Text style={s.listGroupItemSpacing}></Text>
-          <ListGroupItem onPress={() => currentUser.logout()}
+          <ListItem onPress={() => currentUser.logout()}
                          text={i18next.t('local:logout')}
                          type='button'
                          warning='true'

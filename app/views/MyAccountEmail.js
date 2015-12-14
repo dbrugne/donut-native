@@ -1,14 +1,10 @@
 var _ = require('underscore');
 var React = require('react-native');
 var Platform = require('Platform');
-
 var currentUser = require('../models/mobile-current-user');
-
-var ListGroupItem = require('../components/ListGroupItem');
-
+var ListItem = require('../elements/ListItem');
 var client = require('../libs/client');
 var alert = require('../libs/alert');
-
 var s = require('../styles/style');
 
 var {
@@ -37,7 +33,7 @@ class ChangeEmailView extends Component {
         <View style={s.listGroup}>
           <Text style={s.listGroupTitle}>{i18next.t('local:change')}</Text>
 
-          <ListGroupItem
+          <ListItem
             onPress={(this.onSubmitPressed.bind(this))}
             placeholder={i18next.t('local:mail')}
             value={this.state.email}

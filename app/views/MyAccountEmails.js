@@ -2,16 +2,12 @@
 
 var _ = require('underscore');
 var React = require('react-native');
-
 var currentUser = require('../models/mobile-current-user');
-
 var LoadingView = require('../components/Loading');
-var ListGroupItem = require('../components/ListGroupItem');
-
+var ListItem = require('../elements/ListItem');
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
 var client = require('../libs/client');
-
 var s = require('../styles/style');
 
 var {
@@ -73,7 +69,7 @@ class EmailsView extends Component {
 
           {this._renderAdditionalEmails()}
 
-          <ListGroupItem
+          <ListItem
             onPress={() => this.props.navigator.push(navigation.getMyAccountEmailsAdd(this.fetchData.bind(this)))}
             text={i18next.t('local:add-email')}
             type='button'
@@ -92,7 +88,7 @@ class EmailsView extends Component {
       return (
         <View>
           <Text style={s.listGroupTitle}>{i18next.t('local:current-email')}</Text>
-          <ListGroupItem
+          <ListItem
             onPress={() => this.props.navigator.push(navigation.getMyAccountEmail(this.state.currentEmail, this.fetchData.bind(this)))}
             text={this.state.currentEmail}
             type='button'
@@ -122,7 +118,7 @@ class EmailsView extends Component {
       }
       numberOfAdditionalEmails++;
       listRow.push(
-        <ListGroupItem
+        <ListItem
           onPress={() => this.props.navigator.push(navigation.getMyAccountEmailEdit(e, this.fetchData.bind(this)))}
           text={e.email}
           type='button'
