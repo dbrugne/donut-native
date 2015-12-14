@@ -17,6 +17,7 @@ var {
   TextInput,
   SwitchAndroid,
   SwitchIOS,
+  ScrollView,
   View,
   Component
 } = React;
@@ -55,7 +56,7 @@ class RoomCreateView extends Component {
     }
 
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
 
         <View style={[s.inputContainer, {marginHorizontal: 10}]}>
           <TextInput style={s.input}
@@ -111,7 +112,7 @@ class RoomCreateView extends Component {
             />
         </View>
 
-      </View>
+      </ScrollView>
     );
   }
 
