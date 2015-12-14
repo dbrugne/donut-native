@@ -121,7 +121,7 @@ class ChangePasswordView extends Component {
       return alert.show(i18next.t('messages.not-complete'));
     }
 
-    if (!this.state.newPassword !== this.state.confirmPassword) {
+    if (this.state.newPassword !== this.state.confirmPassword) {
       return alert.show(i18next.t('messages.not-same-password'));
     }
 
