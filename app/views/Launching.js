@@ -1,34 +1,28 @@
 var React = require('react-native');
-var _ = require('underscore');
 
 var {
   Text,
   View,
   StyleSheet,
-  Image
+  Image,
+  ActivityIndicatorIOS
 } = React;
-
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
-  'launching': 'Lancement de DONUT ...'
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
-});
 
 var Launch = React.createClass({
   render: function() {
+    let text = (this.props.text)
+      ? (<Text style={{color:'#666666'}}>{this.props.text}</Text>)
+      : null;
     return (
       <View style={styles.container}>
-        <Image source={require('../assets/donut-eyes.jpg')} style={{width: 200, height: 200}} />
-      <Text style={styles.text}>{i18next.t('launching')}</Text>
+        <Image source={require('../assets/logo.png')} resizeMode='contain' style={{width: 350, height: 100}} />
+        {text}
+        <ActivityIndicatorIOS
+          animating={true}
+          style={[{height: 10, marginTop: 40}]}
+          size='small'
+          color='#666666'
+        />
       </View>
     )
   }

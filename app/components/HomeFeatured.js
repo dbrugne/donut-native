@@ -32,7 +32,6 @@ class HomeView extends Component {
   }
   componentDidMount () {
     app.on('readyToRoute', this.onWelcome, this);
-
     // @todo : refresh on next focus every 5 minutes
   }
   componentWillUnmount () {
@@ -67,7 +66,6 @@ class HomeView extends Component {
   }
 
   renderRow(room) {
-    var url = 'room/profile/' + room.room_id;
     var avatarUrl = common.cloudinary.prepare(room.avatar, 40);
     var description = null;
     if (room.description) {

@@ -22,27 +22,61 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  // Before this, during build phase the app BUNDLE ID, NAME and icon set was set with "Environment Switch Script" task
+  
+  // Determine where to retrieve the JS bundle
   // @source: http://moduscreate.com/automated-ip-configuration-for-react-native-development/
   NSURL *jsCodeLocation;
   #if DEBUG
-  #if TARGET_OS_SIMULATOR
-    #warning "DEBUG SIMULATOR"
-    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
-  #else
-    #warning "DEBUG DEVICE"
-    NSString *serverIP = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SERVER_IP"];
-    NSString *jsCodeUrlString = [NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios&dev=true", serverIP];
-    NSString *jsBundleUrlString = [jsCodeUrlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    jsCodeLocation = [NSURL URLWithString:jsBundleUrlString];
+    #if TARGET_OS_SIMULATOR
+      // simulator: retrieve on localhost:8081
+      #warning "DEBUG SIMULATOR"
+      jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+    #else
+      // device with scheme Debug: retrieve on LAN through current Mac IP
+      #warning "DEBUG DEVICE"
+      NSString *serverIP = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SERVER_IP"];
+      NSString *jsCodeUrlString = [NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios&dev=true", serverIP];
+      NSString *jsBundleUrlString = [jsCodeUrlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+      jsCodeLocation = [NSURL URLWithString:jsBundleUrlString];
   #endif
   #else
-  #warning "PRODUCTION DEVICE"
+    // device with Release configuration: use embedded bundle
+    #warning "STANDALONE BUNDLE"
     jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
   #endif
+  
+  // Determine the configuration to load...
+  // @source: http://www.itexico.com/blog/bid/99497/iOS-Mobile-Development-Using-Xcode-Targets-to-Reuse-the-Code
+  NSString *donutEnvironment;
+  #if ENV == 2
+  donutEnvironment = @"test";
+  #elif ENV == 1
+  donutEnvironment = @"production";
+  #else
+  #warning "UNABLE TO DETERMINE DONUT CONFIGURATION TO LOAD"
+  #endif
+  
+  // ... and force test configuration for Release (test)
+  //if ([NSProcessInfo processInfo].environment[@"FORCE_TEST_CONFIGURATION"]) {
+  //  donutEnvironment = @"test";
+  //}
+  
+  NSString *reactServerAddress = @"localhost";
+  #if DEBUG
+  #if !TARGET_OS_SIMULATOR
+  reactServerAddress = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SERVER_IP"];
+  #endif
+  #endif
+  
+  // @source: http://stackoverflow.com/questions/31228560/how-to-use-react-native-launch-options-parameter-for-rctrootview
+  NSDictionary *initialProps =  [NSDictionary dictionaryWithObjects:@[donutEnvironment,reactServerAddress]
+                                                            forKeys:@[@"DONUT_ENVIRONMENT",@"REACT_SERVER_ADDRESS"]];
+  NSLog(@"%@",initialProps);
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"donutMobile"
-                                               initialProperties:nil
+                                               initialProperties:initialProps
                                                    launchOptions:launchOptions];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

@@ -3,15 +3,20 @@
 var React = require('react-native');
 var Platform = require('Platform');
 var s = require('../../styles/style');
+var Button = require('../../elements/Button');
 
 var {
   Component,
   View,
-  TouchableHighlight,
   TextInput,
   Text,
   StyleSheet
 } = React;
+
+var i18next = require('../../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'save': 'Save'
+});
 
 class ListGroupItemInputButton extends Component {
   constructor (props) {
@@ -28,14 +33,10 @@ class ListGroupItemInputButton extends Component {
           style={[s.input, styles.input]}
           value={this.props.value} />
 
-        <TouchableHighlight onPress={this.props.onPress}
-                            style={[s.button, styles.button, s.buttonGreen]}
-                            underlayColor='#50EEC1'
-          >
-          <View style={s.buttonLabel}>
-            <Text style={s.buttonTextLight}>Save</Text>
-          </View>
-        </TouchableHighlight>
+        <Button onPress={this.props.onPress}
+                style={styles.button}
+                type='green'
+                label={i18next.t('local:save')} />
       </View>
     );
   }

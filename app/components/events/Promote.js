@@ -11,22 +11,36 @@ var date = require('../../libs/date');
 var Username = require('./Username');
 var s = require('../../styles/events');
 
+var i18next = require('../../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'room:op' : 'is now a moderator as requested by',
+  'room:deop' : 'is no longer a moderator as requested by',
+  'room:kick' : 'was kicked out by',
+  'room:ban' : 'was banned by',
+  'room:deban' : 'is no longer banned as requested by',
+  'room:voice' : 'is no longer mute as requested by',
+  'room:devoice' : 'is now mute as requested by',
+  'room:groupban' : 'was banned from community by',
+  'room:groupdisallow' : 'is no longer member from community by',
+  'user:ban' : 'was blocked by',
+  'user:deban' : 'is no longer blocked as requested by'
+});
+
 module.exports = React.createClass({
   render () {
-    // @todo i18next
     var message;
     switch (this.props.type) {
-      case 'room:op': message = "est maintenant modérateur à la demande de "; break;
-      case 'room:deop': message = "n'est plus modérateur à la demande de "; break;
-      case 'room:kick': message = "a été expulsé à la demande de "; break;
-      case 'room:ban': message = "a été banni à la demande de "; break;
-      case 'room:deban': message = "n'est plus banni à la demande de "; break;
-      case 'room:voice': message = "a retrouvé la parole à la demande de "; break;
-      case 'room:devoice': message = "est muet à la demande de "; break;
-      case 'room:groupban': message = "a été banni de la communauté à la demande de "; break;
-      case 'room:groupdisallow': message = "n'est plus membre de la communauté à la demande de "; break;
-      case 'user:ban': message = "est bloqué à la demande de "; break;
-      case 'user:deban': message = "n'est plus bloqué à la demande de "; break;
+      case 'room:op':            message = i18next.t('local:room:op'); break;
+      case 'room:deop':          message = i18next.t('local:room:deop'); break;
+      case 'room:kick':          message = i18next.t('local:room:kick'); break;
+      case 'room:ban':           message = i18next.t('local:room:ban'); break;
+      case 'room:deban':         message = i18next.t('local:room:deban'); break;
+      case 'room:voice':         message = i18next.t('local:room:voice'); break;
+      case 'room:devoice':       message = i18next.t('local:room:devoice'); break;
+      case 'room:groupban':      message = i18next.t('local:room:groupban'); break;
+      case 'room:groupdisallow': message = i18next.t('local:room:groupdisallow'); break;
+      case 'user:ban':           message = i18next.t('local:user:ban'); break;
+      case 'user:deban':         message = i18next.t('local:user:deban'); break;
     }
     var time = date.shortTime(this.props.data.time);
     // @todo check how to wrap <Text> tag, currently not wrapping correctly

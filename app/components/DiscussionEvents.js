@@ -34,6 +34,13 @@ var EventUser = require('./events/User');
 
 const HISTORY_LIMIT = 40;
 
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'in': 'Your are in',
+  'discuss': 'You discuss with',
+  'load-more': 'Load more'
+});
+
 class DiscussionEvents extends Component {
   constructor (props) {
     super(props);
@@ -123,8 +130,8 @@ class DiscussionEvents extends Component {
   renderHeader () {
     if (!this.state.more) {
       var prefix = (this.props.model.get('type') === 'room')
-        ? 'Your are in'
-        : 'You discuss with';
+        ? i18next.t('local:in')
+        : i18next.t('local:discuss');
       return (
         <Text style={[s.h1, s.textCenter]}>{prefix} {this.props.title}</Text>
       );
@@ -148,7 +155,7 @@ class DiscussionEvents extends Component {
           {loading}
         </View>
         <Button onPress={this.onLoadMore.bind(this)}>
-          Load more
+          {i18next.t('local:load-more')}
         </Button>
       </View>
     );

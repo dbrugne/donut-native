@@ -8,25 +8,17 @@ var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var _ = require('underscore');
 var $ = require('jquery');
+var Button = require('../elements/Button');
+var Link = require('../elements/Link');
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'forgot': 'Forgot your password ?',
   'account': 'Don\'t have an account ? ',
   'signup': 'Sign up',
   'signin': 'Sign in',
   'password': 'Password',
   'mail': 'Mail'
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
 });
 
 var {
@@ -35,7 +27,6 @@ var {
   Text,
   TextInput,
   ScrollView,
-  TouchableHighlight,
   View,
   BackAndroid,
   Image
@@ -82,11 +73,11 @@ class LoginView extends Component {
       var loginForm = (
         <View>
           <View style={styles.orContainer}>
-            <Text style={styles.title}> {i18next.t('global.or')} </Text>
+            <Text style={styles.title}> {i18next.t('local:or')} </Text>
           </View>
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
-              placeholder={i18next.t('mail')}
+              placeholder={i18next.t('local:mail')}
               onChange={(event) => this.setState({email: event.nativeEvent.text})}
               style={s.input}
               onSubmitEditing={() => this._focusNextField('1')}
@@ -95,38 +86,38 @@ class LoginView extends Component {
           <View style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               ref='1'
-              placeholder={i18next.t('password')}
+              placeholder={i18next.t('local:password')}
               secureTextEntry={true}
               onChange={(event) => this.setState({password: event.nativeEvent.text})}
               style={[s.input, s.marginTop5]}
               value={this.state.password}/>
           </View>
 
-          <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
-                              style={[s.button, s.buttonPink, s.marginTop5]}
-                              underlayColor='#E4396D'
-            >
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>{i18next.t('signin')}</Text>
-            </View>
-          </TouchableHighlight>
+          <Button onPress={(this.onSubmitPressed.bind(this))}
+                  style={s.marginTop5}
+                  type='pink'
+                  label={i18next.t('local:signin')}/>
 
-          <TouchableHighlight onPress={(this.onForgotPressed.bind(this))}
-                              underlayColor='transparent'
-                              style={[s.marginTop10, styles.centered]}>
-            <Text style={s.link}>{i18next.t('forgot')}</Text>
-          </TouchableHighlight>
+          <Link onPress={(this.onForgotPressed.bind(this))}
+                text={i18next.t('local:forgot')}
+                style={[s.marginTop10, styles.centered]}
+                linkStyle={s.link}
+                type='bold'
+            />
+
         </View>
       );
 
       var signupButton = (
         <View style={styles.linkCtn}>
-          <Text style={styles.textGray}>{i18next.t('account')}</Text>
-          <TouchableHighlight onPress={(this.onCreatePressed.bind(this))}
-                              underlayColor='transparent'
-                              style={styles.centered}>
-            <Text style={s.link}>{i18next.t('signup')}</Text>
-          </TouchableHighlight>
+          <Text style={styles.textGray}>{i18next.t('local:account')}</Text>
+
+          <Link onPress={(this.onCreatePressed.bind(this))}
+                text={i18next.t('local:signup')}
+                style={[s.marginTop10, styles.centered]}
+                linkStyle={s.link}
+                type='bold'
+            />
         </View>
       );
     }
@@ -149,13 +140,13 @@ class LoginView extends Component {
 
   onSubmitPressed() {
     if (!this.state.email || !this.state.password) {
-      return Alert.show(i18next.t('global.errors.not-complete'));
+      return Alert.show(i18next.t('messages.not-complete'));
     }
 
     // @todo : loading screen
     currentUser.emailLogin(this.state.email, this.state.password, (err) => {
       if (err) {
-        Alert.show(i18next.t('global.errors.' + err));
+        Alert.show(i18next.t('messages.' + err));
       }
     });
   }

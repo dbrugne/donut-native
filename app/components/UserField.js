@@ -14,6 +14,11 @@ var {
   StyleSheet
 } = React;
 
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'change': 'change your'
+});
+
 class UserField extends Component {
   constructor (props) {
     super(props);
@@ -25,7 +30,7 @@ class UserField extends Component {
     var field = this.renderField();
     return (
       <View style={styles.container}>
-        <Text style={[s.h1, {marginVertical:10, marginHorizontal: 10}]}>Change your {this.key}</Text>
+        <Text style={[s.h1, {marginVertical:10, marginHorizontal: 10}]}>{i18next.t('local:change')} {this.key}</Text>
 
         <View style={s.inputContainer}>
           {field}

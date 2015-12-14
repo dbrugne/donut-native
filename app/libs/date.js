@@ -1,8 +1,6 @@
-var _ = require('underscore');
 var i18next = require('i18next-client');
-var dates = require('../locales/en/dates.json'); // global locales
-i18next.addResourceBundle('en', 'translation', dates);
-
+var dates = require('../locales/en/dates.json');
+i18next.addResourceBundle('en', 'dates', dates);
 
 var ONE_DAY = 60 * 60 * 24; // in seconds
 
@@ -12,7 +10,7 @@ window.d = module.exports = {
     if (isNaN(myDate)) {
       return;
     }
-    return i18next.t('date.days.' + myDate.getDay()) + ' ' + myDate.getDate() + ' ' + i18next.t('date.months.' + myDate.getMonth()) + ' ' + myDate.getFullYear();
+    return i18next.t('dates:date.days.' + myDate.getDay()) + ' ' + myDate.getDate() + ' ' + i18next.t('dates:date.months.' + myDate.getMonth()) + ' ' + myDate.getFullYear();
   },
   dateTime: function (date) { // Do MMMM YYYY, h:mm:ss
     var myDate = new Date(date);
@@ -21,7 +19,7 @@ window.d = module.exports = {
     }
     return myDate.getDate() +
       ' ' +
-      i18next.t('date.months.' + myDate.getMonth()) +
+      i18next.t('dates:date.months.' + myDate.getMonth()) +
       ' ' +
       myDate.getFullYear() +
       ', ' +
@@ -34,11 +32,11 @@ window.d = module.exports = {
     if (isNaN(myDate)) {
       return;
     }
-    return i18next.t('date.days.' + myDate.getDay()) +
+    return i18next.t('dates:date.days.' + myDate.getDay()) +
       ' ' +
       myDate.getDate() +
       ' ' +
-      i18next.t('date.months.' + myDate.getMonth()) +
+      i18next.t('dates:date.months.' + myDate.getMonth()) +
       ' ' +
       myDate.getFullYear() +
       ', ' +
@@ -76,7 +74,7 @@ window.d = module.exports = {
     if (isNaN(myDate)) {
       return;
     }
-    return myDate.getDate() + ' ' + i18next.t('date.months.' + myDate.getMonth()) + ', ' + this.shortTime(date);
+    return myDate.getDate() + ' ' + i18next.t('dates:date.months.' + myDate.getMonth()) + ', ' + this.shortTime(date);
   },
   shortDayMonthTime: function (date) { // D/MM, HH:mm
     var myDate = new Date(date);
@@ -132,50 +130,50 @@ window.d = module.exports = {
     var diff = currentDate.getTime() - myDate.getTime();
 
     if (Math.abs(diff / 1000) < 60) {
-      return i18next.t('date.relativetime.s');
+      return i18next.t('dates:date.relativetime.s');
     }
     if (Math.abs(diff / 1000) < 120) {
-      return i18next.t('date.relativetime.m');
+      return i18next.t('dates:date.relativetime.m');
     }
     var diffMinutes = Math.floor((diff / 1000) / 60);
     if (diffMinutes < 60) {
-      return i18next.t('date.relativetime.mm', {minutes: diffMinutes});
+      return i18next.t('dates:date.relativetime.mm', {minutes: diffMinutes});
     }
     if (diffMinutes < 120) {
-      return i18next.t('date.relativetime.h');
+      return i18next.t('dates:date.relativetime.h');
     }
     var diffHours = Math.floor(((diff / 1000) / 60) / 60);
     if (diffHours < 24) {
-      return i18next.t('date.relativetime.hh', {hours: diffHours});
+      return i18next.t('dates:date.relativetime.hh', {hours: diffHours});
     }
     if (diffHours < 48) {
-      return i18next.t('date.relativetime.d');
+      return i18next.t('dates:date.relativetime.d');
     }
     var diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
     if (diffDays < 30) {
-      return i18next.t('date.relativetime.dd', {days: diffDays});
+      return i18next.t('dates:date.relativetime.dd', {days: diffDays});
     }
     if (diffDays < 60) {
-      return i18next.t('date.relativetime.M');
+      return i18next.t('dates:date.relativetime.M');
     }
     var diffMonths = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
     if (diffMonths < 12) {
-      return i18next.t('date.relativetime.MM', {months: diffMonths});
+      return i18next.t('dates:date.relativetime.MM', {months: diffMonths});
     }
     if (diffMonths < 24) {
-      return i18next.t('date.relativetime.y');
+      return i18next.t('dates:date.relativetime.y');
     }
     var diffYears = Math.floor(diff / (1000 * 60 * 60 * 24 * 30 * 12));
-    return i18next.t('date.relativetime.yy', {years: diffYears});
+    return i18next.t('dates:date.relativetime.yy', {years: diffYears});
   },
   block: function (date) {
     var days = this.diffInDays(date);
     if (days <= 0) {
-      return i18next.t('date.today');
+      return i18next.t('dates:date.today');
     } else if (days === 1) {
-      return i18next.t('date.yesterday');
+      return i18next.t('dates:date.yesterday');
     } else if (days === 2) {
-      return i18next.t('date.the-day-before');
+      return i18next.t('dates:date.the-day-before');
     } else {
       return this.longDate(date);
     }

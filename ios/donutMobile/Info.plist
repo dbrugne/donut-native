@@ -4,10 +4,12 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>DONUT_ENVIRONMENT_APP_NAME</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>${DONUT_BUNDLE_ID}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -23,16 +25,16 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb400694556754416</string>
+				<string>DONUT_ENVIRONMENT_FACEBOOK_URL_SCHEME</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>DONUT_ENVIRONMENT_VERSION_NUMBER</string>
 	<key>FacebookAppID</key>
-	<string>400694556754416</string>
+	<string>DONUT_ENVIRONMENT_FACEBOOK_APP_ID</string>
 	<key>FacebookDisplayName</key>
-	<string>donut.me</string>
+	<string>DONUT_ENVIRONMENT_FACEBOOK_DISPLAY_NAME</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -92,6 +94,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

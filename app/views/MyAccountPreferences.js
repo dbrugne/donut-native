@@ -18,24 +18,14 @@ var {
   View
   } = React;
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'set-preferences': 'Set preferences',
   'notify-me': 'NOTIFY ME',
   'on-email': 'on email (only if you are offline)',
   'on-mobile': 'on mobile',
   'private': 'when a user sends me a private message',
-  'invite': 'when a user invites me',
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
+  'invite': 'when a user invites me'
 });
 
 class UserPreferencesView extends Component {
@@ -82,30 +72,30 @@ class UserPreferencesView extends Component {
 
     return (
       <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1, backgroundColor: '#f0f0f0' }}>
-        <Text style={[s.h1, s.textCenter, s.marginTop5]}>{i18next.t('set-preferences')}</Text>
+        <Text style={[s.h1, s.textCenter, s.marginTop5]}>{i18next.t('local:set-preferences')}</Text>
 
-        <Text style={[s.listGroupTitle, s.marginTop20]}>{i18next.t('notify-me')}</Text>
+        <Text style={[s.listGroupTitle, s.marginTop20]}>{i18next.t('local:notify-me')}</Text>
         <View style={s.listGroup}>
 
-          <ListGroupItem text={i18next.t('on email (only if you are offline)')}
+          <ListGroupItem text={i18next.t('local:on-email')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:channels:email')}
                          switchValue={this.state.preferences['notif:channels:email']}
             />
 
-          <ListGroupItem text={i18next.t('on mobile')}
+          <ListGroupItem text={i18next.t('local:on-mobile')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:channels:mobile')}
                          switchValue={this.state.preferences['notif:channels:mobile']}
             />
 
-          <ListGroupItem text={i18next.t('private')}
+          <ListGroupItem text={i18next.t('local:private')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:usermessage')}
                          switchValue={this.state.preferences['notif:usermessage']}
             />
 
-          <ListGroupItem text={i18next.t('invite')}
+          <ListGroupItem text={i18next.t('local:invite')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:invite')}
                          switchValue={this.state.preferences['notif:invite']}
@@ -124,8 +114,6 @@ class UserPreferencesView extends Component {
     client.userPreferencesUpdate(update, (response) => {
       if (response.err) {
         alert.show(response.err);
-      } else {
-        alert.show(i18next.t('global.success'));
       }
 
       var preferences = _.clone(this.state.preferences);

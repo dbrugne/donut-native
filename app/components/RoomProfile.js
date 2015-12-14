@@ -22,6 +22,19 @@ var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
+var Button = require('../elements/Button');
+var Link = require('../elements/Link');
+
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'created': 'created on',
+  'edit': 'edit',
+  'manage-users': 'manage users',
+  'access': 'access',
+  'delete': 'supprimer ce donut',
+  'by': 'by',
+  'join': 'join'
+});
 
 class RoomProfileView extends Component {
   constructor(props) {
@@ -60,7 +73,6 @@ class RoomProfileView extends Component {
     }
 
     var createdAt = (
-      // @todo fix i18next call (for dates rendering)
       <View style={[s.listGroupItem, !data.website && s.listGroupItemFirst]}>
         <Icon
           name='fontawesome|clock-o'
@@ -68,7 +80,7 @@ class RoomProfileView extends Component {
           color='#333'
           style={s.listGroupItemIcon}
           />
-        <Text style={s.listGroupItemText}> créé le {date.longDateTime(data.created)}</Text>
+        <Text style={s.listGroupItemText}> {i18next.t('local:created')} {date.longDateTime(data.created)}</Text>
       </View>
     );
 
@@ -88,7 +100,7 @@ class RoomProfileView extends Component {
                 color='#333'
                 style={s.listGroupItemIcon}
                 />
-              <Text style={s.listGroupItemText}> éditer</Text>
+              <Text style={s.listGroupItemText}> {i18next.t('local:edit')}</Text>
               <Icon
                 name='fontawesome|chevron-right'
                 size={14}
@@ -105,7 +117,7 @@ class RoomProfileView extends Component {
                 color='#333'
                 style={s.listGroupItemIcon}
                 />
-              <Text style={s.listGroupItemText}> gérer les utilisateurs</Text>
+              <Text style={s.listGroupItemText}> {i18next.t('local:manage-users')}</Text>
               <Icon
                 name='fontawesome|chevron-right'
                 size={14}
@@ -122,7 +134,7 @@ class RoomProfileView extends Component {
                 color='#333'
                 style={s.listGroupItemIcon}
                 />
-              <Text style={s.listGroupItemText}> accès</Text>
+              <Text style={s.listGroupItemText}> {i18next.t('local:access')}</Text>
               <Icon
                 name='fontawesome|chevron-right'
                 size={14}
@@ -139,7 +151,7 @@ class RoomProfileView extends Component {
                 color='#333'
                 style={s.listGroupItemIcon}
                 />
-              <Text style={s.listGroupItemText}> supprimer ce donut</Text>
+              <Text style={s.listGroupItemText}> {i18next.t('local:delete')}</Text>
               <Icon
                 name='fontawesome|chevron-right'
                 size={14}
@@ -157,26 +169,21 @@ class RoomProfileView extends Component {
         <View style={styles.container}>
           <Image style={styles.avatar} source={{uri: avatarUrl}}/>
           <Text style={styles.identifier}>{data.identifier}</Text>
-          <TouchableHighlight onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})); }}>
-            <Text>
-              <Text>by </Text>
-              <Text style={styles.ownerUsername}>@{data.owner_username}</Text>
-            </Text>
-          </TouchableHighlight>
+          <Link onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})); }}
+                prepend={i18next.t('local:by')}
+                text= {'@' + data.owner_username}
+                type='bold'
+            />
+
           <Text style={styles.description}>{description}</Text>
         </View>
         <View style={styles.container2}>
-          <TouchableHighlight style={s.button} onPress={() => app.trigger('joinRoom', data.room_id)}>
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonText}>Rejoindre {data.users_count} </Text>
-              <Icon
-                name='fontawesome|user'
-                size={20}
-                color='#ffda3e'
-                style={s.buttonIcon}
-                />
-            </View>
-          </TouchableHighlight>
+          <Button onPress={() => app.trigger('joinRoom', data.room_id)}
+                  type='white'
+                  label={i18next.t('local:join')+' '+data.users_count}
+                  icon='fontawesome|user'
+            />
+
           <View style={s.listGroup}>
             {website}
             {createdAt}

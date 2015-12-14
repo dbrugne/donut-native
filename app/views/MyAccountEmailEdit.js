@@ -18,26 +18,15 @@ var {
 
 var currentUser = require('../models/mobile-current-user');
 
-var i18next = require('i18next-client');
-var locales = require('../locales/en/translation.json'); // global locales
-var _localRes = { // current page locales
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
   'modal-title': 'Delete email',
   'modal-description': 'Are you sure you whant to delete this email ? This action is irreversible and cannot be undone',
   'delete': 'delete',
   'validated': 'This email was validated',
   'not-validated': 'This email wasn\'t validated',
   'send-validation': 'Send a validation email',
-  'define': 'Define as main email',
-  'validation-sent': 'A validation email have been sent'
-};
-
-i18next.init({
-  fallbackLng: 'en',
-  lng: 'en',
-  debug: true,
-  resStore: {
-    en: {translation: _.extend(locales, _localRes)}
-  }
+  'define': 'Define as main email'
 });
 
 class EditEmailView extends Component {
@@ -49,8 +38,8 @@ class EditEmailView extends Component {
   }
 
   render() {
-    var modalTitle = i18next.t('modal-title');
-    var modalDescription = i18next.t('modal-description');
+    var modalTitle = i18next.t('local:modal-title');
+    var modalDescription = i18next.t('local:modal-description');
     return (
       <View style={styles.main}>
 
@@ -63,7 +52,7 @@ class EditEmailView extends Component {
           {this._renderConfirmed()}
 
           <ListGroupItem onPress={() => this.setState({showModal: true})}
-                         text={i18next.t('delete')}
+                         text={i18next.t('local:delete')}
                          type='button'
                          warning='true'
             />
@@ -79,7 +68,7 @@ class EditEmailView extends Component {
     if (this.props.email.confirmed) {
       return (
         <View>
-          <Text style={s.listGroupTitle}>{i18next.t('validated')}</Text>
+          <Text style={s.listGroupTitle}>{i18next.t('local:validated')}</Text>
           {this._renderMain()}
           <Text style={s.listGroupItemSpacing}></Text>
         </View>
@@ -87,10 +76,10 @@ class EditEmailView extends Component {
     } else {
       return (
         <View>
-          <Text style={s.listGroupTitle}>{i18next.t('not-validated')}</Text>
+          <Text style={s.listGroupTitle}>{i18next.t('local:not-validated')}</Text>
 
           <ListGroupItem onPress={(this.onSendEmail.bind(this))}
-                         text={i18next.t('send-validation')}
+                         text={i18next.t('local:send-validation')}
                          type='button'
                          action='true'
                          icon='fontawesome|envelope-o'
@@ -106,7 +95,7 @@ class EditEmailView extends Component {
   _renderMain() {
     if (!this.props.email.main) {
       return (<ListGroupItem onPress={(this.onSetAsMainPressed.bind(this))}
-                     text={i18next.t('define')}
+                     text={i18next.t('local:define')}
                      type='button'
                      action='true'
                      icon='fontawesome|anchor'
@@ -123,7 +112,7 @@ class EditEmailView extends Component {
       if (response.err) {
         Alert.show(response.err);
       } else {
-        Alert.show(i18next.t('global.success'));
+        Alert.show(i18next.t('messages.success'));
         this.props.func();
         this.props.navigator.pop();
       }
@@ -135,7 +124,7 @@ class EditEmailView extends Component {
       if (response.err) {
         Alert.show(response.err);
       } else {
-        Alert.show(i18next.t('validation-sent'));
+        Alert.show(i18next.t('messages.validation-email-sent'));
       }
     });
   }
@@ -145,7 +134,7 @@ class EditEmailView extends Component {
       if (response.err) {
         Alert.show(response.err);
       } else {
-        Alert.show(i18next.t('global.success'));
+        Alert.show(i18next.t('messages.success'));
         this.props.func();
         this.props.navigator.pop();
       }

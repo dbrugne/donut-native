@@ -6,10 +6,11 @@ window.navigator.userAgent = 'react-native';
 
 var debug = require('./debug')('client');
 var Client = require('@dbrugne/donut-common/client');
+var config = require('./config')();
 
 module.exports = Client({
   device: 'native',
-  host: 'https://test.donut.me',
+  host: config.ws,
   debug: function () {
     debug.log.apply(debug.log, arguments);
   },

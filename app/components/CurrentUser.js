@@ -19,6 +19,11 @@ var currentUser = require('../models/mobile-current-user');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'my-account': 'My account'
+});
+
 class CurrentUserView extends Component {
   constructor (props) {
     super(props);
@@ -73,7 +78,7 @@ class CurrentUserView extends Component {
                 style={styles.icon}
                 />
             </View>
-            <Text style={styles.linkText}>My account</Text>
+            <Text style={styles.linkText}>{i18next.t('local:my-account')}</Text>
           </View>
         </TouchableHighlight>
       </View>

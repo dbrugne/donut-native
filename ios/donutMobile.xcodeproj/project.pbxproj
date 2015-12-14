@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		6D0530E01C1B164A00A9A042 /* Environment Switch Script */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 6D0530E11C1B164A00A9A042 /* Build configuration list for PBXAggregateTarget "Environment Switch Script" */;
+			buildPhases = (
+				6D0530E71C1B16A800A9A042 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Environment Switch Script";
+			productName = "Environment Switch Script";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -20,6 +34,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		6D0531211C1B1FF500A9A042 /* environment.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D0531201C1B1FF500A9A042 /* environment.plist */; };
 		6D33B3581BF34334004CF107 /* libReactNativeIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D33B3571BF34306004CF107 /* libReactNativeIcons.a */; };
 		6D830ACB1C0769ED007AF824 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830ACA1C0769BD007AF824 /* libRCTFBLogin.a */; };
 		6D830AD61C0779C5007AF824 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */; };
@@ -27,7 +42,6 @@
 		6D830AD81C0779C5007AF824 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD51C0779C5007AF824 /* FBSDKShareKit.framework */; };
 		6DCC57EE1C0C689C008F42F0 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCC57ED1C0C6817008F42F0 /* libRCTPushNotification.a */; };
 		6DCC57F91C0CB960008F42F0 /* UIImagePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DCC57F81C0CB960008F42F0 /* UIImagePickerManager.m */; };
-		6DF0674C1C0F67020096C874 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DF0674B1C0F67020096C874 /* Default-568h@2x.png */; };
 		6DF0674D1C0F69740096C874 /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6DF067401C0F66F20096C874 /* FontAwesome.otf */; };
 		6DF0674E1C0F69740096C874 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6DF067411C0F66F20096C874 /* OpenSans-Bold.ttf */; };
 		6DF0674F1C0F69740096C874 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6DF067421C0F66F20096C874 /* OpenSans-BoldItalic.ttf */; };
@@ -99,6 +113,13 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
+		6D0530E51C1B166900A9A042 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6D0530E01C1B164A00A9A042;
+			remoteInfo = "Environment Switch Script";
+		};
 		6D33B3561BF34306004CF107 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6D33B3521BF34305004CF107 /* ReactNativeIcons.xcodeproj */;
@@ -154,6 +175,9 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = donutMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = donutMobile/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		6D05311C1C1B1FC400A9A042 /* environment_PROD.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = environment_PROD.plist; path = donutMobile/environment_PROD.plist; sourceTree = "<group>"; };
+		6D05311D1C1B1FC400A9A042 /* environment_TEST.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = environment_TEST.plist; path = donutMobile/environment_TEST.plist; sourceTree = "<group>"; };
+		6D0531201C1B1FF500A9A042 /* environment.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = environment.plist; path = donutMobile/environment.plist; sourceTree = "<group>"; };
 		6D33B3521BF34305004CF107 /* ReactNativeIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeIcons.xcodeproj; path = "../node_modules/react-native-icons/ios/ReactNativeIcons.xcodeproj"; sourceTree = "<group>"; };
 		6D830AC51C0769BD007AF824 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBLogin.xcodeproj; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; };
 		6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
@@ -173,7 +197,6 @@
 		6DF067481C0F66F20096C874 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "Fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		6DF067491C0F66F20096C874 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "Fonts/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		6DF0674A1C0F66F20096C874 /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-SemiboldItalic.ttf"; path = "Fonts/OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
-		6DF0674B1C0F67020096C874 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Images/Default-568h@2x.png"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -281,7 +304,6 @@
 		13B07FAE1A68108700A75B9A /* donutMobile */ = {
 			isa = PBXGroup;
 			children = (
-				6DF067311C0F66570096C874 /* Images */,
 				6D33B33B1BF341B8004CF107 /* Fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -299,6 +321,16 @@
 				146834041AC3E56700842450 /* libReact.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		6D0530DD1C1B143900A9A042 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				6D0531201C1B1FF500A9A042 /* environment.plist */,
+				6D05311C1C1B1FC400A9A042 /* environment_PROD.plist */,
+				6D05311D1C1B1FC400A9A042 /* environment_TEST.plist */,
+			);
+			name = Configurations;
 			sourceTree = "<group>";
 		};
 		6D33B33B1BF341B8004CF107 /* Fonts */ = {
@@ -363,14 +395,6 @@
 			path = "../node_modules/react-native-image-picker/UIImagePickerManager";
 			sourceTree = "<group>";
 		};
-		6DF067311C0F66570096C874 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				6DF0674B1C0F67020096C874 /* Default-568h@2x.png */,
-			);
-			name = Images;
-			sourceTree = "<group>";
-		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -411,6 +435,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				6D0530DD1C1B143900A9A042 /* Configurations */,
 				13B07FAE1A68108700A75B9A /* donutMobile */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* donutMobileTests */,
@@ -439,12 +464,13 @@
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
+				6D4E7E141C0E1CE8009C5F98 /* Run Script */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				6D4E7E141C0E1CE8009C5F98 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				6D0530E61C1B166900A9A042 /* PBXTargetDependency */,
 			);
 			name = donutMobile;
 			productName = "Hello World";
@@ -458,10 +484,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0710;
-				ORGANIZATIONNAME = Facebook;
+				ORGANIZATIONNAME = "DONUT SAS";
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = PRP9K5KVUV;
+					};
+					6D0530E01C1B164A00A9A042 = {
+						CreatedOnToolsVersion = 7.1.1;
 					};
 				};
 			};
@@ -533,6 +562,7 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* donutMobile */,
+				6D0530E01C1B164A00A9A042 /* Environment Switch Script */,
 			);
 		};
 /* End PBXProject section */
@@ -648,8 +678,8 @@
 				6DF067561C0F69740096C874 /* OpenSans-Semibold.ttf in Resources */,
 				6DF067571C0F69740096C874 /* OpenSans-SemiboldItalic.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				6D0531211C1B1FF500A9A042 /* environment.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				6DF0674C1C0F67020096C874 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -670,13 +700,27 @@
 			shellPath = /bin/sh;
 			shellScript = "../node_modules/react-native/packager/react-native-xcode.sh";
 		};
-		6D4E7E141C0E1CE8009C5F98 /* ShellScript */ = {
+		6D0530E71C1B16A800A9A042 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "dir=${PROJECT_DIR}/${PROJECT_NAME}\necho \"Starting environment configuration for project: \" $dir\n\n# environment variable from value passed in to xcodebuild.\n# if not specified, we default to TEST\nenv=${DONUT_ENVIRONMENT}\nif [ -z \"$env\" ]\nthen\nenv=\"TEST\"\nfi\necho \"Using $env environment\"\n\n# copy the environment-specific file\ncp $dir/environment_$env.plist $dir/environment.plist\n\n# Date and time that we are running this build\nbuildDate=`date \"+%F %H:%M:%S\"`\ntodaysDay=`date \"+%d\"`\n\n# app settings\nappName=`/usr/libexec/PlistBuddy -c \"Print :appName\" \"$dir/environment.plist\"`\nFacebookAppID=`/usr/libexec/PlistBuddy -c \"Print :FacebookAppID\" \"$dir/environment.plist\"`\nFacebookURLScheme=`/usr/libexec/PlistBuddy -c \"Print :FacebookURLScheme\" \"$dir/environment.plist\"`\nFacebookDisplayName=`/usr/libexec/PlistBuddy -c \"Print :FacebookDisplayName\" \"$dir/environment.plist\"`\nversion=`/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" \"${PROJECT_DIR}/${PROJECT_NAME}/Info.plist\"`\n\nif [ \"$env\" != \"PROD\" ]\nthen\n# need to dynamically append today's day for non-prod\nappName=\"$appName $todaysDay\"\n# Last hash from the current branch\nversion=`git log --pretty=format:\"%h\" -1`\nfi\n\n# Build the preprocess file\ncd ${PROJECT_DIR}/${PROJECT_NAME}\npreprocessFile=\"environment_preprocess.h\"\necho \"Creating header file\"\n\necho -e \"//-----------------------------------------\" > $preprocessFile\necho -e \"// Auto generated file\" >> $preprocessFile\necho -e \"// Created $buildDate\" >> $preprocessFile\necho -e \"//-----------------------------------------\" >> $preprocessFile\necho -e \"\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT              $env\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_VERSION_NUMBER  $version\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_APP_NAME     $appName\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_FACEBOOK_APP_ID  $FacebookAppID\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_FACEBOOK_DISPLAY_NAME  $FacebookDisplayName\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_FACEBOOK_URL_SCHEME     $FacebookURLScheme\" >> $preprocessFile\n\n# dump out file to build log\ncat $preprocessFile\n\n# Force the system to process the plist file\necho \"Touching plist at: \" ${PROJECT_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-Info.plist\ntouch ${PROJECT_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-Info.plist\n\n# done\necho \"Done.\"";
+		};
+		6D4E7E141C0E1CE8009C5F98 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -698,6 +742,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		6D0530E61C1B166900A9A042 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6D0530E01C1B164A00A9A042 /* Environment Switch Script */;
+			targetProxy = 6D0530E51C1B166900A9A042 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
@@ -711,54 +763,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		13B07F941A680F5B00A75B9A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEAD_CODE_STRIPPING = NO;
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../node_modules/react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
-				);
-				INFOPLIST_FILE = donutMobile/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = me.donut.native;
-				PRODUCT_NAME = donutMobile;
-				PROVISIONING_PROFILE = "";
-			};
-			name = Debug;
-		};
-		13B07F951A680F5B00A75B9A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../node_modules/react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
-				);
-				INFOPLIST_FILE = donutMobile/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = me.donut.native;
-				PRODUCT_NAME = donutMobile;
-				PROVISIONING_PROFILE = "";
-			};
-			name = Release;
-		};
-		83CBBA201A601CBA00E9B192 /* Debug */ = {
+		6D7CD83A1C1B658F007F8799 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -778,6 +783,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: me.donut.native.test";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: me.donut.native.test";
 				COPY_PHASE_STRIP = NO;
+				DONUT_BUNDLE_ID = me.donut.mobile.dev;
+				DONUT_ENVIRONMENT = DEV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -786,6 +793,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"ENV=2",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -807,7 +815,44 @@
 			};
 			name = Debug;
 		};
-		83CBBA211A601CBA00E9B192 /* Release */ = {
+		6D7CD83B1C1B658F007F8799 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Debug;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEAD_CODE_STRIPPING = NO;
+				DONUT_BUNDLE_ID = me.donut.mobile.test;
+				DONUT_ENVIRONMENT = TEST;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
+				);
+				INFOPLIST_FILE = donutMobile/Info.plist;
+				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";
+				INFOPLIST_PREPROCESS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = me.donut.native;
+				PRODUCT_NAME = donutMobile;
+				PROVISIONING_PROFILE = "";
+			};
+			name = Debug;
+		};
+		6D7CD83C1C1B658F007F8799 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DONUT_BUNDLE_ID = me.donut.mobile.test;
+				DONUT_ENVIRONMENT = TEST;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6D7CD84A1C1B65E3007F8799 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -827,9 +872,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: me.donut.native.test";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: me.donut.native.test";
 				COPY_PHASE_STRIP = YES;
+				DONUT_BUNDLE_ID = me.donut.mobile;
+				DONUT_ENVIRONMENT = PROD;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "ENV=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -849,14 +897,145 @@
 			};
 			name = Release;
 		};
+		6D7CD84B1C1B65E3007F8799 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Release;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
+				);
+				INFOPLIST_FILE = donutMobile/Info.plist;
+				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";
+				INFOPLIST_PREPROCESS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = me.donut.native;
+				PRODUCT_NAME = donutMobile;
+				PROVISIONING_PROFILE = "";
+			};
+			name = Release;
+		};
+		6D7CD84C1C1B65E3007F8799 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		6D7CD8671C1C6E00007F8799 /* Debug (standalone) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: me.donut.native.test";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: me.donut.native.test";
+				COPY_PHASE_STRIP = NO;
+				DONUT_BUNDLE_ID = me.donut.mobile.dev;
+				DONUT_ENVIRONMENT = DEV;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ENV=2",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "a7fd3f44-5578-401c-94dd-323b4d14c376";
+				SDKROOT = iphoneos;
+			};
+			name = "Debug (standalone)";
+		};
+		6D7CD8681C1C6E00007F8799 /* Debug (standalone) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Debug;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEAD_CODE_STRIPPING = NO;
+				DONUT_BUNDLE_ID = me.donut.mobile.test;
+				DONUT_ENVIRONMENT = TEST;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
+				);
+				INFOPLIST_FILE = donutMobile/Info.plist;
+				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";
+				INFOPLIST_PREPROCESS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = me.donut.native;
+				PRODUCT_NAME = donutMobile;
+				PROVISIONING_PROFILE = "";
+			};
+			name = "Debug (standalone)";
+		};
+		6D7CD8691C1C6E00007F8799 /* Debug (standalone) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DONUT_BUNDLE_ID = me.donut.mobile.test;
+				DONUT_ENVIRONMENT = TEST;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Debug (standalone)";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "donutMobile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				13B07F941A680F5B00A75B9A /* Debug */,
-				13B07F951A680F5B00A75B9A /* Release */,
+				6D7CD83B1C1B658F007F8799 /* Debug */,
+				6D7CD8681C1C6E00007F8799 /* Debug (standalone) */,
+				6D7CD84B1C1B65E3007F8799 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6D0530E11C1B164A00A9A042 /* Build configuration list for PBXAggregateTarget "Environment Switch Script" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6D7CD83C1C1B658F007F8799 /* Debug */,
+				6D7CD8691C1C6E00007F8799 /* Debug (standalone) */,
+				6D7CD84C1C1B65E3007F8799 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -864,8 +1043,9 @@
 		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "donutMobile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				83CBBA201A601CBA00E9B192 /* Debug */,
-				83CBBA211A601CBA00E9B192 /* Release */,
+				6D7CD83A1C1B658F007F8799 /* Debug */,
+				6D7CD8671C1C6E00007F8799 /* Debug (standalone) */,
+				6D7CD84A1C1B65E3007F8799 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

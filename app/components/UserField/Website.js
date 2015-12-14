@@ -9,6 +9,11 @@ var {
   TextInput
 } = React;
 
+var i18next = require('../../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'placeholder': 'URL of a website'
+});
+
 class UserFieldWebsite extends UserField {
   constructor (props) {
     super(props);
@@ -32,7 +37,7 @@ class UserFieldWebsite extends UserField {
     <ListGroupItem
       autoFocus={true}
       onPress= {() => this.onPress()}
-      placeholder="URL of a website"
+      placeholder={i18next.t('local:placeholder')}
       value={this.state.value}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'

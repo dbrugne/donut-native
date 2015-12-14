@@ -15,6 +15,11 @@ var app = require('../libs/app');
 var rooms = require('../collections/rooms');
 var navigation = require('../libs/navigation');
 
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'rooms': 'ROOMS'
+});
+
 class NavigationRoomsView extends Component {
   constructor (props) {
     super(props);
@@ -49,7 +54,7 @@ class NavigationRoomsView extends Component {
     if (rooms.length > 0) {
       title = (
         <View style={{backgroundColor: '#1D1D1D'}}>
-          <Text style={styles.title}>ROOMS</Text>
+          <Text style={styles.title}>{i18next.t('local:rooms')}</Text>
         </View>
       );
     }
@@ -69,7 +74,7 @@ class NavigationRoomsView extends Component {
   renderElement (e) {
     var group = null;
     if (e.group_id && e.group_name && e.group_id !== this.lastGroup) {
-      this.lastGroup =  e.group_id
+      this.lastGroup =  e.group_id;
       group = (
         <TouchableHighlight
           style={styles.linkBlock}
@@ -82,19 +87,29 @@ class NavigationRoomsView extends Component {
         </TouchableHighlight>
       );
     }
-    if (e.blocked) {
-      return (
-        <View style={(e.group_id) ? styles.itemGroup : styles.item}>
-          <Text style={[styles.itemTitle, {textDecorationLine: 'line-through'}]}>
-            {(e.group_id) ? '/' + e.name : '#' + e.name}
-          </Text>
-        </View>
-      );
-    }
 
     var model = rooms.get(e.room_id);
     if (!model) {
       return(<View></View>);
+    }
+
+    if (e.blocked) {
+      return (
+        <View>
+          {group}
+          <TouchableHighlight
+            style={styles.linkBlock}
+            onPress={() => navigation.switchTo(navigation.getBlockedDiscussion(model.get('id'), model))}
+            underlayColor= '#414041'
+            >
+            <View style={(model.get('group_id')) ? styles.itemGroup : styles.item}>
+              <Text style={[styles.itemTitle, {textDecorationLine: 'line-through'}]}>
+                {(model.get('group_id')) ? '/' + model.get('name') : '#' + model.get('name')}
+              </Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      );
     }
 
     var badge = null;

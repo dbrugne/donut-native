@@ -14,7 +14,6 @@ var {
   Icon
   } = require('react-native-icons');
 
-
 class ListGroupItemEditButton extends Component {
   constructor (props) {
     super(props);

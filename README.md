@@ -1,29 +1,24 @@
 # donut-native
 
-## Questions & tasks
+## TODO
 
-* [ ] test choose username logic again
-* [ ] test with user that refuse email permission
-* [ ] test token expiration/renewing
-* [ ] Facebook Login on Android in absence of onLoginFound
+* [ ] Load code from AppHub (broken?)
+* [ ] AppStore store submission
+* [ ] Test Android (default conf?)
+* [ ] APK David
+* [ ] GH tasks reviews
+* [ ] @dbrugne/donut-client
 
-* [ ] push notifications logic implementation
-* [ ] push notifications on android
-* [ ] hyperlink opening
-* [ ] Add i18next usage
-
-* [ ] Android keyboard close on message send
-* [ ] How to send .apk to David
-* [ ] Load code from AppHub
-* [ ] Switch configuration
-  - [ ] Facebook ID ios/donutMobile/Info.plist
+* [ ] fix android discussion (need to test RN0.0.16 ? but react-native-parsed-text block RN0.16.0 migration ... => test with 0.7.0)
+* [ ] Icon and splashscreen Android
+* [ ] Switch configuration Android
   - [ ] Facebook ID android/app/src/main/res/values/strings.xml
-  - [ ] WS URL app/libs/client.js
-  - [ ] OAUTH URL app/libs/oauth.js
-  - [ ] Parse
-* [ ] stores submission
+* [ ] Send .apk to David
 
-* solve emoticons
+* [ ] solve emoticons
+* [ ] push notifications logic implementation
+* [ ] Android keyboard close on message send
+* [ ] Close keyboard (unfocus field?) on drawer open
 
 ## Pre-requisites
 
@@ -34,21 +29,23 @@ Requirements: https://facebook.github.io/react-native/docs/getting-started.html
 ```
 brew install watchman
 npm install -g react-native-cli
+npm install -g babel-cli # react-native-parsed-text
 ```
 
 [Android installation and workaround](./Android.md)
 
 ## Run iOS
 
-For both scenario launch Xcode project and be sure donutMobile scheme is selected (selector is on the right of the stop button).
+Create 3 schemes (@see http://www.blackdogfoundry.com/blog/migrating-ios-app-through-multiple-environments/) by going to Product > Scheme > Manage Schemes.
+From here, add the 3 schemes : Debug, Debug (standalone) & Release.
+Now for each one, edit it and select appropriate build configuration for each step (Run / Test / Profile / Analyse / Archive).
+Ie: For debug scheme, select "debug" in each debug configuration of the five steps.
 
-**iOS development (simulator and device)**
-* (be sure Product > Scheme > Edit Scheme... > Run has Build Configuration to **Debug**)
-* Select device in top dropdown and press play button
+For each scenario launch Xcode project select a scheme (listed bellow), select a device and run:
 
-**iOS release**
-* (be sure Product > Scheme > Edit Scheme... > Run has Build Configuration to **Release**)
-* Select device in top dropdown and press play button
+* Debug: with debug tools, connect to test.donut.me, both on simulator or devices (with LAN IP)
+* Debug (standalone): without debug tools, connect to test.donut.me, standalone bundle
+* Release: without debug tools, connect to donut.me, standalone bundle
 
 ## Run Android
 
@@ -97,4 +94,39 @@ Change path to XMLHttpRequest
 ```
 // var XMLHttpRequest = require('xmlhttprequest');
 var XMLHttpRequest = require('../xmlhttprequest');
+```
+
+Allow react-native packager to support other env than Debug and Release 
+
+- /www/donut-native/node_modules/react-native/packager/react-native-xcode.sh
+
+```
+#case "$CONFIGURATION" in
+#  Debug)
+#    DEV=true
+#    ;;
+#  Release)
+#    DEV=false
+#    ;;
+#  "")
+#    echo "$0 must be invoked by Xcode"
+#    exit 1
+#    ;;
+#  *)
+#    echo "Unsupported value of \$CONFIGURATION=$CONFIGURATION"
+#    exit 1
+#    ;;
+#esac
+case "$CONFIGURATION" in
+  Debug)
+    DEV=true
+    ;;
+  "")
+    echo "$0 must be invoked by Xcode"
+    exit 1
+    ;;
+  *)
+    DEV=false
+    ;;
+esac
 ```

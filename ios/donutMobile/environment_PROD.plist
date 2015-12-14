@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   environment_PROD.plist
+   donutMobile
+
+   Created by Damien Brugne on 11/12/2015.
+   Copyright (c) 2015 DONUT SAS. All rights reserved.
+-->
+<plist version="1.0">
+    <dict>
+        <key>environment</key>
+        <string>PROD</string>
+        <key>appName</key>
+        <string>DONUT</string>
+        <key>FacebookAppID</key>
+        <string>328569463966926</string>
+        <key>FacebookURLScheme</key>
+        <string>fb328569463966926</string>
+        <key>FacebookDisplayName</key>
+        <string>DONUT.me</string>
+    </dict>
+</plist>

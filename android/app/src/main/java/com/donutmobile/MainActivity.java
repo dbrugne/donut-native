@@ -58,7 +58,12 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         // @Parse
         mNotificationAndroid = new NotificationAndroidPackage(this);
-        Parse.initialize(this, "HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g", "scK5G6HLyEATHuytp74POetQozngZBhs9eUmnp4q");
+        try {
+            Parse.initialize(this, "HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g", "scK5G6HLyEATHuytp74POetQozngZBhs9eUmnp4q");
+        } catch (IllegalStateException e) {
+            // Parse already initialized
+            e.printStackTrace();
+        }
 
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
@@ -82,7 +87,10 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
 
-        mReactRootView.startReactApplication(mReactInstanceManager, "donutMobile", null);
+        // Options
+        Bundle b = new Bundle();
+        b.putString("DONUT_ENVIRONMENT", "test");
+        mReactRootView.startReactApplication(mReactInstanceManager, "donutMobile", b);
 
         setContentView(mReactRootView);
     }
