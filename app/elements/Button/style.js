@@ -76,5 +76,9 @@ module.exports = StyleSheet.create({
   buttonIcon: {
     width: 20,
     height: 20
+  },
+  help: {
+    color: '#777777',
+    fontSize: 12
   }
 });

@@ -6,6 +6,7 @@ var LoadingView = require('../components/Loading');
 var client = require('../libs/client');
 var alert = require('../libs/alert');
 var Button = require('../elements/Button');
+var Input = require('../elements/Input');
 
 var s = require('../styles/style');
 
@@ -58,13 +59,12 @@ class ChangePasswordView extends Component {
     if (this.state.hasPassword) {
       inputOldPassword = (
         <View style={[s.inputContainer, s.marginTop5]}>
-          <TextInput
-          autoFocus={true}
-          placeholder={i18next.t('local:old-password')}
-          secureTextEntry={true}
-          onChange={(event) => this.setState({oldPassword: event.nativeEvent.text})}
-          onSubmitEditing={() => this._focusNextField('1')}
-          style={s.input} />
+          <Input
+            autoFocus={true}
+            placeholder={i18next.t('local:old-password')}
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({oldPassword: text})}
+            />
         </View>
       );
     }
@@ -78,36 +78,30 @@ class ChangePasswordView extends Component {
         {inputOldPassword}
 
         <View style={[s.inputContainer, s.marginTop5]}>
-          <TextInput
-            ref='1'
+          <Input
             placeholder={i18next.t('local:new-password')}
             secureTextEntry={true}
-            onChange={(event) => this.setState({newPassword: event.nativeEvent.text})}
-            onSubmitEditing={() => this._focusNextField('2')}
-            style={s.input} />
+            onChangeText={(text) => this.setState({newPassword: text})}
+            />
         </View>
 
         <View style={[s.inputContainer, s.marginTop5]}>
-          <TextInput
-            ref='2'
+          <Input
             placeholder={i18next.t('local:confirm')}
             secureTextEntry={true}
-            onChange={(event) => this.setState({confirmPassword: event.nativeEvent.text})}
-            style={s.input} />
+            onChangeText={(text) => this.setState({confirmPassword: text})}
+            />
         </View>
-
-        <Text style={s.filler}></Text>
 
         <Button onPress={(this.onSubmitPressed.bind(this))}
                 type='green'
+                style={[s.marginTop5]}
                 label={i18next.t('local:change')} />
+
+        <Text style={s.filler}></Text>
 
       </View>
     )
-  }
-
-  _focusNextField(nextField) {
-    this.refs[nextField].focus()
   }
 
   onSubmitPressed () {

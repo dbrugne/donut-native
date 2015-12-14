@@ -60,7 +60,7 @@ class Button extends Component {
   _renderHelp() {
     if (this.props.help) {
       return (
-        <Text style={s.help}></Text>
+        <Text style={s.help}>{this.props.help}</Text>
       );
     }
     return null;
