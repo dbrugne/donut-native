@@ -36,8 +36,13 @@ npm install -g babel-cli # react-native-parsed-text
 
 ## Run iOS
 
-For both scenario launch Xcode project select a scheme (listed above), select a d
-device and run:
+Create 3 schemes (@see http://www.blackdogfoundry.com/blog/migrating-ios-app-through-multiple-environments/) by going to Product > Scheme > Manage Schemes.
+From here, add the 3 schemes : Debug, Debug (standalone) & Release.
+Now for each one, edit it and select appropriate build configuration for each step (Run / Test / Profile / Analyse / Archive).
+Ie: For debug scheme, select "debug" in each debug configuration of the five steps.
+
+For each scenario launch Xcode project select a scheme (listed bellow), select a device and run:
+
 * Debug: with debug tools, connect to test.donut.me, both on simulator or devices (with LAN IP)
 * Debug (standalone): without debug tools, connect to test.donut.me, standalone bundle
 * Release: without debug tools, connect to donut.me, standalone bundle
