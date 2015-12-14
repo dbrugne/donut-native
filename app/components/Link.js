@@ -17,7 +17,7 @@ class Link extends Component {
 
   render () {
     return (
-      <TouchableHighlight style={styles.container}
+      <TouchableHighlight style={[styles.container, this.props.style]}
                           onPress={() => this.props.onPress()}
                           underlayColor= 'transparent'
         >

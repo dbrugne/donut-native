@@ -8,6 +8,8 @@ var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var _ = require('underscore');
 var $ = require('jquery');
+var Button = require('../elements/Button');
+var Link = require('../components/Link');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -25,7 +27,6 @@ var {
   Text,
   TextInput,
   ScrollView,
-  TouchableHighlight,
   View,
   BackAndroid,
   Image
@@ -92,31 +93,29 @@ class LoginView extends Component {
               value={this.state.password}/>
           </View>
 
-          <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
-                              style={[s.button, s.buttonPink, s.marginTop5]}
-                              underlayColor='#E4396D'
-            >
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>{i18next.t('local:signin')}</Text>
-            </View>
-          </TouchableHighlight>
+          <Button onPress={(this.onSubmitPressed.bind(this))}
+                  style={s.marginTop5}
+                  type='pink'
+                  label={i18next.t('local:signin')}/>
 
-          <TouchableHighlight onPress={(this.onForgotPressed.bind(this))}
-                              underlayColor='transparent'
-                              style={[s.marginTop10, styles.centered]}>
-            <Text style={s.link}>{i18next.t('local:forgot')}</Text>
-          </TouchableHighlight>
+          <Link onPress={(this.onForgotPressed.bind(this))}
+                text={i18next.t('local:forgot')}
+                style={[s.marginTop10, styles.centered]}
+                linkStyle={s.link}
+            />
+
         </View>
       );
 
       var signupButton = (
         <View style={styles.linkCtn}>
           <Text style={styles.textGray}>{i18next.t('local:account')}</Text>
-          <TouchableHighlight onPress={(this.onCreatePressed.bind(this))}
-                              underlayColor='transparent'
-                              style={styles.centered}>
-            <Text style={s.link}>{i18next.t('local:signup')}</Text>
-          </TouchableHighlight>
+
+          <Link onPress={(this.onCreatePressed.bind(this))}
+                text={i18next.t('local:signup')}
+                style={[s.marginTop10, styles.centered]}
+                linkStyle={s.link}
+            />
         </View>
       );
     }

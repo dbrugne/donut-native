@@ -19,6 +19,8 @@ var currentUser = require('../models/mobile-current-user');
 var s = require('../styles/style');
 var _ = require('underscore');
 var Alert = require('../libs/alert');
+var Button = require('../elements/Button');
+var Link = require('../components/Link');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -78,14 +80,11 @@ class Signup extends Component {
               value=  {this.state.username} />
           </View>
 
+          <Button onPress={(this.onSubmitPressed.bind(this))}
+                  style={s.marginTop5}
+                  type='pink'
+                  label={i18next.t('local:signup')}/>
 
-          <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
-                              style={[s.button, s.buttonPink, s.marginTop5]}
-                              underlayColor='#E4396D' >
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>{i18next.t('local:signup')}</Text>
-            </View>
-          </TouchableHighlight>
         </View>
 
         <View style={styles.linkCtn} >
@@ -95,11 +94,11 @@ class Signup extends Component {
             color='#808080'
             style={styles.icon}
             />
-          <TouchableHighlight onPress={(this.onBack.bind(this))}
-                              underlayColor='transparent'
-                              style={styles.textGray}>
-            <Text style={s.link}>{i18next.t('local:back')}</Text>
-          </TouchableHighlight>
+          <Link onPress={(this.onBack.bind(this))}
+                text={i18next.t('local:back')}
+                style={[styles.textGray]}
+                linkStyle={s.link}
+            />
         </View>
       </View>
     );

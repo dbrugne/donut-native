@@ -3,6 +3,8 @@ var Platform = require('Platform');
 var s = require('../styles/style');
 var _ = require('underscore');
 var Alert = require('../libs/alert');
+var Link = require('../components/Link');
+var Button = require('../elements/Button');
 
 var {
   Component,
@@ -53,14 +55,12 @@ class ForgotView extends Component {
               style={[s.input, s.marginTop10]}
               value={this.state.email}/>
           </View>
-          <TouchableHighlight onPress={(this.onResetPressed.bind(this))}
-                              style={[s.button, s.buttonPink, s.marginTop5]}
-                              underlayColor='#E4396D'
-            >
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>{i18next.t('local:reset')}</Text>
-            </View>
-          </TouchableHighlight>
+
+          <Button onPress={(this.onResetPressed.bind(this))}
+                  style={s.marginTop5}
+                  type='pink'
+                  label={i18next.t('local:reset')} />
+
         </View>
 
         <View style={styles.linkCtn} >
@@ -70,11 +70,11 @@ class ForgotView extends Component {
             color='#808080'
             style={styles.icon}
             />
-          <TouchableHighlight onPress={(this.onBack.bind(this))}
-                              underlayColor='transparent'
-                              style={styles.textGray}>
-            <Text style={s.link}>{i18next.t('local:back')}</Text>
-          </TouchableHighlight>
+
+          <Link onPress={(this.onBack.bind(this))}
+                text={i18next.t('local:back')}
+                linkStyle={s.link}
+            />
         </View>
       </View>
     )

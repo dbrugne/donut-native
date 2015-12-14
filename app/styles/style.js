@@ -143,15 +143,6 @@ module.exports = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  buttonTextLight: {
-    fontFamily: 'Open Sans',
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFF',
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   buttonIcon: {
     width: 20,
     height: 20
@@ -159,18 +150,6 @@ module.exports = StyleSheet.create({
   buttonBlue: {
     borderColor: '#4a649d',
     backgroundColor: "#4a649d"
-  },
-  buttonPink: {
-    borderColor: '#E4396D',
-    backgroundColor: "#fd5286"
-  },
-  buttonGreen: {
-    borderColor: '#1DBB8E',
-    backgroundColor: "#36D4A7" // lighten 10% #50EEC1
-  },
-  buttonGray: {
-    borderColor: '#A4AAAE',
-    backgroundColor: "#bdc3c7"
   },
   // inputs
   input: {
@@ -251,5 +230,10 @@ module.exports = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 12,
     color: '#8a6d3b'
+  },
+
+  help: {
+    color: '#777777',
+    fontSize: 12
   }
 });

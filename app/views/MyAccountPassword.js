@@ -1,13 +1,11 @@
 var React = require('react-native');
 var Platform = require('Platform');
 var _ = require('underscore');
-
 var currentUser = require('../models/mobile-current-user');
-
 var LoadingView = require('../components/Loading');
-
 var client = require('../libs/client');
 var alert = require('../libs/alert');
+var Button = require('../elements/Button');
 
 var s = require('../styles/style');
 
@@ -100,14 +98,10 @@ class ChangePasswordView extends Component {
 
         <Text style={s.filler}></Text>
 
-        <TouchableHighlight onPress={(this.onSubmitPressed.bind(this))}
-                            style={[s.button, s.buttonPink, s.marginTop10]}
-                            underlayColor='#E4396D'
-          >
-          <View style={s.buttonLabel}>
-            <Text style={s.buttonTextLight}>{i18next.t('local:change')}</Text>
-          </View>
-        </TouchableHighlight>
+        <Button onPress={(this.onSubmitPressed.bind(this))}
+                type='green'
+                label={i18next.t('local:change')} />
+
       </View>
     )
   }

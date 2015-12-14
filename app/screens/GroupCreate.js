@@ -3,16 +3,14 @@
 var React = require('react-native');
 var Platform = require('Platform');
 var _ = require('underscore');
-
 var client = require('../libs/client');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
-
+var Button = require('../elements/Button');
 var s = require('../styles/style');
 
 var {
   StyleSheet,
-  TouchableHighlight,
   Text,
   TextInput,
   ScrollView,
@@ -61,13 +59,10 @@ class RoomCreateView extends Component {
 
         </View>
 
-        <TouchableHighlight style={[s.button, s.buttonGreen, s.marginTop10, {marginHorizontal: 10}]}
-                            underlayColor='#50EEC1'
-                            onPress={(this.onGroupCreate.bind(this))}>
-          <View style={s.buttonLabel}>
-            <Text style={s.buttonTextLight}>{i18next.t('local:create')}</Text>
-          </View>
-        </TouchableHighlight>
+        <Button onPress={(this.onGroupCreate.bind(this))}
+                style={[s.marginTop10, {marginHorizontal: 10}]}
+                type='green'
+                label={i18next.t('local:create')} />
 
       </ScrollView>
     );

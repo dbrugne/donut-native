@@ -9,10 +9,10 @@ var alert = require('../libs/alert');
 var navigation = require('../libs/navigation');
 var Link = require('../components/Link');
 var s = require('../styles/style');
+var Button = require('../elements/Button');
 
 var {
   StyleSheet,
-  TouchableHighlight,
   Text,
   TextInput,
   SwitchAndroid,
@@ -95,13 +95,10 @@ class RoomCreateView extends Component {
 
         </View>
 
-        <TouchableHighlight style={[s.button, s.buttonGreen, s.marginTop10, {marginHorizontal: 10}]}
-                            underlayColor='#50EEC1'
-                            onPress={(this.onRoomCreate.bind(this))}>
-          <View style={s.buttonLabel}>
-            <Text style={s.buttonTextLight}>{i18next.t('local:create')}</Text>
-          </View>
-        </TouchableHighlight>
+        <Button onPress={(this.onRoomCreate.bind(this))}
+                style={[s.marginTop10, {marginHorizontal: 10}]}
+                type='green'
+                label={i18next.t('local:create')} />
 
         <View style={[s.marginTop10, {marginHorizontal: 10}]}>
           <Text>{i18next.t('local:community')}</Text>
