@@ -346,7 +346,7 @@ routes.getMyAccount = function () {
 };
 routes.getMyAccountEmail = function (email, func) {
   return getRoute({
-    id: 'my-account-email',
+    id: 'my-account-email' + email,
     renderScene: function (navigator) {
       let EmailMain = require('../views/MyAccountEmail');
       return <EmailMain navigator={navigator} func={func} email={email} />;
