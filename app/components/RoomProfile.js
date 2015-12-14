@@ -24,10 +24,11 @@ var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
 var Button = require('../elements/Button');
 var Link = require('../elements/Link');
+var ListItem = require('../elements/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'created': 'created on',
+  'created-on': 'created on __date__',
   'edit': 'edit',
   'manage-users': 'manage users',
   'access': 'access',
@@ -51,37 +52,22 @@ class RoomProfileView extends Component {
     var website = null;
     if (data.website) {
       website = (
-        <TouchableHighlight underlayColor='transparent'
-                            onPress={() => hyperlink.open(data.website.href)}>
-          <View style={[s.listGroupItem, s.listGroupItemFirst]}>
-            <Icon
-              name='fontawesome|link'
-              size={14}
-              color='#333'
-              style={s.listGroupItemIcon}
-              />
-            <Text style={s.listGroupItemText}> {data.website.title}</Text>
-            <Icon
-              name='fontawesome|chevron-right'
-              size={14}
-              color='#DDD'
-              style={s.listGroupItemIconRight}
-              />
-          </View>
-        </TouchableHighlight>
+        <ListItem
+          text={data.website.title}
+          type='edit-button'
+          first={true}
+          action={true}
+          onPress={() => hyperlink.open(data.website.href)}
+          icon='fontawesome|link'
+          />
       );
     }
 
     var createdAt = (
-      <View style={[s.listGroupItem, !data.website && s.listGroupItemFirst]}>
-        <Icon
-          name='fontawesome|clock-o'
-          size={14}
-          color='#333'
-          style={s.listGroupItemIcon}
-          />
-        <Text style={s.listGroupItemText}> {i18next.t('local:created')} {date.longDateTime(data.created)}</Text>
-      </View>
+    <ListItem
+      text={i18next.t('local:created-on', {date: date.longDateTime(data.created)})}
+      icon='fontawesome|clock-o'
+      />
     );
 
     var links = null;
