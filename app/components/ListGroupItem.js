@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react-native');
-var Platform = require('Platform');
 var ListGroupItemSwitch = require('../components/ListGroupItem/ListGroupItemSwitch');
 var ListGroupItemButton = require('../components/ListGroupItem/ListGroupItemButton');
 var ListGroupItemInputButton = require('../components/ListGroupItem/ListGroupItemInputButton');

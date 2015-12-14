@@ -22,6 +22,8 @@ var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
+var Button = require('../elements/Button');
+var Link = require('../components/Link');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -144,32 +146,24 @@ class GroupProfileView extends Component {
       );
     }
 
-    // @todo implement joinGroup
+    // @todo implement joinGroup @spariaud
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
           <Image style={styles.avatar} source={{uri: avatarUrl}}/>
           <Text style={styles.identifier}>{data.identifier}</Text>
-          <TouchableHighlight onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})) }}>
-            <Text>
-              <Text>{i18next.t('local:by')} </Text>
-              <Text style={styles.ownerUsername}>@{data.owner_username}</Text>
-            </Text>
-          </TouchableHighlight>
+          <Text>{i18next.t('local:by')} </Text>
+          <Link onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})) }}
+                text={'@' + data.owner_username}
+            />
           <Text style={styles.description}>{description}</Text>
         </View>
         <View style={styles.container2}>
-          <TouchableHighlight style={s.button}>
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonText}>{i18next.t('local:join')} {this.members_count} </Text>
-              <Icon
-                name='fontawesome|user'
-                size={20}
-                color='#ffda3e'
-                style={s.buttonIcon}
-                />
-            </View>
-          </TouchableHighlight>
+          <Button type='gray'
+                  label={i18next.t('local:join')+' '+this.members_count}
+                  icon='fontawesome|user'
+            />
+
           <View style={s.listGroup}>
             {website}
             {createdAt}

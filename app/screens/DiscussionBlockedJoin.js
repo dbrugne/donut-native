@@ -5,13 +5,13 @@ var s = require('../styles/style');
 var Link = require('../components/Link');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
+var Button = require('../elements/Button');
 
 var {
   StyleSheet,
   View,
   Component,
   TextInput,
-  TouchableHighlight,
   Text
 } = React;
 var {
@@ -91,13 +91,12 @@ class DiscussionBlockedJoin extends Component {
                      placeholder={i18next.t('local:password-placeholder')}
                      onChangeText={(text) => this.setState({password: text})}
             />
-          <TouchableHighlight style={[s.button, s.buttonGreen, {marginHorizontal: 10}]}
-                              underlayColor='#50EEC1'
-                              onPress={(this.onValidatePassword.bind(this))}>
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>{i18next.t('local:join')}</Text>
-            </View>
-          </TouchableHighlight>
+
+          <Button onPress={(this.onValidatePassword.bind(this))}
+                  type='green'
+                  style={{marginHorizontal: 10}}
+                  label={i18next.t('local:join')} />
+
         </View>
       </View>
     );

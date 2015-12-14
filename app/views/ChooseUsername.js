@@ -4,13 +4,13 @@ var Platform = require('Platform');
 var client = require('../libs/client');
 var s = require('../styles/style');
 var alert = require('../libs/alert');
+var Button = require('../elements/Button');
 
 var {
   Component,
   StyleSheet,
   Text,
   TextInput,
-  TouchableHighlight,
   View,
   Image
   } = React;
@@ -51,13 +51,10 @@ class ChooseUsername extends Component {
               value={this.state.username} />
           </View>
 
-          <TouchableHighlight onPress={(this.onSubmit.bind(this))}
-                              style={[s.button, s.buttonPink, styles.marginTop5]}
-                              underlayColor='#E4396D' >
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonTextLight}>{i18next.t('local:save')}</Text>
-            </View>
-          </TouchableHighlight>
+          <Button onPress={(this.onSubmit.bind(this))}
+                  style={s.marginTop5}
+                  type='pink'
+                  label={i18next.t('local:save')} />
         </View>
       </View>
     );
