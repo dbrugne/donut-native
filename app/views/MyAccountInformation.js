@@ -8,7 +8,7 @@ var s = require('../styles/style');
 var LoadingView = require('../components/Loading');
 var Alert = require('../libs/alert');
 var currentUser = require('../models/mobile-current-user');
-var ListGroupItem = require('../components/ListGroupItem');
+var ListItem = require('../elements/ListItem');
 var navigation = require('../libs/navigation');
 var imageUpload = require('../libs/imageUpload');
 
@@ -139,38 +139,44 @@ class MyAccountInformation extends Component {
           </View>
         </View>
 
-        <ListGroupItem text={i18next.t('local:avatar')}
-                       type='edit-button'
-                       first={true}
-                       onPress={() => this._updateAvatar()}
+        <ListItem text={i18next.t('local:avatar')}
+                  type='edit-button'
+                  first={true}
+                  action={true}
+                  onPress={() => this._updateAvatar()}
           />
-        <ListGroupItem text={i18next.t('local:color')}
-                       type='color-button'
-                       color={this.state.color}
-                       onPress={() => this.props.navigator.push(navigation.getColorPicker())}
+        <ListItem text={i18next.t('local:color')}
+                  type='color-button'
+                  action={true}
+                  color={this.state.color}
+                  onPress={() => this.props.navigator.push(navigation.getColorPicker())}
           />
-        <ListGroupItem text={i18next.t('local:realname')}
-                       type='edit-button'
-                       value={this.state.realname}
-                       onPress={() => this.onUserEdit(require('../components/UserField/Realname'), this.state.realname)}
-          />
-
-        <ListGroupItem text={i18next.t('local:biography')}
-                       type='edit-button'
-                       value={this.state.bio}
-                       onPress={() => this.onUserEdit(require('../components/UserField/Bio'), this.state.bio)}
+        <ListItem text={i18next.t('local:realname')}
+                  type='edit-button'
+                  action={true}
+                  value={this.state.realname}
+                  onPress={() => this.onUserEdit(require('../components/UserField/Realname'), this.state.realname)}
           />
 
-        <ListGroupItem text={i18next.t('local:location')}
-                       type='edit-button'
-                       value={this.state.location}
-                       onPress={() => this.onUserEdit (require('../components/UserField/Location'), this.state.location)}
+        <ListItem text={i18next.t('local:biography')}
+                  type='edit-button'
+                  action={true}
+                  value={this.state.bio}
+                  onPress={() => this.onUserEdit(require('../components/UserField/Bio'), this.state.bio)}
           />
 
-        <ListGroupItem text={i18next.t('local:website')}
-                       type='edit-button'
-                       value={this.state.website}
-                       onPress={() => this.onUserEdit(require('../components/UserField/Website'), this.state.website)}
+        <ListItem text={i18next.t('local:location')}
+                  type='edit-button'
+                  action={true}
+                  value={this.state.location}
+                  onPress={() => this.onUserEdit (require('../components/UserField/Location'), this.state.location)}
+          />
+
+        <ListItem text={i18next.t('local:website')}
+                  type='edit-button'
+                  action={true}
+                  value={this.state.website}
+                  onPress={() => this.onUserEdit(require('../components/UserField/Website'), this.state.website)}
           />
 
         <Text style={s.filler}></Text>
@@ -179,7 +185,7 @@ class MyAccountInformation extends Component {
     );
   }
 
-  _updateAvatar () {
+  _updateAvatar() {
     imageUpload.getImageAndUpload('user,avatar', (err, response) => {
       if (err) {
         return Alert.show(err);
@@ -189,7 +195,8 @@ class MyAccountInformation extends Component {
         return;
       }
 
-      this.saveUserData('avatar', response, () => {});
+      this.saveUserData('avatar', response, () => {
+      });
     });
   }
 }

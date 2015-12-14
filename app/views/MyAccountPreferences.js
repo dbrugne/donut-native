@@ -1,15 +1,11 @@
 var _ = require('underscore');
 var React = require('react-native');
 var Platform = require('Platform');
-
 var currentUser = require('../models/mobile-current-user');
-
 var LoadingView = require('../components/Loading');
-var ListGroupItem = require('../components/ListGroupItem');
-
+var ListItem = require('../elements/ListItem');
 var client = require('../libs/client');
 var alert = require('../libs/alert');
-
 var s = require('../styles/style');
 
 var {
@@ -77,25 +73,25 @@ class UserPreferencesView extends Component {
         <Text style={[s.listGroupTitle, s.marginTop20]}>{i18next.t('local:notify-me')}</Text>
         <View style={s.listGroup}>
 
-          <ListGroupItem text={i18next.t('local:on-email')}
+          <ListItem text={i18next.t('local:on-email')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:channels:email')}
                          switchValue={this.state.preferences['notif:channels:email']}
             />
 
-          <ListGroupItem text={i18next.t('local:on-mobile')}
+          <ListItem text={i18next.t('local:on-mobile')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:channels:mobile')}
                          switchValue={this.state.preferences['notif:channels:mobile']}
             />
 
-          <ListGroupItem text={i18next.t('local:private')}
+          <ListItem text={i18next.t('local:private')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:usermessage')}
                          switchValue={this.state.preferences['notif:usermessage']}
             />
 
-          <ListGroupItem text={i18next.t('local:invite')}
+          <ListItem text={i18next.t('local:invite')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:invite')}
                          switchValue={this.state.preferences['notif:invite']}
