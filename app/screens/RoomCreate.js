@@ -7,7 +7,7 @@ var client = require('../libs/client');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var navigation = require('../libs/navigation');
-var Link = require('../components/Link');
+var Link = require('../elements/Link');
 var s = require('../styles/style');
 var Button = require('../elements/Button');
 
@@ -104,6 +104,7 @@ class RoomCreateView extends Component {
           <Link onPress={() => navigation.switchTo(navigation.getGroupCreate())}
                 text={i18next.t('local:create-community')}
                 style={s.marginTop10}
+                type='underlined'
                 linkStyle={{textAlign: 'center'}}
             />
         </View>
