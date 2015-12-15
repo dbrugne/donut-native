@@ -23,10 +23,11 @@ var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
 var Button = require('../elements/Button');
+var ListItem = require('../elements/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'registered': 'registered on',
+  'registered-on': 'registered on __date__',
   'unlock': 'unblock this user',
   'lock': 'block this user',
   'blocked': 'this user blocked you',
@@ -50,170 +51,93 @@ class UserProfileView extends Component {
       );
     }
 
-    var status = (
-      <View style={styles.status}>
-        <Icon
-          name='fontawesome|circle-o'
-          size={14}
-          color='#c7c7c7'
-          style={[styles.icon, (data.status && data.status === 'online') && styles.iconOnline]}
-          />
-        <Text style={styles.statusText}> {i18next.t('offline')}</Text>
-      </View>
-    );
-    if (data.status && data.status === 'online') {
-      status = (
-        <View style={styles.status}>
-          <Icon
-            name='fontawesome|circle'
-            size={14}
-            color='#4fedc0'
-            style={[styles.icon, (data.status && data.status === 'online') && styles.iconOnline]}
-            />
-          <Text style={styles.statusText}> {i18next.t('online')}</Text>
-        </View>
+    var bio = _.unescape(data.bio);
+
+    var isBannedLink = null;
+    if (data.i_am_banned === true) {
+      isBannedLink = (
+        <Text style={{marginVertical: 5, marginHorizontal: 5, color: '#ff3838', fontFamily: 'Open Sans', fontSize: 14}}>{i18next.t('local:blocked')}</Text>
       );
     }
-
-    var bio = _.unescape(data.bio);
 
     var location = null;
     if (data.location) {
       location = (
-        <View style={[s.listGroupItem, s.listGroupItemFirst]}>
-          <Icon
-            name='fontawesome|map-marker'
-            size={14}
-            color='#333'
-            style={s.listGroupItemIcon}
-            />
-          <Text style={s.listGroupItemText}>{data.location}</Text>
-        </View>
+      <ListItem
+        text={data.location}
+        icon='fontawesome|map-marker'
+        />
       );
     }
 
     var website = null;
     if (data.website) {
       website = (
-        <TouchableHighlight underlayColor='transparent'
-                            onPress={() => hyperlink.open(data.website.href)}>
-          <View style={[s.listGroupItem, !data.location && s.listGroupItemFirst]}>
-            <Icon
-              name='fontawesome|link'
-              size={14}
-              color='#333'
-              style={s.listGroupItemIcon}
-              />
-            <Text style={s.listGroupItemText}>{data.website.title}</Text>
-            <Icon
-              name='fontawesome|chevron-right'
-              size={14}
-              color='#DDD'
-              style={s.listGroupItemIconRight}
-              />
-          </View>
-        </TouchableHighlight>
+      <ListItem
+        text={data.website.title}
+        type='edit-button'
+        onPress={() => hyperlink.open(data.website.href)}
+        first={!data.location}
+        action={true}
+        icon='fontawesome|link'
+        />
       );
     }
 
     var registeredAt = (
-      // @todo fix i18next call (for dates rendering)
-      <View style={[s.listGroupItem, (!data.location && !data.website) && s.listGroupItemFirst]}>
-        <Icon
-          name='fontawesome|clock-o'
-          size={14}
-          color='#333'
-          style={s.listGroupItemIcon}
-          />
-        <Text style={s.listGroupItemText}> {i18next.t('local:registered')} {date.longDateTime(data.registered)}</Text>
-      </View>
+    <ListItem
+      text={i18next.t('local:registered-on', {date: date.longDateTime(data.registered)})}
+      first={(!data.location && !data.website)}
+      icon='fontawesome|clock-o'
+      />
     );
 
     var bannedLink = null;
     if (data.banned === true) {
       // @todo implement ban / deban action
       bannedLink = (
-        <View>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|ban'
-                size={14}
-                color='#ff3838'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:unlock')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
-        </View>
+        <ListItem
+          text={i18next.t('local:unlock')}
+          type='edit-button'
+          action={true}
+          onPress={() => console.log('deban the user')}
+          icon='fontawesome|ban'
+          />
       );
     } else {
       // @todo implement ban / deban action
       bannedLink = (
-        <View>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|ban'
-                size={14}
-                color='#ff3838'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:lock')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
-        </View>
-      );
-    }
-
-    var isBannedLink = null;
-    if (data.i_am_banned === true) {
-      // @todo implement ban / deban action
-      isBannedLink = (
-        <View>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Text style={[s.listGroupItemText, s.clError]}>{i18next.t('local:blocked')}</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
+        <ListItem
+          text={i18next.t('local:lock')}
+          type='edit-button'
+          action={true}
+          onPress={() => console.log('ban the user')}
+          icon='fontawesome|ban'
+          iconColor='#ff3838'
+          />
       );
     }
 
     return (
       <ScrollView style={styles.main}>
-        <View style={styles.container}>
+        <View style={[styles.container, {position: 'relative'}]}>
           <Image style={styles.avatar} source={{uri: avatarUrl}} />
+          <Text style={[styles.statusText, styles.status, data.status === 'connecting' && styles.statusConnecting, data.status === 'offline' && styles.statusOffline, data.status === 'online' && styles.statusOnline]}>{data.status}</Text>
           {realname}
           <Text style={[styles.username, data.realname && styles.usernameGray ]}>@{data.username}</Text>
-          {status}
           <Text style={styles.bio}>{bio}</Text>
+          {isBannedLink}
         </View>
         <View style={styles.container2}>
-
           <Button onPress={() => app.trigger('joinUser', data.user_id)}
                   type='white'
                   label={i18next.t('local:discuss')}
             />
-
-          <View style={s.listGroup}>
+          <View style={[s.listGroup, {marginTop:10}]}>
             {location}
             {website}
             {registeredAt}
             {bannedLink}
-            {isBannedLink}
           </View>
         </View>
       </ScrollView>
@@ -243,9 +167,7 @@ var styles = StyleSheet.create({
   avatar: {
     width: 120,
     height: 120,
-    borderRadius: 5,
-    marginTop: 20,
-    marginBottom: 10
+    marginTop:20
   },
   username: {
     color: '#333333',
@@ -265,15 +187,26 @@ var styles = StyleSheet.create({
     marginBottom: 5
   },
   status: {
-    marginBottom: 5,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  statusText: {
-    color: '#333333',
+    marginBottom: 8,
+    alignSelf: 'center',
+    textAlign: 'center',
+    flex:1,
+    fontWeight: '400',
+    fontSize: 12,
     fontFamily: 'Open Sans',
-    fontSize: 18
+    width: 120,
+    paddingLeft:5,
+    paddingRight:5,
+    overflow: 'hidden'
+  },
+  statusOnline: { backgroundColor: 'rgba(79, 237, 192, 0.8)' },
+  statusConnecting: { backgroundColor: 'rgba(255, 218, 62, 0.8)' },
+  statusOffline: { backgroundColor: 'rgba(119,119,119,0.8)' },
+  statusText: {
+    color: '#FFFFFF',
+    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: 'Open Sans'
   },
   icon: {
     width: 14,
@@ -284,11 +217,11 @@ var styles = StyleSheet.create({
     color: '#4fedc0'
   },
   bio: {
-    marginVertical: 10,
-    marginHorizontal: 10,
+    marginVertical: 5,
+    marginHorizontal: 5,
     color: '#333333',
     fontFamily: 'Open Sans',
-    fontSize: 16
+    fontSize: 14
   }
 });
 

@@ -5,7 +5,7 @@ var app = require('../libs/app');
 var Platform = require('Platform');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
-var LoadingView = require('../components/Loading');
+var LoadingView = require('../elements/Loading');
 var Alert = require('../libs/alert');
 var currentUser = require('../models/mobile-current-user');
 var ListItem = require('../elements/ListItem');
@@ -29,7 +29,8 @@ i18next.addResourceBundle('en', 'local', {
   'realname': 'Realname',
   'biography': 'Biography',
   'location': 'Location',
-  'website': 'Website'
+  'website': 'Website',
+  'website-url': 'Wrong url'
 });
 
 class MyAccountInformation extends Component {
@@ -45,7 +46,7 @@ class MyAccountInformation extends Component {
       website: {
         value: ''
       },
-      load: false
+      loaded: false
     };
   }
 
@@ -77,7 +78,7 @@ class MyAccountInformation extends Component {
         location: response.location,
         website: (response.website && response.website.title ? response.website.title : {value: ''}),
         avatar: common.cloudinary.prepare(response.avatar, 120),
-        load: true
+        loaded: true
       });
     });
   }
@@ -88,9 +89,15 @@ class MyAccountInformation extends Component {
 
     client.userUpdate(updateData, (response) => {
       if (response.err) {
-        Alert.show(response.err);
+        for (var k in response.err) {
+          if (response.err[k] === 'website-url') {
+            Alert.show(i18next.t('local:website-url'));
+          } else {
+            Alert.show('unknown');
+          }
+        }
       } else {
-        var state = {load: true};
+        var state = {loaded: true};
         if (key !== 'avatar') {
           state[key] = value;
         }
@@ -112,7 +119,7 @@ class MyAccountInformation extends Component {
   }
 
   render() {
-    if (!this.state.load) {
+    if (!this.state.loaded) {
       return (
         <LoadingView />
       );
@@ -185,8 +192,8 @@ class MyAccountInformation extends Component {
     );
   }
 
-  _updateAvatar() {
-    imageUpload.getImageAndUpload('user,avatar', (err, response) => {
+  _updateAvatar () {
+    imageUpload.getImageAndUpload('user,avatar', null, (err, response) => {
       if (err) {
         return Alert.show(err);
       }
@@ -250,14 +257,6 @@ var styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 14,
     fontWeight: '400'
-  },
-  icon: {
-    width: 14,
-    height: 14,
-    color: '#c7c7c7'
-  },
-  loading: {
-    height: 120
   }
 });
 

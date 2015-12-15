@@ -24,15 +24,15 @@ exports.pickImage = function (callback) {
     maxWidth: 500,
     maxHeight: 500,
     takePhotoButtonTitle: i18next.t('local:take'),
-    chooseFromLibraryButtonTitle: i18next.t('local:choose')
+    chooseFromLibraryButtonTitle: i18next.t('local:chose')
   }, (cancelled, response) => {
     return callback(cancelled, response);
   });
 };
 
-exports.uploadToCloudinary = function (base64File, tags, callback) {
+exports.uploadToCloudinary = function (base64File, tags, preset, callback) {
   Alert.show(i18next.t('local:uploading'));
-  cloudinary.upload(base64File, tags, (err, data) => {
+  cloudinary.upload(base64File, tags, preset, (err, data) => {
     if (data && data.error) {
       return callback(data.error.message);
     } else if (err) {
@@ -43,17 +43,24 @@ exports.uploadToCloudinary = function (base64File, tags, callback) {
     return callback (null, {
       public_id: data.public_id,
       version: data.version,
-      path: pathSplit[pathSplit.length - 2] + '/' + pathSplit[pathSplit.length - 1]
+      path: data.url.replace('http://res.cloudinary.com/roomly/image/upload/', ''),
+      type: data.resource_type,
+      filename: pathSplit[pathSplit.length - 1].replace('.jpg', ''),
+      size: (data.bytes >= 1000000)
+        ? (data.bytes / 1000000).toFixed(2) + ' Mb'
+        : (data.bytes >= 1000)
+        ? (data.bytes / 1000).toFixed(2) + ' Kb'
+        : data.bytes + ' b.'
     });
   });
 };
 
-exports.getImageAndUpload = function (tags, callback) {
+exports.getImageAndUpload = function (tags, preset, callback) {
   this.pickImage((canceled, response) => {
     if (canceled) {
       return callback(null, null);
     }
 
-    this.uploadToCloudinary(response.data, tags, callback);
+    this.uploadToCloudinary(response.data, tags, preset, callback);
   });
 };

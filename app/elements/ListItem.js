@@ -31,6 +31,8 @@ class ListItem extends Component {
    *  first: boolean if the current element is the first on list
    *  last: boolean if the current element is the last on list
    *  warning: boolean if the current item has a warning state
+   *  icon: fontawesome code name of the icon to display on left
+   *  iconColor: color of the icon to display on left, default is #666
    * }
    */
   constructor (props) {
@@ -53,11 +55,12 @@ class ListItem extends Component {
 
     var leftIcon;
     if (this.props.icon) {
+      let iconColor = this.props.iconColor || '#666';
       leftIcon =
         <Icon
           name={this.props.icon}
           size={14}
-          color='#666'
+          color={iconColor}
           style={s.listGroupItemIconLeft}
           />
     }

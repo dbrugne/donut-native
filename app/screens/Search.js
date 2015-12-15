@@ -21,6 +21,7 @@ var client = require('../libs/client');
 var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
+var SearchResult = require('../elements/SearchResult');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -105,111 +106,38 @@ class SearchView extends Component {
   }
   renderElement (rowData) {
     if (this.state.type === 'rooms') {
-      return this.renderRoomsElement(rowData);
+      return (
+        <SearchResult
+          onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'room', id: rowData.room_id, identifier: rowData.identifier}));}}
+          image={rowData.avatar}
+          type='room'
+          identifier={rowData.identifier}
+          description={rowData.description}
+          />
+      );
     } else if (this.state.type === 'users') {
-      return this.renderUsersElement(rowData);
+      return (
+        <SearchResult
+          onPress={() => this.props.navigator.push(navigation.getProfile({type: 'user', id: rowData.user_id, identifier: '@' + rowData.username}))}
+          image={rowData.avatar}
+          type='user'
+          identifier={'@' + rowData.username}
+          realname={rowData.realname}
+          bio={rowData.bio}
+          status={rowData.status}
+          />
+      );
     } else if (this.state.type === 'groups') {
-      return this.renderGroupsElement(rowData);
-    }
-  }
-  renderRoomsElement (room) {
-    var avatarUrl = common.cloudinary.prepare(room.avatar, 40);
-    var description = null;
-    if (room.description) {
-      description = (
-        <Text style={styles.description}>{_.unescape(room.description).replace(/\n/g, '')}</Text>
-      );
-    }
-    return (
-      <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getProfile({type: 'room', id: room.room_id, identifier: room.identifier}))}
-                          underlayColor= '#DDD'
-        >
-        <View style={styles.element}>
-          <Image
-            source={{uri: avatarUrl}}
-            style={styles.thumbnail}
-            />
-          <Text style={styles.textElement}>{room.identifier}</Text>
-          {description}
-        </View>
-      </TouchableHighlight>
-    );
-  }
-
-  renderUsersElement (user) {
-    var avatarUrl = common.cloudinary.prepare(user.avatar, 40);
-    var realname = null;
-    if (user.realname) {
-      realname = (
-        <Text style={styles.textElement}>{user.realname}</Text>
-      );
-    }
-    var bio = null;
-    if (user.bio) {
-      bio = (
-        <Text style={styles.description}>{_.unescape(user.bio).replace(/\n/g, '')}</Text>
-      );
-    }
-    var status = (
-      <Icon
-        name='fontawesome|circle-o'
-        size={14}
-        color='#c7c7c7'
-        style={styles.icon}
-        />
-    );
-    if (user.status && user.status === 'online') {
-      status = (
-        <Icon
-          name='fontawesome|circle'
-          size={14}
-          color='#4fedc0'
-          style={styles.icon}
+      return (
+        <SearchResult
+          onPress={() => this.props.navigator.push(navigation.getProfile({type: 'group', id: rowData.group_id, identifier: rowData.identifier}))}
+          image={rowData.avatar}
+          type='group'
+          identifier={'#' + rowData.name}
+          description={rowData.description}
           />
       );
     }
-    return (
-      <TouchableHighlight onPress={() => this.props.navigator.push(navigation.getProfile({type: 'user', id: user.user_id, identifier: '@' + user.username}))}
-                          underlayColor= '#DDD'
-        >
-        <View style={styles.element}>
-          <Image
-            source={{uri: avatarUrl}}
-            style={[styles.thumbnail, styles.thumbnailUser]}
-            />
-          {realname}
-          <Text style={[styles.textElement, realname && styles.username]}>@{user.username}</Text>
-          <View style={styles.status}>
-            {status}
-          </View>
-          {bio}
-        </View>
-      </TouchableHighlight>
-    );
-  }
-
-  renderGroupsElement (group) {
-    var avatarUrl = common.cloudinary.prepare(group.avatar, 40);
-    var description = null;
-    if (group.description) {
-      description = (
-        <Text style={styles.description}>{_.unescape(group.description).replace(/\n/g, '')}</Text>
-      );
-    }
-    return (
-      <TouchableHighlight onPress={() => navigation.switchTo(navigation.getGroup({name: group.name, id: group.id}))}
-                          underlayColor= '#DDD'
-        >
-        <View style={styles.element}>
-          <Image
-            source={{uri: avatarUrl}}
-            style={styles.thumbnail}
-            />
-          <Text style={styles.textElement}>#{group.name}</Text>
-          {description}
-        </View>
-      </TouchableHighlight>
-    );
   }
 
   resetList (skip) {
@@ -238,9 +166,9 @@ class SearchView extends Component {
         </TouchableHighlight>
       );
     } else if (this.resultBlob.length) {
-      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('local:no-results')}</Text></View>);
-    } else {
       return (<View></View>);
+    } else {
+      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('local:no-results')}</Text></View>);
     }
   }
 
