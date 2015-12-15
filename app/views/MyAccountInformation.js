@@ -5,7 +5,7 @@ var app = require('../libs/app');
 var Platform = require('Platform');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
-var LoadingView = require('../elements/Loading');
+var LoadingView = require('../components/Loading');
 var Alert = require('../libs/alert');
 var currentUser = require('../models/mobile-current-user');
 var ListItem = require('../elements/ListItem');
@@ -45,7 +45,7 @@ class MyAccountInformation extends Component {
       website: {
         value: ''
       },
-      load: false
+      loaded: false
     };
   }
 
@@ -77,7 +77,7 @@ class MyAccountInformation extends Component {
         location: response.location,
         website: (response.website && response.website.title ? response.website.title : {value: ''}),
         avatar: common.cloudinary.prepare(response.avatar, 120),
-        load: true
+        loaded: true
       });
     });
   }
@@ -90,7 +90,7 @@ class MyAccountInformation extends Component {
       if (response.err) {
         Alert.show(response.err);
       } else {
-        var state = {load: true};
+        var state = {loaded: true};
         if (key !== 'avatar') {
           state[key] = value;
         }
@@ -112,7 +112,7 @@ class MyAccountInformation extends Component {
   }
 
   render() {
-    if (!this.state.load) {
+    if (!this.state.loaded) {
       return (
         <LoadingView />
       );
@@ -250,14 +250,6 @@ var styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 14,
     fontWeight: '400'
-  },
-  icon: {
-    width: 14,
-    height: 14,
-    color: '#c7c7c7'
-  },
-  loading: {
-    height: 120
   }
 });
 
