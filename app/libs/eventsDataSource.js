@@ -77,7 +77,7 @@ module.exports = function () {
       var isDifferentDay = (!previous || !date.isSameDay(previous.data.time, item.data.time));
 
       // user-block
-      if (isDifferentDay ||
+      if ((isDifferentDay && messagesTypes.indexOf(item.type) !== -1)||
         (messagesTypes.indexOf(item.type) !== -1 &&
         (!previous || previous.data.user_id !== item.data.user_id ||
         previous.type !== item.type))) {
