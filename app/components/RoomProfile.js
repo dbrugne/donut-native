@@ -78,74 +78,34 @@ class RoomProfileView extends Component {
       // @todo implement onpress goto room delete
       links = (
         <View>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|pencil'
-                size={14}
-                color='#333'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:edit')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|users'
-                size={14}
-                color='#333'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:manage-users')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|key'
-                size={14}
-                color='#333'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:access')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|trash-o'
-                size={14}
-                color='#333'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:delete')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
+          <ListItem
+            text={i18next.t('local:edit')}
+            type='edit-button'
+            action={true}
+            icon='fontawesome|pencil'
+            />
+
+          <ListItem
+            text={i18next.t('local:manage-users')}
+            type='edit-button'
+            action={true}
+            icon='fontawesome|users'
+            />
+
+          <ListItem
+            text={i18next.t('local:access')}
+            type='edit-button'
+            action={true}
+            icon='fontawesome|key'
+            />
+
+          <ListItem
+            text={i18next.t('local:delete')}
+            type='edit-button'
+            action={true}
+            icon='fontawesome|trash-o'
+            />
+
         </View>
       );
     }

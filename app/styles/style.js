@@ -108,9 +108,6 @@ module.exports = StyleSheet.create({
     fontSize: 14,
     flex: 1
   },
-  listGroupItemTextWarning: {
-    color: '#ff3838'
-  },
   // buttons
   button: {
     height: 40,
