@@ -36,7 +36,6 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     backgroundColor: '#f0f0f0'
-    //backgroundColor: '#fF00FF' // pink
   },
   centered: {
     alignSelf: 'center',
