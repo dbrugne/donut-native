@@ -185,8 +185,8 @@ class MyAccountInformation extends Component {
     );
   }
 
-  _updateAvatar() {
-    imageUpload.getImageAndUpload('user,avatar', (err, response) => {
+  _updateAvatar () {
+    imageUpload.getImageAndUpload('user,avatar', null, (err, response) => {
       if (err) {
         return Alert.show(err);
       }

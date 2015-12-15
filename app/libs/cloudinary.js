@@ -10,7 +10,7 @@ var config = {
   api_secret: 'ayS9zUnK7sDxkme4sLquIPOmNVU'
 };
 
-var upload = function (fileBase64, tags, callback) {
+var upload = function (fileBase64, tags, preset, callback) {
   var url = 'https://api.cloudinary.com/v1_1/' + config.cloud_name + '/image/upload';
   var header = {
     method: 'post',
@@ -20,14 +20,27 @@ var upload = function (fileBase64, tags, callback) {
     }
   };
   var timestamp = Date.now();
+  var signature;
+  if (tags && preset) {
+    signature = sha1("tags=" + tags + "&timestamp=" + timestamp + "&upload_preset=" + preset + config.api_secret)
+  } else if (tags) {
+    signature = sha1("tags=" + tags + "&timestamp=" + timestamp + config.api_secret);
+  } else if (preset) {
+    signature = sha1("timestamp=" + timestamp + "&upload_preset=" + preset + config.api_secret);
+  } else {
+    signature = sha1("timestamp=" + timestamp + config.api_secret);
+  }
 
   var values = {
     file: 'data:image/png;base64,' + fileBase64,
     api_key: config.api_key,
     timestamp: timestamp,
     tags: tags,
-    signature: sha1("tags=" + tags + "&timestamp=" + timestamp + config.api_secret)
+    signature: signature
   };
+  if (preset) {
+    values.upload_preset = preset;
+  }
   var request = _.extend({
     body: JSON.stringify(values)
   }, header);
@@ -36,6 +49,7 @@ var upload = function (fileBase64, tags, callback) {
     .then((response) => response.json())
     .then((data) => {
       debug.log(data);
+      console.log(data);
       callback(null, data);
     })
     .catch((err) => { callback(new Error(err)) });
