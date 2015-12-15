@@ -9,10 +9,8 @@ var {
   Component,
   Image,
   ScrollView
-  } = React;
-var {
-  Icon
-  } = require('react-native-icons');
+} = React;
+
 
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
@@ -22,17 +20,27 @@ var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
-var Button = require('../elements/Button');
 var Link = require('../elements/Link');
+var Button = require('../elements/Button');
+var ListItem = require('../elements/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'created': 'created on',
   'edit': 'edit',
-  'manage-users': 'manage users',
   'access': 'access',
+  'user-list': 'user list',
+  'allowed-users': 'allowed users',
+  'leave': 'leave this communtiy',
   'by': 'by',
-  'join': 'join'
+  'join': 'join',
+  'request-membership': 'request membership',
+  'create-donut': 'create a donut',
+  'manage-members': 'manage memebers',
+  'donut-list': 'donut list',
+  'message-membership': 'You are not yet a member of this community You can join public donuts or request access to a private donut. Members have special priviledges such as direct access to certain private donuts and to other members of this community.Before you request membership have a glance at this community access conditions :',
+  'message-member': 'You are a member of this community',
+  'message-ban': 'You were banned from this community'
 });
 
 class GroupProfileView extends Component {
@@ -42,15 +50,11 @@ class GroupProfileView extends Component {
     this.data = props.data;
     this.members_count = (this.data.members && this.data.members.length) ? this.data.members.length : 0;
 
-    // ... grade  ...
-    this.isMember = (this.members_count) ? !!(_.indexOf(this.data.members, currentUser.get('user_id'))) : false;
+    this.isMember = this.isCurrentUserIsMember();
     this.isOwner = currentUser.get('user_id') === this.data.owner_id;
     this.isAdmin = currentUser.isAdmin();
     this.isOp = this.isCurrentUserIsOP();
-    console.log('isMember: ' + this.isMember);
-    console.log('isOwner: ' + this.isOwner);
-    console.log('isAdmin: ' + this.isAdmin);
-    console.log('isOp: ' + this.isOp);
+    this.isBanned = this.isCurrentUserIsBan();
   }
 
   render() {
@@ -58,103 +62,7 @@ class GroupProfileView extends Component {
     var avatarUrl = common.cloudinary.prepare(data.avatar, 120);
     var description = _.unescape(data.description);
 
-    var website = null;
-    if (data.website) {
-      website = (
-        <TouchableHighlight underlayColor='transparent'
-                            onPress={() => hyperlink.open(data.website.href)}>
-          <View style={[s.listGroupItem, s.listGroupItemFirst]}>
-            <Icon
-              name='fontawesome|link'
-              size={14}
-              color='#333'
-              style={s.listGroupItemIcon}
-              />
-            <Text style={s.listGroupItemText}> {data.website.title}</Text>
-            <Icon
-              name='fontawesome|chevron-right'
-              size={14}
-              color='#DDD'
-              style={s.listGroupItemIconRight}
-              />
-          </View>
-        </TouchableHighlight>
-      );
-    }
-
-    var createdAt = (
-      <View style={[s.listGroupItem, !data.website && s.listGroupItemFirst]}>
-        <Icon
-          name='fontawesome|clock-o'
-          size={14}
-          color='#333'
-          style={s.listGroupItemIcon}
-          />
-        <Text style={s.listGroupItemText}> {i18next.t('local:created')} {date.longDateTime(data.created)}</Text>
-      </View>
-    );
-
-    var links = null;
-    if (currentUser.get('user_id') === data.owner_id || currentUser.isAdmin()) {
-      // @todo implement onpress goto group edit
-      // @todo implement onpress goto group users
-      // @todo implement onpress goto group access
-      links = (
-        <View>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|pencil'
-                size={14}
-                color='#333'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:edit')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|users'
-                size={14}
-                color='#333'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:manage-users')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|key'
-                size={14}
-                color='#333'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:access')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
-        </View>
-      );
-    }
+    // render
 
     // @todo implement joinGroup @spariaud
     return (
@@ -168,28 +76,162 @@ class GroupProfileView extends Component {
                 type='bold'
             />
           <Text style={styles.description}>{description}</Text>
+          {this.renderMessage()}
         </View>
         <View style={styles.container2}>
-          <TouchableHighlight style={s.button} onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(data.group_id))}>
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonText}>Devenir membre</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight style={s.button}>
-            <View style={s.buttonLabel}>
-              <Text style={s.buttonText}>Liste des donuts</Text>
-            </View>
-          </TouchableHighlight>
+          {this.renderAction()}
           <View style={s.listGroup}>
-            {website}
-            {createdAt}
-            {links}
+            {this.renderLinks()}
+            {this.renderWebsite()}
+            {this.renderCreatedAt()}
           </View>
         </View>
       </ScrollView>
     );
   }
 
+  renderMessage () {
+    if ((this.isMember || this.isOwner || this.isAdmin) && !this.isBanned) {
+      return (
+        <View style={styles.success}>
+          <Text style={styles.messageSuccess}>{i18next.t('local:message-member')}</Text>
+        </View>
+      );
+    }
+    if (!this.isMember && !this.isBanned && !this.isOwner && !this.isAdmin) {
+      return (
+        <View style={styles.infos}>
+          <Text style={styles.messageInfos}>{i18next.t('local:message-membership')}</Text>
+        </View>
+      );
+    }
+    if (this.isBanned) {
+      return (
+        <View style={styles.danger}>
+          <Text style={styles.messageDanger}>{i18next.t('local:message-ban')}</Text>
+        </View>
+      );
+    }
+    return null;
+  }
+  renderAction () {
+    var donutList = null;
+
+    if ((this.isMember || this.isOwner || this.isAdmin) && !this.isBanned) {
+      return (
+        <View>
+          <Button
+            type='green'
+            label={i18next.t('local:create-donut')} />
+          <Button
+            type='green'
+            label={i18next.t('local:donut-list')} />
+        </View>
+      );
+    }
+    if (!this.isMember && !this.isOp && !this.isBanned && !this.isOwner && !this.isAdmin) {
+      return (
+        <View>
+          <Button onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(this.data.group_id))}
+                  type='blue'
+                  label={i18next.t('local:request-membership')} />
+          <Button
+            type='blue'
+            label={i18next.t('local:donut-list')} />
+        </View>
+      );
+    }
+    return null;
+  }
+  renderWebsite () {
+    if (this.data.website) {
+      return (
+        <ListItem onPress={() => hyperlink.open(this.data.website.href)}
+            text={this.data.website.title}
+            first={false}
+            action='true'
+            type='button'
+            icon='fontawesome|link'
+          />
+      );
+    }
+  }
+  renderCreatedAt () {
+    var text = i18next.t('local:created') + ' ' + date.longDateTime(this.data.created);
+    return (
+      <ListItem
+        text={text}
+        last={true}
+        action='false'
+        icon='fontawesome|clock-o'
+        />
+    );
+  }
+  renderLinks () {
+    var list = null;
+    if (this.isOwner || this.isAdmin || this.isOp) {
+      // @todo implement onpress goto group edit
+      // @todo implement onpress goto group access
+      // @todo implement onpress goto group users-list
+      // @todo implement onpress goto group user-allowed
+      // @todo implement onpress goto group exit
+      list = (
+        <View>
+          <ListItem
+              text={i18next.t('local:edit')}
+              first={true}
+              action='true'
+              type='button'
+              icon='fontawesome|pencil'
+            />
+          <ListItem
+              text={i18next.t('local:access')}
+              action='true'
+              type='button'
+              icon='fontawesome|key'
+            />
+          <ListItem
+              text={i18next.t('local:user-list')}
+              action='true'
+              type='button'
+              icon='fontawesome|users'
+            />
+          <ListItem
+              text={i18next.t('local:allowed-users')}
+              action='true'
+              type='button'
+              icon='fontawesome|check-circle'
+            />
+        </View>
+      );
+    }
+    var quit = null;
+    if (!this.isOwner && this.isMember) {
+      quit = (
+        <ListItem
+            text={i18next.t('local:leave')}
+            first={!(this.isOp || this.isAdmin)}
+            action='true'
+            type='button'
+            icon='fontawesome|close'
+          />
+      );
+    }
+    return (
+      <View>
+        {list}
+        {quit}
+      </View>
+    );
+  }
+
+  isCurrentUserIsMember () {
+    return !!_.find(this.data.members, function (member) {
+      if (currentUser.get('user_id') === member.user_id) {
+        return true; // found
+      }
+    });
+  }
   isCurrentUserIsOP () {
     if (!this.members_count) {
       return false;
@@ -197,6 +239,11 @@ class GroupProfileView extends Component {
     return !!_.find(this.data.members, function (item) {
       return (item.user_id === currentUser.get('user_id') && item.is_op === true);
     });
+  }
+  isCurrentUserIsBan () {
+    return !!(this.data.bans && _.find(this.data.bans, function (bannedUser) {
+      return bannedUser.user_id === currentUser.get('user_id');
+    }));
   }
 }
 
@@ -216,12 +263,11 @@ var styles = StyleSheet.create({
     flex: 1,
     borderTopWidth: 1,
     borderStyle: 'solid',
-    borderColor: '#DDD',
-    paddingTop: 10
+    borderColor: '#DDD'
   },
   avatar: {
-    width: 120,
-    height: 120,
+    width: 80,
+    height: 80,
     borderRadius: 60,
     marginTop: 20,
     marginBottom: 10,
@@ -248,6 +294,30 @@ var styles = StyleSheet.create({
   icon: {
     width: 14,
     height: 14
+  },
+  infos: {
+    alignItems: 'center',
+    backgroundColor: '#d9edf7'
+  },
+  messageInfos: {
+    color: '#31708f',
+    fontSize: 16
+  },
+  success: {
+    alignItems: 'center',
+    backgroundColor: '#dff0d8'
+  },
+  messageSuccess: {
+    color: '#3c763d',
+    fontSize: 16
+  },
+  danger: {
+    alignItems: 'center',
+    backgroundColor: '#f2dede',
+  },
+  messageDanger: {
+    color: '#a94442',
+    fontSize: 16
   }
 });
 
