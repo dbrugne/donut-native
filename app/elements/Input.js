@@ -44,8 +44,9 @@ class Input extends Component {
   }
 
   _renderInput() {
+    var multi = (this.props.multiline) ? this.props.multiline : false;
     return (
-      <TextInput {...this.props} style={s.input} />
+      <TextInput {...this.props} style={s.input} multiline={multi} />
     );
   }
 

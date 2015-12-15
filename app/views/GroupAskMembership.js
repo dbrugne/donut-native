@@ -16,6 +16,7 @@ var _ = require('underscore');
 var client = require('../libs/client');
 var ListItem = require('../elements/ListItem');
 var s = require('../styles/style');
+var navigation = require('../libs/navigation');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -125,7 +126,7 @@ class GroupAskMembership extends Component {
       var email = null;
       if (this.data.options.request) {
         request = (
-          <ListItem
+          <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipRequest(this.data.group_id))}
             text={i18next.t('local:request-title')}
             first={true}
             action='true'

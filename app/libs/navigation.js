@@ -36,7 +36,8 @@ i18next.addResourceBundle('en', 'local', {
   'settings': 'Settings',
   'settings-blocked': 'Settings',
   'change-value': 'Change a value',
-  'ask-membership': 'ask membership'
+  'ask-membership': 'ask membership',
+  'ask-membership-request': 'I request membership'
 });
 
 let navigationBarHeight = ((Platform.OS === 'android')
@@ -355,6 +356,18 @@ routes.getGroupAskMembership = function (id) {
     },
     getTitle: function () {
       return i18next.t('ask-membership');
+    }
+  });
+};
+routes.getGroupAskMembershipRequest = function (id) {
+  return getRoute({
+    id: 'group-ask-membership-request',
+    renderScene: function (navigator) {
+      let GroupAskMembershipRequest = require('../views/GroupAskMembershipRequest');
+      return <GroupAskMembershipRequest navigator={navigator} id={id}/>;
+    },
+    getTitle: function () {
+      return i18next.t('local:ask-membership-request');
     }
   });
 };
