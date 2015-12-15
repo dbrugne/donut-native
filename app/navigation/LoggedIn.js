@@ -162,6 +162,9 @@ class Index extends Component {
 
     this.nextFocus = id;
     client.roomJoin(id, null, (response) => {
+      if (response.code === 403) {
+        rooms.addModel(response.room, response.err);
+      }
       // @todo handle errors
       // response.err === 'group-members-only'
       // response.code === 404
