@@ -29,7 +29,8 @@ i18next.addResourceBundle('en', 'local', {
   'realname': 'Realname',
   'biography': 'Biography',
   'location': 'Location',
-  'website': 'Website'
+  'website': 'Website',
+  'website-url': 'Wrong url'
 });
 
 class MyAccountInformation extends Component {
@@ -88,7 +89,13 @@ class MyAccountInformation extends Component {
 
     client.userUpdate(updateData, (response) => {
       if (response.err) {
-        Alert.show(response.err);
+        for (var k in response.err) {
+          if (response.err[k] === 'website-url') {
+            Alert.show(i18next.t('local:website-url'));
+          } else {
+            Alert.show('unknown');
+          }
+        }
       } else {
         var state = {loaded: true};
         if (key !== 'avatar') {
