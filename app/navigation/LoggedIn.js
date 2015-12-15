@@ -139,8 +139,10 @@ class Index extends Component {
     }
   }
   onAddDiscussion (model) {
-    if (this.nextFocus === model.get('id')) {
+    if (this.nextFocus === model.get('id') && model.get('blocked') === false) {
       navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
+    } else if (this.nextFocus === model.get('id')) {
+      navigation.switchTo(navigation.getBlockedDiscussion(model.get('id'), model));
     }
   }
   onRemoveDiscussion (model) {
@@ -152,8 +154,10 @@ class Index extends Component {
     }
 
     var model = rooms.find((m) => m.get('room_id') === id);
-    if (model) {
+    if (model && model.get('blocked') === false) {
       return navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
+    } else if (model) {
+      return navigation.switchTo(navigation.getBlockedDiscussion(model.get('id'), model));
     }
 
     this.nextFocus = id;

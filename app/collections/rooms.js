@@ -298,10 +298,6 @@ var RoomsCollection = Backbone.Collection.extend({
     model.unbindUsers();
     this.remove(model); // remove existing view
     this.addModel(modelTmp, blocked);
-    app.trigger('redrawNavigationRooms');
-    if (isFocused) {
-      app.trigger('focus', this.get(data.room_id));
-    }
   },
   onAllow: function (data) {
     if (!data || !data.room_id || !(this.get(data.room_id))) {
