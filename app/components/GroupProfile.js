@@ -46,21 +46,18 @@ i18next.addResourceBundle('en', 'local', {
 class GroupProfileView extends Component {
   constructor(props) {
     super(props);
-
-    this.data = props.data;
-    this.members_count = (this.data.members && this.data.members.length) ? this.data.members.length : 0;
+    this.members_count = (props.data.members && props.data.members.length) ? props.data.members.length : 0;
 
     this.isMember = this.isCurrentUserIsMember();
-    this.isOwner = currentUser.get('user_id') === this.data.owner_id;
+    this.isOwner = currentUser.get('user_id') === props.data.owner_id;
     this.isAdmin = currentUser.isAdmin();
     this.isOp = this.isCurrentUserIsOP();
     this.isBanned = this.isCurrentUserIsBan();
   }
 
   render() {
-    var data = this.data;
-    var avatarUrl = common.cloudinary.prepare(data.avatar, 120);
-    var description = _.unescape(data.description);
+    var avatarUrl = common.cloudinary.prepare(this.props.data.avatar, 120);
+    var description = _.unescape(this.props.data.description);
 
     // render
 
@@ -68,19 +65,23 @@ class GroupProfileView extends Component {
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
-          <Image style={styles.avatar} source={{uri: avatarUrl}}/>
-          <Text style={styles.identifier}>{data.identifier}</Text>
-          <Link onPress={() => { navigation.switchTo(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})) }}
-                prepend={i18next.t('local:by')}
-                text={'@' + data.owner_username}
-                type='bold'
-            />
+          <View style={styles.headerContainer}>
+            <Image style={styles.avatar} source={{uri: avatarUrl}}/>
+            <View style={styles.headerRight}>
+              <Text style={styles.identifier}>{this.props.data.identifier}</Text>
+              <Link onPress={() => { navigation.switchTo(navigation.getProfile({type: 'user', id: this.props.data.owner_id, identifier: '@' + this.props.data.owner_username})) }}
+                    prepend={i18next.t('local:by')}
+                    text={'@' + this.props.data.owner_username}
+                    type='bold'
+                />
+            </View>
+          </View>
           <Text style={styles.description}>{description}</Text>
           {this.renderMessage()}
         </View>
         <View style={styles.container2}>
           {this.renderAction()}
-          <View style={s.listGroup}>
+          <View style={[s.listGroup, {marginTop: 20}]}>
             {this.renderLinks()}
             {this.renderWebsite()}
             {this.renderCreatedAt()}
@@ -93,22 +94,22 @@ class GroupProfileView extends Component {
   renderMessage () {
     if ((this.isMember || this.isOwner || this.isAdmin) && !this.isBanned) {
       return (
-        <View style={styles.success}>
-          <Text style={styles.messageSuccess}>{i18next.t('local:message-member')}</Text>
+        <View style={s.alertSuccess}>
+          <Text style={s.alertSuccessText}>{i18next.t('local:message-member')}</Text>
         </View>
       );
     }
     if (!this.isMember && !this.isBanned && !this.isOwner && !this.isAdmin) {
       return (
-        <View style={styles.infos}>
-          <Text style={styles.messageInfos}>{i18next.t('local:message-membership')}</Text>
+        <View style={s.alertWarning}>
+          <Text style={s.alertWarningText}>{i18next.t('local:message-membership')}</Text>
         </View>
       );
     }
     if (this.isBanned) {
       return (
-        <View style={styles.danger}>
-          <Text style={styles.messageDanger}>{i18next.t('local:message-ban')}</Text>
+        <View style={s.alertError}>
+          <Text style={s.alertErrorText}>{i18next.t('local:message-ban')}</Text>
         </View>
       );
     }
@@ -121,10 +122,10 @@ class GroupProfileView extends Component {
       return (
         <View>
           <Button
-            type='green'
+            type='blue'
             label={i18next.t('local:create-donut')} />
           <Button
-            type='green'
+            type='blue'
             label={i18next.t('local:donut-list')} />
         </View>
       );
@@ -132,7 +133,7 @@ class GroupProfileView extends Component {
     if (!this.isMember && !this.isOp && !this.isBanned && !this.isOwner && !this.isAdmin) {
       return (
         <View>
-          <Button onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(this.data.group_id))}
+          <Button onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(this.props.data.group_id))}
                   type='blue'
                   label={i18next.t('local:request-membership')} />
           <Button
@@ -144,10 +145,10 @@ class GroupProfileView extends Component {
     return null;
   }
   renderWebsite () {
-    if (this.data.website) {
+    if (this.props.data.website) {
       return (
-        <ListItem onPress={() => hyperlink.open(this.data.website.href)}
-            text={this.data.website.title}
+        <ListItem onPress={() => hyperlink.open(this.props.data.website.href)}
+            text={this.props.data.website.title}
             first={false}
             action='true'
             type='button'
@@ -157,7 +158,7 @@ class GroupProfileView extends Component {
     }
   }
   renderCreatedAt () {
-    var text = i18next.t('local:created') + ' ' + date.longDateTime(this.data.created);
+    var text = i18next.t('local:created') + ' ' + date.longDateTime(this.props.data.created);
     return (
       <ListItem
         text={text}
@@ -226,7 +227,7 @@ class GroupProfileView extends Component {
   }
 
   isCurrentUserIsMember () {
-    return !!_.find(this.data.members, function (member) {
+    return !!_.find(this.props.data.members, function (member) {
       if (currentUser.get('user_id') === member.user_id) {
         return true; // found
       }
@@ -236,12 +237,12 @@ class GroupProfileView extends Component {
     if (!this.members_count) {
       return false;
     }
-    return !!_.find(this.data.members, function (item) {
+    return !!_.find(this.props.data.members, function (item) {
       return (item.user_id === currentUser.get('user_id') && item.is_op === true);
     });
   }
   isCurrentUserIsBan () {
-    return !!(this.data.bans && _.find(this.data.bans, function (bannedUser) {
+    return !!(this.props.data.bans && _.find(this.props.data.bans, function (bannedUser) {
       return bannedUser.user_id === currentUser.get('user_id');
     }));
   }
@@ -265,6 +266,9 @@ var styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#DDD'
   },
+  headerContainer: {
+    flexDirection: 'row'
+  },
   avatar: {
     width: 80,
     height: 80,
@@ -273,6 +277,12 @@ var styles = StyleSheet.create({
     marginBottom: 10,
     borderColor: '#DCDCDC',
     borderWidth: 2
+  },
+  headerRight: {
+    flexDirection: 'column',
+    marginLeft: 10,
+    alignItems: 'center',
+    alignSelf: 'center'
   },
   identifier: {
     color: '#333333',
@@ -294,30 +304,6 @@ var styles = StyleSheet.create({
   icon: {
     width: 14,
     height: 14
-  },
-  infos: {
-    alignItems: 'center',
-    backgroundColor: '#d9edf7'
-  },
-  messageInfos: {
-    color: '#31708f',
-    fontSize: 16
-  },
-  success: {
-    alignItems: 'center',
-    backgroundColor: '#dff0d8'
-  },
-  messageSuccess: {
-    color: '#3c763d',
-    fontSize: 16
-  },
-  danger: {
-    alignItems: 'center',
-    backgroundColor: '#f2dede',
-  },
-  messageDanger: {
-    color: '#a94442',
-    fontSize: 16
   }
 });
 

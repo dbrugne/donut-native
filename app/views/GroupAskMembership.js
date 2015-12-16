@@ -38,11 +38,10 @@ class GroupAskMembership extends Component {
       error: null
     };
     this.data = {};
-    this.id = props.id;
   }
   componentDidMount () {
-    if (this.id) {
-      client.groupJoin(this.id, null, this.onData.bind(this));
+    if (this.props.id) {
+      client.groupJoin(this.props.id, null, this.onData.bind(this));
     }
   }
   onData (response) {
@@ -126,7 +125,7 @@ class GroupAskMembership extends Component {
       var email = null;
       if (this.data.options.request) {
         request = (
-          <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipRequest(this.data.group_id))}
+          <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipRequest({id: this.props.id, isAllowedPending: this.data.options.isAllowedPending}))}
             text={i18next.t('local:request-title')}
             first={true}
             action='true'

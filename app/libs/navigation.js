@@ -349,7 +349,7 @@ routes.getGroup = function (element) {
 };
 routes.getGroupAskMembership = function (id) {
   return getRoute({
-    id: 'group-ask-membership',
+    id: 'group-ask-membership' + id,
     renderScene: function (navigator) {
       let GroupAskMembership = require('../views/GroupAskMembership');
       return <GroupAskMembership navigator={navigator} id={id}/>;
@@ -359,12 +359,12 @@ routes.getGroupAskMembership = function (id) {
     }
   });
 };
-routes.getGroupAskMembershipRequest = function (id) {
+routes.getGroupAskMembershipRequest = function (element) {
   return getRoute({
-    id: 'group-ask-membership-request',
+    id: 'group-ask-membership-request' + element.id + '-' + element.isAllowedPending,
     renderScene: function (navigator) {
       let GroupAskMembershipRequest = require('../views/GroupAskMembershipRequest');
-      return <GroupAskMembershipRequest navigator={navigator} id={id}/>;
+      return <GroupAskMembershipRequest navigator={navigator} id={element.id} isAllowedPending={element.isAllowedPending}/>;
     },
     getTitle: function () {
       return i18next.t('local:ask-membership-request');
