@@ -11,6 +11,7 @@ var {
 
 var client = require('../libs/client');
 var GroupProfile = require('../components/GroupProfile');
+var app = require('../libs/app');
 
 class GroupHomeView extends Component {
 
@@ -24,9 +25,13 @@ class GroupHomeView extends Component {
     };
   }
   componentDidMount () {
+    app.on('refreshGroup', this.onRefresh, this);
     if (this.id) {
       client.groupRead(this.id, {users: true}, this.onData.bind(this));
     }
+  }
+  componentWillUnmount () {
+    app.off('refreshGroup', this.onRefresh, this);
   }
   onData (response) {
     if (response.err) {
@@ -59,6 +64,16 @@ class GroupHomeView extends Component {
     return (
       <GroupProfile data={this.state.data} navigator={this.props.navigator} />
     );
+  }
+  onRefresh () {
+    this.setState({
+      loading: true,
+      data: null,
+      error: null
+    });
+    if (this.id) {
+      client.groupRead(this.id, {users: true}, this.onData.bind(this));
+    }
   }
 }
 

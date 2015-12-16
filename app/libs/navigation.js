@@ -37,7 +37,8 @@ i18next.addResourceBundle('en', 'local', {
   'settings-blocked': 'Settings',
   'change-value': 'Change a value',
   'ask-membership': 'ask membership',
-  'ask-membership-request': 'I request membership'
+  'ask-membership-request': 'I request membership',
+  'ask-membership-password': 'I have the password'
 });
 
 let navigationBarHeight = ((Platform.OS === 'android')
@@ -364,10 +365,22 @@ routes.getGroupAskMembershipRequest = function (element) {
     id: 'group-ask-membership-request' + element.id + '-' + element.isAllowedPending,
     renderScene: function (navigator) {
       let GroupAskMembershipRequest = require('../views/GroupAskMembershipRequest');
-      return <GroupAskMembershipRequest navigator={navigator} id={element.id} isAllowedPending={element.isAllowedPending}/>;
+      return <GroupAskMembershipRequest id={element.id} isAllowedPending={element.isAllowedPending}/>;
     },
     getTitle: function () {
       return i18next.t('local:ask-membership-request');
+    }
+  });
+};
+routes.getGroupAskMembershipPassword = function (element) {
+  return getRoute({
+    id: 'group-ask-membership-password',
+    renderScene: function (navigator) {
+      let GroupAskMembershipPassword = require('../views/GroupAskMembershipPassword');
+      return <GroupAskMembershipPassword navigator={navigator} id={element.id} name={element.name}/>;
+    },
+    getTitle: function () {
+      return i18next.t('local:ask-membership-password');
     }
   });
 };

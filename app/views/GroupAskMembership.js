@@ -135,7 +135,7 @@ class GroupAskMembership extends Component {
       }
       if (this.data.options.password) {
         password = (
-          <ListItem
+          <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipPassword({id: this.props.id, name: this.data.options.name}))}
             text={i18next.t('local:password-title')}
             first={(!this.data.options.request)}
             last={(!this.data.options.email)}

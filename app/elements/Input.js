@@ -45,8 +45,9 @@ class Input extends Component {
 
   _renderInput() {
     var multi = (this.props.multiline) ? this.props.multiline : false;
+    var secure = (this.props.password) ? this.props.password : false;
     return (
-      <TextInput {...this.props} style={s.input} multiline={multi} />
+      <TextInput {...this.props} style={s.input} multiline={multi} secureTextEntry={secure} />
     );
   }
 
