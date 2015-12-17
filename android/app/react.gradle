@@ -13,14 +13,19 @@ def jsBundleDirDebug = elvisFile(config.jsBundleDirDebug) ?:
         file("$buildDir/intermediates/assets/debug")
 def jsBundleDirRelease = elvisFile(config.jsBundleDirRelease) ?:
         file("$buildDir/intermediates/assets/release")
+def jsBundleDirDonutReleaseTest = elvisFile(config.jsBundleDirDonutReleaseTest) ?:
+        file("$buildDir/intermediates/assets/donutReleaseTest")
 def resourcesDirDebug = elvisFile(config.resourcesDirDebug) ?:
         file("$buildDir/intermediates/res/merged/debug")
 def resourcesDirRelease = elvisFile(config.resourcesDirRelease) ?:
         file("$buildDir/intermediates/res/merged/release")
+def resourcesDirDonutReleaseTest = elvisFile(config.resourcesDirRelease) ?:
+        file("$buildDir/intermediates/res/merged/donutReleaseTest")
 def inputExcludes = config.inputExcludes ?: ["android/**", "ios/**"]
 
 def jsBundleFileDebug = file("$jsBundleDirDebug/$bundleAssetName")
 def jsBundleFileRelease = file("$jsBundleDirRelease/$bundleAssetName")
+def jsBundleFileDonutReleaseTest = file("$jsBundleDirDonutReleaseTest/$bundleAssetName")
 
 task bundleDebugJsAndAssets(type: Exec) {
     // create dirs if they are not there (e.g. the "clean" task just ran)
@@ -62,6 +67,26 @@ task bundleReleaseJsAndAssets(type: Exec) {
     enabled config.bundleInRelease ?: true
 }
 
+task bundleDonutReleaseTestJsAndAssets(type: Exec) {
+    // create dirs if they are not there (e.g. the "clean" task just ran)
+    doFirst {
+        jsBundleDirDonutReleaseTest.mkdirs()
+        resourcesDirDonutReleaseTest.mkdirs()
+    }
+
+    // set up inputs and outputs so gradle can cache the result
+    inputs.files fileTree(dir: reactRoot, excludes: inputExcludes)
+    outputs.dir jsBundleDirDonutReleaseTest
+    outputs.dir resourcesDirDonutReleaseTest
+
+    // set up the call to the react-native cli
+    workingDir reactRoot
+    commandLine "react-native", "bundle", "--platform", "android", "--dev", "false", "--entry-file",
+            entryFile, "--bundle-output", jsBundleFileDonutReleaseTest, "--assets-dest", resourcesDirDonutReleaseTest
+
+    enabled config.bundleInRelease ?: true
+}
+
 gradle.projectsEvaluated {
     // hook bundleDebugJsAndAssets into the android build process
     bundleDebugJsAndAssets.dependsOn mergeDebugResources
@@ -72,4 +97,9 @@ gradle.projectsEvaluated {
     bundleReleaseJsAndAssets.dependsOn mergeReleaseResources
     bundleReleaseJsAndAssets.dependsOn mergeReleaseAssets
     processReleaseResources.dependsOn bundleReleaseJsAndAssets
+
+    // hook bundleReleaseJsAndAssets into the android build process
+    bundleDonutReleaseTestJsAndAssets.dependsOn mergeDonutReleaseTestResources
+    bundleDonutReleaseTestJsAndAssets.dependsOn mergeDonutReleaseTestAssets
+    processDonutReleaseTestResources.dependsOn bundleDonutReleaseTestJsAndAssets
 }
