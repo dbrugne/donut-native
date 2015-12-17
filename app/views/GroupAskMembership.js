@@ -84,7 +84,6 @@ class GroupAskMembership extends Component {
     }
     if (!this.state.success) {
       var disclaimer = null;
-      // @todo replace <View style={s.alertWarning}> by element "alert" create is not exist
       if (this.data.options.disclaimer) {
         disclaimer = (
           <View style={s.alertWarning}>
