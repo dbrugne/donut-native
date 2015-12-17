@@ -50,12 +50,17 @@ For each scenario launch Xcode project select a scheme (listed bellow), select a
 ## Run Android
 
 **Android  development (Genymotion or device)**
+* By default DONUT_ENVIRONMENT is set to "test"
 * Launch Genymotion
 * (on Window you should launch packager manually before with ```react-native start``)
 * ```react-native run-android```
 * (to see log ```adb logcat```)
 
-**Android release**
+**Android release with "test" DONUT_ENVIRONMENT**
+* (could be done only on MacOSX with android/app/donut-release-key.keystore)
+* ```cd android && ./gradlew assembledonutReleaseTest && ./gradlew installdonutReleaseTest && cd ..```
+
+**Android release with "production" DONUT_ENVIRONMENT**
 * (could be done only on MacOSX with android/app/donut-release-key.keystore)
 * ```cd android && ./gradlew assembleRelease && ./gradlew installRelease && cd ..```
 
