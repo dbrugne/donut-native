@@ -72,6 +72,14 @@ android {
         }
     }
     buildTypes {
+        //Build to connect a release apk to base test.donut.me
+        donutReleaseTest.initWith(buildTypes.release)
+        donutReleaseTest {
+            minifyEnabled false  // Set this to true to enable Proguard
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+        }
+        //Build to connect a release apk to base donut.me
         release {
             minifyEnabled false  // Set this to true to enable Proguard
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
