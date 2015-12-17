@@ -59,7 +59,7 @@ For each scenario launch Xcode project select a scheme (listed bellow), select a
 * (could be done only on MacOSX with android/app/donut-release-key.keystore)
 * ```cd android && ./gradlew assembleRelease && ./gradlew installRelease && cd ..```
 
-## Fix compilation errors (jquery & xmlhttprequest libs)
+## Workaround react-native bugs
 
 - /www/donut-native/node_modules/backbone/backbone.js (will be fixed in 0.16 https://github.com/facebook/react-native/commit/8db35d492b846f51a758e8ee7e5e402c6bad3785)
 
@@ -96,37 +96,13 @@ Change path to XMLHttpRequest
 var XMLHttpRequest = require('../xmlhttprequest');
 ```
 
-Allow react-native packager to support other env than Debug and Release 
+Fix debbugger after 0.17.0 upgrade
 
-- /www/donut-native/node_modules/react-native/packager/react-native-xcode.sh
+- /www/donut-native/node_modules/react-native/local-cli/server/util/debuggerWorker.js
 
 ```
-#case "$CONFIGURATION" in
-#  Debug)
-#    DEV=true
-#    ;;
-#  Release)
-#    DEV=false
-#    ;;
-#  "")
-#    echo "$0 must be invoked by Xcode"
-#    exit 1
-#    ;;
-#  *)
-#    echo "Unsupported value of \$CONFIGURATION=$CONFIGURATION"
-#    exit 1
-#    ;;
-#esac
-case "$CONFIGURATION" in
-  Debug)
-    DEV=true
-    ;;
-  "")
-    echo "$0 must be invoked by Xcode"
-    exit 1
-    ;;
-  *)
-    DEV=false
-    ;;
-esac
+      if (typeof __fbBatchedBridge === 'object') {
+//        returnValue = __fbBatchedBridge[object.method].apply(null, object.arguments);
+        returnValue = __fbBatchedBridge[object.moduleMethod].apply(null, object.arguments);
+      }
 ```
