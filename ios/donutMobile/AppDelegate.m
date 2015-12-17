@@ -68,16 +68,16 @@
   reactServerAddress = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SERVER_IP"];
   #endif
   #endif
-  
-  // @source: http://stackoverflow.com/questions/31228560/how-to-use-react-native-launch-options-parameter-for-rctrootview
-  NSDictionary *initialProps =  [NSDictionary dictionaryWithObjects:@[donutEnvironment,reactServerAddress]
-                                                            forKeys:@[@"DONUT_ENVIRONMENT",@"REACT_SERVER_ADDRESS"]];
-  NSLog(@"%@",initialProps);
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"donutMobile"
-                                               initialProperties:initialProps
+                                               initialProperties:nil
                                                    launchOptions:launchOptions];
+
+  // Pass some properties to application
+  // @doc: https://facebook.github.io/react-native/docs/communication-ios.html
+  rootView.appProperties = @{@"DONUT_ENVIRONMENT" : donutEnvironment, @"REACT_SERVER_ADDRESS" : reactServerAddress};
+  NSLog(@"%@", rootView.appProperties);
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
