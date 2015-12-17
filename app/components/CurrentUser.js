@@ -39,6 +39,12 @@ class CurrentUserView extends Component {
   }
   render () {
     var user = this.state.data;
+
+    // currentUser not already loaded with first 'welcome'
+    if (!user.username) {
+      return (<View></View>);
+    }
+
     var username = (user.username)
       ? '@' + user.username + ' '
       : '';
@@ -48,6 +54,12 @@ class CurrentUserView extends Component {
         <Text style={[styles.text, styles.username]}>{user.realname}</Text>
       );
     }
+
+    var avatar;
+    if (user.avatar) {
+      avatar = (<Image style={styles.avatar} source={{uri: common.cloudinary.prepare(user.avatar, 60)}} />);
+    }
+
     return (
       <View style={styles.main}>
         <View style={styles.content}>
@@ -56,7 +68,7 @@ class CurrentUserView extends Component {
                                 underlayColor= '#414041'
                                 onPress={() => navigation.switchTo(navigation.getMyAccount())}>
               <View style={[styles.linkContainer, {position: 'relative'}]}>
-                <Image style={styles.avatar} source={{uri: common.cloudinary.prepare(user.avatar, 60)}} />
+                {avatar}
                 <Text style={[styles.text, styles.status, user.status === 'connecting' && styles.statusConnecting, user.status === 'offline' && styles.statusOffline, user.status === 'online' && styles.statusOnline]}>{user.status}</Text>
               </View>
             </TouchableHighlight>

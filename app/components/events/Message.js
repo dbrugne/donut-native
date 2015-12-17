@@ -15,6 +15,7 @@ var hyperlink = require('../../libs/hyperlink');
 var common = require('@dbrugne/donut-common');
 var s = require('../../styles/events');
 var app = require('../../libs/app');
+var FileComponent = require('../../elements/File');
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -25,7 +26,7 @@ i18next.addResourceBundle('en', 'local', {
 module.exports = React.createClass({
   render () {
     return (
-      <View>
+      <View key={this.props.data.id}>
         {this.renderMessage()}
         {this.renderFiles()}
       </View>
@@ -103,12 +104,12 @@ module.exports = React.createClass({
   },
   renderFile (element, index) {
     return (
-      <TouchableHighlight
+      <FileComponent
         key={this.props.data.id + '-' + index}
-        underlayColor='transparent'
-        onPress={() => hyperlink.open(element.href)}>
-        <Text>{i18next.t('local:placeholder')}</Text>
-      </TouchableHighlight>
+        fileName={element.filename}
+        href={element.url}
+        size={element.size}
+        />
     );
   },
   renderImage (element, index) {
