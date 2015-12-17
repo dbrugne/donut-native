@@ -2,7 +2,7 @@
 
 var React = require('react-native');
 var Platform = require('Platform');
-var s = require('./style');
+var s = require('../../styles/elements/listItem');
 var Button = require('../Button');
 
 var {
@@ -25,17 +25,17 @@ class ListItemInput extends Component {
 
   render () {
     return (
-      <View style={s.listGroupItem}>
+      <View style={[s.listGroupItem, { justifyContent:'center', alignItem:'center', paddingTop: 5, paddingBottom: 5 }]}>
         <TextInput
           autoFocus={true}
           placeholder={this.props.placeholder}
           onChange={this.props.onChange}
-          style={s.input}
+          style={[s.input, {marginTop:5}]}
           value={this.props.value} />
 
         <TouchableHighlight onPress={this.props.onPress}
                             underlayColor='#41C87A'
-                            style={[s.button, s.buttonGreen, this.props.loading && s.buttonLoading]}>
+                            style={[s.button, s.buttonGreen, {borderWidth: 0, padding:10}, this.props.loading && s.buttonLoading]}>
           <Text style={[s.label, s.labelGreen, this.props.loading && s.labelLoading]}>{i18next.t('local:save')}</Text>
         </TouchableHighlight>
       </View>

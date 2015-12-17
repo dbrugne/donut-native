@@ -15,7 +15,6 @@ var {
 } = React;
 
 class SearchResultRoom extends Component {
-  maxCars = 100;
   constructor (props) {
     super(props);
   }
@@ -45,10 +44,6 @@ class SearchResultRoom extends Component {
     }
 
     let description = _.unescape(this.props.description.replace(/\n/g,''));
-    description = description.length > this.maxCars
-      ? description.substr(0, this.maxCars).concat('...')
-      : description
-    ;
 
     return (
       <Text style={s.description}>{description}</Text>

@@ -160,7 +160,7 @@ class GroupProfileView extends Component {
           <Text style={styles.description}>{description}</Text>
         </View>
         <View style={styles.container2}>
-          <Button type='gray'
+          <Button type='white'
                   label={i18next.t('local:join')+' '+this.members_count}
                   icon='fontawesome|user'
             />

@@ -169,7 +169,8 @@ var styles = StyleSheet.create({
     fontSize: 16,
     color: '#ecf0f1',
     marginLeft: 10,
-    flex:1
+    flex:1,
+    marginVertical: 15
   },
   unviewed: {
     fontSize: 20,
@@ -177,8 +178,6 @@ var styles = StyleSheet.create({
     marginRight:10
   },
   linkBlock: {
-    paddingTop: 2,
-    paddingBottom: 2,
     borderTopColor: '#373737',
     borderTopWidth: 0.5,
     borderStyle: 'solid',

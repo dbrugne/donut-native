@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var s = require('./style');
+var s = require('../../styles/elements/listItem');
 
 var {
   Component,

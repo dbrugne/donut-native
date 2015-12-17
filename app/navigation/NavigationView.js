@@ -115,9 +115,9 @@ var styles = StyleSheet.create({
   },
   linkText: {
     fontFamily: 'Open Sans',
-    fontSize: 14,
+    fontSize: 16,
     color: '#ecf0f1',
-    marginVertical: 8
+    marginVertical: 15
   },
   iconCtn: {
     marginVertical: 8,

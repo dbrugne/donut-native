@@ -2,7 +2,7 @@
 
 var React = require('react-native');
 var Platform = require('Platform');
-var s = require('./style');
+var s = require('../../styles/elements/listItem');
 
 var {
   Component,

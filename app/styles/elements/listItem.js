@@ -1,16 +1,14 @@
 'use strict';
 
 var React = require('react-native');
+var platformStyle = require('./listItemPlatform');
+var Util = require('../util');
 
-var {
-  StyleSheet,
-  } = React;
-
-module.exports = StyleSheet.create({
+var style = {
   listGroupItem: {
     flex: 1,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 15,
+    paddingBottom: 15,
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: '#fff',
@@ -46,7 +44,7 @@ module.exports = StyleSheet.create({
   listGroupItemText: {
     color: '#333333',
     fontFamily: 'Open Sans',
-    fontSize: 14,
+    fontSize: 16,
     flex: 1
   },
   listGroupItemValue: {
@@ -71,7 +69,7 @@ module.exports = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     fontFamily: 'Open Sans',
-    fontSize: 14,
+    fontSize: 16,
     flex:1,
     height: 30,
     borderRadius: 0,
@@ -98,4 +96,10 @@ module.exports = StyleSheet.create({
     backgroundColor: "#27ae60" // Lighten 10%: #41C87A / Darken 10%: #0E9547
   },
   labelGreen: { color: '#FFFFFF'}
-});
+};
+
+var {
+  StyleSheet,
+} = React;
+
+module.exports = StyleSheet.create(Util.merge(style, platformStyle));

@@ -24,7 +24,7 @@ exports.pickImage = function (callback) {
     maxWidth: 500,
     maxHeight: 500,
     takePhotoButtonTitle: i18next.t('local:take'),
-    chooseFromLibraryButtonTitle: i18next.t('local:chose')
+    chooseFromLibraryButtonTitle: i18next.t('local:choose')
   }, (cancelled, response) => {
     return callback(cancelled, response);
   });
