@@ -41,7 +41,7 @@ class GroupAskMembershipPassword extends Component {
         <View style={{backgroundColor: '#FFF'}}>
           <Input
             placeholder={i18next.t('local:placeholder')}
-            password={true}
+            secureTextEntry={true}
             onChangeText={(text) => this.setState({password: text})}
             />
         </View>

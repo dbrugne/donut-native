@@ -135,7 +135,7 @@ class GroupAskMembership extends Component {
       }
       if (this.data.options.password) {
         password = (
-          <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipPassword({id: this.props.id, name: this.data.options.name}))}
+          <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipPassword(this.props.id))}
             text={i18next.t('local:password-title')}
             first={(!this.data.options.request)}
             last={(!this.data.options.email)}
@@ -146,7 +146,7 @@ class GroupAskMembership extends Component {
       }
       if (this.data.options.allowed_domains) {
         email = (
-          <ListItem
+          <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipEmail({id: this.props.id, domains: this.data.options.allowed_domains}))}
             text={i18next.t('local:email-title')}
             last={true}
             action='true'
