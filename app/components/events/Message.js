@@ -2,17 +2,14 @@
 
 var React = require('react-native');
 var {
-  Text,
   View,
   Image,
   TouchableHighlight,
-  Platform
+  Text
 } = React;
-var ParsedText = require('react-native-parsed-text');
+var ParsedText = require('../ParsedText');
 var _ = require('underscore');
-var navigation = require('../../libs/navigation');
 var hyperlink = require('../../libs/hyperlink');
-var common = require('@dbrugne/donut-common');
 var s = require('../../styles/events');
 var app = require('../../libs/app');
 var FileComponent = require('../../elements/File');
@@ -25,63 +22,37 @@ i18next.addResourceBundle('en', 'local', {
 
 module.exports = React.createClass({
   render () {
+    var message;
+    if (this.props.data.message) {
+      if (this.props.data.spammed) {
+        // @todo add toggle on viewed spammed messages
+        message = (
+          <TouchableHighlight
+            key={this.props.data.id}
+            underlayColor='transparent'
+            onPress={() => this._onUnspam(this.props.data.id)} >
+            <Text>{i18next.t('local:spammed')}</Text>
+          </TouchableHighlight>
+        );
+      } else {
+        message = (
+          <ParsedText
+            navigator={this.props.navigator}
+            style={[s.messageContent, {flexWrap: 'wrap'}]}
+          >{this.props.data.message}</ParsedText>
+        );
+      }
+    }
+
     return (
       <View key={this.props.data.id}>
-        {this.renderMessage()}
+        <View style={s.message}>{message}</View>
         {this.renderFiles()}
       </View>
     );
   },
-  renderMessage () {
-    if (!this.props.data.message) {
-      return;
-    }
-    var parse = [{
-      pattern: common.markup.markupPattern,
-      style: s.linksRoom,
-      onPress: this.onPress,
-      renderText: (string) => {
-        var markup = common.markup.markupToObject(string);
-        if (!markup) {
-          return;
-        }
-        return markup.title;
-      }
-    }];
-    var text;
-
-    // Check if message is spammed
-    // @todo add toggle on viewed spammed messages
-    if (this.props.data.spammed) {
-      text = (
-        <TouchableHighlight
-          key={this.props.data.id}
-          underlayColor='transparent'
-          onPress={() => this._onUnspam(this.props.data.id)}
-        >
-          <Text>{i18next.t('local:spammed')}</Text>
-        </TouchableHighlight>
-      );
-    } else {
-      if (Platform.OS === 'android') {
-        // @todo make parsed text work on android
-        text = (<Text style={s.messageContent}>
-          {common.markup.toText(this.props.data.message)}
-        </Text>);
-      } else {
-        text = (<ParsedText style={s.messageContent} parse={parse}>
-          {this.props.data.message}
-        </ParsedText>);
-      }
-    }
-
-    return (
-      <View style={[s.message]}>
-        {text}
-      </View>);
-  },
   _onUnspam (id) {
-    app.trigger('messageUnspam', id);
+    // @todo add logic to display message, probably need to store event content here and re-render when user touch
   },
   renderFiles () {
     if (this.props.data.files && this.props.data.files.length > 0) {
@@ -121,23 +92,6 @@ module.exports = React.createClass({
         <Image style={{width: 250, height: 250, alignSelf: 'center', marginVertical:10, marginHorizontal:10}} source={{uri: element.thumbnail}} />
       </TouchableHighlight>
     );
-  },
-  onPress (string) {
-    var markup = common.markup.markupToObject(string);
-    if (!markup) {
-      return;
-    }
-    if (['url', 'email'].indexOf(markup.type) !== -1) {
-      hyperlink.open(markup.href);
-    }
-    if (['user', 'group', 'room'].indexOf(markup.type) !== -1) {
-      let route = navigation.getProfile({
-        type: markup.type,
-        id: markup.id,
-        identifier: markup.title
-      });
-      this.props.navigator.push(route);
-    }
   }
 });
 

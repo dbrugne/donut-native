@@ -89,9 +89,13 @@ class DiscussionEvents extends Component {
      */
   }
   renderRow (event) {
-    // @todo : big bug for user:message, we should use from_user_id => refactor whole user message for having the same form as room:message + a to_user_id field?
     var data = eventsPrepare(event.type, event.data);
     var Comp = this.getComponent(event.type);
+
+    if (!Comp) {
+      return (<View />);
+    }
+
     return (
       <Comp
         navigator={this.props.navigator}
@@ -124,8 +128,7 @@ class DiscussionEvents extends Component {
       return EventPromote;
     }
 
-    debug.warn('unable to find event component', type);
-    return (<View />);
+    debug.warn('unable to find event component', type); // return undefined
   }
   renderHeader () {
     if (!this.state.more) {
