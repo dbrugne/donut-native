@@ -92,6 +92,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         // Options
         Object buildType = getBuildConfigValue("BUILD_TYPE");
+        Object ServerIp = getBuildConfigValue("LOCAL_IP");
         Bundle b = new Bundle();
         if (buildType == null) {
             b.putString("BUILD_TYPE", "null");
@@ -102,6 +103,11 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
             b.putString("DONUT_ENVIRONMENT", "production");
         } else {
             b.putString("DONUT_ENVIRONMENT", "test");
+        }
+        if (ServerIp == null) {
+            b.putString("REACT_SERVER_ADDRESS", "null");
+        } else {
+            b.putString("REACT_SERVER_ADDRESS", ServerIp.toString());
         }
         mReactRootView.startReactApplication(mReactInstanceManager, "donutMobile", b);
 
