@@ -780,8 +780,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: me.donut.native.test";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: me.donut.native.test";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Damien Brugne (U2VH257J4H)";
 				COPY_PHASE_STRIP = NO;
 				DONUT_BUNDLE_ID = me.donut.mobile.dev;
 				DONUT_ENVIRONMENT = DEV;
@@ -810,7 +809,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "a7fd3f44-5578-401c-94dd-323b4d14c376";
+				PROVISIONING_PROFILE = "636c137c-39e4-4f7c-9776-27e123641cbb";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -869,8 +868,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: me.donut.native.test";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: me.donut.native.test";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Damien Brugne (PRP9K5KVUV)";
 				COPY_PHASE_STRIP = YES;
 				DONUT_BUNDLE_ID = me.donut.mobile;
 				DONUT_ENVIRONMENT = PROD;
@@ -891,7 +889,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "a7fd3f44-5578-401c-94dd-323b4d14c376";
+				PROVISIONING_PROFILE = "859ecadb-a7d5-49ec-a014-12c8b6ab6de3";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -946,8 +944,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: me.donut.native.test";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: me.donut.native.test";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Damien Brugne (U2VH257J4H)";
 				COPY_PHASE_STRIP = NO;
 				DONUT_BUNDLE_ID = me.donut.mobile.dev;
 				DONUT_ENVIRONMENT = DEV;
@@ -975,7 +972,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "a7fd3f44-5578-401c-94dd-323b4d14c376";
+				PROVISIONING_PROFILE = "636c137c-39e4-4f7c-9776-27e123641cbb";
 				SDKROOT = iphoneos;
 			};
 			name = "Debug (standalone)";
