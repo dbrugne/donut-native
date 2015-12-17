@@ -16,7 +16,11 @@ var _ = require('underscore');
 var client = require('../libs/client');
 var ListItem = require('../elements/ListItem');
 var s = require('../styles/style');
+var app = require('../libs/app');
 var navigation = require('../libs/navigation');
+var MembershipRequest = require('./GroupAskMembershipRequest');
+var MembershipPassword = require('./GroupAskMembershipPassword');
+var MembershipEmail = require('./GroupAskMembershipEmail');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -50,21 +54,20 @@ class GroupAskMembership extends Component {
         error: 'error'
       });
     }
+    if (response.err && response.err === 'already-member') {
+      return this.updateGroup();
+    }
     if (!response.success) {
       this.data = response;
       this.setState({
         loading: false
       });
     } else {
-      this.data = response;
-      this.setState({
-        loading: false,
-        success: true
-      });
+      this.updateGroup();
     }
   }
   render () {
-    if (this.state.loading) {
+    if (this.state.loading || this.state.success) {
       return (
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>
@@ -99,7 +102,7 @@ class GroupAskMembership extends Component {
         );
       }
       return (
-        <View>
+        <View style={styles.main}>
           <View style={styles.container}>
             <Text style={styles.message}>{i18next.t('local:message')}</Text>
             {disclaimer}
@@ -112,7 +115,7 @@ class GroupAskMembership extends Component {
     } else {
       return (
         <View>
-          <Text>Vous êtes déjà membre!</Text>
+          <Text></Text>
         </View>
       );
     }
@@ -164,15 +167,15 @@ class GroupAskMembership extends Component {
     } else if (nbrOptions === 1) {
         if (this.data.options.request) {
           return (
-            <View><Text>one option request</Text></View>
+            <MembershipRequest id={this.props.id} isAllowedPending={this.data.options.isAllowedPending} />
           );
         } else if (this.data.options.password) {
           return (
-            <View><Text>one option password</Text></View>
+            <MembershipPassword id={this.props.id} navigator={this.props.navigator} />
           );
         } else {
           return (
-            <View><Text>one option email</Text></View>
+            <MembershipEmail id={this.props.id} domains={this.data.options.allowed_domains} />
           );
         }
     } else {
@@ -180,6 +183,13 @@ class GroupAskMembership extends Component {
         <View><Text>{i18next.t('local:other-request')}</Text></View>
       );
     }
+  }
+  updateGroup() {
+    this.setState({
+      success: true
+    });
+    this.props.navigator.popToTop();
+    app.trigger('refreshGroup');
   }
 }
 
@@ -199,13 +209,17 @@ var styles = StyleSheet.create({
   loading: {
     height: 120
   },
+  main: {
+    flex: 1
+  },
   container: {
-    flex: 1,
     marginTop: 10,
     backgroundColor: '#FFF'
   },
   containerOptions: {
-    marginTop: 50
+    flex: 1,
+    flexDirection: 'column',
+    marginTop: 10
   },
   message: {
     color: '#424242',

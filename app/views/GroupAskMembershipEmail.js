@@ -17,7 +17,7 @@ var alert = require('../libs/alert');
 var ListItem = require('../elements/ListItem');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'membershipEmail', {
   'info': 'I have an authorized e-mail',
   'email': 'e-mail',
   'domains': 'domains',
@@ -44,19 +44,19 @@ class GroupAskMembershipEmail extends Component {
       <View style={styles.main}>
         <View>
           <Text style={{fontSize: 20}}>
-            {i18next.t('local:info')}
+            {i18next.t('membershipEmail:info')}
           </Text>
           <Text style={styles.label}>
-            {i18next.t('local:email')}
+            {i18next.t('membershipEmail:email')}
           </Text>
           <View style={{backgroundColor: '#FFF'}}>
             <Input
-              placeholder={i18next.t('local:email')}
+              placeholder={i18next.t('membershipEmail:email')}
               onChangeText={(text) => this.setState({email: text})}
               />
           </View>
           <Text style={styles.label}>
-            {i18next.t('local:domains')}
+            {i18next.t('membershipEmail:domains')}
           </Text>
         </View>
         <View style={styles.elementContainer}>
@@ -67,7 +67,7 @@ class GroupAskMembershipEmail extends Component {
         </View>
         <Button onPress={this.onAddEmail.bind(this)}
                 type='green'
-                label={i18next.t('local:send')} />
+                label={i18next.t('membershipEmail:send')} />
       </View>
     );
   }
@@ -116,23 +116,23 @@ class GroupAskMembershipEmail extends Component {
   }
   onAddEmail () {
     if (!this.select || _.indexOf(this.props.domains, this.select) === -1) {
-      return alert.show(i18next.t('local:unknown-error'));
+      return alert.show(i18next.t('membershipEmail:unknown-error'));
     }
     if (!this.state.email) {
-      return alert.show(i18next.t('local:wrong-format'));
+      return alert.show(i18next.t('membershipEmail:wrong-format'));
     }
     var mail = this.state.email + this.select;
     client.accountEmail(mail, 'add', _.bind(function (response) {
       if (response.success) {
-        return alert.show(i18next.t('local:success'));
+        return alert.show(i18next.t('membershipEmail:success'));
       } else {
         if (response.err === 'mail-already-exist') {
-          return alert.show(i18next.t('local:mail-already-exist'));
+          return alert.show(i18next.t('membershipEmail:mail-already-exist'));
         }
         if (response.err === 'wrong-format') {
-          return alert.show(i18next.t('local:wrong-format'));
+          return alert.show(i18next.t('membershipEmail:wrong-format'));
         }
-        return alert.show(i18next.t('local:unknown-error'));
+        return alert.show(i18next.t('membershipEmail:unknown-error'));
       }
     }, this));
   }

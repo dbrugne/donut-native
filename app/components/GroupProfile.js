@@ -60,8 +60,6 @@ class GroupProfileView extends Component {
     var description = _.unescape(this.props.data.description);
 
     // render
-
-    // @todo implement joinGroup @spariaud
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
