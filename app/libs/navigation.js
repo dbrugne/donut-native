@@ -32,6 +32,7 @@ i18next.addResourceBundle('en', 'local', {
   'my-password': 'My Password',
   'my-informations': 'My Informations',
   'my-preferences': 'My Preferences',
+  'about': 'About',
   'color-picker': 'Color picker',
   'settings': 'Settings',
   'settings-blocked': 'Settings',
@@ -421,6 +422,17 @@ routes.getMyAccountPreferences = function () {
     },
     getTitle: function () {
       return i18next.t('local:my-preferences');
+    }
+  });
+};
+routes.getAbout = function () {
+  return getRoute({
+    id: 'about',
+    getSceneClass: function () {
+      return require('../views/About');
+    },
+    getTitle: function () {
+      return i18next.t('local:about');
     }
   });
 };
