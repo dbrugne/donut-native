@@ -18,16 +18,28 @@ class ListItemButton extends Component {
 
   render () {
     return (
-      <TouchableHighlight onPress={() => this.props.onPress()}
-                          style={this.props.style}
-                          underlayColor= '#DDD'
-        >
-        <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
-          {this.props.leftIcon}
-          <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{this.props.text}</Text>
-          {this.props.rightIcon}
-        </View>
-      </TouchableHighlight>
+      <View>
+        {this._renderTitle()}
+        <TouchableHighlight onPress={() => this.props.onPress()}
+                            style={this.props.style}
+                            underlayColor= '#DDD'
+          >
+          <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
+            {this.props.leftIcon}
+            <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{this.props.text}</Text>
+            {this.props.rightIcon}
+          </View>
+        </TouchableHighlight>
+      </View>
+    );
+  }
+
+  _renderTitle() {
+    if (!this.props.title) {
+      return null;
+    }
+    return (
+      <Text style={s.listGroupTitle}>{this.props.title}</Text>
     );
   }
 }

@@ -37,11 +37,23 @@ class ListItemSwitch extends Component {
     }
 
     return (
-      <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
-        {this.props.leftIcon}
-        <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{this.props.text}</Text>
-        {swicthComponent}
+      <View>
+        {this._renderTitle()}
+        <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
+          {this.props.leftIcon}
+          <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{this.props.text}</Text>
+          {swicthComponent}
+        </View>
       </View>
+    );
+  }
+
+  _renderTitle() {
+    if (!this.props.title) {
+      return null;
+    }
+    return (
+      <Text style={s.listGroupTitle}>{this.props.title}</Text>
     );
   }
 }

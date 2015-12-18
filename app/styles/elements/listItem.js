@@ -24,6 +24,13 @@ var style = {
     borderTopWidth:1,
     borderStyle: 'solid'
   },
+  listGroupTitle: {
+    color: '#777777',
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    marginHorizontal:10,
+    marginVertical:2
+  },
   listGroupItemLast: {
 
   },

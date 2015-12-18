@@ -33,6 +33,7 @@ class ListItem extends Component {
    *  warning: boolean if the current item has a warning state
    *  icon: fontawesome code name of the icon to display on left
    *  iconColor: color of the icon to display on left, default is #666
+   *  title: title to display above the ListItem
    * }
    */
   constructor (props) {

@@ -25,18 +25,30 @@ class ListItemEdit extends Component {
     }
 
     return (
-      <TouchableHighlight onPress={() => this.props.onPress()}
-                          underlayColor= '#DDD'
-        >
-        <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
-          {this.props.leftIcon}
-          <Text style={s.listGroupItemText}>{this.props.text}</Text>
-          <View style={{alignSelf: 'center', flexDirection: 'row', alignItems:'center'}}>
-            <Text style={{color: '#999', fontFamily: 'Open Sans', fontSize: 16, paddingBottom: 1, marginRight: 10}}>{value}</Text>
+      <View>
+        {this._renderTitle()}
+        <TouchableHighlight onPress={() => this.props.onPress()}
+                            underlayColor= '#DDD'
+          >
+          <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
+            {this.props.leftIcon}
+            <Text style={s.listGroupItemText}>{this.props.text}</Text>
+            <View style={{alignSelf: 'center', flexDirection: 'row', alignItems:'center'}}>
+              <Text style={{color: '#999', fontFamily: 'Open Sans', fontSize: 16, paddingBottom: 1, marginRight: 10}}>{value}</Text>
+            </View>
+            {this.props.rightIcon}
           </View>
-          {this.props.rightIcon}
-        </View>
-      </TouchableHighlight>
+        </TouchableHighlight>
+      </View>
+    );
+  }
+
+  _renderTitle() {
+    if (!this.props.title) {
+      return null;
+    }
+    return (
+      <Text style={s.listGroupTitle}>{this.props.title}</Text>
     );
   }
 }

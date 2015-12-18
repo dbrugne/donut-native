@@ -22,7 +22,7 @@ i18next.addResourceBundle('en', 'local', {
   'add-email': 'Add email',
   'current-email': 'CURRENT EMAIL',
   'missing-email': 'You do not have entered a main email for this account.',
-  'additional-emails': 'Additional emails.'
+  'additional-emails': 'ADDITIONAL EMAILS.'
 });
 
 class EmailsView extends Component {
@@ -87,13 +87,13 @@ class EmailsView extends Component {
     if (this.state.currentEmail) {
       return (
         <View>
-          <Text style={s.listGroupTitle}>{i18next.t('local:current-email')}</Text>
           <ListItem
             onPress={() => this.props.navigator.push(navigation.getMyAccountEmail(this.state.currentEmail, this.fetchData.bind(this)))}
             text={this.state.currentEmail}
             type='button'
             action='true'
             first='true'
+            title={i18next.t('local:current-email')}
             />
           <Text style={s.listGroupItemSpacing}></Text>
         </View>
@@ -135,10 +135,8 @@ class EmailsView extends Component {
     return (
       <View>
         <Text style={s.listGroupTitle}>{i18next.t('local:additional-emails')}</Text>
-        <View>
-          {listRow}
-          <Text style={s.listGroupItemSpacing}></Text>
-        </View>
+        {listRow}
+        <Text style={s.listGroupItemSpacing}></Text>
       </View>
     );
   }

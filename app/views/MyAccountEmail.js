@@ -15,7 +15,7 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'change': 'Change main email',
+  'change': 'CHANGE MAIN EMAIL',
   'mail': 'Mail'
 });
 
@@ -31,7 +31,6 @@ class ChangeEmailView extends Component {
     return (
       <View style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0', paddingTop: 20, flex: 1 }}>
         <View style={s.listGroup}>
-          <Text style={s.listGroupTitle}>{i18next.t('local:change')}</Text>
 
           <ListItem
             onPress={(this.onSubmitPressed.bind(this))}
@@ -39,6 +38,8 @@ class ChangeEmailView extends Component {
             value={this.state.email}
             onChange={(event) => this.setState({email: event.nativeEvent.text})}
             type='input-button'
+            title={i18next.t('local:change')}
+            first={true}
             />
 
         </View>
