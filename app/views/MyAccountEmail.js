@@ -1,17 +1,14 @@
-var _ = require('underscore');
 var React = require('react-native');
 var Platform = require('Platform');
-var currentUser = require('../models/mobile-current-user');
 var ListItem = require('../elements/ListItem');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var alert = require('../libs/alert');
 var s = require('../styles/style');
 
 var {
   Component,
-  Text,
   View
-  } = React;
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -53,7 +50,7 @@ class ChangeEmailView extends Component {
       return alert.show(i18next.t('messages.not-complete'));
     }
 
-    client.accountEmail(this.state.email, 'main', (response) => {
+    app.client.accountEmail(this.state.email, 'main', (response) => {
       if (response.err) {
         alert.show(response.err);
       } else {

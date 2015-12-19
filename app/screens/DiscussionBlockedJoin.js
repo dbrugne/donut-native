@@ -2,13 +2,12 @@
 
 var React = require('react-native');
 var s = require('../styles/style');
+var app = require('../libs/app');
 var Link = require('../elements/Link');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
 var Button = require('../elements/Button');
-var client = require('../libs/client');
 var Alert = require('../libs/alert');
-var app = require('../libs/app');
 
 var {
   StyleSheet,
@@ -17,9 +16,6 @@ var {
   TextInput,
   Text
 } = React;
-var {
-  Icon
-  } = require('react-native-icons');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -33,7 +29,7 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class DiscussionBlockedJoin extends Component {
-  passwordPattern =  /(.{4,255})$/i;
+  passwordPattern = /(.{4,255})$/i;
 
   constructor (props) {
     super(props);
@@ -75,7 +71,7 @@ class DiscussionBlockedJoin extends Component {
   }
 
   onUserRequest() {
-    client.roomJoinRequest(this.props.model.get('id'), null, (response) => {
+    app.client.roomJoinRequest(this.props.model.get('id'), null, (response) => {
       if (response.err) {
         Alert.show(response.err);
       } else {
@@ -111,7 +107,7 @@ class DiscussionBlockedJoin extends Component {
   }
 
   onValidatePassword() {
-    client.roomJoin(this.props.model.get('id'), this.state.password, (repsonse) => {
+    app.client.roomJoin(this.props.model.get('id'), this.state.password, (repsonse) => {
       if (repsonse.err) {
         Alert.show(repsonse.err);
       } else {

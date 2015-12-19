@@ -15,7 +15,7 @@ var {
 var config = require('./config')();
 var debug = require('./debug')('notifications');
 var app = require('./app');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var storage = require('./storage');
 
 // @source: http://stackoverflow.com/questions/29683720/react-native-push-notifications-parse/30287223#30287223

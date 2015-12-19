@@ -1,128 +1,144 @@
 var _ = require('underscore');
-var Backbone = require('backbone');
-var client = require('../libs/client');
-var app = require('../libs/app');
+var debug = require('../libs/debug')('oauth');
 
-var CurrentUserModel = Backbone.Model.extend({
-  initialize: function (options) {
-    this.listenTo(client, 'user:updated', this.onUpdated);
-    this.listenTo(client, 'preferences:update', this.setPreference);
-    this.listenTo(client, 'user:confirmed', this.setConfirmed);
+var user = module.exports = require('../libs/app').user;
 
-    // listen for client statuses (should be done only by client and view??)
-    var statuses = {
-      connecting: 'connecting',
-      connect: 'online',
-      disconnect: 'offline',
-      reconnect: 'online',
-      reconnect_attempt: 'connecting',
-      reconnecting: 'connecting',
-      reconnect_error: 'connecting',
-      reconnect_failed: 'error',
-      error: 'error'
-    };
-    _.each(statuses, _.bind(function (element, key) {
-      this.listenTo(client, key, _.bind(function () {
-        this.set('status', element);
-      }, this));
-    }, this));
-  },
+// decorate with oauth methods
+user.oauth = require('../libs/oauth');
 
-  onWelcome: function (data) {
-    this.set(data.user);
-    this.setPreferences(data.preferences);
-    app.trigger('muteview');
-  },
+user.defaults = function () {
+  return {unviewed: 0};
+};
 
-  onUpdated: function (data) {
-    if (data.user_id !== this.get('user_id')) {
-      return;
+user.authenticationHasChanged = function () {
+  debug.log(
+    'authenticationChanged', {
+      id: this.oauth.id,
+      token: this.oauth.token,
+      email: this.oauth.email,
+      code: this.oauth.code,
+      facebookToken: this.oauth.facebookToken,
+      facebookId: this.oauth.facebookId,
+      facebookData: this.oauth.facebookData,
+      facebookAvoidAutoLogin: this.oauth.facebookAvoidAutoLogin
     }
-    _.each(data.data, _.bind(function (value, key, list) {
-      this.set(key, value);
-    }, this));
-  },
-  setPreference: function (data, options) {
-    options = options || {};
+  );
+  this.trigger('authenticationChanged');
+};
 
-    var keys = Object.keys(data);
-    if (!keys || !keys.length) {
-      return;
+user.loadInitialState = function () {
+  this.oauth.loadStorage(() => {
+    this.authenticate();
+  });
+};
+
+user.renewToken = function (callback) {
+  this.oauth.authenticate((err) => {
+    if (err) {
+      debug.warn(err);
+      return this.authenticationHasChanged();
+    }
+    if (!this.oauth.token) {
+      debug.warn('unable to renew token');
+
+      // trigger loggedOut screen
+      return this.authenticationHasChanged();
     }
 
-    var key = keys[ 0 ];
-    if (!key) {
-      return;
+    return callback(null, this.oauth.token);
+  });
+};
+
+user.useFacebookToken = function () {
+  this.oauth.facebookAvoidAutoLogin = false;
+  this.authenticate();
+};
+
+user.authenticate = function () {
+  this.oauth.authenticate((err) => {
+    if (err) {
+      debug.warn(err);
     }
 
-    var preferences = this.get('preferences') || {};
-    preferences[ key ] = data[ key ];
-    this.set('preferences', preferences, options);
-  },
-  setPreferences: function (preferences, options) {
-    options = options || {};
+    // trigger LoggedIn/Out switch
+    this.authenticationHasChanged();
+  });
+};
 
-    if (!preferences) {
-      return;
+user.isLoggedIn = function () {
+  return (this.oauth.loaded && this.oauth.token);
+};
+
+user.getId = function () {
+  return this.oauth.id;
+};
+
+user.getEmail = function () {
+  return this.oauth.email;
+};
+
+user.getToken = function () {
+  return this.oauth.token;
+};
+
+user.getFacebookData = function () {
+  return this.oauth.facebookData;
+};
+
+user.facebookLoginFound = function (token, userId) {
+  // just save Facebook token, do not run authentication logic
+  // (to allow user to logout from app and stay on this screen)
+  this.oauth.facebookToken = token;
+  this.oauth.facebookId = userId;
+  this.oauth._fetchFacebookProfile(() => this.authenticationHasChanged());
+};
+
+user.hasFacebookToken = function () {
+  return !!(this.oauth.facebookToken);
+};
+
+user.isAdmin = function () {
+  return (this.get('admin') === true);
+};
+
+user.facebookLogin = function (token, userId, callback) {
+  this.oauth._facebookLogin(token, userId, _.bind(function (err) {
+    if (err) {
+      return callback(err); // @todo : so we block user in this state?
     }
 
-    var newPreferences = {}; // reset all previous keys
-    _.each(preferences, function (value, key, list) {
-      newPreferences[ key ] = value;
-    });
+    this.authenticationHasChanged();
+  }, this));
+};
 
-    this.set('preferences', newPreferences, options);
-  },
-  setConfirmed: function () {
-    this.set('confirmed', true);
-  },
-  discussionMode: function () {
-    var preferences = this.get('preferences');
-
-    // if no preference set OR browser:sound equal to true, we play
-    if (!preferences || typeof preferences[ 'chatmode:compact' ] === 'undefined') {
-      return false;
+user.emailLogin = function (email, password, callback) {
+  this.oauth._emailLogin(email, password, _.bind(function (err) {
+    if (err) {
+      return callback(err); // @todo : so we block user in this state?
     }
 
-    return (preferences[ 'chatmode:compact' ] === true);
-  },
-  shouldDisplayExitPopin: function () {
-    var preferences = this.get('preferences');
+    this.authenticationHasChanged();
+  }, this));
+};
 
-    // if no preference set OR browser:exitpopin equal to true, we show
-    return (!preferences || typeof preferences[ 'browser:exitpopin' ] === 'undefined' || preferences[ 'browser:exitpopin' ] === true);
-  },
-  shouldDisplayWelcome: function () {
-    var preferences = this.get('preferences');
-
-    // if no preference set OR browser:welcome equal to true, we show
-    return (!preferences || typeof preferences[ 'browser:welcome' ] === 'undefined' || preferences[ 'browser:welcome' ] === true);
-  },
-  shouldPlaySound: function () {
-    var preferences = this.get('preferences');
-
-    // if no preference set OR browser:sound equal to true, we play
-    return (!preferences || typeof preferences[ 'browser:sounds' ] === 'undefined' || preferences[ 'browser:sounds' ] === true);
-  },
-
-  shouldDisplayDesktopNotif: function () {
-    var preferences = this.get('preferences');
-
-    // if no preference set OR browser:sound equal to true, we play
-    if (!preferences || typeof preferences[ 'notif:channels:desktop' ] === 'undefined') {
-      return false;
+user.emailSignUp = function (email, password, username, callback) {
+  this.oauth._emailSignUp(email, password, username, _.bind(function (err) {
+    if (err) {
+      return callback(err);
     }
 
-    return (preferences[ 'notif:channels:desktop' ] === true);
-  },
+    this.authenticationHasChanged();
+  }, this));
+};
 
-  isAdmin: function () {
-    return (this.get('admin') === true);
-  },
+user.logout = function () {
+  this.oauth._logout(() => this.authenticationHasChanged());
+};
 
-  isConfirmed: function () {
-    return (this.get('confirmed') === true);
-  }
-});
+user.facebookLogout = function () {
+  this.oauth._facebookLogout(() => this.authenticationHasChanged());
+};
 
-module.exports = new CurrentUserModel();
+user.forgot = function (email, callback) {
+  this.oauth._forgot(email, callback);
+};

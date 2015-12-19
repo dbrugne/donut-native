@@ -32,7 +32,7 @@ var {
   Image
   } = React;
 
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var FacebookLogin = require('../components/FacebookLogin');
 var t = null;
 

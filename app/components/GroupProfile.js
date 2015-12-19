@@ -17,7 +17,7 @@ var {
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');

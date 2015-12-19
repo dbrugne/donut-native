@@ -10,11 +10,8 @@ var ChooseUsername = require('../views/ChooseUsername');
 
 var _ = require('underscore');
 var debug = require('../libs/debug')('navigation');
-var onetoones = require('../collections/onetoones');
-var rooms = require('../collections/rooms');
 var app = require('../libs/app');
-var client = require('../libs/client');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var navigation = require('../libs/navigation');
 
 var PushNotifications = require('../libs/pushNotifications');
@@ -36,34 +33,34 @@ class Index extends Component {
     app.on('viewedEvent', this.computeUnviewed, this);
     app.on('joinRoom', this.onJoinRoom, this);
     app.on('joinUser', this.onJoinUser, this);
-    onetoones.on('remove', this.onRemoveDiscussion, this);
-    rooms.on('remove', this.onRemoveDiscussion, this);
-    onetoones.on('add', this.onAddDiscussion, this);
-    rooms.on('add', this.onAddDiscussion, this);
-    client.on('welcome', this.onWelcome, this);
+    app.ones.on('remove', this.onRemoveDiscussion, this);
+    app.rooms.on('remove', this.onRemoveDiscussion, this);
+    app.ones.on('add', this.onAddDiscussion, this);
+    app.rooms.on('add', this.onAddDiscussion, this);
+    app.client.on('welcome', this.onWelcome, this);
 
     // push notifications
     PushNotifications.componentDidMount();
 
     // client
-    client.connect();
+    app.client.connect();
   }
   componentWillUnmount () {
     app.off(null, null, this);
-    onetoones.off(null, null, this);
-    rooms.off(null, null, this);
-    client.off(null, null, this);
+    app.ones.off(null, null, this);
+    app.rooms.off(null, null, this);
+    app.client.off(null, null, this);
 
     // empty stores (@logout)
-    onetoones.reset();
-    rooms.reset();
+    app.ones.reset();
+    app.rooms.reset();
     currentUser.clear();
 
     // push notifications
     PushNotifications.componentWillUnmount();
 
     // client
-    client.disconnect();
+    app.client.disconnect();
   }
   render () {
     if (this.state.underFirstConnection === true) {
@@ -98,15 +95,15 @@ class Index extends Component {
       usernameRequired: false // @important
     }, () => {
       currentUser.onWelcome(data);
-      onetoones.onWelcome(data);
-      rooms.onWelcome(data);
+      app.ones.onWelcome(data);
+      app.rooms.onWelcome(data);
       this.computeUnviewed();
       debug.log('trigger readyToRoute');
       app.trigger('readyToRoute', data);
     });
   }
   computeUnviewed () {
-    var list = onetoones.models.concat(rooms.models);
+    var list = app.ones.models.concat(app.rooms.models);
     var found = _.find(list, (m) => (m.get('unviewed') === true));
     currentUser.set('unviewed', !!found);
   }
@@ -119,8 +116,8 @@ class Index extends Component {
     model.set('last', Date.now());
 
     var collection = (model.get('type') === 'room')
-      ? require('../collections/rooms')
-      : require('../collections/onetoones');
+      ? app.rooms
+      : app.ones;
 
     var uid = data.from_user_id || data.user_id;
 
@@ -153,7 +150,7 @@ class Index extends Component {
       return;
     }
 
-    var model = rooms.find((m) => m.get('room_id') === id);
+    var model = app.rooms.find((m) => m.get('room_id') === id);
     if (model && model.get('blocked') === false) {
       return navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
     } else if (model) {
@@ -161,9 +158,9 @@ class Index extends Component {
     }
 
     this.nextFocus = id;
-    client.roomJoin(id, null, (response) => {
+    app.client.roomJoin(id, null, (response) => {
       if (response.code === 403) {
-        rooms.addModel(response.room, response.err);
+        app.rooms.addModel(response.room, response.err);
       }
       // @todo handle errors
       // response.err === 'group-members-only'
@@ -177,13 +174,13 @@ class Index extends Component {
       return;
     }
 
-    var model = onetoones.find((m) => m.get('user_id') === id);
+    var model = app.ones.find((m) => m.get('user_id') === id);
     if (model) {
       return navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
     }
 
     this.nextFocus = id;
-    client.userJoin(id, function (response) {
+    app.client.userJoin(id, function (response) {
       // @todo handle errors
       // response.code !== 500 usernotexist
       // response.code === 500

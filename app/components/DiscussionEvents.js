@@ -20,7 +20,6 @@ var InvertibleScrollView = require('react-native-invertible-scroll-view');
 
 var debug = require('../libs/debug')('events');
 var app = require('../libs/app');
-var client = require('../libs/client');
 var s = require('../styles/style');
 
 var eventsPrepare = require('../libs/eventsPrepare');

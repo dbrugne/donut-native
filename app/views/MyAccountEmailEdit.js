@@ -1,7 +1,5 @@
 var React = require('react-native');
-var _ = require('underscore');
-var Platform = require('Platform');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var ListItem = require('../elements/ListItem');
@@ -11,12 +9,8 @@ var {
   Component,
   Text,
   View,
-  StyleSheet,
-  TextInput,
-  TouchableHighlight
-  } = React;
-
-var currentUser = require('../models/mobile-current-user');
+  StyleSheet
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -110,7 +104,7 @@ class EditEmailView extends Component {
 
   onDeletePressed() {
     this.setState({showModal: false});
-    client.accountEmail(this.props.email.email, 'delete', (response) => {
+    app.client.accountEmail(this.props.email.email, 'delete', (response) => {
       if (response.err) {
         Alert.show(response.err);
       } else {
@@ -122,7 +116,7 @@ class EditEmailView extends Component {
   }
 
   onSendEmail() {
-    client.accountEmail(this.props.email.email, 'validate', (response) => {
+    app.client.accountEmail(this.props.email.email, 'validate', (response) => {
       if (response.err) {
         Alert.show(response.err);
       } else {
@@ -132,7 +126,7 @@ class EditEmailView extends Component {
   }
 
   onSetAsMainPressed() {
-    client.accountEmail(this.props.email.email, 'main', (response) => {
+    app.client.accountEmail(this.props.email.email, 'main', (response) => {
       if (response.err) {
         Alert.show(response.err);
       } else {

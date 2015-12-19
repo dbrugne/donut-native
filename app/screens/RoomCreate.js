@@ -3,7 +3,6 @@
 var React = require('react-native');
 var Platform = require('Platform');
 var _ = require('underscore');
-var client = require('../libs/client');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var navigation = require('../libs/navigation');
@@ -120,12 +119,12 @@ class RoomCreateView extends Component {
     }
 
     var mode = (this.state.public) ? 'public' : 'private';
-    client.roomCreate(this.state.roomName, mode, null, null, (response) => {
+    app.client.roomCreate(this.state.roomName, mode, null, null, (response) => {
       if (response.err) {
         alert.show(response.err);
       } else {
         alert.show(i18next.t('local:joining'));
-        client.roomId('#' + this.state.roomName, (data) => {
+        app.client.roomId('#' + this.state.roomName, (data) => {
           if (data.err) {
             alert.show(response.err);
           } else {

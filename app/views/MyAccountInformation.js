@@ -1,26 +1,22 @@
 var React = require('react-native');
-var _ = require('underscore');
-var client = require('../libs/client');
 var app = require('../libs/app');
 var Platform = require('Platform');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
 var LoadingView = require('../elements/Loading');
 var Alert = require('../libs/alert');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var ListItem = require('../elements/ListItem');
 var navigation = require('../libs/navigation');
 var imageUpload = require('../libs/imageUpload');
 
 var {
-  NativeModules,
   Component,
   Text,
   View,
   StyleSheet,
-  TextInput,
   Image
-  } = React;
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -70,7 +66,7 @@ class MyAccountInformation extends Component {
   }
 
   fetchData() {
-    client.userRead(currentUser.get('user_id'), {more: true, admin: true}, (response) => {
+    app.client.userRead(currentUser.get('user_id'), {more: true, admin: true}, (response) => {
       this.setState({
         realname: response.realname,
         bio: response.bio,
@@ -87,7 +83,7 @@ class MyAccountInformation extends Component {
     var updateData = {};
     updateData[key] = value;
 
-    client.userUpdate(updateData, (response) => {
+    app.client.userUpdate(updateData, (response) => {
       if (response.err) {
         for (var k in response.err) {
           if (response.err[k] === 'website-url') {

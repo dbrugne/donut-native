@@ -6,13 +6,10 @@ var {
   View,
   Text,
   ActivityIndicatorIOS,
-  TouchableHighlight,
-  Component,
-  Image
+  Component
 } = React;
 
-var _ = require('underscore');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/mobile');
 var RoomProfile = require('../components/RoomProfile');
 var GroupProfile = require('../components/GroupProfile');
@@ -43,11 +40,11 @@ class ProfileView extends Component {
   componentDidMount () {
     if (this.id) {
       if (this.type === 'room') {
-        client.roomRead(this.id, {more: true}, this.onData.bind(this));
+        app.client.roomRead(this.id, {more: true}, this.onData.bind(this));
       } else if (this.type === 'user') {
-        client.userRead(this.id, {more: true}, this.onData.bind(this));
+        app.client.userRead(this.id, {more: true}, this.onData.bind(this));
       } else if (this.type === 'group') {
-        client.groupRead(this.id, {}, this.onData.bind(this));
+        app.client.groupRead(this.id, {}, this.onData.bind(this));
       }
     }
   }

@@ -12,7 +12,6 @@ var {
 } = React;
 
 var app = require('../libs/app');
-var rooms = require('../collections/rooms');
 var navigation = require('../libs/navigation');
 
 var i18next = require('../libs/i18next');
@@ -45,13 +44,13 @@ class NavigationRoomsView extends Component {
   refreshData () {
     this.lastGroup = null;
     this.setState({
-      elements: this.state.elements.cloneWithRows(rooms.toJSON())
+      elements: this.state.elements.cloneWithRows(app.rooms.toJSON())
     });
   }
 
   render () {
     var title = null;
-    if (rooms.length > 0) {
+    if (app.rooms.length > 0) {
       title = (
         <View style={{backgroundColor: '#1D1D1D'}}>
           <Text style={styles.title}>{i18next.t('local:rooms')}</Text>
@@ -87,7 +86,7 @@ class NavigationRoomsView extends Component {
       );
     }
 
-    var model = rooms.get(e.room_id);
+    var model = app.rooms.get(e.room_id);
     if (!model) {
       return(<View></View>);
     }

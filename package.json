@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@dbrugne/donut-common": "latest",
+    "@dbrugne/donut-client": "latest",
     "@exponent/react-native-navigator": "^0.3.0",
     "async": "^1.5.0",
     "backbone": "^1.2.3",

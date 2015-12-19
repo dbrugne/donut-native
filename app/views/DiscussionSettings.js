@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react-native');
 var _ = require('underscore');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var Button = require('react-native-button');
 var app = require('../libs/app');
 

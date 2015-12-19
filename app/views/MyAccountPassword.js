@@ -1,9 +1,8 @@
 var React = require('react-native');
 var Platform = require('Platform');
-var _ = require('underscore');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var LoadingView = require('../elements/Loading');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var alert = require('../libs/alert');
 var Button = require('../elements/Button');
 var Input = require('../elements/Input');
@@ -13,10 +12,8 @@ var s = require('../styles/style');
 var {
   Component,
   Text,
-  View,
-  TextInput,
-  TouchableHighlight
-  } = React;
+  View
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -40,7 +37,7 @@ class ChangePasswordView extends Component {
   }
 
   componentDidMount () {
-    client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
+    app.client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
       this.setState({
         loaded: true,
         hasPassword: !!(response.account && response.account.has_password)
@@ -113,7 +110,7 @@ class ChangePasswordView extends Component {
       return alert.show(i18next.t('messages.not-same-password'));
     }
 
-    client.accountPassword(this.state.newPassword, this.state.oldPassword, (response) => {
+    app.client.accountPassword(this.state.newPassword, this.state.oldPassword, (response) => {
       if (response.err) {
         alert.show(response.err);
       } else {

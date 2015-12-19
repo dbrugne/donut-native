@@ -16,7 +16,7 @@ var Drawer = require('react-native-drawer');
 import ExNavigator from '@exponent/react-native-navigator';
 var app = require('./app');
 var Platform = require('Platform');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {

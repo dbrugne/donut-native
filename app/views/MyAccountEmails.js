@@ -2,12 +2,11 @@
 
 var _ = require('underscore');
 var React = require('react-native');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var LoadingView = require('../elements/Loading');
 var ListItem = require('../elements/ListItem');
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
-var client = require('../libs/client');
 var s = require('../styles/style');
 
 var {
@@ -15,7 +14,7 @@ var {
   Text,
   View,
   ScrollView
-  } = React;
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -40,7 +39,7 @@ class EmailsView extends Component {
   }
 
   fetchData() {
-    client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
+    app.client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
       this.setState({
         loaded: true,
         currentEmail: (response.account && response.account.email)

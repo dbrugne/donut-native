@@ -1,11 +1,7 @@
 'use strict';
 
-var _ = require('underscore');
 var React = require('react-native');
 var s = require('../styles/style');
-var client = require('../libs/client');
-var app = require('../libs/app');
-var Alert = require('../libs/alert');
 
 var {
   Component,

@@ -1,21 +1,15 @@
 var React = require('react-native');
-var _ = require('underscore');
 var Platform = require('Platform');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var ListItem = require('../elements/ListItem');
 var Alert = require('../libs/alert');
 var s = require('../styles/style');
 
 var {
   Component,
-  Text,
   View,
-  StyleSheet,
-  TextInput,
-  TouchableHighlight
-  } = React;
-
-var currentUser = require('../models/mobile-current-user');
+  StyleSheet
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -59,7 +53,7 @@ class AddEmailView extends Component {
       return Alert.show(i18next.t('messages.not-complete'));
     }
 
-    client.accountEmail(this.state.email, 'add', (response) => {
+    app.client.accountEmail(this.state.email, 'add', (response) => {
       if (response.err) {
         Alert.show(response.err);
       } else {

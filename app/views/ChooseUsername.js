@@ -1,7 +1,6 @@
 var common = require('@dbrugne/donut-common');
 var React = require('react-native');
-var Platform = require('Platform');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var s = require('../styles/style');
 var alert = require('../libs/alert');
 var Button = require('../elements/Button');
@@ -13,7 +12,7 @@ var {
   TextInput,
   View,
   Image
-  } = React;
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -68,12 +67,12 @@ class ChooseUsername extends Component {
       return alert.show('invalid');
     }
 
-    client.userUpdate({username: this.state.username}, (response) => {
+    app.client.userUpdate({username: this.state.username}, (response) => {
       if (response.err) {
         return alert.show(response.err);
       }
 
-      client.connect();
+      app.client.connect();
     });
   }
 }

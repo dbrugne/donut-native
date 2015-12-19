@@ -16,7 +16,7 @@ var {
   Icon
 } = require('react-native-icons');
 
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {

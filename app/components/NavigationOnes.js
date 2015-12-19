@@ -14,7 +14,6 @@ var {
 
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
-var onetoones = require('../collections/onetoones');
 var navigation = require('../libs/navigation');
 
 var i18next = require('../libs/i18next');
@@ -43,12 +42,12 @@ class NavigationOnesView extends Component {
   }
   refreshData () {
     this.setState({
-      elements: this.state.elements.cloneWithRows(onetoones.toJSON())
+      elements: this.state.elements.cloneWithRows(app.ones.toJSON())
     });
   }
   render () {
     var title = null;
-    if (onetoones.length > 0) {
+    if (app.ones.length > 0) {
       title = (
         <View style={{backgroundColor: '#1D1D1D'}}>
           <Text style={styles.title}>{i18next.t('local:ones')}</Text>
@@ -68,7 +67,7 @@ class NavigationOnesView extends Component {
     );
   }
   renderElement (e) {
-    var model = onetoones.get(e.user_id);
+    var model = app.ones.get(e.user_id);
     if (!model) {
       return;
     }

@@ -2,7 +2,7 @@
 
 var _ = require('underscore');
 var React = require('react-native');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var s = require('../styles/style');
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
