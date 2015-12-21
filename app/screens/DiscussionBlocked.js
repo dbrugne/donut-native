@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var _ = require('underscore');
 var s = require('../styles/style');
 var Link = require('../elements/Link');
 var date = require('../libs/date');
@@ -12,7 +13,6 @@ var {
   View,
   Component,
   ScrollView,
-  TextInput,
   TouchableHighlight,
   Image,
   Text

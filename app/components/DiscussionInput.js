@@ -13,6 +13,7 @@ var {
 var Button = require('react-native-button');
 var imageUpload = require('../libs/imageUpload');
 var Alert = require('../libs/alert');
+var app = require('../libs/app');
 
 class InputView extends Component {
   constructor (props) {
@@ -22,6 +23,13 @@ class InputView extends Component {
     };
 
     this.model = props.model;
+  }
+  componentDidMount () {
+    // hide keyboard by triggering blur on TextInput
+    app.on('drawerWillOpen', () => this.refs.input.blur(), this);
+  }
+  componentWillUnmount () {
+    app.off(null, null, this);
   }
   render() {
     return (
@@ -36,7 +44,6 @@ class InputView extends Component {
         </Button>
         <TextInput style={styles.input}
                    ref='input'
-                   autoFocus={true}
                    onChangeText={(text) => this.setState({text})}
                    onSubmitEditing={this.onSubmit.bind(this)}
                    placeholder='Envoyer un message'

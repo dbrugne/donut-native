@@ -43,6 +43,11 @@ class ProfileView extends Component {
         app.client.roomRead(this.id, {more: true}, this.onData.bind(this));
       } else if (this.type === 'user') {
         app.client.userRead(this.id, {more: true}, this.onData.bind(this));
+<<<<<<< HEAD
+=======
+      } else if (this.type === 'group') {
+        app.client.groupRead(this.id, {}, this.onData.bind(this));
+>>>>>>> origin/master
       }
     }
   }
