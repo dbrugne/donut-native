@@ -12,7 +12,7 @@ var {
 var _ = require('underscore');
 var Input = require('../elements/Input');
 var Button = require('../elements/Button');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var alert = require('../libs/alert');
 var ListItem = require('../elements/ListItem');
 
@@ -122,7 +122,7 @@ class GroupAskMembershipEmail extends Component {
       return alert.show(i18next.t('membershipEmail:wrong-format'));
     }
     var mail = this.state.email + this.select;
-    client.accountEmail(mail, 'add', _.bind(function (response) {
+    app.client.accountEmail(mail, 'add', _.bind(function (response) {
       if (response.success) {
         return alert.show(i18next.t('membershipEmail:success'));
       } else {

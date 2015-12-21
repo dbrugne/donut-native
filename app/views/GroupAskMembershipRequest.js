@@ -10,8 +10,8 @@ var {
 
 var Input = require('../elements/Input');
 var Button = require('../elements/Button');
-var client = require('../libs/client');
 var alert = require('../libs/alert');
+var app = require('../libs/app');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'membershipRequest', {
@@ -58,7 +58,7 @@ class GroupAskMembershipRequest extends Component {
     );
   }
   onSendRequest () {
-    client.groupRequest(this.props.id, this.state.motivations, function (response) {
+    app.client.groupRequest(this.props.id, this.state.motivations, function (response) {
       if (response.success) {
         return alert.show(i18next.t('membershipRequest:success'));
       } else {

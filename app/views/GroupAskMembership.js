@@ -13,7 +13,6 @@ var {
 } = require('react-native-icons');
 
 var _ = require('underscore');
-var client = require('../libs/client');
 var ListItem = require('../elements/ListItem');
 var s = require('../styles/style');
 var app = require('../libs/app');
@@ -45,7 +44,7 @@ class GroupAskMembership extends Component {
   }
   componentDidMount () {
     if (this.props.id) {
-      client.groupJoin(this.props.id, null, this.onData.bind(this));
+      app.client.groupJoin(this.props.id, null, this.onData.bind(this));
     }
   }
   onData (response) {

@@ -11,7 +11,6 @@ var {
 var _ = require('underscore');
 var Input = require('../elements/Input');
 var Button = require('../elements/Button');
-var client = require('../libs/client');
 var alert = require('../libs/alert');
 var navigation = require('../libs/navigation');
 var app = require('../libs/app');
@@ -55,7 +54,7 @@ class GroupAskMembershipPassword extends Component {
     if (!this.state.password) {
       return alert.show(i18next.t('membershipPassword:wrong-password'));
     }
-    client.groupJoin(this.props.id, this.state.password, _.bind(function (response) {
+    app.client.groupJoin(this.props.id, this.state.password, _.bind(function (response) {
       if (response.success) {
         this.props.navigator.popToTop();
         app.trigger('refreshGroup');

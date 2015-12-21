@@ -9,7 +9,6 @@ var {
   StyleSheet
 } = React;
 
-var client = require('../libs/client');
 var GroupProfile = require('../components/GroupProfile');
 var app = require('../libs/app');
 
@@ -27,7 +26,7 @@ class GroupHomeView extends Component {
   componentDidMount () {
     app.on('refreshGroup', this.onRefresh, this);
     if (this.id) {
-      client.groupRead(this.id, {users: true}, this.onData.bind(this));
+      app.client.groupRead(this.id, {users: true}, this.onData.bind(this));
     }
   }
   componentWillUnmount () {
@@ -72,7 +71,7 @@ class GroupHomeView extends Component {
       error: null
     });
     if (this.id) {
-      client.groupRead(this.id, {users: true}, this.onData.bind(this));
+      app.client.groupRead(this.id, {users: true}, this.onData.bind(this));
     }
   }
 }

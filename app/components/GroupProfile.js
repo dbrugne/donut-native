@@ -217,37 +217,10 @@ class GroupProfileView extends Component {
       );
     }
     return (
-<<<<<<< HEAD
       <View>
         {list}
         {quit}
       </View>
-=======
-      <ScrollView style={styles.main}>
-        <View style={styles.container}>
-          <Image style={styles.avatar} source={{uri: avatarUrl}}/>
-          <Text style={styles.identifier}>{data.identifier}</Text>
-          <Link onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})) }}
-                prepend={i18next.t('local:by')}
-                text={'@' + data.owner_username}
-                type='bold'
-            />
-          <Text style={styles.description}>{description}</Text>
-        </View>
-        <View style={styles.container2}>
-          <Button type='white'
-                  label={i18next.t('local:join')+' '+this.members_count}
-                  icon='fontawesome|user'
-            />
-
-          <View style={s.listGroup}>
-            {website}
-            {createdAt}
-            {links}
-          </View>
-        </View>
-      </ScrollView>
->>>>>>> origin/master
     );
   }
 
