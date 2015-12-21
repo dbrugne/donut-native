@@ -219,8 +219,6 @@ class DiscussionEvents extends Component {
     this.markAsViewedAfterDelay();
   }
   markAsViewedAfterDelay () {
-    console.log('markAsViewedAfterDelay', this.props.model.get('identifier'), this.props.model.get('unviewed'));
-
     this._timeoutCleanup();
 
     // is unviewed?
