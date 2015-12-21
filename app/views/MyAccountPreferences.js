@@ -1,10 +1,9 @@
 var _ = require('underscore');
 var React = require('react-native');
 var Platform = require('Platform');
-var currentUser = require('../models/mobile-current-user');
 var LoadingView = require('../elements/Loading');
 var ListItem = require('../elements/ListItem');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var alert = require('../libs/alert');
 var s = require('../styles/style');
 
@@ -12,7 +11,7 @@ var {
   Component,
   Text,
   View
-  } = React;
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -39,7 +38,7 @@ class UserPreferencesView extends Component {
   }
 
   componentDidMount() {
-    client.userPreferencesRead(null, (data) => {
+    app.client.userPreferencesRead(null, (data) => {
       if (!data.preferences) {
         return;
       }
@@ -107,7 +106,7 @@ class UserPreferencesView extends Component {
 
     var update = {};
     update[key] = newVal;
-    client.userPreferencesUpdate(update, (response) => {
+    app.client.userPreferencesUpdate(update, (response) => {
       if (response.err) {
         alert.show(response.err);
       }

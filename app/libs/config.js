@@ -45,6 +45,7 @@ module.exports = function (nativeProps) {
     }
     // default, environment, nativeProps
     _config = _.extend(defaults, environments[nativeProps.DONUT_ENVIRONMENT], nativeProps);
+    debug.log('loaded config', _config);
   }
   return _config;
 };

@@ -9,7 +9,7 @@ var {
 module.exports = StyleSheet.create({
   container: {
     position: 'relative',
-    height: 60,
+    height: 100,
     padding: 5,
     flex: 1,
     backgroundColor: '#f0f0f0',
@@ -25,7 +25,7 @@ module.exports = StyleSheet.create({
     borderRadius: 25,
     position:'absolute',
     left:5,
-    top:5
+    top:25
   },
   thumbnailUser: {
     width: 50,
@@ -33,10 +33,10 @@ module.exports = StyleSheet.create({
     borderRadius: 3,
     position:'absolute',
     left:5,
-    top:5
+    top:25
   },
   rightContainer: {
-    height:50,
+    height:90,
     marginLeft:60,
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -45,7 +45,7 @@ module.exports = StyleSheet.create({
     overflow: 'hidden'
   },
   title: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'Open Sans',
     fontWeight: 'bold',
     color: '#333'
@@ -53,8 +53,8 @@ module.exports = StyleSheet.create({
   description: {
     color: '#777',
     fontFamily: 'Open Sans',
-    fontSize: 10,
-    height:30,
+    fontSize: 12,
+    height:50,
     overflow: 'hidden'
   },
   statusText: {
@@ -74,7 +74,7 @@ module.exports = StyleSheet.create({
     paddingRight:5,
     overflow: 'hidden',
     position: 'absolute',
-    bottom: 5,
+    bottom: 10,
     left:5
   },
   statusOnline: { backgroundColor: 'rgba(79, 237, 192, 0.8)' },

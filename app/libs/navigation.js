@@ -16,7 +16,7 @@ var Drawer = require('react-native-drawer');
 import ExNavigator from '@exponent/react-native-navigator';
 var app = require('./app');
 var Platform = require('Platform');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -32,6 +32,7 @@ i18next.addResourceBundle('en', 'local', {
   'my-password': 'My Password',
   'my-informations': 'My Informations',
   'my-preferences': 'My Preferences',
+  'about': 'About',
   'color-picker': 'Color picker',
   'settings': 'Settings',
   'settings-blocked': 'Settings',
@@ -490,6 +491,17 @@ routes.getMyAccountPreferences = function () {
     },
     getTitle: function () {
       return i18next.t('local:my-preferences');
+    }
+  });
+};
+routes.getAbout = function () {
+  return getRoute({
+    id: 'about',
+    getSceneClass: function () {
+      return require('../views/About');
+    },
+    getTitle: function () {
+      return i18next.t('local:about');
     }
   });
 };

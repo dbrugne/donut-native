@@ -15,7 +15,7 @@ var {
 
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 
@@ -163,9 +163,9 @@ var styles = StyleSheet.create({
   },
   linkText: {
     fontFamily: 'Open Sans',
-    fontSize: 14,
+    fontSize: 16,
     color: '#ecf0f1',
-    marginVertical: 8
+    marginVertical: 15
   },
   iconCtn: {
     marginVertical: 8,

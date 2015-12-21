@@ -2,7 +2,6 @@
 
 var React = require('react-native');
 var {
-  Image,
   StyleSheet,
   TouchableHighlight,
   Text,
@@ -13,11 +12,9 @@ var {
 } = React;
 var {
   Icon
-  } = require('react-native-icons');
+} = require('react-native-icons');
 
-var _ = require('underscore');
 var app = require('../libs/app');
-var client = require('../libs/client');
 var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
@@ -213,7 +210,7 @@ class SearchView extends Component {
       },
       skip: skip
     };
-    client.search(this.state.findValue, options, (response) => {
+    app.client.search(this.state.findValue, options, (response) => {
       if (response.err) {
         return this.resetList(null);
       }

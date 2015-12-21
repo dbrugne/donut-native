@@ -14,7 +14,6 @@ var {
 
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
-var onetoones = require('../collections/onetoones');
 var navigation = require('../libs/navigation');
 
 var i18next = require('../libs/i18next');
@@ -43,12 +42,12 @@ class NavigationOnesView extends Component {
   }
   refreshData () {
     this.setState({
-      elements: this.state.elements.cloneWithRows(onetoones.toJSON())
+      elements: this.state.elements.cloneWithRows(app.ones.toJSON())
     });
   }
   render () {
     var title = null;
-    if (onetoones.length > 0) {
+    if (app.ones.length > 0) {
       title = (
         <View style={{backgroundColor: '#1D1D1D'}}>
           <Text style={styles.title}>{i18next.t('local:ones')}</Text>
@@ -68,7 +67,7 @@ class NavigationOnesView extends Component {
     );
   }
   renderElement (e) {
-    var model = onetoones.get(e.user_id);
+    var model = app.ones.get(e.user_id);
     if (!model) {
       return;
     }
@@ -125,7 +124,8 @@ var styles = StyleSheet.create({
     fontSize: 16,
     color: '#FFFFFF',
     marginLeft: 10,
-    flex:1
+    flex:1,
+    marginVertical: 15
   },
   unviewed: {
     fontSize: 20,
@@ -133,8 +133,6 @@ var styles = StyleSheet.create({
     marginRight:10
   },
   linkBlock: {
-    paddingTop: 2,
-    paddingBottom: 2,
     borderTopColor: '#373737',
     borderTopWidth: 0.5,
     borderStyle: 'solid',

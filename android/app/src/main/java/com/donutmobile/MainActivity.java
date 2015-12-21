@@ -11,6 +11,9 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
+// to retrieve config
+import java.lang.reflect.Field;
+
 // @Icons
 import com.smixx.reactnativeicons.ReactNativeIcons;
 import java.util.Arrays;
@@ -88,8 +91,24 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .build();
 
         // Options
+        Object buildType = getBuildConfigValue("BUILD_TYPE");
+        Object ServerIp = getBuildConfigValue("LOCAL_IP");
         Bundle b = new Bundle();
-        b.putString("DONUT_ENVIRONMENT", "test");
+        if (buildType == null) {
+            b.putString("BUILD_TYPE", "null");
+        } else {
+            b.putString("BUILD_TYPE", buildType.toString());
+        }
+        if (buildType != null && buildType.toString() == "release") {
+            b.putString("DONUT_ENVIRONMENT", "production");
+        } else {
+            b.putString("DONUT_ENVIRONMENT", "test");
+        }
+        if (ServerIp == null) {
+            b.putString("REACT_SERVER_ADDRESS", "null");
+        } else {
+            b.putString("REACT_SERVER_ADDRESS", ServerIp.toString());
+        }
         mReactRootView.startReactApplication(mReactInstanceManager, "donutMobile", b);
 
         setContentView(mReactRootView);
@@ -145,5 +164,17 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         // @ImagePicker
         mImagePicker.handleActivityResult(requestCode, resultCode, data);
+    }
+
+    private static Object getBuildConfigValue(String fieldName) {
+        try {
+            Class c = Class.forName("me.donut.BuildConfig");
+            Field f = c.getDeclaredField(fieldName);
+            f.setAccessible(true);
+            return f.get(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

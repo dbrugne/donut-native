@@ -15,7 +15,7 @@ module.exports = React.createClass({
   },
   componentDidMount () {
     // listen for currentUser status change
-    var currentUser = require('./models/mobile-current-user');
+    var currentUser = require('./models/current-user');
     currentUser.on('authenticationChanged', () => {
       this.setState({
         currentUserReady: true,
@@ -27,7 +27,7 @@ module.exports = React.createClass({
     currentUser.loadInitialState();
   },
   componentWillUnmount () {
-    var currentUser = require('./models/mobile-current-user');
+    var currentUser = require('./models/current-user');
     currentUser.off(null, null, this);
   },
   render () {

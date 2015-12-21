@@ -15,7 +15,7 @@ var {
 } = require('react-native-icons');
 
 var Platform = require('Platform');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var s = require('../styles/style');
 var _ = require('underscore');
 var Alert = require('../libs/alert');

@@ -9,17 +9,18 @@ var {
 module.exports = StyleSheet.create({
 
   // colors
-  //clNavLeft: { color: '#434a54'},
-  //clText: { color: '#333'},
-  //clClouds: { color: '#ecf0f1'},
-  //clSuccess: { color: '#4fedc0'},
-  //clWarning: { color: '#ffda3e'},
-  //clError: { color: '#ff3838'},
-  //clNeutral: { color: '#777777'},
-  //clBackgroundGrayed: { color: '#f0f0f0'},
+  // clNavLeft: { color: '#434a54'},
+  // clText: { color: '#333'},
+  // clClouds: { color: '#ecf0f1'},
+  // clSuccess: { color: '#4fedc0'},
+  // clWarning: { color: '#ffda3e'},
+  // clError: { color: '#ff3838'},
+  // clNeutral: { color: '#777777'},
+  // clBackgroundGrayed: { color: '#f0f0f0'},
   // clDrawer: { color: '#272627' }
   // clDrawer2: { color: '#1D1D1D' }
   // clDrawer2Lighten: { color: '#373737' }
+
   // Common elements
   h1: {
     fontFamily: 'Open Sans',

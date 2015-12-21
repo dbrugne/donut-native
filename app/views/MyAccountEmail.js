@@ -1,21 +1,18 @@
-var _ = require('underscore');
 var React = require('react-native');
 var Platform = require('Platform');
-var currentUser = require('../models/mobile-current-user');
 var ListItem = require('../elements/ListItem');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var alert = require('../libs/alert');
 var s = require('../styles/style');
 
 var {
   Component,
-  Text,
   View
-  } = React;
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'change': 'Change main email',
+  'change': 'CHANGE MAIN EMAIL',
   'mail': 'Mail'
 });
 
@@ -31,7 +28,6 @@ class ChangeEmailView extends Component {
     return (
       <View style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0', paddingTop: 20, flex: 1 }}>
         <View style={s.listGroup}>
-          <Text style={s.listGroupTitle}>{i18next.t('local:change')}</Text>
 
           <ListItem
             onPress={(this.onSubmitPressed.bind(this))}
@@ -39,6 +35,8 @@ class ChangeEmailView extends Component {
             value={this.state.email}
             onChange={(event) => this.setState({email: event.nativeEvent.text})}
             type='input-button'
+            title={i18next.t('local:change')}
+            first={true}
             />
 
         </View>
@@ -52,7 +50,7 @@ class ChangeEmailView extends Component {
       return alert.show(i18next.t('messages.not-complete'));
     }
 
-    client.accountEmail(this.state.email, 'main', (response) => {
+    app.client.accountEmail(this.state.email, 'main', (response) => {
       if (response.err) {
         alert.show(response.err);
       } else {

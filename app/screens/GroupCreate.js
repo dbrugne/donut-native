@@ -3,7 +3,6 @@
 var React = require('react-native');
 var Platform = require('Platform');
 var _ = require('underscore');
-var client = require('../libs/client');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var Button = require('../elements/Button');
@@ -16,7 +15,7 @@ var {
   ScrollView,
   View,
   Component
-  } = React;
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -73,7 +72,7 @@ class RoomCreateView extends Component {
       return alert.show(i18next.t('messages.not-complete'));
     }
 
-    client.groupCreate(this.state.groupName, (response) => {
+    app.client.groupCreate(this.state.groupName, (response) => {
       if (!response.success) {
         if (response.err === 'group-name-already-exist') {
           return alert.show(i18next.t('messages.group-name-already-exist', {name: this.state.groupName}));
@@ -85,7 +84,7 @@ class RoomCreateView extends Component {
       }
 
       alert.show(i18next.t('local:joining'));
-      client.groupId('#' + this.state.groupName, (data) => {
+      app.client.groupId('#' + this.state.groupName, (data) => {
         if (data.err) {
           alert.show(response.err);
         } else {

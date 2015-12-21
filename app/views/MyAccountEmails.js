@@ -2,12 +2,11 @@
 
 var _ = require('underscore');
 var React = require('react-native');
-var currentUser = require('../models/mobile-current-user');
+var currentUser = require('../models/current-user');
 var LoadingView = require('../elements/Loading');
 var ListItem = require('../elements/ListItem');
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
-var client = require('../libs/client');
 var s = require('../styles/style');
 
 var {
@@ -15,14 +14,14 @@ var {
   Text,
   View,
   ScrollView
-  } = React;
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'add-email': 'Add email',
   'current-email': 'CURRENT EMAIL',
   'missing-email': 'You do not have entered a main email for this account.',
-  'additional-emails': 'Additional emails.'
+  'additional-emails': 'ADDITIONAL EMAILS.'
 });
 
 class EmailsView extends Component {
@@ -40,7 +39,7 @@ class EmailsView extends Component {
   }
 
   fetchData() {
-    client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
+    app.client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
       this.setState({
         loaded: true,
         currentEmail: (response.account && response.account.email)
@@ -87,13 +86,13 @@ class EmailsView extends Component {
     if (this.state.currentEmail) {
       return (
         <View>
-          <Text style={s.listGroupTitle}>{i18next.t('local:current-email')}</Text>
           <ListItem
             onPress={() => this.props.navigator.push(navigation.getMyAccountEmail(this.state.currentEmail, this.fetchData.bind(this)))}
             text={this.state.currentEmail}
             type='button'
             action='true'
             first='true'
+            title={i18next.t('local:current-email')}
             />
           <Text style={s.listGroupItemSpacing}></Text>
         </View>
@@ -135,10 +134,8 @@ class EmailsView extends Component {
     return (
       <View>
         <Text style={s.listGroupTitle}>{i18next.t('local:additional-emails')}</Text>
-        <View>
-          {listRow}
-          <Text style={s.listGroupItemSpacing}></Text>
-        </View>
+        {listRow}
+        <Text style={s.listGroupItemSpacing}></Text>
       </View>
     );
   }

@@ -1,13 +1,11 @@
-var _ = require('underscore');
 var React = require('react-native');
 var colors = require('../libs/colors').list;
 var Button = require('react-native-button');
 var navigation = require('../libs/navigation');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var alert = require('../libs/alert');
 
 var {
-  NativeModules,
   Component,
   Text,
   View,
@@ -44,7 +42,7 @@ class ColorPickerView extends Component {
   }
 
   _colorPressed (color) {
-    client.userUpdate({color: color.hex}, (response) => {
+    app.client.userUpdate({color: color.hex}, (response) => {
       if (response.err) {
         return alert.show(response.err);
       }

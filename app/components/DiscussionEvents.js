@@ -20,7 +20,6 @@ var InvertibleScrollView = require('react-native-invertible-scroll-view');
 
 var debug = require('../libs/debug')('events');
 var app = require('../libs/app');
-var client = require('../libs/client');
 var s = require('../styles/style');
 
 var eventsPrepare = require('../libs/eventsPrepare');
@@ -42,6 +41,8 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class DiscussionEvents extends Component {
+  markAsViewedTimeout = null
+
   constructor (props) {
     super(props);
 
@@ -61,6 +62,14 @@ class DiscussionEvents extends Component {
   }
   componentWillUnmount () {
     this.props.model.off(null, null, this);
+
+    this._timeoutCleanup();
+  }
+  _timeoutCleanup () {
+    if (this.markAsViewedTimeout) {
+      clearInterval(this.markAsViewedTimeout);
+      this.markAsViewedTimeout = null;
+    }
   }
   render () {
     return (
@@ -89,9 +98,13 @@ class DiscussionEvents extends Component {
      */
   }
   renderRow (event) {
-    // @todo : big bug for user:message, we should use from_user_id => refactor whole user message for having the same form as room:message + a to_user_id field?
     var data = eventsPrepare(event.type, event.data);
     var Comp = this.getComponent(event.type);
+
+    if (!Comp) {
+      return (<View />);
+    }
+
     return (
       <Comp
         navigator={this.props.navigator}
@@ -124,8 +137,7 @@ class DiscussionEvents extends Component {
       return EventPromote;
     }
 
-    debug.warn('unable to find event component', type);
-    return (<View />);
+    debug.warn('unable to find event component', type); // return undefined
   }
   renderHeader () {
     if (!this.state.more) {
@@ -189,7 +201,7 @@ class DiscussionEvents extends Component {
     });
   }
   onChangeVisibleRows (visibleRows, changedRows) {
-    // @todo implement viewed event sending
+    this.markAsViewedAfterDelay();
   }
   addFreshEvent (type, data) {
     // add on list top, the inverted view will display on bottom
@@ -203,6 +215,22 @@ class DiscussionEvents extends Component {
       this._loadHistory();
       this.wasFocusedAtLeastOneTime = true;
     }
+
+    this.markAsViewedAfterDelay();
+  }
+  markAsViewedAfterDelay () {
+    console.log('markAsViewedAfterDelay', this.props.model.get('identifier'), this.props.model.get('unviewed'));
+
+    this._timeoutCleanup();
+
+    // is unviewed?
+    if (this.props.model.get('unviewed') !== true) {
+      return;
+    }
+
+    this.markAsViewedTimeout = setTimeout(() => {
+      this.props.model.markAsViewed();
+    }, 2000); // 2s
   }
 }
 
