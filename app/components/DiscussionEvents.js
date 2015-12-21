@@ -41,6 +41,8 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class DiscussionEvents extends Component {
+  markAsViewedTimeout = null
+
   constructor (props) {
     super(props);
 
@@ -60,6 +62,14 @@ class DiscussionEvents extends Component {
   }
   componentWillUnmount () {
     this.props.model.off(null, null, this);
+
+    this._timeoutCleanup();
+  }
+  _timeoutCleanup () {
+    if (this.markAsViewedTimeout) {
+      clearInterval(this.markAsViewedTimeout);
+      this.markAsViewedTimeout = null;
+    }
   }
   render () {
     return (
@@ -191,7 +201,13 @@ class DiscussionEvents extends Component {
     });
   }
   onChangeVisibleRows (visibleRows, changedRows) {
-    // @todo implement viewed event sending
+    console.log('onChangeVisibleRows', this.props.model.get('id'));
+
+    // start timeout for mark as viewed detection
+    this._timeoutCleanup();
+    this.markAsViewedTimeout = setTimeout(() => {
+      this.props.model.markAsViewed();
+    }, 2000); // 2s
   }
   addFreshEvent (type, data) {
     // add on list top, the inverted view will display on bottom
