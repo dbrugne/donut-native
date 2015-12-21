@@ -483,8 +483,12 @@ routes.getDiscussion = function (id, model) {
       );
     },
     _onDidFocus: function () {
-      // delay history load to avoid transition impact (visibly onDidFocus is triggered before transition end)
-      setTimeout(() => this.scene.refs.events.onFocus(), 100);
+      // delay heavy processing logic (e.g. history fetching and rendering) to
+      // avoid animation leak (visibly onDidFocus is triggered before transition end)
+      setTimeout(() => {
+        // load history
+        this.scene.refs.events.onFocus();
+      }, 100);
     }
   });
 };
@@ -617,6 +621,8 @@ routes.RootNavigator = React.createClass({
     );
   },
   onDrawerOpen () {
+    app.trigger('drawerWillOpen');
+
     debug.log('onDrawerOpen');
     drawerOpened = true;
     if (Platform.OS === 'ios') {
