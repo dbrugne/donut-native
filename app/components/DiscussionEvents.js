@@ -201,13 +201,7 @@ class DiscussionEvents extends Component {
     });
   }
   onChangeVisibleRows (visibleRows, changedRows) {
-    console.log('onChangeVisibleRows', this.props.model.get('id'));
-
-    // start timeout for mark as viewed detection
-    this._timeoutCleanup();
-    this.markAsViewedTimeout = setTimeout(() => {
-      this.props.model.markAsViewed();
-    }, 2000); // 2s
+    this.markAsViewedAfterDelay();
   }
   addFreshEvent (type, data) {
     // add on list top, the inverted view will display on bottom
@@ -221,6 +215,22 @@ class DiscussionEvents extends Component {
       this._loadHistory();
       this.wasFocusedAtLeastOneTime = true;
     }
+
+    this.markAsViewedAfterDelay();
+  }
+  markAsViewedAfterDelay () {
+    console.log('markAsViewedAfterDelay', this.props.model.get('identifier'), this.props.model.get('unviewed'));
+
+    this._timeoutCleanup();
+
+    // is unviewed?
+    if (this.props.model.get('unviewed') !== true) {
+      return;
+    }
+
+    this.markAsViewedTimeout = setTimeout(() => {
+      this.props.model.markAsViewed();
+    }, 2000); // 2s
   }
 }
 
