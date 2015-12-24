@@ -86,7 +86,7 @@ class UserProfileView extends Component {
 
     var registeredAt = (
     <ListItem
-      text={i18next.t('local:registered-on', {date: date.longDateTime(data.registered)})}
+      text={i18next.t('local:registered-on', {date: date.longDate(data.registered)})}
       first={(!data.location && !data.website)}
       icon='fontawesome|clock-o'
       />
@@ -134,6 +134,7 @@ class UserProfileView extends Component {
                   label={i18next.t('local:discuss')}
             />
           <View style={[s.listGroup, {marginTop:10}]}>
+            <Text style={s.listGroupItemSpacing}></Text>
             {location}
             {website}
             {registeredAt}

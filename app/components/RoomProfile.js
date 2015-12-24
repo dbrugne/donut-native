@@ -65,7 +65,7 @@ class RoomProfileView extends Component {
 
     var createdAt = (
     <ListItem
-      text={i18next.t('local:created-on', {date: date.longDateTime(data.created)})}
+      text={i18next.t('local:created-on', {date: date.longDate(data.created)})}
       icon='fontawesome|clock-o'
       />
     );
@@ -131,6 +131,7 @@ class RoomProfileView extends Component {
             />
 
           <View style={s.listGroup}>
+            <Text style={s.listGroupItemSpacing}></Text>
             {website}
             {createdAt}
             {links}

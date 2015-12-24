@@ -80,7 +80,7 @@ class GroupProfileView extends Component {
           color='#333'
           style={s.listGroupItemIcon}
           />
-        <Text style={s.listGroupItemText}> {i18next.t('local:created')} {date.longDateTime(data.created)}</Text>
+        <Text style={s.listGroupItemText}> {i18next.t('local:created')} {date.longDate(data.created)}</Text>
       </View>
     );
 
@@ -166,6 +166,7 @@ class GroupProfileView extends Component {
             />
 
           <View style={s.listGroup}>
+            <Text style={s.listGroupItemSpacing}></Text>
             {website}
             {createdAt}
             {links}
