@@ -10,9 +10,6 @@ var {
   Image,
   ScrollView
   } = React;
-var {
-  Icon
-  } = require('react-native-icons');
 
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
