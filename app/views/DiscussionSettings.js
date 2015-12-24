@@ -4,60 +4,92 @@ var _ = require('underscore');
 var currentUser = require('../models/current-user');
 var Button = require('react-native-button');
 var app = require('../libs/app');
+var s = require('../styles/style');
+var ListItem = require('../elements/ListItem');
+var navigation = require('../libs/navigation');
 
 var {
   Component,
   Text,
-  ListView,
   View,
-  StyleSheet,
-  TouchableHighlight
+  ScrollView,
+  StyleSheet
 } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'settings': 'settings',
+  'settings': '__identifier__ SETTINGS',
+  'see': 'See the profile',
+  'edit': 'Edit',
+  'access': 'Access',
+  'allowed': 'Allowed users',
   'leave': 'Leave this donut',
   'close': 'Close this private discussion'
-});
+}, true, true);
 
 class RoomSettings extends Component {
   constructor (props) {
     super(props);
   }
   render () {
-    if (this.props.model.get('type') === 'room') {
-      return (
-        <View>
-          <Text>{this.props.model.get('identifier')} {i18next.t('local:settings')}</Text>
-          <Button onPress={() => this.props.model.leave()} style={styles.row}>
-            {i18next.t('local:leave')}
-          </Button>
+    // @todo link to room edit page
+    // @todo link to room access page
+    // @todo link to room allowed users page
+
+    return (
+      <ScrollView style={styles.main}>
+        <View style={s.listGroup}>
+          <ListItem
+            onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'room', id: this.props.model.get('id'), identifier: this.props.model.get('identifier')}));}}
+            title={i18next.t('local:settings', {identifier: this.props.model.get('identifier')})}
+            text={i18next.t('local:see')}
+            icon='fontawesome|eye'
+            type='button'
+            first={true}
+            action={true}
+          />
+          <ListItem
+            onPress={() => console.log('@todo implement edit page')}
+            text={i18next.t('local:edit')+' TODO'}
+            icon='fontawesome|pencil'
+            type='button'
+            action={true}
+            />
+          <ListItem
+            onPress={() => console.log('@todo implement edit page')}
+            text={i18next.t('local:access')+' TODO'}
+            icon='fontawesome|key'
+            type='button'
+            action={true}
+            />
+          <ListItem
+            onPress={() => console.log('@todo implement allowed users page')}
+            text={i18next.t('local:allowed')+' TODO'}
+            icon='fontawesome|shield'
+            type='button'
+            action={true}
+            />
+
+          <Text style={s.listGroupItemSpacing}></Text>
+          <ListItem
+            onPress={() => this.props.model.leave()}
+            text={this.props.model.get('type') === 'room' ? i18next.t('local:leave') : i18next.t('local:close')}
+            type='button'
+            first={true}
+            warning={true}
+            />
         </View>
-      );
-    } else {
-      return (
-        <View>
-          <Text>{this.props.model.get('identifier')} {i18next.t('local:settings')}</Text>
-          <Button onPress={() => this.props.model.leave()} style={styles.row}>
-            {i18next.t('local:close')}
-          </Button>
-        </View>
-      );
-    }
+      </ScrollView>
+    );
   }
 }
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  row: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#EEE',
-    color: '#777',
-    lineHeight: 40
+  main: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0',
+    paddingTop: 20
   }
 });
 
