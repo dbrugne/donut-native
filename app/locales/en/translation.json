@@ -35,5 +35,25 @@
     "group-banned": "You were banned from community",
     "domain": "This domain is not valid",
     "unknownerror": "Unknown error, please retry later"
+  },
+  "navigation": {
+    "discover": "Discover",
+    "search": "Search",
+    "create-donut": "Create a donut",
+    "create-group": "Create a community",
+    "my-account": "My Account",
+    "my-email": "My Email",
+    "my-emails": "My Emails",
+    "add-email": "Add an email",
+    "manage-email": "Manage email",
+    "my-password": "My Password",
+    "my-informations": "My Informations",
+    "my-preferences": "My Preferences",
+    "about": "About",
+    "color-picker": "Color picker",
+    "settings": "Settings",
+    "settings-blocked": "Settings",
+    "change-value": "Change a value",
+    "back": "BACK"
   }
 }

@@ -24,6 +24,7 @@ var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
 var Button = require('../elements/Button');
 var Link = require('../elements/Link');
+var ListItem = require('../elements/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -51,37 +52,22 @@ class GroupProfileView extends Component {
     var website = null;
     if (data.website) {
       website = (
-        <TouchableHighlight underlayColor='transparent'
-                            onPress={() => hyperlink.open(data.website.href)}>
-          <View style={[s.listGroupItem, s.listGroupItemFirst]}>
-            <Icon
-              name='fontawesome|link'
-              size={14}
-              color='#333'
-              style={s.listGroupItemIcon}
-              />
-            <Text style={s.listGroupItemText}> {data.website.title}</Text>
-            <Icon
-              name='fontawesome|chevron-right'
-              size={14}
-              color='#DDD'
-              style={s.listGroupItemIconRight}
-              />
-          </View>
-        </TouchableHighlight>
+        <ListItem
+          text={data.website.title}
+          type='edit-button'
+          first={true}
+          action={true}
+          onPress={() => hyperlink.open(data.website.href)}
+          icon='fontawesome|link'
+          />
       );
     }
 
     var createdAt = (
-      <View style={[s.listGroupItem, !data.website && s.listGroupItemFirst]}>
-        <Icon
-          name='fontawesome|clock-o'
-          size={14}
-          color='#333'
-          style={s.listGroupItemIcon}
-          />
-        <Text style={s.listGroupItemText}> {i18next.t('local:created')} {date.longDateTime(data.created)}</Text>
-      </View>
+    <ListItem
+      text={i18next.t('local:created-on', {date: date.longDate(data.created)})}
+      icon='fontawesome|clock-o'
+      />
     );
 
     var links = null;
@@ -91,57 +77,29 @@ class GroupProfileView extends Component {
       // @todo implement onpress goto group access
       links = (
         <View>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|pencil'
-                size={14}
-                color='#333'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:edit')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|users'
-                size={14}
-                color='#333'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:manage-users')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight>
-            <View style={s.listGroupItem}>
-              <Icon
-                name='fontawesome|key'
-                size={14}
-                color='#333'
-                style={s.listGroupItemIcon}
-                />
-              <Text style={s.listGroupItemText}> {i18next.t('local:access')}</Text>
-              <Icon
-                name='fontawesome|chevron-right'
-                size={14}
-                color='#DDD'
-                style={s.listGroupItemIconRight}
-                />
-            </View>
-          </TouchableHighlight>
+          <ListItem
+            onPress={() => console.log('todo implement group edit')}
+            text={i18next.t('local:edit')}
+            type='edit-button'
+            action={true}
+            icon='fontawesome|pencil'
+            />
+
+          <ListItem
+            onPress={() => console.log('todo implement group users')}
+            text={i18next.t('local:manage-users')}
+            type='edit-button'
+            action={true}
+            icon='fontawesome|users'
+            />
+
+          <ListItem
+            onPress={() => console.log('todo implement group access')}
+            text={i18next.t('local:access')}
+            type='edit-button'
+            action={true}
+            icon='fontawesome|key'
+            />
         </View>
       );
     }
@@ -159,17 +117,22 @@ class GroupProfileView extends Component {
             />
           <Text style={styles.description}>{description}</Text>
         </View>
-        <View style={styles.container2}>
-          <Button type='white'
-                  label={i18next.t('local:join')+' '+this.members_count}
-                  icon='fontawesome|user'
+        <View style={s.listGroup}>
+          <Text style={s.listGroupItemSpacing}></Text>
+          <ListItem
+            text={i18next.t('local:join')+' '+this.members_count}
+            type='edit-button'
+            first={true}
+            action={true}
+            onPress={() => app.trigger('joinUser', data.user_id)}
+            icon='fontawesome|user'
+            iconColor='#f1c40f'
             />
 
-          <View style={s.listGroup}>
-            {website}
-            {createdAt}
-            {links}
-          </View>
+          <Text style={s.listGroupItemSpacing}></Text>
+          {website}
+          {createdAt}
+          {links}
         </View>
       </ScrollView>
     );

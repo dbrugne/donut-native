@@ -14,6 +14,7 @@ var Link = require('../elements/Link');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'forgot': 'Forgot your password ?',
+  'or': 'or',
   'account': 'Don\'t have an account ? ',
   'signup': 'Sign up',
   'signin': 'Sign in',
