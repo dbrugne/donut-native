@@ -201,9 +201,15 @@ class DiscussionEvents extends Component {
     });
   }
   onChangeVisibleRows (visibleRows, changedRows) {
+    // @todo : maybe not the best event to mark as read?
     this.markAsViewedAfterDelay();
   }
   addFreshEvent (type, data) {
+    if (this.props.model.get('focused') !== true) {
+      // render realtime event only if discussion is focused
+      return;
+    }
+
     // add on list top, the inverted view will display on bottom
     this.setState({
       dataSource: this.eventsDataSource.append({type: type, data: data})
