@@ -80,12 +80,14 @@ class LoginView extends Component {
             ref='email'
             style={[s.inputContainer, s.marginTop5]}>
             <TextInput
+              ref='1'
               placeholder={i18next.t('local:mail')}
               onChange={(event) => this.setState({email: event.nativeEvent.text})}
               style={s.input}
               keyboardType='email-address'
-              onSubmitEditing={() => this._focusNextField('1')}
+              onSubmitEditing={() => this._focusNextField('2')}
               onFocus={this.inputFocused.bind(this, 'email')}
+              onBlur={this.inputBlured.bind(this, 'email')}
               returnKeyType='next'
               value={this.state.email}/>
           </View>
@@ -93,18 +95,19 @@ class LoginView extends Component {
             ref='password'
             style={[s.inputContainer, s.marginTop5]}>
             <TextInput
-              ref='1'
+              ref='2'
               placeholder={i18next.t('local:password')}
               secureTextEntry={true}
               onChange={(event) => this.setState({password: event.nativeEvent.text})}
               style={[s.input, s.marginTop5]}
               onFocus={this.inputFocused.bind(this, 'password')}
+              onBlur={this.inputBlured.bind(this, 'password')}
               returnKeyType='done'
               value={this.state.password}/>
           </View>
 
           <Button onPress={(this.onSubmitPressed.bind(this))}
-                  style={s.marginTop5}
+                  style={s.marginTop10}
                   type='pink'
                   label={i18next.t('local:signin')}/>
 
@@ -117,19 +120,6 @@ class LoginView extends Component {
 
         </View>
       );
-
-      var signupButton = (
-        <View style={styles.linkCtn}>
-          <Text style={styles.textGray}>{i18next.t('local:account')}</Text>
-
-          <Link onPress={(this.onCreatePressed.bind(this))}
-                text={i18next.t('local:signup')}
-                style={[s.marginTop10, styles.centered]}
-                linkStyle={s.link}
-                type='bold'
-            />
-        </View>
-      );
     }
 
     return (
@@ -139,33 +129,53 @@ class LoginView extends Component {
           contentContainerStyle={{flex:1}}
           keyboardDismissMode='on-drag'
           style={{flex: 1, backgroundColor: '#FAF9F5'}}>
-          <View style={styles.logoCtn}>
-            <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
-          </View>
           <View>
+            <View style={styles.logoCtn}>
+              <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
+            </View>
             <View style={styles.container}>
               <FacebookLogin />
               {loginForm}
             </View>
+            <View style={styles.linkCtn}>
+              <Link onPress={(this.onCreatePressed.bind(this))}
+                    text={i18next.t('local:signup')}
+                    style={[s.marginTop10, styles.centered]}
+                    linkStyle={s.link}
+                    prepend={i18next.t('local:account')}
+                    prependStyle={styles.textGray}
+                    type='bold'
+                />
+            </View>
           </View>
-          {signupButton}
         </ScrollView>
       </View>
     );
   }
 
-  // Scroll a component into view. Just pass the component ref string.
   inputFocused (refName) {
     setTimeout(() => {
-      // Note the this.refs.scrollView -- the ScrollView element to be
-      // handled must have the ref='scrollView' for this to work.
-      let scrollResponder = this.refs.scrollView.getScrollResponder();
-      scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-        React.findNodeHandle(this.refs[refName]),
-        110, //additionalOffset
-        true
-      );
-    }, 50);
+      this._updateScroll(refName, 60);
+    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
+  }
+
+  inputBlured (refName) {
+    setTimeout(() => {
+      this._updateScroll(refName, -60);
+    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
+  }
+
+  _updateScroll(refName, offset) {
+    let scrollResponder = this.refs.scrollView.getScrollResponder();
+    scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+      React.findNodeHandle(this.refs[refName]),
+      offset,
+      true
+    );
+  }
+
+  _focusNextField(nextField) {
+    this.refs[nextField].focus()
   }
 
   onSubmitPressed() {
@@ -194,10 +204,6 @@ class LoginView extends Component {
       component: SignupView
     });
   }
-
-  _focusNextField(nextField) {
-    this.refs[nextField].focus()
-  }
 }
 
 var styles = StyleSheet.create({
@@ -206,18 +212,18 @@ var styles = StyleSheet.create({
     paddingRight: 20,
     paddingTop: 10,
     paddingBottom: 10,
-    //flex: 1,
-    //flexDirection: 'column',
-    //alignItems: 'stretch',
-    //justifyContent: 'center',
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'center',
     backgroundColor: '#FFF'
   },
   logoCtn: {
     marginTop: 50,
     paddingBottom: 25,
-    //flexDirection: 'column',
-    //alignItems: 'stretch',
-    //justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'center',
     borderBottomWidth: 1,
     borderStyle: 'solid',
     borderColor: '#C3C3C3'
@@ -225,7 +231,7 @@ var styles = StyleSheet.create({
   logo: {
     width: 125,
     height: 32,
-    //alignSelf: 'center'
+    alignSelf: 'center'
   },
   orContainer: {
     padding: 5,
@@ -256,9 +262,9 @@ var styles = StyleSheet.create({
     marginRight: 5
   },
   linkCtn: {
-    //flexDirection: 'row',
-    //alignItems: 'center',
-    //justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderTopWidth: 1,
     borderStyle: 'solid',
     borderColor: '#C3C3C3',
