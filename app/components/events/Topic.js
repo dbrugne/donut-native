@@ -14,13 +14,29 @@ var s = require('../../styles/events');
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'topic': 'has changed topic for'
+  'topic': 'has changed topic for',
+  'none': 'has emptied the topic'
 });
 
 module.exports = React.createClass({
   render () {
+
+    var topic;
     if (!this.props.data.topic) {
-      return;
+      topic = (
+        <Text style={[s.topicContent, {flexWrap: 'wrap'}]}>
+          {i18next.t('local:none')}
+        </Text>
+      );
+    } else {
+      topic = (
+        <View>
+          <Text style={[s.statusBlockText, {flexWrap: 'wrap'}]}>{i18next.t('local:topic')}</Text>
+          <ParsedText navigator={this.props.navigator} style={[s.topicContent, {flexWrap: 'wrap'}]}>
+            {this.props.data.topic}
+          </ParsedText>
+        </View>
+      );
     }
 
     var time = date.shortTime(this.props.data.time);
@@ -38,10 +54,7 @@ module.exports = React.createClass({
             <Text style={{color: '#666666', fontSize: 12, fontFamily: 'Open Sans', marginLeft: 5}}>{time}</Text>
           </View>
           <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
-            <Text style={[s.statusBlockText, {flexWrap: 'wrap'}]}>{i18next.t('local:topic')}</Text>
-            <ParsedText navigator={this.props.navigator} style={[s.topicContent, {flexWrap: 'wrap'}]}>
-              {this.props.data.topic}
-            </ParsedText>
+            {topic}
           </View>
         </View>
       </View>
