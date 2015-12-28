@@ -21,6 +21,25 @@ var Platform = require('Platform');
 var currentUser = require('../models/current-user');
 var i18next = require('../libs/i18next');
 
+// @debug
+var currentFocused = function () {
+  var list = [];
+  var iterator = function (m) {
+    if (m.get('focused')) {
+      list.push(m.get('identifier'));
+    }
+  };
+
+  app.rooms.each(iterator);
+  app.ones.each(iterator);
+  app.groups.each(iterator);
+  return list.join(', ');
+};
+app.on('focusModelChanged', function () {
+  console.log('[FOCUSED] now focused view is: ', currentFocused());
+});
+// @debug
+
 let navigationBarHeight = ((Platform.OS === 'android')
   ? 56
   : 64);
@@ -44,6 +63,9 @@ function getRoute (route) {
     id: null,
     // no arrow function, otherwise the parent context is passed as 'this'
     onWillFocus: function () {
+      // route.model is null for non discussion views
+      app.setFocusedModel(route.model);
+
       if (this._onWillFocus) {
         this._onWillFocus();
       }
@@ -451,6 +473,7 @@ routes.getDiscussionSettings = function (id, model) {
 routes.getDiscussion = function (id, model) {
   return getRoute({
     id: 'discussion-' + id,
+    model: model, // only for discussion routes
     renderScene: function (navigator) {
       let Discussion = require('../screens/Discussion');
       return <Discussion navigator={navigator} model={model} />;
@@ -475,8 +498,7 @@ routes.getDiscussion = function (id, model) {
       // delay heavy processing logic (e.g. history fetching and rendering) to
       // avoid animation leak (visibly onDidFocus is triggered before transition end)
       setTimeout(() => {
-        // load history
-        this.scene.refs.events.onFocus();
+        this.scene.onFocus();
       }, 100);
     }
   });
@@ -558,6 +580,18 @@ routes.getNavigator = function (initialRoute) {
         var nav = navigators[id].scene.__navigator;
         var route = nav.state.routeStack[nav.state.presentedIndex];
         route.onDidFocus();
+      },
+      onWillBlur: function (event) {
+        // find currently focused route
+        var nav = navigators[id].scene.__navigator;
+        var route = nav.state.routeStack[nav.state.presentedIndex];
+        route.onWillBlur();
+      },
+      onDidBlur: function (event) {
+        // find currently focused route
+        var nav = navigators[id].scene.__navigator;
+        var route = nav.state.routeStack[nav.state.presentedIndex];
+        route.onDidBlur();
       }
     };
   }

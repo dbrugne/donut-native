@@ -39,6 +39,10 @@ class Discussion extends Component {
     debug.log(this.props.model.get('identifier') + ' unmounted');
     _.each(this.subscription, (s) => s.remove());
   }
+  onFocus () {
+    // load history
+    this.refs.events.onFocus();
+  }
   render() {
     return (
       <View style={styles.main}>
