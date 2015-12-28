@@ -76,21 +76,30 @@ class LoginView extends Component {
           <View style={styles.orContainer}>
             <Text style={styles.title}> {i18next.t('local:or')} </Text>
           </View>
-          <View style={[s.inputContainer, s.marginTop5]}>
+          <View
+            ref='email'
+            style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               placeholder={i18next.t('local:mail')}
               onChange={(event) => this.setState({email: event.nativeEvent.text})}
               style={s.input}
+              keyboardType='email-address'
               onSubmitEditing={() => this._focusNextField('1')}
+              onFocus={this.inputFocused.bind(this, 'email')}
+              returnKeyType='next'
               value={this.state.email}/>
           </View>
-          <View style={[s.inputContainer, s.marginTop5]}>
+          <View
+            ref='password'
+            style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               ref='1'
               placeholder={i18next.t('local:password')}
               secureTextEntry={true}
               onChange={(event) => this.setState({password: event.nativeEvent.text})}
               style={[s.input, s.marginTop5]}
+              onFocus={this.inputFocused.bind(this, 'password')}
+              returnKeyType='done'
               value={this.state.password}/>
           </View>
 
@@ -124,19 +133,39 @@ class LoginView extends Component {
     }
 
     return (
-      <View style={styles.main}>
-        <View style={styles.logoCtn}>
-          <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
-        </View>
-        <ScrollView>
-          <View style={styles.container}>
-            <FacebookLogin />
-            {loginForm}
+      <View style={{flex:1, alignItems: 'stretch'}}>
+        <ScrollView
+          ref='scrollView'
+          contentContainerStyle={{flex:1}}
+          keyboardDismissMode='on-drag'
+          style={{flex: 1, backgroundColor: '#FAF9F5'}}>
+          <View style={styles.logoCtn}>
+            <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
           </View>
+          <View>
+            <View style={styles.container}>
+              <FacebookLogin />
+              {loginForm}
+            </View>
+          </View>
+          {signupButton}
         </ScrollView>
-        {signupButton}
       </View>
     );
+  }
+
+  // Scroll a component into view. Just pass the component ref string.
+  inputFocused (refName) {
+    setTimeout(() => {
+      // Note the this.refs.scrollView -- the ScrollView element to be
+      // handled must have the ref='scrollView' for this to work.
+      let scrollResponder = this.refs.scrollView.getScrollResponder();
+      scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+        React.findNodeHandle(this.refs[refName]),
+        110, //additionalOffset
+        true
+      );
+    }, 50);
   }
 
   onSubmitPressed() {
@@ -172,28 +201,23 @@ class LoginView extends Component {
 }
 
 var styles = StyleSheet.create({
-  main: {
-    flexDirection: 'column',
-    flex: 1,
-    backgroundColor: '#FAF9F5'
-  },
   container: {
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 10,
     paddingBottom: 10,
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    justifyContent: 'center',
+    //flex: 1,
+    //flexDirection: 'column',
+    //alignItems: 'stretch',
+    //justifyContent: 'center',
     backgroundColor: '#FFF'
   },
   logoCtn: {
     marginTop: 50,
     paddingBottom: 25,
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    justifyContent: 'center',
+    //flexDirection: 'column',
+    //alignItems: 'stretch',
+    //justifyContent: 'center',
     borderBottomWidth: 1,
     borderStyle: 'solid',
     borderColor: '#C3C3C3'
@@ -201,7 +225,7 @@ var styles = StyleSheet.create({
   logo: {
     width: 125,
     height: 32,
-    alignSelf: 'center'
+    //alignSelf: 'center'
   },
   orContainer: {
     padding: 5,
@@ -231,15 +255,10 @@ var styles = StyleSheet.create({
     borderStyle: 'solid',
     marginRight: 5
   },
-  flexible: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   linkCtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    //flexDirection: 'row',
+    //alignItems: 'center',
+    //justifyContent: 'center',
     borderTopWidth: 1,
     borderStyle: 'solid',
     borderColor: '#C3C3C3',
