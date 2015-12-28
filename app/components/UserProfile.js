@@ -86,7 +86,7 @@ class UserProfileView extends Component {
 
     var registeredAt = (
     <ListItem
-      text={i18next.t('local:registered-on', {date: date.longDateTime(data.registered)})}
+      text={i18next.t('local:registered-on', {date: date.longDate(data.registered)})}
       first={(!data.location && !data.website)}
       icon='fontawesome|clock-o'
       />
@@ -128,17 +128,21 @@ class UserProfileView extends Component {
           <Text style={styles.bio}>{bio}</Text>
           {isBannedLink}
         </View>
-        <View style={styles.container2}>
-          <Button onPress={() => app.trigger('joinUser', data.user_id)}
-                  type='white'
-                  label={i18next.t('local:discuss')}
+        <View style={[s.listGroup]}>
+          <Text style={s.listGroupItemSpacing}></Text>
+          <ListItem
+            text={i18next.t('local:discuss')}
+            type='edit-button'
+            first={true}
+            action={true}
+            onPress={() => app.trigger('joinUser', data.user_id)}
             />
-          <View style={[s.listGroup, {marginTop:10}]}>
-            {location}
-            {website}
-            {registeredAt}
-            {bannedLink}
-          </View>
+
+          <Text style={s.listGroupItemSpacing}></Text>
+          {location}
+          {website}
+          {registeredAt}
+          {bannedLink}
         </View>
       </ScrollView>
     );
@@ -156,13 +160,6 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFF'
-  },
-  container2: {
-    flex: 1,
-    borderTopWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#DDD',
-    paddingTop: 10
   },
   avatar: {
     width: 120,

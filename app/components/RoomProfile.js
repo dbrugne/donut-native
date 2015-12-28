@@ -10,9 +10,6 @@ var {
   Image,
   ScrollView
   } = React;
-var {
-  Icon
-  } = require('react-native-icons');
 
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
@@ -65,7 +62,7 @@ class RoomProfileView extends Component {
 
     var createdAt = (
     <ListItem
-      text={i18next.t('local:created-on', {date: date.longDateTime(data.created)})}
+      text={i18next.t('local:created-on', {date: date.longDate(data.created)})}
       icon='fontawesome|clock-o'
       />
     );
@@ -123,18 +120,21 @@ class RoomProfileView extends Component {
 
           <Text style={styles.description}>{description}</Text>
         </View>
-        <View style={styles.container2}>
-          <Button onPress={() => app.trigger('joinRoom', data.room_id)}
-                  type='white'
-                  label={i18next.t('local:join')+' '+data.users_count}
-                  icon='fontawesome|user'
+        <View style={s.listGroup}>
+          <Text style={s.listGroupItemSpacing}></Text>
+          <ListItem
+            text={i18next.t('local:join')+' '+data.users_count}
+            type='edit-button'
+            first={true}
+            action={true}
+            onPress={() => app.trigger('joinRoom', data.room_id)}
+            icon='fontawesome|user'
+            iconColor='#f1c40f'
             />
-
-          <View style={s.listGroup}>
-            {website}
-            {createdAt}
-            {links}
-          </View>
+          <Text style={s.listGroupItemSpacing}></Text>
+          {website}
+          {createdAt}
+          {links}
         </View>
       </ScrollView>
     );
@@ -152,13 +152,6 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFF'
-  },
-  container2: {
-    flex: 1,
-    borderTopWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#DDD',
-    paddingTop: 10
   },
   avatar: {
     width: 120,

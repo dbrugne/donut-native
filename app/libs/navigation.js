@@ -3,6 +3,8 @@
 var React = require('react-native');
 var {
   StyleSheet,
+  Text,
+  View,
   TouchableOpacity,
   StatusBarIOS
 } = React;
@@ -17,7 +19,6 @@ import ExNavigator from '@exponent/react-native-navigator';
 var app = require('./app');
 var Platform = require('Platform');
 var currentUser = require('../models/current-user');
-
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'discover': 'Discover',
@@ -97,8 +98,12 @@ function getRoute (route) {
         <TouchableOpacity
           touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
           onPress={() => navigator.pop()}
-          style={ExNavigator.Styles.barLeftButton} >
-          <Icon name='fontawesome|angle-left' size={25} style={styles.backButton} />
+          style={ExNavigator.Styles.barBackButton} >
+          <Icon name='fontawesome|angle-left'
+                size={18}
+                color='#3498db'
+                style={[ExNavigator.Styles.barButtonIcon, {marginTop: 13, marginLeft: 5, width:18, height:18}]} />
+          <Text style={[ExNavigator.Styles.barButtonText, {marginTop: 11}]}> {i18next.t('navigation.back')}</Text>
         </TouchableOpacity>
       );
     }
@@ -240,8 +245,11 @@ var LeftNavigation = React.createClass({
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
         onPress={this.onPress}
-        style={ExNavigator.Styles.barLeftButton} >
-        <Icon name='fontawesome|clone' size={22} style={styles.toggle} />
+        style={ExNavigator.Styles.barBackButton} >
+        <Icon name='fontawesome|clone'
+              size={20}
+              color='#3498db'
+              style={[ExNavigator.Styles.barButtonIcon, {marginTop: 11, marginLeft: 5, width:22, height:22}]} />
         {unviewed}
       </TouchableOpacity>
     );
@@ -262,7 +270,7 @@ routes.getHome = function () {
       return require('../screens/Home');
     },
     getTitle: function () {
-      return i18next.t('local:discover');
+      return i18next.t('navigation.discover');
     },
     configureScene: function () {
       return ExNavigator.SceneConfigs.FloatFromRight;
@@ -279,7 +287,7 @@ routes.getSearch = function () {
       return require('../screens/Search');
     },
     getTitle: function () {
-      return i18next.t('local:search');
+      return i18next.t('navigation.search');
     },
     configureScene: function () {
       return ExNavigator.SceneConfigs.FloatFromRight;
@@ -296,7 +304,7 @@ routes.getRoomCreate = function () {
       return require('../screens/RoomCreate');
     },
     getTitle: function () {
-      return i18next.t('local:create-donut');
+      return i18next.t('navigation.create-donut');
     },
     configureScene: function () {
       return ExNavigator.SceneConfigs.FloatFromRight;
@@ -313,7 +321,7 @@ routes.getGroupCreate = function () {
       return require('../screens/GroupCreate');
     },
     getTitle: function () {
-      return i18next.t('local:create-group');
+      return i18next.t('navigation.create-group');
     },
     configureScene: function () {
       return ExNavigator.SceneConfigs.FloatFromRight;
@@ -407,7 +415,7 @@ routes.getMyAccount = function () {
       return require('../screens/MyAccount');
     },
     getTitle: function () {
-      return i18next.t('local:my-account');
+      return i18next.t('navigation.my-account');
     },
     renderLeftButton: function (navigator) {
       return (<LeftNavigation navigator={navigator} />);
@@ -422,7 +430,7 @@ routes.getMyAccountEmail = function (email, func) {
       return <EmailMain navigator={navigator} func={func} email={email} />;
     },
     getTitle: function () {
-      return i18next.t('local:my-email');
+      return i18next.t('navigation.my-email');
     }
   });
 };
@@ -433,7 +441,7 @@ routes.getMyAccountEmails = function () {
       return require('../views/MyAccountEmails');
     },
     getTitle: function () {
-      return i18next.t('local:my-emails');
+      return i18next.t('navigation.my-emails');
     }
   });
 };
@@ -445,7 +453,7 @@ routes.getMyAccountEmailsAdd = function (func) {
       return <EmailAdd navigator={navigator} func={func} />;
     },
     getTitle: function () {
-      return i18next.t('local:add-email');
+      return i18next.t('navigation.add-email');
     }
   });
 };
@@ -457,7 +465,7 @@ routes.getMyAccountEmailEdit = function (element, func) {
       return <EmailEdit navigator={navigator} email={element} func={func} />;
     },
     getTitle() {
-      return i18next.t('local:manage-email');
+      return i18next.t('navigation.manage-email');
     }
   });
 };
@@ -468,7 +476,7 @@ routes.getMyAccountPassword = function () {
       return require('../views/MyAccountPassword');
     },
     getTitle: function () {
-      return i18next.t('local:my-password');
+      return i18next.t('navigation.my-password');
     }
   });
 };
@@ -479,7 +487,7 @@ routes.getMyAccountInformation = function () {
       return require('../views/MyAccountInformation');
     },
     getTitle: function () {
-      return i18next.t('local:my-informations');
+      return i18next.t('navigation.my-informations');
     }
   });
 };
@@ -490,7 +498,7 @@ routes.getMyAccountPreferences = function () {
       return require('../views/MyAccountPreferences');
     },
     getTitle: function () {
-      return i18next.t('local:my-preferences');
+      return i18next.t('navigation.my-preferences');
     }
   });
 };
@@ -501,7 +509,7 @@ routes.getAbout = function () {
       return require('../views/About');
     },
     getTitle: function () {
-      return i18next.t('local:about');
+      return i18next.t('navigation.about');
     }
   });
 };
@@ -512,7 +520,7 @@ routes.getColorPicker = function () {
       return require('../views/ColorPicker');
     },
     getTitle: function () {
-      return i18next.t('local:color-picker');
+      return i18next.t('navigation.color-picker');
     }
   });
 };
@@ -524,7 +532,7 @@ routes.getDiscussionSettings = function (id, model) {
       return <Settings navigator={navigator} model={model} />;
     },
     getTitle: function () {
-      return i18next.t('local:settings');
+      return i18next.t('navigation.settings');
     }
   });
 };
@@ -583,7 +591,7 @@ routes.getUserFieldEdit = function (data) {
       return (<data.component navigator={navigator} data={data} />);
     },
     getTitle: function () {
-      return i18next.t('local:change-value');
+      return i18next.t('navigation.change-value');
     }
   });
 };
@@ -714,12 +722,11 @@ var styles = StyleSheet.create({
   },
   titlePhoto: {
     width: 50,
-    height: 50,
+    height: 50
   },
   toggle: {
     width: 22,
     height: 22,
-    // ExNavigator.Styles.barLeftButtonText
     fontSize: 18,
     marginLeft: 10,
     paddingVertical: 20
@@ -741,8 +748,8 @@ var styles = StyleSheet.create({
   unviewed: {
     position: 'absolute',
     top: 5,
-    left: 28,
+    left: 20,
     width: 13,
-    height: 13,
+    height: 13
   }
 });

@@ -67,7 +67,7 @@ module.exports = React.createClass({
       }
 
       return (
-        <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center'}}>
           {elements}
         </View>
       );
@@ -89,7 +89,7 @@ module.exports = React.createClass({
         key={this.props.data.id + '-' + index}
         underlayColor='transparent'
         onPress={() => hyperlink.open(element.href)}>
-        <Image style={{width: 250, height: 250, alignSelf: 'center', marginVertical:10, marginHorizontal:10}} source={{uri: element.thumbnail}} />
+        <Image style={{width: 100, height: 100, marginLeft: 50, borderRadius:3}} source={{uri: element.thumbnail}} />
       </TouchableHighlight>
     );
   }

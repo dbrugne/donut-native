@@ -33,8 +33,7 @@ module.exports = function () {
       return top;
     },
     prepend (items) {
-      // items comes in ante-chronological order
-      items.reverse(); // @important, before date.isSameDay test
+      // items comes in chronological order
 
       // remove top date block if top event is older than today
       if (!date.isSameDay(this.blob[this.blob.length - 1], items[items.length - 1])) {

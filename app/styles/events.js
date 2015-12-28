@@ -55,7 +55,7 @@ module.exports = StyleSheet.create({
   userBlock: {
     flexDirection: 'row',
     marginTop: 20,
-    height: 30
+    height: 20
   },
   userBlockAvatar: {
     width: 30,
