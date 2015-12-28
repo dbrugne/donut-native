@@ -114,18 +114,54 @@ class GroupProfileView extends Component {
     return null;
   }
   renderAction () {
-    var donutList = null;
-
-    var createdAt = (
-      <View style={[s.listGroupItem, !data.website && s.listGroupItemFirst]}>
-        <Icon
-          name='fontawesome|clock-o'
-          size={14}
-          color='#333'
-          style={s.listGroupItemIcon}
+    if ((this.isMember || this.isOwner || this.isAdmin) && !this.isBanned) {
+      return (
+        <View>
+          <Button
+            type='green'
+            label={i18next.t('local:create-donut')} />
+          <Button
+            type='green'
+            label={i18next.t('local:donut-list')} />
+        </View>
+      );
+    }
+    if (!this.isMember && !this.isOp && !this.isBanned && !this.isOwner && !this.isAdmin) {
+      return (
+        <View>
+          <Button onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(this.props.data.group_id))}
+                  type='blue'
+                  label={i18next.t('local:request-membership')} />
+          <Button
+            type='blue'
+            label={i18next.t('local:donut-list')} />
+        </View>
+      );
+    }
+    return null;
+  }
+  renderWebsite () {
+    if (this.props.data.website) {
+      return (
+        <ListItem onPress={() => hyperlink.open(this.props.data.website.href)}
+              text={this.props.data.website.title}
+              first={false}
+              action='true'
+              type='button'
+              icon='fontawesome|link'
+            />
+      );
+    }
+  }
+  renderCreatedAt () {
+    var text = i18next.t('local:created') + ' ' + date.longDateTime(this.props.data.created);
+    return (
+      <ListItem
+          text={text}
+          last={true}
+          action='false'
+          icon='fontawesome|clock-o'
           />
-        <Text style={s.listGroupItemText}> {i18next.t('local:created')} {date.longDateTime(data.created)}</Text>
-      </View>
     );
   }
   renderLinks () {

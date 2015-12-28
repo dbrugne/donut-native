@@ -20,29 +20,6 @@ var app = require('./app');
 var Platform = require('Platform');
 var currentUser = require('../models/current-user');
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
-  'discover': 'Discover',
-  'search': 'Search',
-  'create-donut': 'Create a donut',
-  'create-group': 'Create a community',
-  'my-account': 'My Account',
-  'my-email': 'My Email',
-  'my-emails': 'My Emails',
-  'add-email': 'Add an email',
-  'manage-email': 'Manage email',
-  'my-password': 'My Password',
-  'my-informations': 'My Informations',
-  'my-preferences': 'My Preferences',
-  'about': 'About',
-  'color-picker': 'Color picker',
-  'settings': 'Settings',
-  'settings-blocked': 'Settings',
-  'change-value': 'Change a value',
-  'ask-membership': 'ask membership',
-  'ask-membership-request': 'I request membership',
-  'ask-membership-password': 'I have the password',
-  'ask-membership-email': 'I have an authorized e-mail'
-});
 
 let navigationBarHeight = ((Platform.OS === 'android')
   ? 56

@@ -54,6 +54,10 @@
     "settings": "Settings",
     "settings-blocked": "Settings",
     "change-value": "Change a value",
-    "back": "BACK"
+    "back": "BACK",
+    "ask-membership": "ask membership",
+    "ask-membership-request": "I request membership",
+    "ask-membership-password": "I have the password",
+    "ask-membership-email": "I have an authorized e-mail"
   }
 }
