@@ -2,23 +2,14 @@
 
 ## TODO
 
+* [ ] Set discussion 'focused' on navigation
 * [ ] Load code from AppHub (broken?)
 * [ ] AppStore store submission
 * [ ] Test Android (default conf?)
-* [ ] APK David
-* [ ] GH tasks reviews
 * [ ] @dbrugne/donut-client
-
-* [ ] fix android discussion (need to test RN0.0.16 ? but react-native-parsed-text block RN0.16.0 migration ... => test with 0.7.0)
 * [ ] Icon and splashscreen Android
-* [ ] Switch configuration Android
-  - [ ] Facebook ID android/app/src/main/res/values/strings.xml
-* [ ] Send .apk to David
-
 * [ ] solve emoticons
 * [ ] push notifications logic implementation
-* [ ] Android keyboard close on message send
-* [ ] Close keyboard (unfocus field?) on drawer open
 
 ## Pre-requisites
 
