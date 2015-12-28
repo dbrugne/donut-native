@@ -21,11 +21,9 @@ class Discussion extends Component {
     this.state = {
       keyboardSpace: 0
     };
-
-    this.model = props.model;
   }
   componentDidMount () {
-    debug.log(this.model.get('identifier') + ' mounted');
+    debug.log(this.props.model.get('identifier') + ' mounted');
     this.subscription = [
       DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
         LayoutAnimation.configureNext(animation);
@@ -38,14 +36,14 @@ class Discussion extends Component {
     ];
   }
   componentWillUnmount () {
-    debug.log(this.model.get('identifier') + ' unmounted');
+    debug.log(this.props.model.get('identifier') + ' unmounted');
     _.each(this.subscription, (s) => s.remove());
   }
   render() {
     return (
       <View style={styles.main}>
-        <EventsView ref='events' title={this.model.get('identifier')} model={this.model} {...this.props} />
-        <InputView ref='input' model={this.model} />
+        <EventsView ref='events' title={this.props.model.get('identifier')} model={this.props.model} {...this.props} />
+        <InputView ref='input' model={this.props.model} />
         <View style={{height: this.state.keyboardSpace}}></View>
       </View>
     );
