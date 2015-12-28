@@ -46,7 +46,6 @@ class GroupProfileView extends Component {
 
   render() {
     var data = this.data;
-    var avatarUrl = common.cloudinary.prepare(data.avatar, 120);
     var description = _.unescape(data.description);
 
     var website = null;
@@ -108,7 +107,7 @@ class GroupProfileView extends Component {
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
-          <Image style={styles.avatar} source={{uri: avatarUrl}}/>
+          {this._renderAvatar(data.avatar)}
           <Text style={styles.identifier}>{data.identifier}</Text>
           <Link onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})) }}
                 prepend={i18next.t('local:by')}
@@ -135,6 +134,21 @@ class GroupProfileView extends Component {
           {links}
         </View>
       </ScrollView>
+    );
+  }
+
+
+  _renderAvatar (avatar) {
+    if (!avatar) {
+      return null;
+    }
+    var avatarUrl = common.cloudinary.prepare(avatar, 120);
+    if (!avatarUrl) {
+      return null;
+    }
+
+    return (
+      <Image style={styles.avatar} source={{uri: avatarUrl}}/>
     );
   }
 }

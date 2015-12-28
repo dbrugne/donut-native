@@ -20,15 +20,10 @@ class SearchResultRoom extends Component {
   }
 
   render () {
-    let avatarUrl = common.cloudinary.prepare(this.props.image, 60);
-
     return (
       <TouchableHighlight onPress={this.props.onPress} >
         <View style={s.container}>
-          <Image
-            source={{uri: avatarUrl}}
-            style={s.thumbnail}
-            />
+          {this._renderThumbnail(this.props.image)}
           <View style={s.rightContainer}>
             <Text style={s.title}>{this.props.identifier}</Text>
             {this._renderDescription()}
@@ -36,6 +31,18 @@ class SearchResultRoom extends Component {
         </View>
       </TouchableHighlight>
     );
+  }
+
+  _renderThumbnail (thumbnail) {
+    if (!thumbnail) {
+      return null;
+    }
+    var thumbnailUrl = common.cloudinary.prepare(thumbnail, 60);
+    if (!thumbnailUrl) {
+      return null;
+    }
+
+    return (<Image style={s.thumbnail} source={{uri: thumbnailUrl}} />);
   }
 
   _renderDescription() {
