@@ -29,7 +29,7 @@ i18next.addResourceBundle('en', 'local', {
   'close': 'Close this private discussion'
 }, true, true);
 
-class RoomSettings extends Component {
+class DiscussionSettings extends Component {
   constructor (props) {
     super(props);
   }
@@ -164,4 +164,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = RoomSettings;
+module.exports = DiscussionSettings;
