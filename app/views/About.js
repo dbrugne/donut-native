@@ -46,6 +46,7 @@ class AboutView extends Component {
             <ListView
               style={{margin: 10, backgroundColor: '#FFF'}}
               dataSource={this.state.ds}
+              scrollEnabled={false}
               renderRow={(r) => (
                   <View style={{padding: 5}}>
                     <Text style={{fontWeight: 'bold'}}>{r.key}</Text>
