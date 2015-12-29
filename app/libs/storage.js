@@ -107,6 +107,18 @@ var Storage = {
         callback(null);
       }
     });
+  },
+  getAll: function (callback) {
+    AsyncStorage.getAllKeys((err, keys) => {
+      if (err) {
+        return callback(err);
+      }
+      if (!keys.length) {
+        return callback(null);
+      }
+
+      this.getKeys(keys, callback);
+    });
   }
 
   // @todo : implement removeKeys, use it in setKeys, replace all usage in code
