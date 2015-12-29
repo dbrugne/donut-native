@@ -4,7 +4,6 @@ var {
   Component,
   View,
   StyleSheet,
-  Dimensions,
   ActivityIndicatorIOS,
   ProgressBarAndroid,
   Platform
@@ -22,11 +21,10 @@ class LoadingModal extends Component {
             (Platform.OS === 'android')
               ? <ProgressBarAndroid styleAttr="Inverse" />
               : <ActivityIndicatorIOS
-              animating={true}
-              style={styles.loading}
-              size='small'
-              color='#666666'
-              />
+                  animating={true}
+                  size='large'
+                  color='#FFF'
+                />
           }
       </View>
     )
@@ -43,9 +41,6 @@ var styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0
-  },
-  loading: {
-    height: 120
   }
 });
 
