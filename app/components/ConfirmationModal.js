@@ -30,14 +30,14 @@ class ConfirmationModal extends Component {
 
   componentDidMount() {
     Animated.timing(this.state.offset, {
-      duration: 150,
+      duration: 250,
       toValue: 0
     }).start();
   }
 
   onCancel() {
     Animated.timing(this.state.offset, {
-      duration: 150,
+      duration: 250,
       toValue: deviceHeight
     }).start(this.props.onCancel);
   }

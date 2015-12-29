@@ -30,7 +30,6 @@ module.exports = StyleSheet.create({
   thumbnailUser: {
     width: 50,
     height: 50,
-    borderRadius: 3,
     position:'absolute',
     left:5,
     top:25
