@@ -14,7 +14,7 @@ var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var navigation = require('../libs/navigation');
 
-var PushNotifications = require('../libs/pushNotifications');
+var PushNotifications = require('../pushNotification/index');
 
 // @todo : if application is backgrounded for > 5 mn disconnect
 // @todo : when disconnected block every views/navigation except drawer+my account+logout

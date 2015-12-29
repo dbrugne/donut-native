@@ -7,9 +7,9 @@
 
 var ParseManagerAndroid = require('NativeModules').NotificationAndroidManager;
 
-var app = require('./app');
-var config = require('./config')();
-var debug = require('./debug')('notifications');
+var app = require('./../libs/app');
+var config = require('./../libs/config')();
+var debug = require('./../libs/debug')('notifications');
 var currentUser = require('../models/current-user');
 
 module.exports = {
