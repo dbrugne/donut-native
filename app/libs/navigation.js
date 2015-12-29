@@ -366,7 +366,7 @@ routes.getGroupAskMembership = function (id) {
       return <GroupAskMembership navigator={navigator} id={id}/>;
     },
     getTitle: function () {
-      return i18next.t('ask-membership');
+      return i18next.t('navigation.ask-membership');
     }
   });
 };
@@ -378,7 +378,7 @@ routes.getGroupAskMembershipRequest = function (element) {
       return <GroupAskMembershipRequest id={element.id} isAllowedPending={element.isAllowedPending}/>;
     },
     getTitle: function () {
-      return i18next.t('local:ask-membership-request');
+      return i18next.t('navigation.ask-membership-request');
     }
   });
 };
@@ -390,7 +390,7 @@ routes.getGroupAskMembershipPassword = function (id) {
       return <GroupAskMembershipPassword navigator={navigator} id={id}/>;
     },
     getTitle: function () {
-      return i18next.t('local:ask-membership-password');
+      return i18next.t('navigation.ask-membership-password');
     }
   });
 };
@@ -402,7 +402,7 @@ routes.getGroupAskMembershipEmail = function (element) {
       return <GroupAskMembershipEmail id={element.id} domains={element.domains} />;
     },
     getTitle: function () {
-      return i18next.t('local:ask-membership-email');
+      return i18next.t('navigation.ask-membership-email');
     }
   });
 };

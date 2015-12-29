@@ -25,23 +25,6 @@ var Button = require('../elements/Button');
 var ListItem = require('../elements/ListItem');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
-  'created': 'created on',
-  'edit': 'edit',
-  'access': 'access',
-  'user-list': 'user list',
-  'allowed-users': 'allowed users',
-  'leave': 'leave this communtiy',
-  'by': 'by',
-  'join': 'join',
-  'request-membership': 'request membership',
-  'create-donut': 'create a donut',
-  'manage-members': 'manage memebers',
-  'donut-list': 'donut list',
-  'message-membership': 'You are not yet a member of this community You can join public donuts or request access to a private donut. Members have special priviledges such as direct access to certain private donuts and to other members of this community.Before you request membership have a glance at this community access conditions :',
-  'message-member': 'You are a member of this community',
-  'message-ban': 'You were banned from this community'
-});
 
 class GroupProfileView extends Component {
   constructor(props) {
@@ -68,7 +51,7 @@ class GroupProfileView extends Component {
             <View style={styles.headerRight}>
               <Text style={styles.identifier}>{this.props.data.identifier}</Text>
               <Link onPress={() => { navigation.switchTo(navigation.getProfile({type: 'user', id: this.props.data.owner_id, identifier: '@' + this.props.data.owner_username})) }}
-                    prepend={i18next.t('local:by')}
+                    prepend={i18next.t('by')}
                     text={'@' + this.props.data.owner_username}
                     type='bold'
                 />
@@ -93,21 +76,21 @@ class GroupProfileView extends Component {
     if ((this.isMember || this.isOwner || this.isAdmin) && !this.isBanned) {
       return (
         <View style={s.alertSuccess}>
-          <Text style={s.alertSuccessText}>{i18next.t('local:message-member')}</Text>
+          <Text style={s.alertSuccessText}>{i18next.t('group.message-member')}</Text>
         </View>
       );
     }
     if (!this.isMember && !this.isBanned && !this.isOwner && !this.isAdmin) {
       return (
         <View style={s.alertWarning}>
-          <Text style={s.alertWarningText}>{i18next.t('local:message-membership')}</Text>
+          <Text style={s.alertWarningText}>{i18next.t('group.message-membership')}</Text>
         </View>
       );
     }
     if (this.isBanned) {
       return (
         <View style={s.alertError}>
-          <Text style={s.alertErrorText}>{i18next.t('local:message-ban')}</Text>
+          <Text style={s.alertErrorText}>{i18next.t('group.message-ban')}</Text>
         </View>
       );
     }
@@ -119,10 +102,10 @@ class GroupProfileView extends Component {
         <View>
           <Button
             type='green'
-            label={i18next.t('local:create-donut')} />
+            label={i18next.t('group.create-donut')} />
           <Button
             type='green'
-            label={i18next.t('local:donut-list')} />
+            label={i18next.t('group.donut-list')} />
         </View>
       );
     }
@@ -131,10 +114,10 @@ class GroupProfileView extends Component {
         <View>
           <Button onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(this.props.data.group_id))}
                   type='blue'
-                  label={i18next.t('local:request-membership')} />
+                  label={i18next.t('group.request-membership')} />
           <Button
             type='blue'
-            label={i18next.t('local:donut-list')} />
+            label={i18next.t('group.donut-list')} />
         </View>
       );
     }
@@ -154,7 +137,7 @@ class GroupProfileView extends Component {
     }
   }
   renderCreatedAt () {
-    var text = i18next.t('local:created') + ' ' + date.longDateTime(this.props.data.created);
+    var text = i18next.t('group.created') + ' ' + date.longDateTime(this.props.data.created);
     return (
       <ListItem
           text={text}
@@ -176,26 +159,26 @@ class GroupProfileView extends Component {
       list = (
         <View>
           <ListItem
-              text={i18next.t('local:edit')}
+              text={i18next.t('group.edit')}
               first={true}
               action='true'
               type='button'
               icon='fontawesome|pencil'
             />
           <ListItem
-              text={i18next.t('local:access')}
+              text={i18next.t('group.access')}
               action='true'
               type='button'
               icon='fontawesome|key'
             />
           <ListItem
-              text={i18next.t('local:user-list')}
+              text={i18next.t('group.user-list')}
               action='true'
               type='button'
               icon='fontawesome|users'
             />
           <ListItem
-              text={i18next.t('local:allowed-users')}
+              text={i18next.t('group.allowed-users')}
               action='true'
               type='button'
               icon='fontawesome|check-circle'
@@ -207,7 +190,7 @@ class GroupProfileView extends Component {
     if (!this.isOwner && this.isMember) {
       quit = (
         <ListItem
-            text={i18next.t('local:leave')}
+            text={i18next.t('group.leave')}
             first={!(this.isOp || this.isAdmin)}
             action='true'
             type='button'

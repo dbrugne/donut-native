@@ -22,14 +22,6 @@ var MembershipPassword = require('./GroupAskMembershipPassword');
 var MembershipEmail = require('./GroupAskMembershipEmail');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
-  'message': 'Members have special priviledges such as direct access to certain private donuts and to other members of this community.',
-  'from': 'Message from ',
-  'request-title': 'I request membership',
-  'password-title': 'I have the password',
-  'email-title': 'I have an authorized e-mail',
-  'other-request': 'You can join this community only if invited by its moderators.'
-});
 
 class GroupAskMembership extends Component {
 
@@ -86,7 +78,7 @@ class GroupAskMembership extends Component {
       if (this.data.options.disclaimer) {
         disclaimer = (
           <View style={s.alertWarning}>
-            <Text>{i18next.t('local:from')} @{this.data.options.owner_username}:</Text>
+            <Text>{i18next.t('group.message-from')} @{this.data.options.owner_username}:</Text>
             <View style={{flexDirection: 'row'}}>
               <Icon
                 name='fontawesome|quote-right'
@@ -102,7 +94,7 @@ class GroupAskMembership extends Component {
       return (
         <View style={styles.main}>
           <View style={styles.container}>
-            <Text style={styles.message}>{i18next.t('local:message')}</Text>
+            <Text style={styles.message}>{i18next.t('group.message-not-member')}</Text>
             {disclaimer}
           </View>
           <View style={styles.containerOptions}>
@@ -127,7 +119,7 @@ class GroupAskMembership extends Component {
       if (this.data.options.request) {
         request = (
           <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipRequest({id: this.props.id, isAllowedPending: this.data.options.isAllowedPending}))}
-            text={i18next.t('local:request-title')}
+            text={i18next.t('group.request-title')}
             first={true}
             action='true'
             type='button'
@@ -137,7 +129,7 @@ class GroupAskMembership extends Component {
       if (this.data.options.password) {
         password = (
           <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipPassword(this.props.id))}
-            text={i18next.t('local:password-title')}
+            text={i18next.t('group.password-title')}
             first={(!this.data.options.request)}
             last={(!this.data.options.email)}
             action='true'
@@ -148,7 +140,7 @@ class GroupAskMembership extends Component {
       if (this.data.options.allowed_domains) {
         email = (
           <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipEmail({id: this.props.id, domains: this.data.options.allowed_domains}))}
-            text={i18next.t('local:email-title')}
+            text={i18next.t('group.email-title')}
             last={true}
             action='true'
             type='button'
@@ -178,7 +170,7 @@ class GroupAskMembership extends Component {
         }
     } else {
       return (
-        <View><Text>{i18next.t('local:other-request')}</Text></View>
+        <View><Text>{i18next.t('group.other-request')}</Text></View>
       );
     }
   }
