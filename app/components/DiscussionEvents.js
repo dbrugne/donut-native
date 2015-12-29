@@ -52,7 +52,7 @@ class DiscussionEvents extends Component {
     };
 
     this.wasFocusedAtLeastOneTime = false;
-    this.numberOfEventsToRetrieve = 3;
+    this.numberOfEventsToRetrieve = 40;
 
     app.on('room:join', this.onJoin, this);
   }
