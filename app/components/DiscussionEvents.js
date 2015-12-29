@@ -39,7 +39,7 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class DiscussionEvents extends Component {
-  markAsViewedTimeout = null
+  markAsViewedTimeout = null;
 
   constructor (props) {
     super(props);

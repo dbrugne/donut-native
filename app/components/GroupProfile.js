@@ -9,10 +9,8 @@ var {
   Component,
   Image,
   ScrollView
-  } = React;
-var {
-  Icon
-  } = require('react-native-icons');
+} = React;
+
 
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
@@ -22,134 +20,211 @@ var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
-var Button = require('../elements/Button');
 var Link = require('../elements/Link');
+var Button = require('../elements/Button');
 var ListItem = require('../elements/ListItem');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
-  'created': 'created on',
-  'edit': 'edit',
-  'manage-users': 'manage users',
-  'access': 'access',
-  'by': 'by',
-  'join': 'join'
-});
 
 class GroupProfileView extends Component {
   constructor(props) {
     super(props);
+    this.members_count = (props.data.members && props.data.members.length) ? props.data.members.length : 0;
 
-    this.data = props.data;
-    this.members_count = (this.data.members && this.data.members.length) ? this.data.members.length : '';
+    this.isMember = this.isCurrentUserIsMember();
+    this.isOwner = currentUser.get('user_id') === props.data.owner_id;
+    this.isAdmin = currentUser.isAdmin();
+    this.isOp = this.isCurrentUserIsOP();
+    this.isBanned = this.isCurrentUserIsBan();
   }
 
   render() {
-    var data = this.data;
-    var description = _.unescape(data.description);
+    var avatarUrl = common.cloudinary.prepare(this.props.data.avatar, 120);
+    var description = _.unescape(this.props.data.description);
 
-    var website = null;
-    if (data.website) {
-      website = (
-        <ListItem
-          text={data.website.title}
-          type='edit-button'
-          first={true}
-          action={true}
-          onPress={() => hyperlink.open(data.website.href)}
-          icon='fontawesome|link'
-          />
-      );
-    }
-
-    var createdAt = (
-    <ListItem
-      text={i18next.t('local:created-on', {date: date.longDate(data.created)})}
-      icon='fontawesome|clock-o'
-      />
-    );
-
-    var links = null;
-    if (currentUser.get('user_id') === data.owner_id || currentUser.isAdmin()) {
-      // @todo implement onpress goto group edit
-      // @todo implement onpress goto group users
-      // @todo implement onpress goto group access
-      links = (
-        <View>
-          <ListItem
-            onPress={() => console.log('todo implement group edit')}
-            text={i18next.t('local:edit')}
-            type='edit-button'
-            action={true}
-            icon='fontawesome|pencil'
-            />
-
-          <ListItem
-            onPress={() => console.log('todo implement group users')}
-            text={i18next.t('local:manage-users')}
-            type='edit-button'
-            action={true}
-            icon='fontawesome|users'
-            />
-
-          <ListItem
-            onPress={() => console.log('todo implement group access')}
-            text={i18next.t('local:access')}
-            type='edit-button'
-            action={true}
-            icon='fontawesome|key'
-            />
-        </View>
-      );
-    }
-
-    // @todo implement joinGroup @spariaud
+    // render
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
-          {this._renderAvatar(data.avatar)}
-          <Text style={styles.identifier}>{data.identifier}</Text>
-          <Link onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})) }}
-                prepend={i18next.t('local:by')}
-                text={'@' + data.owner_username}
-                type='bold'
-            />
+          <View style={styles.headerContainer}>
+            <Image style={styles.avatar} source={{uri: avatarUrl}}/>
+            <View style={styles.headerRight}>
+              <Text style={styles.identifier}>{this.props.data.identifier}</Text>
+              <Link onPress={() => { navigation.switchTo(navigation.getProfile({type: 'user', id: this.props.data.owner_id, identifier: '@' + this.props.data.owner_username})) }}
+                    prepend={i18next.t('by')}
+                    text={'@' + this.props.data.owner_username}
+                    type='bold'
+                />
+            </View>
+          </View>
           <Text style={styles.description}>{description}</Text>
+          {this.renderMessage()}
         </View>
-        <View style={s.listGroup}>
-          <Text style={s.listGroupItemSpacing}></Text>
-          <ListItem
-            text={i18next.t('local:join')+' '+this.members_count}
-            type='edit-button'
-            first={true}
-            action={true}
-            onPress={() => app.trigger('joinUser', data.user_id)}
-            icon='fontawesome|user'
-            iconColor='#f1c40f'
-            />
-
-          <Text style={s.listGroupItemSpacing}></Text>
-          {website}
-          {createdAt}
-          {links}
+        <View style={styles.container2}>
+          {this.renderAction()}
+          <View style={[s.listGroup, {marginTop: 20}]}>
+            {this.renderLinks()}
+            {this.renderWebsite()}
+            {this.renderCreatedAt()}
+          </View>
         </View>
       </ScrollView>
     );
   }
 
-
-  _renderAvatar (avatar) {
-    if (!avatar) {
-      return null;
+  renderMessage () {
+    if ((this.isMember || this.isOwner || this.isAdmin) && !this.isBanned) {
+      return (
+        <View style={s.alertSuccess}>
+          <Text style={s.alertSuccessText}>{i18next.t('group.message-member')}</Text>
+        </View>
+      );
     }
-    var avatarUrl = common.cloudinary.prepare(avatar, 120);
-    if (!avatarUrl) {
-      return null;
+    if (!this.isMember && !this.isBanned && !this.isOwner && !this.isAdmin) {
+      return (
+        <View style={s.alertWarning}>
+          <Text style={s.alertWarningText}>{i18next.t('group.message-membership')}</Text>
+        </View>
+      );
     }
-
+    if (this.isBanned) {
+      return (
+        <View style={s.alertError}>
+          <Text style={s.alertErrorText}>{i18next.t('group.message-ban')}</Text>
+        </View>
+      );
+    }
+    return null;
+  }
+  renderAction () {
+    if ((this.isMember || this.isOwner || this.isAdmin) && !this.isBanned) {
+      return (
+        <View>
+          <Button
+            type='green'
+            label={i18next.t('group.create-donut')} />
+          <Button
+            type='green'
+            label={i18next.t('group.donut-list')} />
+        </View>
+      );
+    }
+    if (!this.isMember && !this.isOp && !this.isBanned && !this.isOwner && !this.isAdmin) {
+      return (
+        <View>
+          <Button onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(this.props.data.group_id))}
+                  type='blue'
+                  label={i18next.t('group.request-membership')} />
+          <Button
+            type='blue'
+            label={i18next.t('group.donut-list')} />
+        </View>
+      );
+    }
+    return null;
+  }
+  renderWebsite () {
+    if (this.props.data.website) {
+      return (
+        <ListItem onPress={() => hyperlink.open(this.props.data.website.href)}
+              text={this.props.data.website.title}
+              first={false}
+              action='true'
+              type='button'
+              icon='fontawesome|link'
+            />
+      );
+    }
+  }
+  renderCreatedAt () {
+    var text = i18next.t('group.created') + ' ' + date.longDateTime(this.props.data.created);
     return (
-      <Image style={styles.avatar} source={{uri: avatarUrl}}/>
+      <ListItem
+          text={text}
+          last={true}
+          action='false'
+          icon='fontawesome|clock-o'
+          />
     );
+  }
+  renderLinks () {
+    var list = null;
+    if (this.isOwner || this.isAdmin || this.isOp) {
+      // @todo implement onpress goto group edit
+      // @todo implement onpress goto group users
+      // @todo implement onpress goto group access
+      // @todo implement onpress goto group users-list
+      // @todo implement onpress goto group user-allowed
+      // @todo implement onpress goto group exit
+      list = (
+        <View>
+          <ListItem
+              text={i18next.t('group.edit')}
+              first={true}
+              action='true'
+              type='button'
+              icon='fontawesome|pencil'
+            />
+          <ListItem
+              text={i18next.t('group.access')}
+              action='true'
+              type='button'
+              icon='fontawesome|key'
+            />
+          <ListItem
+              text={i18next.t('group.user-list')}
+              action='true'
+              type='button'
+              icon='fontawesome|users'
+            />
+          <ListItem
+              text={i18next.t('group.allowed-users')}
+              action='true'
+              type='button'
+              icon='fontawesome|check-circle'
+            />
+        </View>
+      );
+    }
+    var quit = null;
+    if (!this.isOwner && this.isMember) {
+      quit = (
+        <ListItem
+            text={i18next.t('group.leave')}
+            first={!(this.isOp || this.isAdmin)}
+            action='true'
+            type='button'
+            icon='fontawesome|close'
+          />
+      );
+    }
+    return (
+      <View>
+        {list}
+        {quit}
+      </View>
+    );
+  }
+
+  isCurrentUserIsMember () {
+    return !!_.find(this.props.data.members, function (member) {
+      if (currentUser.get('user_id') === member.user_id) {
+        return true; // found
+      }
+    });
+  }
+  isCurrentUserIsOP () {
+    if (!this.members_count) {
+      return false;
+    }
+    return !!_.find(this.props.data.members, function (item) {
+      return (item.user_id === currentUser.get('user_id') && item.is_op === true);
+    });
+  }
+  isCurrentUserIsBan () {
+    return !!(this.props.data.bans && _.find(this.props.data.bans, function (bannedUser) {
+      return bannedUser.user_id === currentUser.get('user_id');
+    }));
   }
 }
 
@@ -169,17 +244,25 @@ var styles = StyleSheet.create({
     flex: 1,
     borderTopWidth: 1,
     borderStyle: 'solid',
-    borderColor: '#DDD',
-    paddingTop: 10
+    borderColor: '#DDD'
+  },
+  headerContainer: {
+    flexDirection: 'row'
   },
   avatar: {
-    width: 120,
-    height: 120,
+    width: 80,
+    height: 80,
     borderRadius: 60,
     marginTop: 20,
     marginBottom: 10,
     borderColor: '#DCDCDC',
     borderWidth: 2
+  },
+  headerRight: {
+    flexDirection: 'column',
+    marginLeft: 10,
+    alignItems: 'center',
+    alignSelf: 'center'
   },
   identifier: {
     color: '#333333',

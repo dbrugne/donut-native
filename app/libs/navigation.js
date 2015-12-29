@@ -342,6 +342,71 @@ routes.getProfile = function (element) {
     }
   });
 };
+
+routes.getGroup = function (element) {
+  return getRoute({
+    id: 'group-home',
+    renderScene: function (navigator) {
+      let GroupHome = require('../screens/GroupHome');
+      return <GroupHome navigator={navigator} element={element} />;
+    },
+    getTitle: function () {
+      return '#' + element.name;
+    },
+    renderLeftButton: function (navigator) {
+      return (<LeftNavigation navigator={navigator} />);
+    }
+  });
+};
+routes.getGroupAskMembership = function (id) {
+  return getRoute({
+    id: 'group-ask-membership' + id,
+    renderScene: function (navigator) {
+      let GroupAskMembership = require('../views/GroupAskMembership');
+      return <GroupAskMembership navigator={navigator} id={id}/>;
+    },
+    getTitle: function () {
+      return i18next.t('navigation.ask-membership');
+    }
+  });
+};
+routes.getGroupAskMembershipRequest = function (element) {
+  return getRoute({
+    id: 'group-ask-membership-request' + element.id + '-' + element.isAllowedPending,
+    renderScene: function () {
+      let GroupAskMembershipRequest = require('../views/GroupAskMembershipRequest');
+      return <GroupAskMembershipRequest id={element.id} isAllowedPending={element.isAllowedPending}/>;
+    },
+    getTitle: function () {
+      return i18next.t('navigation.ask-membership-request');
+    }
+  });
+};
+routes.getGroupAskMembershipPassword = function (id) {
+  return getRoute({
+    id: 'group-ask-membership-password' + id,
+    renderScene: function (navigator) {
+      let GroupAskMembershipPassword = require('../views/GroupAskMembershipPassword');
+      return <GroupAskMembershipPassword navigator={navigator} id={id}/>;
+    },
+    getTitle: function () {
+      return i18next.t('navigation.ask-membership-password');
+    }
+  });
+};
+routes.getGroupAskMembershipEmail = function (element) {
+  return getRoute({
+    id: 'group-ask-membership-email' + element.id,
+    renderScene: function () {
+      let GroupAskMembershipEmail = require('../views/GroupAskMembershipEmail');
+      return <GroupAskMembershipEmail id={element.id} domains={element.domains} />;
+    },
+    getTitle: function () {
+      return i18next.t('navigation.ask-membership-email');
+    }
+  });
+};
+
 routes.getMyAccount = function () {
   return getRoute({
     id: 'my-account',
@@ -470,6 +535,7 @@ routes.getDiscussionSettings = function (id, model) {
     }
   });
 };
+
 routes.getDiscussion = function (id, model) {
   return getRoute({
     id: 'discussion-' + id,
