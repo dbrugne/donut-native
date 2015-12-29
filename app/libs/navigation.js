@@ -518,6 +518,30 @@ routes.getBlockedDiscussion = function (id, model) {
     }
   });
 };
+routes.getRoomUsers = function (id, model) {
+  return getRoute({
+    id: 'room-users-' + id,
+    renderScene: function (navigator) {
+      let RoomUsers = require('../views/RoomUsers');
+      return <RoomUsers navigator={navigator} model={model} />;
+    },
+    getTitle: function () {
+      return i18next.t('navigation.room-users');
+    }
+  });
+};
+routes.getManageUser = function (roomId, user, fc) {
+  return getRoute({
+    id: 'manage-user-' + user.user_id,
+    renderScene: function (navigator) {
+      let RoomUsers = require('../views/ManageUser');
+      return <RoomUsers navigator={navigator} user={user} roomId={roomId} fc={fc}/>;
+    },
+    getTitle: function () {
+      return i18next.t('navigation.manage-user');
+    }
+  });
+};
 routes.getUserFieldEdit = function (data) {
   return getRoute({
     renderScene: function (navigator) {

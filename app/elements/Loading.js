@@ -5,7 +5,9 @@ var {
   Component,
   StyleSheet,
   View,
-  ActivityIndicatorIOS
+  ActivityIndicatorIOS,
+  ProgressBarAndroid,
+  Platform
 } = React;
 
 class Loading extends Component {
@@ -17,12 +19,16 @@ class Loading extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.centered}>
-          <ActivityIndicatorIOS
-            animating={true}
-            style={styles.loading}
-            size='small'
-            color='#666666'
-            />
+          {
+            (Platform.OS === 'android')
+            ? <ProgressBarAndroid styleAttr="Inverse" />
+            : <ActivityIndicatorIOS
+              animating={true}
+              style={styles.loading}
+              size='small'
+              color='#666666'
+              />
+          }
         </View>
       </View>
     )

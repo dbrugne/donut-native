@@ -3,6 +3,8 @@
   "save": "save",
   "online": "online",
   "offline": "offline",
+  "owner": "owner",
+  "op": "moderator",
   "messages": {
     "success": "success",
     "validation-email-sent" : "A validation email have been sent",
@@ -54,6 +56,7 @@
     "settings": "Settings",
     "settings-blocked": "Settings",
     "change-value": "Change a value",
+    "room-users": "Room users",
     "back": "BACK"
   }
 }
