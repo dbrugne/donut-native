@@ -64,11 +64,14 @@ class InputView extends Component {
     this.refs.input.focus(); // @todo : not working due to blurOnSubmit https://github.com/facebook/react-native/pull/2149
   }
   _addImage () {
-    imageUpload.getImageAndUpload(null, 'discussion', (err, response) => {
-      if (err) {
-        return Alert.show(err);
+    imageUpload.pickImage((canceled, response) => {
+      if (canceled) {
+        return;
       }
-      this.model.sendMessage(null, [response]);
+      // set image source for the confirmation modal
+      this.props.setImageSource(response.data);
+      // show confirmation modal with the image
+      this.props.showConfirmationModal();
     });
   }
 }

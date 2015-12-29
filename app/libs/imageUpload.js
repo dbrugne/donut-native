@@ -1,6 +1,5 @@
 'use strict';
 var React = require('react-native');
-var Alert = require('./alert');
 var cloudinary = require('./cloudinary');
 var _ = require('underscore');
 
@@ -31,7 +30,6 @@ exports.pickImage = function (callback) {
 };
 
 exports.uploadToCloudinary = function (base64File, tags, preset, callback) {
-  Alert.show(i18next.t('local:uploading'));
   cloudinary.upload(base64File, tags, preset, (err, data) => {
     if (data && data.error) {
       return callback(data.error.message);
