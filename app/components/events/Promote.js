@@ -59,7 +59,7 @@ module.exports = React.createClass({
     }
     return (
       <View style={[{flexDirection: 'row', marginVertical: 0, flexWrap: 'wrap'}, s.event]}>
-        <Image style={s.statusBlockAvatar} source={{uri: this.props.data.avatar}}/>
+        {this._renderAvatar(this.props.data.avatar)}
         <View style={{flexDirection:'column', flex:1, flexWrap: 'wrap'}}>
           <View style={{flexDirection:'row'}}>
             <Username
@@ -82,6 +82,15 @@ module.exports = React.createClass({
             </View>
         </View>
       </View>
+    );
+  },
+  _renderAvatar (avatar) {
+    if (!avatar) {
+      return null;
+    }
+
+    return (
+      <Image style={s.statusBlockAvatar} source={{uri: avatar}}/>
     );
   }
 });

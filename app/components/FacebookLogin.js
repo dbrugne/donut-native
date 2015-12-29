@@ -30,7 +30,7 @@ module.exports = React.createClass({
     var useFacebookToken = null;
     if (currentUser.hasFacebookToken()) {
       var data = currentUser.getFacebookData();
-      var avatar = (data && data.picture)
+      var avatar = (data && data.picture && data.picture.data && data.picture.data.url)
         ? (<Image source={{uri: data.picture.data.url}} style={{width: 50, height: 50, marginBottom:10, alignSelf: 'center'}} />)
         : null;
       var message = (data && data.name)

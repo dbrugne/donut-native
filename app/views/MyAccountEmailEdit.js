@@ -15,7 +15,7 @@ var {
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'modal-title': 'Delete email',
-  'modal-description': 'Are you sure you whant to delete this email ? This action is irreversible and cannot be undone',
+  'modal-description': 'Are you sure you want to delete this email ? This action is irreversible and cannot be undone',
   'delete': 'delete',
   'validated': 'THIS EMAIL WAS VALIDATED',
   'not-validated': 'THIS EMAIL WASN\'T VALIDATED',

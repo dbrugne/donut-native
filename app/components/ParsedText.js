@@ -13,7 +13,7 @@ var s = require('../styles/events');
 module.exports = React.createClass({
   render () {
     if (!this.props.children) {
-      return (<View></View>);
+      return (<View />);
     }
 
     return (

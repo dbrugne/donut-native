@@ -22,9 +22,6 @@ class Link extends Component {
    */
   constructor (props) {
     super(props);
-
-    this.prepend = (this.props.prepend ? this.props.prepend + ' ' : '');
-    this.append = (this.props.append ? ' ' + this.props.append : '');
   }
 
   render() {
@@ -50,7 +47,7 @@ class Link extends Component {
     }
 
     return (
-      <Element {...this.props} prepend={this.prepend} append={this.append} />
+      <Element {...this.props} />
     );
   }
 }

@@ -44,9 +44,6 @@ class DiscussionBlocked extends Component {
   }
 
   render() {
-
-    let avatarUrl = common.cloudinary.prepare(this.props.model.get('avatar'), 120);
-
     let description = null;
     if (this.props.model.get('description')) {
       description = (
@@ -68,7 +65,7 @@ class DiscussionBlocked extends Component {
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
-          <Image style={styles.avatar} source={{uri: avatarUrl}}/>
+          {this._renderAvatar(this.props.model.get('avatar'))}
           <Text style={styles.identifier}>{this.props.model.get('identifier')}</Text>
           <TouchableHighlight onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: this.props.model.get('owner_id'), identifier: '@' + this.props.model.get('owner_username')})); }}>
             <Text>
@@ -92,6 +89,20 @@ class DiscussionBlocked extends Component {
 
         </View>
       </ScrollView>
+    );
+  }
+
+  _renderAvatar (avatar) {
+    if (!avatar) {
+      return null;
+    }
+    var avatarUrl = common.cloudinary.prepare(avatar, 120);
+    if (!avatarUrl) {
+      return null;
+    }
+
+    return (
+      <Image style={styles.avatar} source={{uri: avatarUrl}}/>
     );
   }
 

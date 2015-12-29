@@ -79,7 +79,6 @@ class NavigationOnesView extends Component {
       );
     }
 
-    var avatarUrl = common.cloudinary.prepare(e.avatar, 50);
     return (
       <TouchableHighlight
         style={styles.linkBlock}
@@ -87,14 +86,25 @@ class NavigationOnesView extends Component {
         underlayColor= '#414041'
         >
         <View style={styles.item}>
-          <Image
-            source={{uri: avatarUrl}}
-            style={styles.thumbnail}
-            />
+          {this._renderAvatar(e.avatar)}
           <Text style={styles.itemTitle}>@{e.username}</Text>
           {badge}
         </View>
       </TouchableHighlight>
+    );
+  }
+
+  _renderAvatar (avatar) {
+    if (!avatar) {
+      return null;
+    }
+    var avatarUrl = common.cloudinary.prepare(avatar, 50);
+    if (!avatarUrl) {
+      return null;
+    }
+
+    return (
+      <Image style={styles.thumbnail} source={{uri: avatarUrl}}/>
     );
   }
 };

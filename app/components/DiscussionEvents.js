@@ -31,8 +31,6 @@ var EventStatus = require('./events/Status');
 var EventTopic = require('./events/Topic');
 var EventUser = require('./events/User');
 
-const HISTORY_LIMIT = 40;
-
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'in': 'Your are in',
@@ -54,6 +52,7 @@ class DiscussionEvents extends Component {
     };
 
     this.wasFocusedAtLeastOneTime = false;
+    this.numberOfEventsToRetrieve = 3;
 
     app.on('room:join', this.onJoin, this);
   }
@@ -166,7 +165,7 @@ class DiscussionEvents extends Component {
         <View style={[s.textCenter, {marginVertical: 15}]}>
           {loading}
         </View>
-        <Button onPress={this.onLoadMore.bind(this)}>
+        <Button onPress={() => this.onLoadMore('older')}>
           {i18next.t('local:load-more')}
         </Button>
       </View>
@@ -178,26 +177,40 @@ class DiscussionEvents extends Component {
     );
   }
   onLoadMore () {
-    let end = this.eventsDataSource.getTopItemId();
-    this._loadHistory(end);
+    this.fetchHistory('older');
   }
-  _loadHistory (end) {
-    this.setState({
-      loading: true
-    });
-    this.props.model.history(null, end, HISTORY_LIMIT, (response) => {
-      if (!response.history || !response.history.length) {
-        return this.setState({
-          loading: false,
-          more: false
-        });
+  fetchHistory (direction) {
+    if (direction === 'older') {
+      this.setState({
+        loading: true
+      });
+    }
+
+    let id = (direction === 'older')
+      ? this.eventsDataSource.getTopItemId()
+      : this.eventsDataSource.getBottomItemId();
+
+    this.props.model.history(id, direction, this.numberOfEventsToRetrieve, (response) => {
+      var state = {};
+
+      if (direction === 'older') {
+        state.loading = false;
+        state.more = (response.more || (response.history && response.history.length));
+      } else {
+        if (response.more) {
+          // handle too many new events on refocus
+          this.eventsDataSource.blob = [];
+        }
       }
 
-      this.setState({
-        dataSource: this.eventsDataSource.prepend(response.history),
-        loading: false,
-        more: response.more
-      });
+      if (response.history || response.history.length) {
+        let method = (direction === 'older')
+          ? 'prepend'
+          : 'append';
+        state.dataSource = this.eventsDataSource[method](response.history);
+      }
+
+      this.setState(state);
     });
   }
   onChangeVisibleRows (visibleRows, changedRows) {
@@ -212,14 +225,17 @@ class DiscussionEvents extends Component {
 
     // add on list top, the inverted view will display on bottom
     this.setState({
-      dataSource: this.eventsDataSource.append({type: type, data: data})
+      dataSource: this.eventsDataSource.append([{type: type, data: data}])
     });
   }
   onFocus () {
     // first focus
     if (!this.wasFocusedAtLeastOneTime) {
-      this._loadHistory();
+      this.fetchHistory('older');
       this.wasFocusedAtLeastOneTime = true;
+    } else {
+      // on refocus load history from last blur
+      this.fetchHistory('later');
     }
 
     this.markAsViewedAfterDelay();
