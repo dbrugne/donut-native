@@ -132,10 +132,7 @@ class MyAccountInformation extends Component {
       <View style={styles.container}>
 
         <View style={styles.containerHorizontal}>
-          <Image
-            style={styles.image}
-            source={{uri: this.state.avatar}}
-            />
+          {this._renderAvatar(this.state.avatar)}
           <View style={styles.containerVertical}>
             {realname}
             <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
@@ -185,6 +182,16 @@ class MyAccountInformation extends Component {
         <Text style={s.filler}></Text>
 
       </View>
+    );
+  }
+
+  _renderAvatar (avatar) {
+    if (!avatar) {
+      return null;
+    }
+
+    return (
+      <Image style={styles.image} source={{uri: avatar}}/>
     );
   }
 

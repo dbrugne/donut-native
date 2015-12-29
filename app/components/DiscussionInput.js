@@ -32,6 +32,7 @@ class InputView extends Component {
     app.off(null, null, this);
   }
   render() {
+    var inputPlaceholder = 'Message ' + ((this.model.get('type') === 'room') ? 'dans ' + this.model.get('identifier') : 'à @' + this.model.get('username'));
     return (
       <View style={styles.inputContainer}>
         <Button style={styles.button} onPress={() => this._addImage()}>
@@ -46,7 +47,7 @@ class InputView extends Component {
                    ref='input'
                    onChangeText={(text) => this.setState({text})}
                    onSubmitEditing={this.onSubmit.bind(this)}
-                   placeholder='Envoyer un message'
+                   placeholder={inputPlaceholder}
                    blurOnSubmit={false}
                    value={this.state.text}
                    enablesReturnKeyAutomatically={true}

@@ -21,16 +21,11 @@ class SearchResultUser extends Component {
   }
 
   render () {
-    let avatarUrl = common.cloudinary.prepare(this.props.image, 60);
-
     return (
       <TouchableHighlight onPress={this.props.onPress} >
         <View style={s.container}>
-          <Image
-            source={{uri: avatarUrl}}
-            style={s.thumbnailUser}
-            />
-            {this._renderStatus()}
+          {this._renderThumbnail(this.props.image)}
+          {this._renderStatus()}
           <View style={s.rightContainer}>
             <Text>
               {this._renderRealname()}
@@ -41,6 +36,18 @@ class SearchResultUser extends Component {
         </View>
       </TouchableHighlight>
     );
+  }
+
+  _renderThumbnail (thumbnail) {
+    if (!thumbnail) {
+      return null;
+    }
+    var thumbnailUrl = common.cloudinary.prepare(thumbnail, 60);
+    if (!thumbnailUrl) {
+      return null;
+    }
+
+    return (<Image style={s.thumbnailUser} source={{uri: thumbnailUrl}} />);
   }
 
   _renderRealname() {

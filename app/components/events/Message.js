@@ -89,8 +89,17 @@ module.exports = React.createClass({
         key={this.props.data.id + '-' + index}
         underlayColor='transparent'
         onPress={() => hyperlink.open(element.href)}>
-        <Image style={{width: 100, height: 100, marginLeft: 50, borderRadius:3}} source={{uri: element.thumbnail}} />
+        {this._renderImage(element.thumbnail)}
       </TouchableHighlight>
+    );
+  },
+  _renderImage (url) {
+    if (!url) {
+      return null;
+    }
+
+    return (
+      <Image style={{width: 100, height: 100, marginLeft: 50, borderRadius:3}} source={{uri: url}} />
     );
   }
 });

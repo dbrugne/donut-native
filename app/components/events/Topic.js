@@ -42,7 +42,7 @@ module.exports = React.createClass({
     var time = date.shortTime(this.props.data.time);
     return (
       <View style={[{flexDirection: 'row', marginVertical: 0}, s.event]}>
-        <Image style={s.topicBlockAvatar} source={{uri: this.props.data.avatar}}/>
+        {this._renderAvatar(this.props.data.avatar)}
         <View style={{flexDirection:'column', flex:1, flexWrap: 'wrap'}}>
           <View style={{flexDirection:'row'}}>
             <Username
@@ -58,6 +58,15 @@ module.exports = React.createClass({
           </View>
         </View>
       </View>
+    );
+  },
+  _renderAvatar (avatar) {
+    if (!avatar) {
+      return null;
+    }
+
+    return (
+      <Image style={s.topicBlockAvatar} source={{uri: avatar}}/>
     );
   }
 });
