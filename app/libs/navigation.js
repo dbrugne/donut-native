@@ -244,9 +244,9 @@ var LeftNavigation = React.createClass({
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
         onPress={this.onPress}
         style={ExNavigator.Styles.barBackButton} >
-        <Icon name='fontawesome|clone'
+        <Icon name='fontawesome|bars'
               size={20}
-              color='#3498db'
+              color='#111'
               style={[ExNavigator.Styles.barButtonIcon, {marginTop: 11, marginLeft: 5, width:22, height:22}]} />
         {unviewed}
       </TouchableOpacity>
@@ -720,8 +720,18 @@ routes.RootNavigator = React.createClass({
         content={<Navigation getRootNavigator={() => rootNavigator } />}
         styles={{main: {shadowColor: '#000000', shadowOpacity: 0.4, shadowRadius: 3}}}
         openDrawerOffset={50}
+        panOpenMask={0}
+        acceptPan={false}
+        acceptTap={true}
+        captureGestures={true}
         onOpen={this.onDrawerOpen}
         onClose={this.onDrawerClose}
+        tweenHandler={(ratio) => {
+                    return {
+                        drawer: { shadowRadius: Math.min(ratio*5*5, 5) },
+                        main: { opacity:(2-ratio)/2 },
+                    }
+                }}
         >
         <ExNavigator
           ref='navigator'
