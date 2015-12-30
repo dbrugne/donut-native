@@ -10,12 +10,21 @@ var s = require('../../styles/events');
 
 module.exports = React.createClass({
   render () {
+    var realname = null;
+    if (this.props.realname) {
+      realname = (
+        <Text style={[s.username, this.props.style]}>{this.props.realname+' '}</Text>
+      );
+    }
     return (
       <TouchableHighlight
           underlayColor='transparent'
           onPress={this.onPress}
       >
-        <Text style={[s.username, this.props.style]}>@{this.props.username}</Text>
+        <Text>
+          {realname}
+          <Text style={[s.username, this.props.style, realname && {color:'#999999', fontWeight:'normal'}]}>@{this.props.username}</Text>
+        </Text>
       </TouchableHighlight>
     );
   },

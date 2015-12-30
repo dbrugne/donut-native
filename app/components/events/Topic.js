@@ -2,7 +2,8 @@
 
 var React = require('react-native');
 var {
-  View
+  View,
+  Text,
 } = React;
 
 var ParsedText = require('../ParsedText');
@@ -17,26 +18,27 @@ i18next.addResourceBundle('en', 'local', {
 
 module.exports = React.createClass({
   render () {
-    var topic = null;
-    if (this.props.data.topic) {
-      topic = (
-        <ParsedText navigator={this.props.navigator} style={[s.topicContent, {flexWrap: 'wrap'}]}>
-          {this.props.data.topic}
-        </ParsedText>
+    return (
+      <View style={s.event}>
+        <AbstractEvent
+          {...this.props}
+        >
+          <Text style={{fontSize: 12, fontStyle:'italic', fontFamily: 'Open Sans', color: '#333333', marginLeft:3}}>{this._renderTopic()}</Text>
+        </AbstractEvent>
+      </View>
+    );
+  },
+
+  _renderTopic () {
+    if (!this.props.data.topic) {
+      return (
+        <Text style={{fontSize: 12, fontFamily: 'Open Sans', color: '#666666', marginLeft:3}}>{i18next.t('local:none')}</Text>
       );
     }
-
     return (
-      <View style={{marginTop:5, marginBottom:5}}>
-        <AbstractEvent
-          text={this.props.data.topic ? i18next.t('local:topic') : i18next.t('local:none')}
-          icon='fontawesome|quote-right'
-          {...this.props}
-          />
-        <View style={{marginLeft: 44, flex:1}}>
-          {topic}
-        </View>
-      </View>
+      <ParsedText navigator={this.props.navigator} style={{fontSize: 12, fontFamily: 'Open Sans', color: '#666666'}}>
+        {i18next.t('local:topic')+': "'+this.props.data.topic+'"'}
+      </ParsedText>
     );
   }
 });

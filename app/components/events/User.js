@@ -15,11 +15,15 @@ module.exports = React.createClass({
     var time = date.shortTime(this.props.data.time);
 
     return (
-      <View style={s.userBlock}>
+      <View style={[s.userBlock, s.event]}>
         {this._renderAvatar(this.props.data.avatar)}
-        <View style={{flexDirection:'row', marginLeft:50}}>
-          <Username style={s.username} user_id={this.props.data.user_id} username={this.props.data.username} navigator={this.props.navigator} />
-          <Text style={{color: '#666666', fontSize: 12, fontFamily: 'Open Sans', marginLeft: 5}}>{time}</Text>
+        <View style={{flexDirection:'row', marginLeft:55}}>
+          <Username style={s.username}
+                    user_id={this.props.data.user_id}
+                    username={this.props.data.username}
+                    realname={this.props.data.realname}
+                    navigator={this.props.navigator} />
+          <Text style={s.time}>{time}</Text>
         </View>
       </View>
     );

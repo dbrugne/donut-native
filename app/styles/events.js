@@ -7,7 +7,6 @@ var {
 
 module.exports = StyleSheet.create({
   event: {
-    marginHorizontal: 10,
     marginVertical: 10
   },
   statusBlock: {
@@ -52,17 +51,15 @@ module.exports = StyleSheet.create({
     color: '#666666'
   },
   userBlock: {
-    flexDirection: 'row',
-    marginTop: 20,
-    height: 20
+    flexDirection: 'row'
   },
   userBlockAvatar: {
-    width: 30,
-    height: 30,
+    width: 34,
+    height: 34,
     position: 'absolute',
     top: 0,
     left: 10,
-    borderRadius:4
+    borderRadius:3
   },
   userBlockUsernameContainer: {
     flexDirection: 'row',
@@ -77,11 +74,12 @@ module.exports = StyleSheet.create({
     fontFamily: 'Open Sans',
     color: '#333333'
   },
+  time: {color: '#999', fontSize: 12, fontFamily: 'Open Sans', marginLeft:3},
   date: {
-    color: '#666666', fontSize: 12, fontFamily: 'Open Sans'
+    color: '#999999', fontSize: 12, fontFamily: 'Open Sans'
   },
   message: {
-    marginLeft: 50
+    marginLeft: 55
   },
   messageContent: {
     fontSize: 14,
