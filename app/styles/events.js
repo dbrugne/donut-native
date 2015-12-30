@@ -14,18 +14,6 @@ module.exports = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 2
   },
-  topicBlockAvatar: {
-    width: 30,
-    height: 30,
-    borderRadius:4,
-    marginRight:10
-  },
-  topicContent: {
-    fontSize: 12,
-    fontFamily: 'Open Sans',
-    fontStyle: 'italic',
-    color: '#666666'
-  },
   dateBlock: {
     height:20,
     flexDirection: 'row',
@@ -61,13 +49,6 @@ module.exports = StyleSheet.create({
     left: 10,
     borderRadius:3
   },
-  userBlockUsernameContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    marginLeft: 50,
-    paddingTop: 3
-  },
   username: {
     fontWeight: 'bold',
     fontSize: 12,
@@ -78,11 +59,8 @@ module.exports = StyleSheet.create({
   date: {
     color: '#999999', fontSize: 12, fontFamily: 'Open Sans'
   },
-  message: {
-    marginLeft: 55
-  },
   messageContent: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Open Sans'
   },
   linksUrl: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
@@ -92,5 +70,6 @@ module.exports = StyleSheet.create({
   linksUser: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
   linksGroup: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
   spammed: { fontStyle: 'italic', color: '#333', fontFamily: 'Open sans', fontSize: 12 },
+  eventText: { fontSize: 12, fontStyle:'italic', fontFamily: 'Open Sans', color: '#333333' },
   edited: { color: '#0480be', fontFamily: 'Open sans', fontSize: 10 }
 });

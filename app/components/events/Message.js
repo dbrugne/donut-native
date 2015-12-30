@@ -54,9 +54,14 @@ module.exports = React.createClass({
     }
 
     return (
-      <View key={this.props.data.id}>
-        <View style={s.message}>{message}</View>
-        {this.renderFiles()}
+      <View key={this.props.data.id} style={{marginBottom: 10}}>
+        <View style={{flexDirection: 'row'}}>
+          <View style={{width: 55, backgroundColor:'red'}}></View>
+          <View style={{flexDirection: 'column', flex:1}}>
+            <View style={{}}>{message}</View>
+            {this.renderFiles()}
+          </View>
+        </View>
       </View>
     );
   },
@@ -105,7 +110,7 @@ module.exports = React.createClass({
     }
 
     return (
-      <Image style={{width: 100, height: 100, marginLeft: 50, borderRadius:3}} source={{uri: url}} />
+      <Image style={{width: 100, height: 100, marginTop:5, borderRadius:3}} source={{uri: url}} />
     );
   }
 });

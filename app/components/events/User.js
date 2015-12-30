@@ -15,7 +15,7 @@ module.exports = React.createClass({
     var time = date.shortTime(this.props.data.time);
 
     return (
-      <View style={[s.userBlock, s.event]}>
+      <View style={[s.userBlock, s.event, {marginBottom:0}]}>
         {this._renderAvatar(this.props.data.avatar)}
         <View style={{flexDirection:'row', marginLeft:55}}>
           <Username style={s.username}

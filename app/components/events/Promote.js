@@ -3,14 +3,8 @@
 var React = require('react-native');
 var {
   Text,
-  View,
-  Image
+  View
 } = React;
-var {
-  Icon
-  } = require('react-native-icons');
-
-var date = require('../../libs/date');
 var Username = require('./Username');
 var s = require('../../styles/events');
 var AbstractEvent = require('./AbstractEvent');
@@ -32,7 +26,7 @@ i18next.addResourceBundle('en', 'local', {
 
 module.exports = React.createClass({
   render () {
-    let message, _icon, _color;
+    let message;
     switch (this.props.type) {
       case 'room:op':            message = i18next.t('local:room-op');            break;
       case 'room:deop':          message = i18next.t('local:room-deop');          break;
@@ -46,7 +40,6 @@ module.exports = React.createClass({
       case 'user:ban':           message = i18next.t('local:user-ban');           break;
       case 'user:deban':         message = i18next.t('local:user-deban');         break;
     }
-    //let time = date.shortTime(this.props.data.time);
 
     return (
       <View style={s.event}>
@@ -54,7 +47,7 @@ module.exports = React.createClass({
           {...this.props}
           >
           <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
-            <Text style={[s.statusBlockText, {flexWrap: 'wrap'}]}>{message}</Text>
+            <Text style={s.eventText}>{message}</Text>
             <Username
               style={s.username}
               user_id={this.props.data.by_user_id}
@@ -66,41 +59,5 @@ module.exports = React.createClass({
         </AbstractEvent>
       </View>
     );
-
-
-    //return (
-    //  <View style={[{flexDirection: 'row', marginVertical: 0, flexWrap: 'wrap'}, s.event]}>
-    //    {this._renderAvatar(this.props.data.avatar)}
-    //    <View style={{flexDirection:'column', flex:1, flexWrap: 'wrap'}}>
-    //      <View style={{flexDirection:'row'}}>
-    //        <Username
-    //          style={s.username}
-    //          user_id={this.props.data.user_id}
-    //          username={this.props.data.username}
-    //          navigator={this.props.navigator}
-    //          />
-    //        <Text style={s.time}>{time}</Text>
-    //      </View>
-    //      <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
-    //        <Text style={[s.statusBlockText, {flexWrap: 'wrap'}]}>{message}</Text>
-    //        <Username
-    //          style={s.username}
-    //          user_id={this.props.data.by_user_id}
-    //          username={this.props.data.by_username}
-    //          navigator={this.props.navigator}
-    //          />
-    //      </View>
-    //    </View>
-    //  </View>
-    //);
-  },
-  //_renderAvatar (avatar) {
-  //  if (!avatar) {
-  //    return null;
-  //  }
-  //
-  //  return (
-  //    <Image style={s.statusBlockAvatar} source={{uri: avatar}}/>
-  //  );
-  //}
+  }
 });

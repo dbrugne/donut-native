@@ -23,7 +23,7 @@ module.exports = React.createClass({
         <AbstractEvent
           {...this.props}
         >
-          <Text style={{fontSize: 12, fontStyle:'italic', fontFamily: 'Open Sans', color: '#333333', marginLeft:3}}>{this._renderTopic()}</Text>
+          <Text style={s.eventText}>{this._renderTopic()}</Text>
         </AbstractEvent>
       </View>
     );
@@ -32,7 +32,7 @@ module.exports = React.createClass({
   _renderTopic () {
     if (!this.props.data.topic) {
       return (
-        <Text style={{fontSize: 12, fontFamily: 'Open Sans', color: '#666666', marginLeft:3}}>{i18next.t('local:none')}</Text>
+        <Text style={s.eventText}>{i18next.t('local:none')}</Text>
       );
     }
     return (

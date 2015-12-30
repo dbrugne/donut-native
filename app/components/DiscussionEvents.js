@@ -33,7 +33,7 @@ var EventUser = require('./events/User');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'in': 'Your are in',
+  'in': 'You are in',
   'discuss': 'You discuss with',
   'load-more': 'Load more'
 });
