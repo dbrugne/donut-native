@@ -87,6 +87,7 @@ class GroupRoomsListView extends Component {
           type='room'
           identifier={rowData.identifier}
           description={rowData.description}
+          mode={(!rowData.mode || rowData.mode === 'public') ? 'public' : (rowData.allow_group_member) ? 'member' : 'private'}
           />
       </View>
     );

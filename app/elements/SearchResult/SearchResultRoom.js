@@ -25,7 +25,10 @@ class SearchResultRoom extends Component {
         <View style={s.container}>
           {this._renderThumbnail(this.props.image)}
           <View style={s.rightContainer}>
-            <Text style={s.title}>{this.props.identifier}</Text>
+            <View style={s.topContainer}>
+              <Text style={s.title}>{this.props.identifier}</Text>
+              <Text style={s.mode}>{(this.props.mode) ? this.props.mode : ''}</Text>
+            </View>
             {this._renderDescription()}
           </View>
         </View>

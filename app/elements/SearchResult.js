@@ -16,6 +16,7 @@ class SearchResult extends Component {
    *   onPress: action to do when row is clicked
    *   identifier: identifier of the row (username / room_identifier / group_name)
    *   description (room / group only).
+   *   mode (room[public, private] / group/room[public, private, member] only)
    *   bio (user only).
    *   status (user only).
    *   realname (user only).
