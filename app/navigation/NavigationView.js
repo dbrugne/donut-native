@@ -38,7 +38,6 @@ class NavigationView extends Component {
     return (
       <ScrollView style={styles.main}>
         <CurrentUserView />
-        <View style={[styles.title, { height:10 }]}></View>
         <View>
           <TouchableHighlight style={styles.linkBlock}
                               underlayColor= '#414041'

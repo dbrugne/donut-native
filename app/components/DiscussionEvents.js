@@ -58,6 +58,9 @@ class DiscussionEvents extends Component {
   }
   componentDidMount () {
     this.props.model.on('freshEvent', this.addFreshEvent.bind(this), this);
+    this.props.model.on('messageSpam', this.onMarkedAsSpam.bind(this), this);
+    this.props.model.on('messageUnspam', this.onMarkedAsUnspam.bind(this), this);
+    this.props.model.on('messageEdit', this.onEdited.bind(this), this);
   }
   componentWillUnmount () {
     this.props.model.off(null, null, this);
@@ -226,6 +229,36 @@ class DiscussionEvents extends Component {
     // add on list top, the inverted view will display on bottom
     this.setState({
       dataSource: this.eventsDataSource.append([{type: type, data: data}])
+    });
+  }
+  onMarkedAsSpam (data) {
+    var id = data.event;
+    if (!id) {
+      return;
+    }
+
+    this.setState({
+      dataSource: this.eventsDataSource.updateEvent(id, {spammed: true})
+    });
+  }
+  onMarkedAsUnspam (data) {
+    var id = data.event;
+    if (!id) {
+      return;
+    }
+
+    this.setState({
+      dataSource: this.eventsDataSource.updateEvent(id, {spammed: false})
+    });
+  }
+  onEdited (data) {
+    var id = data.event;
+    if (!id) {
+      return;
+    }
+
+    this.setState({
+      dataSource: this.eventsDataSource.updateEvent(id, {edited: true, message: data.message})
     });
   }
   onFocus () {

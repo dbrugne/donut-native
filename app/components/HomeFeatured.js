@@ -51,7 +51,7 @@ class HomeView extends Component {
         dataSource={this.state.dataSource}
         renderRow={this.renderRow.bind(this)}
         style={{flex: 1}}
-        scrollEnabled={false}
+        scrollEnabled={true}
       />
     );
   }

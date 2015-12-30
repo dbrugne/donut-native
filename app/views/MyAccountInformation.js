@@ -14,6 +14,7 @@ var {
   Component,
   Text,
   View,
+  ScrollView,
   StyleSheet,
   Image
 } = React;
@@ -129,7 +130,8 @@ class MyAccountInformation extends Component {
     }
 
     return (
-      <View style={styles.container}>
+      <ScrollView style={{backgroundColor: '#f0f0f0'}}>
+        <View style={styles.container}>
 
         <View style={styles.containerHorizontal}>
           {this._renderAvatar(this.state.avatar)}
@@ -139,59 +141,60 @@ class MyAccountInformation extends Component {
           </View>
         </View>
 
-        <ListItem text={i18next.t('local:avatar')}
-                  type='edit-button'
-                  first={true}
-                  action={true}
-                  onPress={() => this._updateAvatar()}
-          />
-        <ListItem text={i18next.t('local:color')}
-                  type='color-button'
-                  action={true}
-                  color={this.state.color}
-                  onPress={() => this.props.navigator.push(navigation.getColorPicker())}
-          />
-        <ListItem text={i18next.t('local:realname')}
-                  type='edit-button'
-                  action={true}
-                  value={this.state.realname}
-                  onPress={() => this.onUserEdit(require('../components/UserField/Realname'), this.state.realname)}
-          />
+          <ListItem text={i18next.t('local:avatar')}
+                    type='edit-button'
+                    first={true}
+                    action={true}
+                    onPress={() => this._updateAvatar()}
+            />
+          <ListItem text={i18next.t('local:color')}
+                    type='color-button'
+                    action={true}
+                    color={this.state.color}
+                    onPress={() => this.props.navigator.push(navigation.getColorPicker())}
+            />
+          <ListItem text={i18next.t('local:realname')}
+                    type='edit-button'
+                    action={true}
+                    value={this.state.realname}
+                    onPress={() => this.onUserEdit(require('../components/UserField/Realname'), this.state.realname)}
+            />
 
-        <ListItem text={i18next.t('local:biography')}
-                  type='edit-button'
-                  action={true}
-                  value={this.state.bio}
-                  onPress={() => this.onUserEdit(require('../components/UserField/Bio'), this.state.bio)}
-          />
+          <ListItem text={i18next.t('local:biography')}
+                    type='edit-button'
+                    action={true}
+                    value={this.state.bio}
+                    onPress={() => this.onUserEdit(require('../components/UserField/Bio'), this.state.bio)}
+            />
 
-        <ListItem text={i18next.t('local:location')}
-                  type='edit-button'
-                  action={true}
-                  value={this.state.location}
-                  onPress={() => this.onUserEdit (require('../components/UserField/Location'), this.state.location)}
-          />
+          <ListItem text={i18next.t('local:location')}
+                    type='edit-button'
+                    action={true}
+                    value={this.state.location}
+                    onPress={() => this.onUserEdit (require('../components/UserField/Location'), this.state.location)}
+            />
 
-        <ListItem text={i18next.t('local:website')}
-                  type='edit-button'
-                  action={true}
-                  value={this.state.website}
-                  onPress={() => this.onUserEdit(require('../components/UserField/Website'), this.state.website)}
-          />
+          <ListItem text={i18next.t('local:website')}
+                    type='edit-button'
+                    action={true}
+                    value={this.state.website}
+                    onPress={() => this.onUserEdit(require('../components/UserField/Website'), this.state.website)}
+            />
 
-        <Text style={s.filler}></Text>
+          <Text style={s.filler}></Text>
 
-      </View>
+        </View>
+      </ScrollView>
     );
   }
 
   _renderAvatar (avatar) {
-    if (!avatar) {
+      if (!avatar) {
       return null;
     }
 
     return (
-      <Image style={styles.image} source={{uri: avatar}}/>
+    <Image style={styles.image} source={{uri: avatar}}/>
     );
   }
 
@@ -216,8 +219,7 @@ var styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'center',
-    flex: 1,
-    backgroundColor: '#f0f0f0'
+    flex: 1
   },
   centered: {
     alignSelf: 'center',

@@ -11,6 +11,7 @@ var {
   Text,
   View,
   StyleSheet,
+  ScrollView,
   TextInput,
   TouchableHighlight,
   Image
@@ -38,51 +39,84 @@ class ForgotView extends Component {
 
   render() {
     return (
-      <View style={styles.main}>
-        <View style={styles.logoCtn}>
-          <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
-        </View>
+      <View style={{flex:1, alignItems: 'stretch'}}>
+        <ScrollView
+          ref='scrollView'
+          contentContainerStyle={{flex:1}}
+          keyboardDismissMode='on-drag'
+          style={{flex: 1, backgroundColor: '#FAF9F5'}}>
+          <View>
+            <View style={styles.logoCtn}>
+              <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
+            </View>
 
-        <View style={styles.container}>
-          <Text style={[s.h1, s.textCenter]}>{i18next.t('local:forgot')}</Text>
-          <Text style={[s.spacer, s.p, s.textCenter]}>{i18next.t('local:what')}</Text>
+            <View style={styles.container}>
+              <Text style={[s.h1, s.textCenter]}>{i18next.t('local:forgot')}</Text>
+              <Text style={[s.spacer, s.p, s.textCenter]}>{i18next.t('local:what')}</Text>
 
-          <View style={[s.inputContainer, s.marginTop5]}>
-            <TextInput
-              autoFocus={true}
-              placeholder={i18next.t('local:email')}
-              onChange={(event) => this.setState({email: event.nativeEvent.text})}
-              style={[s.input, s.marginTop10]}
-              value={this.state.email}/>
+              <View ref='email'
+                    style={[s.inputContainer, s.marginTop5]}>
+                <TextInput
+                  placeholder={i18next.t('local:email')}
+                  onChange={(event) => this.setState({email: event.nativeEvent.text})}
+                  onFocus={this.inputFocused.bind(this, 'email')}
+                  onBlur={this.inputBlured.bind(this, 'email')}
+                  keyboardType='email-address'
+                  returnKeyType='done'
+                  style={[s.input, s.marginTop10]}
+                  value={this.state.email}/>
+              </View>
+
+              <Button onPress={(this.onResetPressed.bind(this))}
+                      style={s.marginTop5}
+                      type='pink'
+                      label={i18next.t('local:reset')} />
+
+            </View>
+
+            <View style={styles.linkCtn} >
+              <Icon
+                name='fontawesome|chevron-left'
+                size={14}
+                color='#808080'
+                style={{width: 14, height: 14, marginTop:2, marginRight:2}}
+                />
+
+              <Link onPress={(this.onBack.bind(this))}
+                    text={i18next.t('local:back')}
+                    linkStyle={[s.link, styles.textGray]}
+                    type='bold'
+                />
+            </View>
           </View>
-
-          <Button onPress={(this.onResetPressed.bind(this))}
-                  style={s.marginTop5}
-                  type='pink'
-                  label={i18next.t('local:reset')} />
-
-        </View>
-
-        <View style={styles.linkCtn} >
-          <Icon
-            name='fontawesome|chevron-left'
-            size={14}
-            color='#808080'
-            style={styles.icon}
-            />
-
-          <Link onPress={(this.onBack.bind(this))}
-                text={i18next.t('local:back')}
-                linkStyle={s.link}
-                type='bold'
-            />
-        </View>
+        </ScrollView>
       </View>
     )
   }
 
   onBack() {
     this.props.navigator.pop();
+  }
+
+  inputFocused (refName) {
+    setTimeout(() => {
+      this._updateScroll(refName, 60);
+    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
+  }
+
+  inputBlured (refName) {
+    setTimeout(() => {
+      this._updateScroll(refName, -60);
+    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
+  }
+
+  _updateScroll(refName, offset) {
+    let scrollResponder = this.refs.scrollView.getScrollResponder();
+    scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+      React.findNodeHandle(this.refs[refName]),
+      offset,
+      true
+    );
   }
 
   onResetPressed() {
