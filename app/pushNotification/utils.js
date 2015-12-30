@@ -21,7 +21,8 @@ module.exports = {
         deviceToken: deviceToken,
         channels: ['global'],
         uid: currentUser.getId(),
-        env: config.DONUT_ENVIRONMENT
+        env: config.DONUT_ENVIRONMENT,
+        pushType: 'gcm' // http://upbeat-sound.tistory.com/24
       };
 
       debug.log('registerInstallation', config.parse.url, data);
