@@ -41,7 +41,7 @@ class LoggedOut extends Component {
 
   componentWillUnmount() {
     if (Platform.OS === 'android') {
-      BackAndroid.removeEventListener('hardwareBackPress', () => {});
+      BackAndroid.removeEventListener('hardwareBackPress', () => {return true});
     }
   }
 
