@@ -721,7 +721,6 @@ routes.RootNavigator = React.createClass({
         styles={{main: {shadowColor: '#000000', shadowOpacity: 0.4, shadowRadius: 3}}}
         openDrawerOffset={50}
         panOpenMask={0}
-        acceptPan={false}
         acceptTap={true}
         captureGestures={true}
         onOpen={this.onDrawerOpen}
