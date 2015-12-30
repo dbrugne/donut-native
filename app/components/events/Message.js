@@ -5,6 +5,7 @@ var {
   View,
   Image,
   TouchableHighlight,
+  StyleSheet,
   Text
 } = React;
 var ParsedText = require('../ParsedText');
@@ -16,7 +17,7 @@ var FileComponent = require('../../elements/File');
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'spammed' : 'Message indésirable d\'après le modérateur [Afficher]',
+  'spammed' : 'Message indésirable d\'après le modérateur',
   'placeholder' : 'PLACEHOLDER FOR DOCUMENTS'
 });
 
@@ -25,14 +26,10 @@ module.exports = React.createClass({
     var message;
     if (this.props.data.message) {
       if (this.props.data.spammed) {
-        // @todo add toggle on viewed spammed messages
         message = (
-          <TouchableHighlight
-            key={this.props.data.id}
-            underlayColor='transparent'
-            onPress={() => this._onUnspam(this.props.data.id)} >
-            <Text>{i18next.t('local:spammed')}</Text>
-          </TouchableHighlight>
+          <View>
+            <Text style={s.spammed}>{i18next.t('local:spammed')}</Text>
+          </View>
         );
       } else {
         message = (
@@ -50,9 +47,6 @@ module.exports = React.createClass({
         {this.renderFiles()}
       </View>
     );
-  },
-  _onUnspam (id) {
-    // @todo add logic to display message, probably need to store event content here and re-render when user touch
   },
   renderFiles () {
     if (this.props.data.files && this.props.data.files.length > 0) {
@@ -103,4 +97,3 @@ module.exports = React.createClass({
     );
   }
 });
-

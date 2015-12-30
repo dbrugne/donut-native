@@ -127,6 +127,19 @@ module.exports = function () {
       }
 
       return list;
+    },
+    updateEvent (id, attributes) {
+      _.find(this.blob, (e, idx) => {
+        if (e.data.id !== id) {
+          return false;
+        }
+        _.extend(e.data, attributes);
+        this.blob[idx] = e;
+
+        return true;
+      });
+
+      return this.dataSource.cloneWithRows(this.blob);
     }
   };
 
