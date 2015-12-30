@@ -42,7 +42,6 @@ class UserProfileView extends Component {
   }
   render () {
     var data = this.data;
-    var avatarUrl = common.cloudinary.prepare(data.avatar, 120);
 
     var realname = null;
     if (data.realname) {
@@ -121,7 +120,7 @@ class UserProfileView extends Component {
     return (
       <ScrollView style={styles.main}>
         <View style={[styles.container, {position: 'relative'}]}>
-          <Image style={styles.avatar} source={{uri: avatarUrl}} />
+          {this._renderAvatar(data.avatar)}
           <Text style={[styles.statusText, styles.status, data.status === 'connecting' && styles.statusConnecting, data.status === 'offline' && styles.statusOffline, data.status === 'online' && styles.statusOnline]}>{data.status}</Text>
           {realname}
           <Text style={[styles.username, data.realname && styles.usernameGray ]}>@{data.username}</Text>
@@ -145,6 +144,20 @@ class UserProfileView extends Component {
           {bannedLink}
         </View>
       </ScrollView>
+    );
+  }
+
+  _renderAvatar (avatar) {
+    if (!avatar) {
+      return null;
+    }
+    var avatarUrl = common.cloudinary.prepare(avatar, 120);
+    if (!avatarUrl) {
+      return null;
+    }
+
+    return (
+      <Image style={styles.avatar} source={{uri: avatarUrl}}/>
     );
   }
 }

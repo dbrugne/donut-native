@@ -2,7 +2,6 @@
 var React = require('react-native');
 var _ = require('underscore');
 var currentUser = require('../models/current-user');
-var Button = require('react-native-button');
 var app = require('../libs/app');
 var s = require('../styles/style');
 var ListItem = require('../elements/ListItem');
@@ -26,7 +25,8 @@ i18next.addResourceBundle('en', 'local', {
   'access': 'Access',
   'allowed': 'Allowed users',
   'leave': 'Leave this donut',
-  'close': 'Close this private discussion'
+  'close': 'Close this private discussion',
+  'users': 'Users list'
 }, true, true);
 
 class DiscussionSettings extends Component {
@@ -58,6 +58,13 @@ class DiscussionSettings extends Component {
             first={true}
             action={true}
             />
+          <ListItem
+            onPress={() => {this.props.navigator.push(navigation.getRoomUsers(this.props.model.get('id'), this.props.model));}}
+            text={i18next.t('local:users')}
+            icon='fontawesome|users'
+            type='button'
+            action={true}
+            />
           {this._renderBlock()}
           <Text style={s.listGroupItemSpacing}></Text>
           <ListItem
@@ -79,6 +86,13 @@ class DiscussionSettings extends Component {
             icon='fontawesome|eye'
             type='button'
             first={true}
+            action={true}
+            />
+          <ListItem
+            onPress={() => {this.props.navigator.push(navigation.getRoomUsers(this.props.model.get('id'), this.props.model));}}
+            text={i18next.t('local:users')}
+            icon='fontawesome|users'
+            type='button'
             action={true}
             />
           <ListItem

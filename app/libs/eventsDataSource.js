@@ -10,6 +10,28 @@ var messagesTypes = ['room:message', 'user:message'];
 module.exports = function () {
   var eds = {
     blob: [],
+    getBottomItemId () {
+      var bottom = this.getBottomItem();
+      if (!bottom || !bottom.data) {
+        return;
+      }
+      return bottom.data.id;
+    },
+    getBottomItem () {
+      if (!this.blob.length) {
+        return;
+      }
+
+      var bottom;
+      for (let idx = 0; idx <= this.blob.length; idx++) {
+        bottom = this.blob[idx];
+        if (bottom.type === 'date' || bottom.type === 'user' || !bottom.data) {
+          continue;
+        }
+        break;
+      }
+      return bottom;
+    },
     getTopItemId () {
       var top = this.getTopItem();
       if (!top || !top.data) {
@@ -33,7 +55,7 @@ module.exports = function () {
       return top;
     },
     prepend (items) {
-      // items comes in chronological order
+      // items comes in chronological order, blob is sorted ante-chronologically
 
       // remove top date block if top event is older than today
       if (!date.isSameDay(this.blob[this.blob.length - 1], items[items.length - 1])) {
@@ -61,12 +83,18 @@ module.exports = function () {
       this.blob = this.blob.concat(list);
       return this.dataSource.cloneWithRows(this.blob);
     },
-    append (item) {
-      // add new event at the beginning of this.blob
-      var previous = (this.blob.length)
-        ? this.blob[0]
-        : null;
-      var list = this.decorate(item, previous);
+    append (items) {
+      // items comes in chronological order, blob is sorted ante-chronologically
+
+      // add new events at the beginning of this.blob
+      var list = [];
+      _.each(items, (i, idx) => {
+        let previous = (idx <= 0)
+          ? this.blob[0]
+          : items[idx-1];
+        list = this.decorate(i, previous).concat(list);
+      });
+
       this.blob = list.concat(this.blob);
       return this.dataSource.cloneWithRows(this.blob);
     },
@@ -99,6 +127,19 @@ module.exports = function () {
       }
 
       return list;
+    },
+    updateEvent (id, attributes) {
+      _.find(this.blob, (e, idx) => {
+        if (e.data.id !== id) {
+          return false;
+        }
+        _.extend(e.data, attributes);
+        this.blob[idx] = e;
+
+        return true;
+      });
+
+      return this.dataSource.cloneWithRows(this.blob);
     }
   };
 

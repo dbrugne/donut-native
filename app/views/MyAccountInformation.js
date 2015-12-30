@@ -133,15 +133,11 @@ class MyAccountInformation extends Component {
       <ScrollView style={{backgroundColor: '#f0f0f0'}}>
         <View style={styles.container}>
 
-          <View style={styles.containerHorizontal}>
-            <Image
-              style={styles.image}
-              source={{uri: this.state.avatar}}
-              />
-            <View style={styles.containerVertical}>
-              {realname}
-              <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
-            </View>
+        <View style={styles.containerHorizontal}>
+          {this._renderAvatar(this.state.avatar)}
+          <View style={styles.containerVertical}>
+            {realname}
+            <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
           </View>
 
           <ListItem text={i18next.t('local:avatar')}
@@ -190,6 +186,16 @@ class MyAccountInformation extends Component {
       </ScrollView>
     );
   }
+
+  _renderAvatar (avatar) {
+      if (!avatar) {
+      return null;
+    }
+
+    return (
+    <Image style={styles.image} source={{uri: avatar}}/>
+    );
+  }      
 
   _updateAvatar () {
     imageUpload.getImageAndUpload('user,avatar', null, (err, response) => {

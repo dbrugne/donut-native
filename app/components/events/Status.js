@@ -58,7 +58,7 @@ module.exports = React.createClass({
     var time = date.shortTime(this.props.data.time);
     return (
       <View style={[s.statusBlock, s.event]}>
-        <Image style={s.statusBlockAvatar} source={{uri: this.props.data.avatar}}/>
+        {this._renderAvatar(this.props.data.avatar)}
         <View style={{flexDirection:'column'}}>
           <View style={{flexDirection:'row', justifyContent:'center'}}>
             <Username
@@ -74,6 +74,15 @@ module.exports = React.createClass({
           </View>
         </View>
       </View>
+    );
+  },
+  _renderAvatar (avatar) {
+    if (!avatar) {
+      return null;
+    }
+
+    return (
+      <Image style={s.statusBlockAvatar} source={{uri: avatar}}/>
     );
   }
 });

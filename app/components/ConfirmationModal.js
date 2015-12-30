@@ -7,7 +7,8 @@ var {
   StyleSheet,
   Animated,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
   } = React;
 
 var {
@@ -30,16 +31,13 @@ class ConfirmationModal extends Component {
 
   componentDidMount() {
     Animated.timing(this.state.offset, {
-      duration: 150,
+      duration: 250,
       toValue: 0
     }).start();
   }
 
   onCancel() {
-    Animated.timing(this.state.offset, {
-      duration: 150,
-      toValue: deviceHeight
-    }).start(this.props.onCancel);
+    this.props.onCancel();
   }
 
   onConfirm() {
@@ -53,10 +51,15 @@ class ConfirmationModal extends Component {
     return (
       <Animated.View style={[styles.view, styles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
         <View style={styles.modal}>
-          <View style={{marginTop: 20, marginLeft: 10,  marginRight: 10}}>
-            <Text style={styles.title}>{this.props.title}</Text>
-            <Text style={styles.text}>{this.props.text}</Text>
-          </View>
+          {
+            (this.props.type !== 'image')
+              ? <View style={{marginTop: 20, marginLeft: 10,  marginRight: 10}}>
+                  <Text style={styles.title}>{this.props.title}</Text>
+                  <Text style={styles.text}>{this.props.text}</Text>
+                </View>
+              : <Image source={{uri: 'data:image/png;base64,' + this.props.imageSource, isStatic: true}} style={styles.image}/>
+          }
+
           <View style={styles.actions}>
             <View style={{borderTopWidth: 0.5, borderTopColor: '#333'}}>
               <TouchableOpacity style={styles.button} onPress={() => this.onCancel()}>
@@ -125,6 +128,11 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     marginTop: 10
+  },
+  image: {
+    flex: 1,
+    width: 280,
+    height: 200
   }
 });
 
