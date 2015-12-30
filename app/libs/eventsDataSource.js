@@ -112,6 +112,7 @@ module.exports = function () {
           id: 'user' + item.data.id,
           user_id: item.data.user_id,
           username: item.data.username,
+          realname: item.data.realname,
           avatar: item.data.avatar,
           time: item.data.time
         }}]);
