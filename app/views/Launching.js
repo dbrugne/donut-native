@@ -15,7 +15,7 @@ var Launch = React.createClass({
       : null;
     return (
       <View style={styles.container}>
-        <Image source={require('../assets/logo.png')} resizeMode='contain' style={{width: 350, height: 100}} />
+        <Image source={require('../assets/logo.png')} resizeMode='contain' style={{width: 350, height: 71}} />
         {text}
         <ActivityIndicatorIOS
           animating={true}

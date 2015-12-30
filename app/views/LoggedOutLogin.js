@@ -76,26 +76,38 @@ class LoginView extends Component {
           <View style={styles.orContainer}>
             <Text style={styles.title}> {i18next.t('local:or')} </Text>
           </View>
-          <View style={[s.inputContainer, s.marginTop5]}>
+          <View
+            ref='email'
+            style={[s.inputContainer, s.marginTop5]}>
             <TextInput
+              ref='1'
               placeholder={i18next.t('local:mail')}
               onChange={(event) => this.setState({email: event.nativeEvent.text})}
               style={s.input}
-              onSubmitEditing={() => this._focusNextField('1')}
+              keyboardType='email-address'
+              onSubmitEditing={() => this._focusNextField('2')}
+              onFocus={this.inputFocused.bind(this, 'email')}
+              onBlur={this.inputBlured.bind(this, 'email')}
+              returnKeyType='next'
               value={this.state.email}/>
           </View>
-          <View style={[s.inputContainer, s.marginTop5]}>
+          <View
+            ref='password'
+            style={[s.inputContainer, s.marginTop5]}>
             <TextInput
-              ref='1'
+              ref='2'
               placeholder={i18next.t('local:password')}
               secureTextEntry={true}
               onChange={(event) => this.setState({password: event.nativeEvent.text})}
               style={[s.input, s.marginTop5]}
+              onFocus={this.inputFocused.bind(this, 'password')}
+              onBlur={this.inputBlured.bind(this, 'password')}
+              returnKeyType='done'
               value={this.state.password}/>
           </View>
 
           <Button onPress={(this.onSubmitPressed.bind(this))}
-                  style={s.marginTop5}
+                  style={s.marginTop10}
                   type='pink'
                   label={i18next.t('local:signin')}/>
 
@@ -108,35 +120,62 @@ class LoginView extends Component {
 
         </View>
       );
-
-      var signupButton = (
-        <View style={styles.linkCtn}>
-          <Text style={styles.textGray}>{i18next.t('local:account')}</Text>
-
-          <Link onPress={(this.onCreatePressed.bind(this))}
-                text={i18next.t('local:signup')}
-                style={[s.marginTop10, styles.centered]}
-                linkStyle={s.link}
-                type='bold'
-            />
-        </View>
-      );
     }
 
     return (
-      <View style={styles.main}>
-        <View style={styles.logoCtn}>
-          <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
-        </View>
-        <ScrollView>
-          <View style={styles.container}>
-            <FacebookLogin />
-            {loginForm}
+      <View style={{flex:1, alignItems: 'stretch'}}>
+        <ScrollView
+          ref='scrollView'
+          contentContainerStyle={{flex:1}}
+          keyboardDismissMode='on-drag'
+          style={{flex: 1, backgroundColor: '#FAF9F5'}}>
+          <View>
+            <View style={styles.logoCtn}>
+              <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
+            </View>
+            <View style={styles.container}>
+              <FacebookLogin />
+              {loginForm}
+            </View>
+            <View style={styles.linkCtn}>
+              <Link onPress={(this.onCreatePressed.bind(this))}
+                    text={i18next.t('local:signup')}
+                    style={[s.marginTop10, styles.centered]}
+                    linkStyle={s.link}
+                    prepend={i18next.t('local:account')}
+                    prependStyle={styles.textGray}
+                    type='bold'
+                />
+            </View>
           </View>
         </ScrollView>
-        {signupButton}
       </View>
     );
+  }
+
+  inputFocused (refName) {
+    setTimeout(() => {
+      this._updateScroll(refName, 60);
+    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
+  }
+
+  inputBlured (refName) {
+    setTimeout(() => {
+      this._updateScroll(refName, -60);
+    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
+  }
+
+  _updateScroll(refName, offset) {
+    let scrollResponder = this.refs.scrollView.getScrollResponder();
+    scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+      React.findNodeHandle(this.refs[refName]),
+      offset,
+      true
+    );
+  }
+
+  _focusNextField(nextField) {
+    this.refs[nextField].focus()
   }
 
   onSubmitPressed() {
@@ -165,18 +204,9 @@ class LoginView extends Component {
       component: SignupView
     });
   }
-
-  _focusNextField(nextField) {
-    this.refs[nextField].focus()
-  }
 }
 
 var styles = StyleSheet.create({
-  main: {
-    flexDirection: 'column',
-    flex: 1,
-    backgroundColor: '#FAF9F5'
-  },
   container: {
     paddingLeft: 20,
     paddingRight: 20,
@@ -230,11 +260,6 @@ var styles = StyleSheet.create({
     borderColor: '#344B7D',
     borderStyle: 'solid',
     marginRight: 5
-  },
-  flexible: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   linkCtn: {
     flexDirection: 'row',
