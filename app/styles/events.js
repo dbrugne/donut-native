@@ -25,8 +25,7 @@ module.exports = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Open Sans',
     fontStyle: 'italic',
-    color: '#666666',
-    marginLeft:5
+    color: '#666666'
   },
   dateBlock: {
     height:20,
