@@ -40,13 +40,15 @@ module.exports = React.createClass({
           );
         }
         message = (
-          <ParsedText
-            navigator={this.props.navigator}
-            style={[s.messageContent, {flexWrap: 'wrap'}]}
-          >
-            {this.props.data.message}
+          <Text>
+            <ParsedText
+              navigator={this.props.navigator}
+              style={[s.messageContent, {flexWrap: 'wrap'}]}
+            >
+              {this.props.data.message}
+            </ParsedText>
             {edited}
-          </ParsedText>
+          </Text>
         );
       }
     }
