@@ -118,6 +118,7 @@ class EmailsView extends Component {
       numberOfAdditionalEmails++;
       listRow.push(
         <ListItem
+          key={e.email}
           onPress={() => this.props.navigator.push(navigation.getMyAccountEmailEdit(e, this.fetchData.bind(this)))}
           text={e.email}
           type='button'
