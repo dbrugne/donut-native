@@ -19,11 +19,6 @@ var currentUser = require('../models/current-user');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 
-var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
-  'my-account': 'My account'
-});
-
 class CurrentUserView extends Component {
   constructor (props) {
     super(props);
@@ -62,26 +57,20 @@ class CurrentUserView extends Component {
 
     return (
       <View style={styles.main}>
-        <View style={styles.content}>
-          <View style={styles.avatarCtn}>
-            <TouchableHighlight style={styles.linkBlock}
-                                underlayColor= '#414041'
-                                onPress={() => navigation.switchTo(navigation.getMyAccount())}>
+        <TouchableHighlight
+          underlayColor= '#414041'
+          onPress={() => navigation.switchTo(navigation.getMyAccount())}>
+          <View style={{flexDirection: 'row', backgroundColor: '1D1D1D', alignItems:'center', justifyContent:'center'}}>
+            <View style={styles.avatarCtn}>
               <View style={[styles.linkContainer, {position: 'relative'}]}>
                 {avatar}
                 <Text style={[styles.text, styles.status, user.status === 'connecting' && styles.statusConnecting, user.status === 'offline' && styles.statusOffline, user.status === 'online' && styles.statusOnline]}>{user.status}</Text>
               </View>
-            </TouchableHighlight>
-          </View>
-          <View style={{ flexDirection: 'column', paddingTop:8 }}>
-            <Text style={[styles.text, styles.username]}>{username}</Text>
-            {realname}
-          </View>
-        </View>
-        <TouchableHighlight style={styles.linkBlock}
-                            underlayColor= '#414041'
-                            onPress={() => navigation.switchTo(navigation.getMyAccount())}>
-          <View style={styles.linkContainer}>
+            </View>
+            <View style={{ flexDirection: 'column', flex:1 }}>
+              <Text style={[styles.text, styles.username]}>{username}</Text>
+              {realname}
+            </View>
             <View style={styles.iconCtn}>
               <Icon
                 name='fontawesome|gear'
@@ -90,7 +79,6 @@ class CurrentUserView extends Component {
                 style={styles.icon}
                 />
             </View>
-            <Text style={styles.linkText}>{i18next.t('local:my-account')}</Text>
           </View>
         </TouchableHighlight>
       </View>
@@ -108,17 +96,13 @@ var styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column'
   },
-  content: {
-    flexDirection: 'row',
-    backgroundColor: '1D1D1D'
-  },
   avatarCtn: {
     flexDirection: 'column'
   },
   text: {
     color: '#FFFFFF',
     fontWeight: '500',
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: 'Open Sans'
   },
   avatar: {
