@@ -18,7 +18,8 @@ var FileComponent = require('../../elements/File');
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'spammed' : 'Message indésirable d\'après le modérateur',
-  'placeholder' : 'PLACEHOLDER FOR DOCUMENTS'
+  'placeholder' : 'PLACEHOLDER FOR DOCUMENTS',
+  'edited' : ' (edited)'
 });
 
 module.exports = React.createClass({
@@ -32,11 +33,20 @@ module.exports = React.createClass({
           </View>
         );
       } else {
+        var edited = null;
+        if (this.props.data.edited) {
+          edited = (
+            <Text style={s.edited}>{i18next.t('local:edited')}</Text>
+          );
+        }
         message = (
           <ParsedText
             navigator={this.props.navigator}
             style={[s.messageContent, {flexWrap: 'wrap'}]}
-          >{this.props.data.message}</ParsedText>
+          >
+            {this.props.data.message}
+            {edited}
+          </ParsedText>
         );
       }
     }

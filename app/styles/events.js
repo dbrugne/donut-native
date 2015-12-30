@@ -94,5 +94,6 @@ module.exports = StyleSheet.create({
   linksRoom: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
   linksUser: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
   linksGroup: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
-  spammed: { fontStyle: 'italic', color: '#333', fontFamily: 'Open sans', fontSize: 12 }
+  spammed: { fontStyle: 'italic', color: '#333', fontFamily: 'Open sans', fontSize: 12 },
+  edited: { color: '#0480be', fontFamily: 'Open sans', fontSize: 10 }
 });

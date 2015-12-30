@@ -60,6 +60,7 @@ class DiscussionEvents extends Component {
     this.props.model.on('freshEvent', this.addFreshEvent.bind(this), this);
     this.props.model.on('messageSpam', this.onMarkedAsSpam.bind(this), this);
     this.props.model.on('messageUnspam', this.onMarkedAsUnspam.bind(this), this);
+    this.props.model.on('messageEdit', this.onEdited.bind(this), this);
   }
   componentWillUnmount () {
     this.props.model.off(null, null, this);
@@ -231,7 +232,6 @@ class DiscussionEvents extends Component {
     });
   }
   onMarkedAsSpam (data) {
-    console.log('onMarkedAsSpam');
     var id = data.event;
     if (!id) {
       return;
@@ -242,7 +242,6 @@ class DiscussionEvents extends Component {
     });
   }
   onMarkedAsUnspam (data) {
-    console.log('onMarkedAsUnspam');
     var id = data.event;
     if (!id) {
       return;
@@ -250,6 +249,16 @@ class DiscussionEvents extends Component {
 
     this.setState({
       dataSource: this.eventsDataSource.updateEvent(id, {spammed: false})
+    });
+  }
+  onEdited (data) {
+    var id = data.event;
+    if (!id) {
+      return;
+    }
+
+    this.setState({
+      dataSource: this.eventsDataSource.updateEvent(id, {edited: true, message: data.message})
     });
   }
   onFocus () {
