@@ -136,7 +136,7 @@ class Index extends Component {
     }
   }
   onAddDiscussion (model) {
-    if (this.nextFocus === model.get('id') && model.get('blocked') === false) {
+    if (this.nextFocus === model.get('id') && (model.get('blocked') === false || model.get('type') === 'onetoone')) {
       navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
     } else if (this.nextFocus === model.get('id')) {
       navigation.switchTo(navigation.getBlockedDiscussion(model.get('id'), model));
@@ -174,6 +174,7 @@ class Index extends Component {
       return;
     }
 
+    console.log(id);
     var model = app.ones.find((m) => m.get('user_id') === id);
     if (model) {
       return navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
