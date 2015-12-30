@@ -1,12 +1,14 @@
 'use strict';
 
 var React = require('react-native');
+var Util = require('./util');
+var platformStyle = require('./stylePlatform');
 
 var {
   StyleSheet,
   } = React;
 
-module.exports = StyleSheet.create({
+var style = {
 
   // colors
   // clNavLeft: { color: '#434a54'},
@@ -234,4 +236,6 @@ module.exports = StyleSheet.create({
     color: '#777777',
     fontSize: 12
   }
-});
+};
+
+module.exports = StyleSheet.create(Util.merge(style, platformStyle));
