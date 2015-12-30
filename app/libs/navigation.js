@@ -350,7 +350,7 @@ routes.getGroup = function (element) {
       return <GroupHome navigator={navigator} element={element} />;
     },
     getTitle: function () {
-      return '#' + element.name;
+      return element.identifier;
     },
     renderLeftButton: function (navigator) {
       return (<LeftNavigation navigator={navigator} />);

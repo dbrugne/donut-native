@@ -78,7 +78,7 @@ class NavigationRoomsView extends Component {
         <TouchableHighlight
           style={styles.linkBlock}
           underlayColor= '#414041'
-          onPress={() => navigation.switchTo(navigation.getGroup({name: e.group_name, id: e.group_id}))}
+          onPress={() => navigation.switchTo(navigation.getGroup({identifier: e.identifier, id: e.group_id}))}
           >
           <View style={styles.item}>
             <Text style={styles.itemTitle}>#{e.group_name}</Text>

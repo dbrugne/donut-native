@@ -73,14 +73,14 @@ class GroupProfileView extends Component {
   }
 
   renderMessage () {
-    if ((this.isMember || this.isOwner || this.isAdmin) && !this.isBanned) {
+    if ((this.isMember || this.isOwner) && !this.isBanned) {
       return (
         <View style={s.alertSuccess}>
           <Text style={s.alertSuccessText}>{i18next.t('group.message-member')}</Text>
         </View>
       );
     }
-    if (!this.isMember && !this.isBanned && !this.isOwner && !this.isAdmin) {
+    if (!this.isMember && !this.isBanned && !this.isOwner) {
       return (
         <View style={s.alertWarning}>
           <Text style={s.alertWarningText}>{i18next.t('group.message-membership')}</Text>
@@ -97,7 +97,7 @@ class GroupProfileView extends Component {
     return null;
   }
   renderAction () {
-    if ((this.isMember || this.isOwner || this.isAdmin) && !this.isBanned) {
+    if ((this.isMember || this.isOwner) && !this.isBanned) {
       return (
         <View>
           <Button
@@ -109,7 +109,7 @@ class GroupProfileView extends Component {
         </View>
       );
     }
-    if (!this.isMember && !this.isOp && !this.isBanned && !this.isOwner && !this.isAdmin) {
+    if (!this.isMember && !this.isOp && !this.isBanned && !this.isOwner) {
       return (
         <View>
           <Button onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(this.props.data.group_id))}
