@@ -3,7 +3,6 @@
 var React = require('react-native');
 var SignupView = require('./LoggedOutSignup');
 var ForgotView = require('./LoggedOutForgot');
-var Platform = require('Platform');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var _ = require('underscore');
@@ -29,7 +28,6 @@ var {
   TextInput,
   ScrollView,
   View,
-  BackAndroid,
   Image
   } = React;
 
@@ -52,21 +50,6 @@ class LoginView extends Component {
     this.setState({
       email: currentUser.getEmail()
     });
-    if (Platform.OS === 'android') {
-      BackAndroid.addEventListener('hardwareBackPress', () => {
-        var routes = this.props.navigator.getCurrentRoutes();
-        if (routes && routes.length > 1) {
-          this.props.navigator.pop();
-        }
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    if (Platform.OS === 'android') {
-      BackAndroid.removeEventListener('hardwareBackPress', () => {
-      });
-    }
   }
 
   render() {
