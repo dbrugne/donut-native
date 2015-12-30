@@ -139,6 +139,7 @@ class MyAccountInformation extends Component {
             {realname}
             <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
           </View>
+        </View>
 
           <ListItem text={i18next.t('local:avatar')}
                     type='edit-button'
@@ -195,7 +196,7 @@ class MyAccountInformation extends Component {
     return (
     <Image style={styles.image} source={{uri: avatar}}/>
     );
-  }      
+  }
 
   _updateAvatar () {
     imageUpload.getImageAndUpload('user,avatar', null, (err, response) => {
