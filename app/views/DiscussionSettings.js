@@ -46,7 +46,6 @@ class DiscussionSettings extends Component {
   }
 
   _renderLinks() {
-    console.log(this.props.model.attributes);
     if (this.props.model.get('type') === 'onetoone') {
       return (
         <View style={s.listGroup}>
