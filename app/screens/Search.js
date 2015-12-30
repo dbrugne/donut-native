@@ -127,7 +127,7 @@ class SearchView extends Component {
     } else if (this.state.type === 'groups') {
       return (
         <SearchResult
-          onPress={() => navigation.switchTo(navigation.getGroup({identifier: rowData.identifier, id: rowData.group_id}))}
+          onPress={() => navigation.switchTo(navigation.getGroup({name: rowData.group_name, id: rowData.group_id}))}
           image={rowData.avatar}
           type='group'
           identifier={'#' + rowData.name}
