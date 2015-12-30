@@ -357,6 +357,18 @@ routes.getGroup = function (element) {
     }
   });
 };
+routes.getGroupRoomsList = function (element) {
+  return getRoute({
+    id: 'group-rooms-list',
+    renderScene: function (navigator) {
+      let GroupRoomsList = require('../views/GroupRoomsList');
+      return <GroupRoomsList navigator={navigator} id={element.id} user={element.user}/>;
+    },
+    getTitle: function () {
+      return element.name;
+    }
+  });
+};
 routes.getGroupAskMembership = function (id) {
   return getRoute({
     id: 'group-ask-membership' + id,
