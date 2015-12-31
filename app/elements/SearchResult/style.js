@@ -43,11 +43,19 @@ module.exports = StyleSheet.create({
     flexWrap: 'wrap',
     overflow: 'hidden'
   },
+  topContainer: {
+    flexDirection: 'row'
+  },
   title: {
     fontSize: 16,
     fontFamily: 'Open Sans',
     fontWeight: 'bold',
     color: '#333'
+  },
+  mode: {
+    fontSize: 14,
+    fontFamily: 'Open Sans',
+    alignSelf: 'flex-end'
   },
   description: {
     color: '#777',

@@ -40,21 +40,25 @@ module.exports = React.createClass({
           );
         }
         message = (
-          <ParsedText
-            navigator={this.props.navigator}
-            style={[s.messageContent, {flexWrap: 'wrap'}]}
-          >
-            {this.props.data.message}
+          <Text>
+            <ParsedText
+              navigator={this.props.navigator}
+              style={[s.messageContent, {flexWrap: 'wrap'}]}
+            >
+              {this.props.data.message}
+            </ParsedText>
             {edited}
-          </ParsedText>
+          </Text>
         );
       }
     }
 
     return (
-      <View key={this.props.data.id}>
-        <View style={s.message}>{message}</View>
-        {this.renderFiles()}
+      <View key={this.props.data.id} style={{marginBottom: 10}}>
+        <View style={[{flexDirection: 'column', flex:1, marginLeft:55}, this.props.data.first && {marginLeft:0}]}>
+          <View style={{}}>{message}</View>
+          {this.renderFiles()}
+        </View>
       </View>
     );
   },
@@ -103,7 +107,7 @@ module.exports = React.createClass({
     }
 
     return (
-      <Image style={{width: 100, height: 100, marginLeft: 50, borderRadius:3}} source={{uri: url}} />
+      <Image style={{width: 100, height: 100, marginTop:5, borderRadius:3}} source={{uri: url}} />
     );
   }
 });

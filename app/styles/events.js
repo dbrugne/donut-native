@@ -7,26 +7,12 @@ var {
 
 module.exports = StyleSheet.create({
   event: {
-    marginHorizontal: 10,
     marginVertical: 10
   },
   statusBlock: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 2
-  },
-  topicBlockAvatar: {
-    width: 30,
-    height: 30,
-    borderRadius:4,
-    marginRight:10
-  },
-  topicContent: {
-    fontSize: 12,
-    fontFamily: 'Open Sans',
-    fontStyle: 'italic',
-    color: '#666666',
-    marginLeft:5
   },
   dateBlock: {
     height:20,
@@ -53,24 +39,15 @@ module.exports = StyleSheet.create({
     color: '#666666'
   },
   userBlock: {
-    flexDirection: 'row',
-    marginTop: 20,
-    height: 20
+    flexDirection: 'row'
   },
   userBlockAvatar: {
-    width: 30,
-    height: 30,
+    width: 34,
+    height: 34,
     position: 'absolute',
     top: 0,
     left: 10,
-    borderRadius:4
-  },
-  userBlockUsernameContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    marginLeft: 50,
-    paddingTop: 3
+    borderRadius:3
   },
   username: {
     fontWeight: 'bold',
@@ -78,14 +55,12 @@ module.exports = StyleSheet.create({
     fontFamily: 'Open Sans',
     color: '#333333'
   },
+  time: {color: '#999', fontSize: 12, fontFamily: 'Open Sans', marginLeft:3},
   date: {
-    color: '#666666', fontSize: 12, fontFamily: 'Open Sans'
-  },
-  message: {
-    marginLeft: 50
+    color: '#999999', fontSize: 12, fontFamily: 'Open Sans'
   },
   messageContent: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Open Sans'
   },
   linksUrl: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
@@ -95,5 +70,6 @@ module.exports = StyleSheet.create({
   linksUser: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
   linksGroup: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
   spammed: { fontStyle: 'italic', color: '#333', fontFamily: 'Open sans', fontSize: 12 },
+  eventText: { fontSize: 12, fontStyle:'italic', fontFamily: 'Open Sans', color: '#333333' },
   edited: { color: '#0480be', fontFamily: 'Open sans', fontSize: 10 }
 });

@@ -66,8 +66,10 @@ module.exports = function () {
       if (this.blob.length) {
         var _top = this.blob[this.blob.length - 1]; // date block was removed above
         var _newest = items[items.length - 1];
-        if (_top.type === 'user' && _top.data.user_id === _newest.data.user_id) {
-          this.blob.pop();
+        if (_top.data.first && _top.data.user_id === _newest.data.user_id) {
+          delete _top.data.first;
+          delete _top.data.userBlock;
+          this.blob[this.blob.length - 1] = _top;
         }
       }
 
@@ -99,23 +101,23 @@ module.exports = function () {
       return this.dataSource.cloneWithRows(this.blob);
     },
     decorate (item, previous) {
-      var list = [item];
-
       var isDifferentDay = (!previous || !date.isSameDay(previous.data.time, item.data.time));
 
       // user-block
-      if ((isDifferentDay && messagesTypes.indexOf(item.type) !== -1)||
-        (messagesTypes.indexOf(item.type) !== -1 &&
-        (!previous || previous.data.user_id !== item.data.user_id ||
-        previous.type !== item.type))) {
-        list = list.concat([{type: 'user', data: {
-          id: 'user' + item.data.id,
+      if ((isDifferentDay && messagesTypes.indexOf(item.type) !== -1) ||
+        (messagesTypes.indexOf(item.type) !== -1 && (!previous || previous.data.user_id !== item.data.user_id || previous.type !== item.type))) {
+        item.data.first = true;
+        item.data.userBlock = {
+          id: item.data.id,
           user_id: item.data.user_id,
           username: item.data.username,
-          avatar: item.data.avatar,
+          realname: item.data.realname,
+          avatarRaw: item.data.avatar,
           time: item.data.time
-        }}]);
+        };
       }
+
+      var list = [item];
 
       // date
       if (isDifferentDay) {

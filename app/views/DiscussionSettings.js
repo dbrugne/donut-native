@@ -46,7 +46,7 @@ class DiscussionSettings extends Component {
   }
 
   _renderLinks() {
-    if (this.props.model.get('type') === 'user') {
+    if (this.props.model.get('type') === 'onetoone') {
       return (
         <View style={s.listGroup}>
           <ListItem
@@ -56,13 +56,6 @@ class DiscussionSettings extends Component {
             icon='fontawesome|eye'
             type='button'
             first={true}
-            action={true}
-            />
-          <ListItem
-            onPress={() => {this.props.navigator.push(navigation.getRoomUsers(this.props.model.get('id'), this.props.model));}}
-            text={i18next.t('local:users')}
-            icon='fontawesome|users'
-            type='button'
             action={true}
             />
           {this._renderBlock()}
@@ -126,7 +119,7 @@ class DiscussionSettings extends Component {
   _renderBlock() {
     // @todo implement user block action
     // @todo implement user block action
-    if (this.props.model.get('is_banned') === 'true') {
+    if (this.props.model.get('banned') === false) {
       return (
         <ListItem
           onPress={() => console.log('@todo implement user block action')}

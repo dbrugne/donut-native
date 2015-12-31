@@ -3,11 +3,11 @@ var _ = require('underscore');
 var namespaces = [
 //  'system',
 //  'client',
-//  'oauth',
+  'oauth',
 //  'navigation',
 //  'storage',
 //  'events',
-//  'pushNotification',
+  'pushNotification',
 //  'cloudinary'
 ];
 

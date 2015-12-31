@@ -27,18 +27,20 @@ var ListItem = require('../elements/ListItem');
 var i18next = require('../libs/i18next');
 
 class GroupProfileView extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.members_count = (props.data.members && props.data.members.length) ? props.data.members.length : 0;
 
-    this.isMember = this.isCurrentUserIsMember();
-    this.isOwner = currentUser.get('user_id') === props.data.owner_id;
-    this.isAdmin = currentUser.isAdmin();
-    this.isOp = this.isCurrentUserIsOP();
-    this.isBanned = this.isCurrentUserIsBan();
+    this.user = {
+      isMember : this.isCurrentUserIsMember(),
+      isOwner : currentUser.get('user_id') === props.data.owner_id,
+      isAdmin : app.user.isAdmin(),
+      isOp : this.isCurrentUserIsOP(),
+      isBanned : props.data.i_am_banned
+    }
   }
 
-  render() {
+  render () {
     var avatarUrl = common.cloudinary.prepare(this.props.data.avatar, 120);
     var description = _.unescape(this.props.data.description);
 
@@ -73,21 +75,21 @@ class GroupProfileView extends Component {
   }
 
   renderMessage () {
-    if ((this.isMember || this.isOwner || this.isAdmin) && !this.isBanned) {
+    if ((this.user.isMember || this.user.isOwner) && !this.user.isBanned) {
       return (
         <View style={s.alertSuccess}>
           <Text style={s.alertSuccessText}>{i18next.t('group.message-member')}</Text>
         </View>
       );
     }
-    if (!this.isMember && !this.isBanned && !this.isOwner && !this.isAdmin) {
+    if (!this.user.isMember && !this.user.isBanned && !this.user.isOwner) {
       return (
         <View style={s.alertWarning}>
           <Text style={s.alertWarningText}>{i18next.t('group.message-membership')}</Text>
         </View>
       );
     }
-    if (this.isBanned) {
+    if (this.user.isBanned) {
       return (
         <View style={s.alertError}>
           <Text style={s.alertErrorText}>{i18next.t('group.message-ban')}</Text>
@@ -97,27 +99,27 @@ class GroupProfileView extends Component {
     return null;
   }
   renderAction () {
-    if ((this.isMember || this.isOwner || this.isAdmin) && !this.isBanned) {
+    if ((this.user.isMember || this.user.isOwner) && !this.user.isBanned) {
       return (
         <View>
           <Button
             type='green'
             label={i18next.t('group.create-donut')} />
-          <Button
+          <Button onPress={() => this.props.navigator.push(navigation.getGroupRoomsList({id: this.props.data.group_id, name: this.props.data.identifier, user: this.user}))}
             type='green'
             label={i18next.t('group.donut-list')} />
         </View>
       );
     }
-    if (!this.isMember && !this.isOp && !this.isBanned && !this.isOwner && !this.isAdmin) {
+    if (!this.user.isMember && !this.user.isOp && !this.user.isBanned && !this.user.isOwner) {
       return (
         <View>
           <Button onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(this.props.data.group_id))}
                   type='blue'
                   label={i18next.t('group.request-membership')} />
-          <Button
-            type='blue'
-            label={i18next.t('group.donut-list')} />
+          <Button onPress={() => this.props.navigator.push(navigation.getGroupRoomsList({id: this.props.data.group_id, name: this.props.data.identifier, user: this.user}))}
+                  type='blue'
+                  label={i18next.t('group.donut-list')} />
         </View>
       );
     }
@@ -149,7 +151,7 @@ class GroupProfileView extends Component {
   }
   renderLinks () {
     var list = null;
-    if (this.isOwner || this.isAdmin || this.isOp) {
+    if (this.user.isOwner || this.user.isAdmin || this.user.isOp) {
       // @todo implement onpress goto group edit
       // @todo implement onpress goto group users
       // @todo implement onpress goto group access
@@ -187,7 +189,7 @@ class GroupProfileView extends Component {
       );
     }
     var quit = null;
-    if (!this.isOwner && this.isMember) {
+    if (!this.user.isOwner && this.user.isMember) {
       quit = (
         <ListItem
             text={i18next.t('group.leave')}
@@ -220,11 +222,6 @@ class GroupProfileView extends Component {
     return !!_.find(this.props.data.members, function (item) {
       return (item.user_id === currentUser.get('user_id') && item.is_op === true);
     });
-  }
-  isCurrentUserIsBan () {
-    return !!(this.props.data.bans && _.find(this.props.data.bans, function (bannedUser) {
-      return bannedUser.user_id === currentUser.get('user_id');
-    }));
   }
 }
 

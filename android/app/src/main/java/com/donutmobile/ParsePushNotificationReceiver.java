@@ -28,7 +28,7 @@ import org.json.JSONException;
 public class ParsePushNotificationReceiver extends ParsePushBroadcastReceiver {
     private final String TAG = "ParsePushBroadcastReceiver";
     public static final String PARSE_DATA_KEY = "com.parse.Data";
-    
+
     @Override
     public void onReceive(Context context, Intent intent) {
         JSONObject data = getDataFromIntent(intent);
@@ -131,6 +131,11 @@ public class ParsePushNotificationReceiver extends ParsePushBroadcastReceiver {
         protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
             try {
+                long time = new Date().getTime();
+                String tmpStr = String.valueOf(time);
+                String last4Str = tmpStr.substring(tmpStr.length() - 5);
+                int notificationId = Integer.valueOf(last4Str);
+
                 NotificationManager notificationManager = (NotificationManager) ctx
                         .getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification notification = new Notification.Builder(ctx)
@@ -142,16 +147,13 @@ public class ParsePushNotificationReceiver extends ParsePushBroadcastReceiver {
                 Intent notificationIntent = new Intent(ctx, MainActivity.class);
                 notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                
-                PendingIntent intent = PendingIntent.getActivity(ctx, 0,
-                    notificationIntent, 0);
+
+                PendingIntent intent = PendingIntent.getActivity(ctx, notificationId,
+                    notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 notification.contentIntent = intent;
                 // hide the notification after its selected
                 notification.flags |= Notification.FLAG_AUTO_CANCEL;
-                long time = new Date().getTime();
-                String tmpStr = String.valueOf(time);
-                String last4Str = tmpStr.substring(tmpStr.length() - 5);
-                int notificationId = Integer.valueOf(last4Str);
+
                 Log.d(TAG, "notify : " + notificationId);
                 notificationManager.notify(notificationId, notification);
             } catch (Exception e) {

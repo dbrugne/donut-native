@@ -101,5 +101,11 @@
     "allow-pending": "An access request is already pending",
     "placeholder-request": "Your motivations, background ...",
     "success-request": "Request sent ! You will be notified when accepted."
+  },
+  "events": {
+    "online": "is now online",
+    "offline": "is now offline",
+    "out": "just gone out",
+    "in": "just entered"
   }
 }

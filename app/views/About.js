@@ -13,7 +13,7 @@ var {
   Text,
   ScrollView,
   ListView
-  } = React;
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -42,6 +42,36 @@ class AboutView extends Component {
             <ListItem text={i18next.t('local:version', {version: config.version})}
                       first={true}
                       type='text'
+            />
+            <ListItem text='checkPermissions' type='button'
+                      onPress={() => {
+                      require('../pushNotification/index').checkPermissions();
+                    }}
+            />
+            <ListItem text='requestPermissions' type='button'
+                      onPress={() => {
+                      require('../pushNotification/index').requestPermissions();
+                    }}
+            />
+            <ListItem text='abandonPermissions' type='button'
+                      onPress={() => {
+                      require('../pushNotification/index').abandonPermissions();
+                    }}
+            />
+            <ListItem text='registerInstallation' type='button'
+                      onPress={() => {
+                        var debug2 = require('../libs/debug')('pushNotification');
+                        storage.getKey('deviceToken', (err, deviceToken) => {
+                          if (err) {
+                            return debug2.warn(deviceToken);
+                          }
+                          if (!deviceToken) {
+                            return debug2.warn('no device token for this device');
+                          }
+                          require('../pushNotification/utils').registerInstallation(deviceToken);
+                        });
+
+                      }}
             />
             <ListView
               style={{margin: 10, backgroundColor: '#FFF'}}

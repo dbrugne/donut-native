@@ -15,6 +15,7 @@ var {
   Component,
   ListView
 } = React;
+var _ = require('underscore');
 var Button = require('react-native-button');
 var InvertibleScrollView = require('react-native-invertible-scroll-view');
 
@@ -29,11 +30,11 @@ var EventPromote = require('./events/Promote');
 var EventUserPromote = require('./events/UserPromote');
 var EventStatus = require('./events/Status');
 var EventTopic = require('./events/Topic');
-var EventUser = require('./events/User');
+var UserBlock = require('./events/UserBlock');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'in': 'Your are in',
+  'in': 'You are in',
   'discuss': 'You discuss with',
   'load-more': 'Load more'
 });
@@ -107,6 +108,21 @@ class DiscussionEvents extends Component {
       return (<View />);
     }
 
+    if (event.data.userBlock) {
+      return(
+      <UserBlock
+        navigator={this.props.navigator}
+        data={event.data.userBlock}
+        >
+        <Comp
+          navigator={this.props.navigator}
+          type={event.type}
+          data={data}
+          />
+      </UserBlock>
+      );
+    }
+
     return (
       <Comp
         navigator={this.props.navigator}
@@ -118,9 +134,6 @@ class DiscussionEvents extends Component {
   getComponent (type) {
     if (type === 'date') {
       return EventDate;
-    }
-    if (type === 'user') {
-      return EventUser;
     }
     if (type === 'room:topic') {
       return EventTopic;

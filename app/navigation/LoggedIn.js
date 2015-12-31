@@ -3,7 +3,9 @@
 var React = require('react-native');
 
 var {
-  Component
+  Component,
+  BackAndroid,
+  Platform
 } = React;
 var Launching = require('../views/Launching');
 var ChooseUsername = require('../views/ChooseUsername');
@@ -42,6 +44,16 @@ class Index extends Component {
     // push notifications
     PushNotifications.componentDidMount();
 
+    // back android
+    if (Platform.OS === 'android') {
+      BackAndroid.addEventListener('hardwareBackPress', () => {
+        var focusedRoute = navigation.getFocusedRoute();
+        focusedRoute.onBack();
+        // if callback don't return true the default callback is called
+        return true;
+      });
+    }
+
     // client
     app.client.connect();
   }
@@ -58,6 +70,11 @@ class Index extends Component {
 
     // push notifications
     PushNotifications.componentWillUnmount();
+
+    // back android
+    if (Platform.OS === 'android') {
+      BackAndroid.removeEventListener('hardwareBackPress', () => {return true});
+    }
 
     // client
     app.client.disconnect();
@@ -136,7 +153,7 @@ class Index extends Component {
     }
   }
   onAddDiscussion (model) {
-    if (this.nextFocus === model.get('id') && model.get('blocked') === false) {
+    if (this.nextFocus === model.get('id') && (model.get('blocked') === false || model.get('type') === 'onetoone')) {
       navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
     } else if (this.nextFocus === model.get('id')) {
       navigation.switchTo(navigation.getBlockedDiscussion(model.get('id'), model));
@@ -174,6 +191,7 @@ class Index extends Component {
       return;
     }
 
+    console.log(id);
     var model = app.ones.find((m) => m.get('user_id') === id);
     if (model) {
       return navigation.switchTo(navigation.getDiscussion(model.get('id'), model));

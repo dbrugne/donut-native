@@ -19,6 +19,10 @@ module.exports = {
       env: config.DONUT_ENVIRONMENT
     };
 
+    if (Platform.OS === 'android') {
+      installation.pushType = 'gcm'; // @doc: http://upbeat-sound.tistory.com/24
+    }
+
     var parseRequest = {
       method: 'post',
       headers: {

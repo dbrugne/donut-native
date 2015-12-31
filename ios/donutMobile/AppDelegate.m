@@ -46,6 +46,9 @@
     jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
   #endif
   
+  // Determine bundle identifier
+  NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+  
   // Determine the configuration to load...
   // @source: http://www.itexico.com/blog/bid/99497/iOS-Mobile-Development-Using-Xcode-Targets-to-Reuse-the-Code
   NSString *donutEnvironment;
@@ -76,7 +79,7 @@
 
   // Pass some properties to application
   // @doc: https://facebook.github.io/react-native/docs/communication-ios.html
-  rootView.appProperties = @{@"DONUT_ENVIRONMENT" : donutEnvironment, @"REACT_SERVER_ADDRESS" : reactServerAddress};
+  rootView.appProperties = @{@"DONUT_ENVIRONMENT" : donutEnvironment, @"REACT_SERVER_ADDRESS" : reactServerAddress, @"BUNDLE_IDENTIFIER" : bundleIdentifier};
   NSLog(@"%@", rootView.appProperties);
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

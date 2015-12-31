@@ -92,6 +92,18 @@ function getRoute (route) {
         }
       });
     },
+    onBack: function () {
+      if (drawerOpened) {
+        return drawer.close();
+      }
+
+      var baseRoute = ['home', 'my-account', 'search', 'create-room', 'create-group'];
+      var isDiscussion = (currentRoute && currentRoute.model && (currentRoute.model.get('type') === 'onetoone' || currentRoute.model.get('type') === 'room'));
+      if (baseRoute.indexOf(currentRoute.id) !== -1 || isDiscussion) {
+        return drawer.open();
+      }
+      this.scene.props.navigator.pop();
+    },
     renderBackButton: function (navigator) {
       return (
         <TouchableOpacity
@@ -220,6 +232,10 @@ function _logCurrentStack () {
   debug.log(stack);
 }
 
+routes.getFocusedRoute = function () {
+  return currentRoute;
+}
+
 var LeftNavigation = React.createClass({
   getInitialState () {
     return {
@@ -244,9 +260,9 @@ var LeftNavigation = React.createClass({
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
         onPress={this.onPress}
         style={ExNavigator.Styles.barBackButton} >
-        <Icon name='fontawesome|clone'
+        <Icon name='fontawesome|bars'
               size={20}
-              color='#3498db'
+              color='#111'
               style={[ExNavigator.Styles.barButtonIcon, {marginTop: 11, marginLeft: 5, width:22, height:22}]} />
         {unviewed}
       </TouchableOpacity>
@@ -354,6 +370,18 @@ routes.getGroup = function (element) {
     },
     renderLeftButton: function (navigator) {
       return (<LeftNavigation navigator={navigator} />);
+    }
+  });
+};
+routes.getGroupRoomsList = function (element) {
+  return getRoute({
+    id: 'group-rooms-list' + element.user.isMember,
+    renderScene: function (navigator) {
+      let GroupRoomsList = require('../views/GroupRoomsList');
+      return <GroupRoomsList navigator={navigator} id={element.id} user={element.user}/>;
+    },
+    getTitle: function () {
+      return element.name;
     }
   });
 };
@@ -624,6 +652,7 @@ routes.getNavigator = function (initialRoute) {
     navigators[id] = {
       id: id,
       alreadyFocused: false,
+      focused: false,
       renderScene: function (navigator) {
         return (
           <ExNavigator
@@ -640,8 +669,8 @@ routes.getNavigator = function (initialRoute) {
         );
       },
       onWillFocus: function (event) {
+        this.focused = true;
         currentNavigator = navigators[id];
-
         // close drawer on routing
         if (drawer && drawerOpened === true) {
           drawer.close();
@@ -658,6 +687,7 @@ routes.getNavigator = function (initialRoute) {
         }
       },
       onDidFocus: function (event) {
+        this.focused = true;
         // exNavigator trigger first focus on navigator AND on initialRoute
         // for next focus only navigator is triggered
         if (!this.alreadyFocused) {
@@ -671,12 +701,14 @@ routes.getNavigator = function (initialRoute) {
         route.onDidFocus();
       },
       onWillBlur: function (event) {
+        this.focused = false;
         // find currently focused route
         var nav = navigators[id].scene.__navigator;
         var route = nav.state.routeStack[nav.state.presentedIndex];
         route.onWillBlur();
       },
       onDidBlur: function (event) {
+        this.focused = false;
         // find currently focused route
         var nav = navigators[id].scene.__navigator;
         var route = nav.state.routeStack[nav.state.presentedIndex];
@@ -720,8 +752,18 @@ routes.RootNavigator = React.createClass({
         content={<Navigation getRootNavigator={() => rootNavigator } />}
         styles={{main: {shadowColor: '#000000', shadowOpacity: 0.4, shadowRadius: 3}}}
         openDrawerOffset={50}
+        panOpenMask={0}
+        panCloseMask={50}
+        tapToClose={true}
+        captureGestures={true}
         onOpen={this.onDrawerOpen}
         onClose={this.onDrawerClose}
+        tweenHandler={(ratio) => {
+                    return {
+                        drawer: { shadowRadius: Math.min(ratio*5*5, 5) },
+                        main: { opacity:(2-ratio)/2 },
+                    }
+                }}
         >
         <ExNavigator
           ref='navigator'

@@ -54,7 +54,7 @@ class GroupAskMembershipRequest extends Component {
   onSendRequest () {
     app.client.groupRequest(this.props.id, this.state.motivations, function (response) {
       if (response.success) {
-        return alert.show(i18next.t('group.succes-request'));
+        return alert.show(i18next.t('group.success-request'));
       } else {
         if (response.err === 'allow-pending') {
           return alert.show(i18next.t('group.allow-pending'));
