@@ -142,3 +142,7 @@ user.facebookLogout = function () {
 user.forgot = function (email, callback) {
   this.oauth._forgot(email, callback);
 };
+
+user.registerDevice = function (deviceToken, deviceData, callback) {
+  this.oauth._registerDevice(deviceToken, deviceData, callback);
+};

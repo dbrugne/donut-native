@@ -340,6 +340,24 @@ var oauth = _.extend({
         this.facebookData = data;
         callback();
       });
+  },
+
+  _registerDevice: function (deviceToken, deviceData, callback) {
+    var data = {
+      token: this.token,
+      device_token: deviceToken,
+      details: deviceData
+    };
+    this._oauthRequest('register-device', data, (err, response) => {
+      if (err) {
+        return callback(err);
+      }
+      if (response.err) {
+        return callback(response.err);
+      }
+
+      return callback(null);
+    });
   }
 
 }, Backbone.Events);
