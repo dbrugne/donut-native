@@ -3,7 +3,9 @@
 var React = require('react-native');
 
 var {
-  Component
+  Component,
+  BackAndroid,
+  Platform
 } = React;
 var Launching = require('../views/Launching');
 var ChooseUsername = require('../views/ChooseUsername');
@@ -42,6 +44,16 @@ class Index extends Component {
     // push notifications
     PushNotifications.componentDidMount();
 
+    // back android
+    if (Platform.OS === 'android') {
+      BackAndroid.addEventListener('hardwareBackPress', () => {
+        var focusedRoute = navigation.getFocusedRoute();
+        focusedRoute.onBack();
+        // if callback don't return true the default callback is called
+        return true;
+      });
+    }
+
     // client
     app.client.connect();
   }
@@ -58,6 +70,11 @@ class Index extends Component {
 
     // push notifications
     PushNotifications.componentWillUnmount();
+
+    // back android
+    if (Platform.OS === 'android') {
+      BackAndroid.removeEventListener('hardwareBackPress', () => {return true});
+    }
 
     // client
     app.client.disconnect();

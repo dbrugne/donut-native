@@ -92,6 +92,18 @@ function getRoute (route) {
         }
       });
     },
+    onBack: function () {
+      if (drawerOpened) {
+        return drawer.close();
+      }
+
+      var baseRoute = ['home', 'my-account', 'search', 'create-room', 'create-group'];
+      var isDiscussion = (currentRoute && currentRoute.model && (currentRoute.model.get('type') === 'onetoone' || currentRoute.model.get('type') === 'room'));
+      if (baseRoute.indexOf(currentRoute.id) !== -1 || isDiscussion) {
+        return drawer.open();
+      }
+      this.scene.props.navigator.pop();
+    },
     renderBackButton: function (navigator) {
       return (
         <TouchableOpacity
@@ -636,6 +648,7 @@ routes.getNavigator = function (initialRoute) {
     navigators[id] = {
       id: id,
       alreadyFocused: false,
+      focused: false,
       renderScene: function (navigator) {
         return (
           <ExNavigator
@@ -652,8 +665,8 @@ routes.getNavigator = function (initialRoute) {
         );
       },
       onWillFocus: function (event) {
+        this.focused = true;
         currentNavigator = navigators[id];
-
         // close drawer on routing
         if (drawer && drawerOpened === true) {
           drawer.close();
@@ -670,6 +683,7 @@ routes.getNavigator = function (initialRoute) {
         }
       },
       onDidFocus: function (event) {
+        this.focused = true;
         // exNavigator trigger first focus on navigator AND on initialRoute
         // for next focus only navigator is triggered
         if (!this.alreadyFocused) {
@@ -683,12 +697,14 @@ routes.getNavigator = function (initialRoute) {
         route.onDidFocus();
       },
       onWillBlur: function (event) {
+        this.focused = false;
         // find currently focused route
         var nav = navigators[id].scene.__navigator;
         var route = nav.state.routeStack[nav.state.presentedIndex];
         route.onWillBlur();
       },
       onDidBlur: function (event) {
+        this.focused = false;
         // find currently focused route
         var nav = navigators[id].scene.__navigator;
         var route = nav.state.routeStack[nav.state.presentedIndex];
