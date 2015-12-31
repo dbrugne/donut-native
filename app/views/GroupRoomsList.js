@@ -5,12 +5,11 @@ var {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight,
   Component,
-  Image,
   ListView
 } = React;
 
+var _ = require('underscore');
 var app = require('../libs/app');
 var LoadingModal = require('../components/LoadingModal');
 var SearchResult = require('../elements/SearchResult');
@@ -44,9 +43,15 @@ class GroupRoomsListView extends Component {
         error: 'error'
       });
     }
+    var rooms = [];
+    _.each(response.rooms, _.bind(function (room) {
+      if (room.mode === 'public' || (room.mode === 'private' && (this.user.isOwner || this.user.isMember))) {
+        rooms.push(room);
+      }
+    }, this));
     this.setState({
       loading: false,
-      dataSource: this.state.dataSource.cloneWithRows(response.rooms)
+      dataSource: this.state.dataSource.cloneWithRows(rooms)
     });
   }
 

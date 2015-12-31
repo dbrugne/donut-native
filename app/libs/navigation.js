@@ -359,7 +359,7 @@ routes.getGroup = function (element) {
 };
 routes.getGroupRoomsList = function (element) {
   return getRoute({
-    id: 'group-rooms-list',
+    id: 'group-rooms-list' + element.user.isMember,
     renderScene: function (navigator) {
       let GroupRoomsList = require('../views/GroupRoomsList');
       return <GroupRoomsList navigator={navigator} id={element.id} user={element.user}/>;
