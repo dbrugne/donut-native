@@ -9,7 +9,6 @@ var debug = require('./../libs/debug')('pushNotification');
 module.exports = {
   registerInstallation (deviceToken) {
     var installation = {
-      appIdentifier: config.parse.appIdentifier,
       appName: config.parse.appName,
       appVersion: config.version,
       deviceType: Platform.OS,
@@ -19,8 +18,14 @@ module.exports = {
       env: config.DONUT_ENVIRONMENT
     };
 
+    if (Platform.OS === 'ios') {
+      // @doc: https://www.parse.com/docs/rest/guide/#push-notifications-uploading-installation-data
+      installation.appIdentifier = config.BUNDLE_IDENTIFIER;
+    }
+
     if (Platform.OS === 'android') {
-      installation.pushType = 'gcm'; // @doc: http://upbeat-sound.tistory.com/24
+      // @doc: http://upbeat-sound.tistory.com/24
+      installation.pushType = 'gcm';
     }
 
     var parseRequest = {
