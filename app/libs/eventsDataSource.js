@@ -67,7 +67,9 @@ module.exports = function () {
         var _top = this.blob[this.blob.length - 1]; // date block was removed above
         var _newest = items[items.length - 1];
         if (_top.data.first && _top.data.user_id === _newest.data.user_id) {
-          this.blob.pop(); // @todo change logic to
+          delete _top.data.first;
+          delete _top.data.userBlock;
+          this.blob[this.blob.length - 1] = _top;
         }
       }
 
