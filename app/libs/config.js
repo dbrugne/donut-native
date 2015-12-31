@@ -7,7 +7,6 @@ var defaults = {
   parse: {
     url: 'https://api.parse.com/1/installations/',
     appId: 'HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g',
-    masterKey: '7c6ycSLa7gBHzQ9w2KMJBKoVWrVwBw8606x7PtVA',
     restApiKey: 'cm5inOyCRXVRDAhQVsVvKgSmjvz7qJ9lwgm8niwk',
     appName: 'donutMobile'
   }
