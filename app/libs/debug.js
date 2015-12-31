@@ -7,7 +7,7 @@ var namespaces = [
 //  'navigation',
 //  'storage',
 //  'events',
-//  'notifications',
+//  'pushNotification',
 //  'cloudinary'
 ];
 

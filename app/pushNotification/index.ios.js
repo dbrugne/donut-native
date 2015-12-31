@@ -11,7 +11,7 @@ var {
 
 var utils = require('./utils');
 
-var debug = require('./../libs/debug')('notifications');
+var debug = require('./../libs/debug')('pushNotification');
 
 // @source: http://stackoverflow.com/questions/29683720/react-native-push-notifications-parse/30287223#30287223
 module.exports = {
