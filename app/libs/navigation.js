@@ -232,6 +232,10 @@ function _logCurrentStack () {
   debug.log(stack);
 }
 
+routes.getFocusedRoute = function () {
+  return currentRoute;
+}
+
 var LeftNavigation = React.createClass({
   getInitialState () {
     return {
