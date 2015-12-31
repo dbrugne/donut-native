@@ -7,7 +7,7 @@ var {
 } = React;
 var Username = require('./Username');
 var s = require('../../styles/events');
-var AbstractEvent = require('./AbstractEvent');
+var UserBlock = require('./UserBlock');
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -43,7 +43,8 @@ module.exports = React.createClass({
 
     return (
       <View style={s.event}>
-        <AbstractEvent
+        <UserBlock
+          navigator={this.props.navigator}
           {...this.props}
           >
           <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
@@ -56,7 +57,7 @@ module.exports = React.createClass({
               navigator={this.props.navigator}
               />
           </View>
-        </AbstractEvent>
+        </UserBlock>
       </View>
     );
   }

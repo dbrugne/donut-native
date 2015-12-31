@@ -4,6 +4,7 @@ var React = require('react-native');
 var s = require('../../styles/events');
 var Username = require('./Username');
 var date = require('../../libs/date');
+var common = require('@dbrugne/donut-common/mobile');
 
 var {
   Component,
@@ -11,7 +12,7 @@ var {
   Text,
   Image
 } = React;
-class AbstractEvent extends Component {
+class UserBlock extends Component {
   /**
    * @param props = {
    *  text: string to display on element
@@ -33,10 +34,10 @@ class AbstractEvent extends Component {
           <View style={{flexDirection: 'row', flex:1}}>
             <Username
               style={{marginRight:0, fontWeight: 'bold', fontSize: 12, fontFamily: 'Open Sans', color: '#333333'}}
-              user_id={this.props.user_id}
+              user_id={this.props.data.user_id}
               username={this.props.data.username}
               realname={this.props.data.realname}
-              navigator={this.props.data.navigator}
+              navigator={this.props.navigator}
               />
             <Text style={s.time}>{date.shortTime(this.props.data.time)}</Text>
           </View>
@@ -47,14 +48,19 @@ class AbstractEvent extends Component {
   }
 
   _renderAvatar () {
-    if (!this.props.data.avatar) {
+    if (!(this.props.data.avatar || this.props.data.avatarRaw)) {
       return null;
     }
 
+    let avatar = this.props.data.avatar;
+    if (this.props.data.avatarRaw) {
+      avatar = common.cloudinary.prepare(this.props.data.avatarRaw, 40);
+    }
+
     return (
-      <Image style={{width: 34, height: 34, borderRadius:3, marginLeft:10, marginRight:10}} source={{uri: this.props.data.avatar}}/>
+      <Image style={{width: 34, height: 34, borderRadius:3, marginLeft:10, marginRight:10}} source={{uri: avatar}}/>
     );
   }
 }
 
-module.exports = AbstractEvent;
+module.exports = UserBlock;

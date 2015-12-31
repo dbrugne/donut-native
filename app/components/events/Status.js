@@ -8,7 +8,7 @@ var {
   } = React;
 
 var s = require('../../styles/events');
-var AbstractEvent = require('./AbstractEvent');
+var UserBlock = require('./UserBlock');
 var i18next = require('../../libs/i18next');
 
 module.exports = React.createClass({
@@ -23,11 +23,12 @@ module.exports = React.createClass({
 
     return (
       <View style={s.event}>
-        <AbstractEvent
+        <UserBlock
+          navigator={this.props.navigator}
           {...this.props}
           >
           <Text style={s.eventText}>{message}</Text>
-        </AbstractEvent>
+        </UserBlock>
       </View>
     );
   }

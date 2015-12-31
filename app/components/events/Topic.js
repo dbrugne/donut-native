@@ -7,7 +7,7 @@ var {
 } = React;
 
 var ParsedText = require('../ParsedText');
-var AbstractEvent = require('./AbstractEvent');
+var UserBlock = require('./UserBlock');
 var s = require('../../styles/events');
 
 var i18next = require('../../libs/i18next');
@@ -20,11 +20,12 @@ module.exports = React.createClass({
   render () {
     return (
       <View style={s.event}>
-        <AbstractEvent
+        <UserBlock
+          navigator={this.props.navigator}
           {...this.props}
         >
           <Text style={s.eventText}>{this._renderTopic()}</Text>
-        </AbstractEvent>
+        </UserBlock>
       </View>
     );
   },
