@@ -32,22 +32,22 @@ class File extends Component {
 
     return (
       <TouchableHighlight
-        style={{marginVertical:10, marginHorizontal:10}}
+        style={{marginVertical:10}}
         underlayColor='transparent'
         onPress={() => hyperlink.open(this.props.href)}>
-        <View style={{borderWidth: 0.5, borderColor: '#BBB'}}>
-          <View style={styles.fileNameView}>
-            <Text style={styles.fileName}>{this.props.fileName + '.' + this.extension}</Text>
-          </View>
+        <View>
           <Icon
             name={icon}
             size={44}
             color='#666'
-            style={{width: 44, height: 44, alignSelf: 'center', marginVertical: 10}}
+            style={{width: 44, height: 44}}
             />
-            <View style={styles.filSizeView}>
-              <Text style={styles.fileSize}>{this.props.size}</Text>
-            </View>
+          <View style={styles.fileNameView}>
+            <Text style={styles.fileName}>{this.props.fileName + '.' + this.extension}</Text>
+          </View>
+          <View style={styles.filSizeView}>
+            <Text style={styles.fileSize}>{this.props.size}</Text>
+          </View>
         </View>
       </TouchableHighlight>
     )
@@ -118,27 +118,21 @@ var code = [
 var styles = StyleSheet.create({
   fileName: {
     alignSelf: 'center',
-    fontSize: 17,
-    color: '#FFF',
-    marginHorizontal: 10
+    fontSize: 12,
+    color: '#333'
   },
   fileNameView: {
-    backgroundColor: '#4a649d',
     marginHorizontal: 2,
     marginVertical: 2
   },
   filSizeView: {
-    backgroundColor: '#b6b6b6',
-    alignSelf: 'flex-end',
-    marginVertical: 2,
-    borderTopLeftRadius: 4,
-    borderBottomLeftRadius: 4
+    marginHorizontal: 2,
+    marginVertical: 2
   },
   fileSize: {
     alignSelf: 'center',
     fontSize: 12,
-    color: '#FFF',
-    marginHorizontal: 5
+    color: '#999999'
   }
 });
 
