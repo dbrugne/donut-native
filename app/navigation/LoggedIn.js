@@ -141,6 +141,7 @@ class Index extends Component {
     // badge (even if focused), only if user sending the message is not currentUser
     if (model.get('unviewed') !== true && currentUser.get('user_id') !== uid) {
       model.set('unviewed', true);
+      model.set('first_unviewed', data.id);
       currentUser.set('unviewed', true);
     }
 

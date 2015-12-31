@@ -54,7 +54,7 @@ module.exports = function () {
       }
       return top;
     },
-    prepend (items) {
+    prepend (items, firstUnviewedId) {
       // items comes in chronological order, blob is sorted ante-chronologically
 
       // remove top date block if top event is older than today
@@ -83,9 +83,13 @@ module.exports = function () {
       });
 
       this.blob = this.blob.concat(list);
+
+      // unviewed block
+      this.addUnviewedBlock(firstUnviewedId);
+
       return this.dataSource.cloneWithRows(this.blob);
     },
-    append (items) {
+    append (items, firstUnviewedId) {
       // items comes in chronological order, blob is sorted ante-chronologically
 
       // add new events at the beginning of this.blob
@@ -98,6 +102,10 @@ module.exports = function () {
       });
 
       this.blob = list.concat(this.blob);
+
+      // unviewed block
+      this.addUnviewedBlock(firstUnviewedId);
+
       return this.dataSource.cloneWithRows(this.blob);
     },
     decorate (item, previous) {
@@ -141,6 +149,30 @@ module.exports = function () {
         return true;
       });
 
+      return this.dataSource.cloneWithRows(this.blob);
+    },
+    addUnviewedBlock (firstUnviewedId) {
+      this.removeUnviewedBlock();
+
+      let index = _.findIndex(this.blob, (i, idx) => { // look for an element which as the attribute first_unviewed
+        return i.data.id === firstUnviewedId
+      });
+      if (index !== -1) {
+        let item = {type: 'unviewed', data: {id: 'unviewed' + firstUnviewedId, time: this.blob[index].data.time}};
+        if (index === this.blob.length) { // must insert on top
+          this.blob.splice(this.blob.length, 0, item);
+        } else {
+          this.blob.splice(index+1, 0, item); // remove 0 item at index and insert new 'unviewed' item
+        }
+      }
+      return this.dataSource.cloneWithRows(this.blob);
+    },
+    removeUnviewedBlock () {
+      let index = _.findIndex(this.blob, {type:'unviewed'}); // look for an event of type unviewed
+
+      if (index !== -1) {
+        this.blob.splice(index, 1); // remove 1 item at index and does not insert anything
+      }
       return this.dataSource.cloneWithRows(this.blob);
     }
   };

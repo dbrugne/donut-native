@@ -33,7 +33,7 @@ class UserBlock extends Component {
         <View style={{flexDirection: 'column', flex:1}}>
           <View style={{flexDirection: 'row', flex:1}}>
             <Username
-              style={{marginRight:0, fontWeight: 'bold', fontSize: 12, fontFamily: 'Open Sans', color: '#333333'}}
+              style={{marginRight:0, fontWeight: 'bold', fontSize: 14, fontFamily: 'Open Sans', color: '#333333'}}
               user_id={this.props.data.user_id}
               username={this.props.data.username}
               realname={this.props.data.realname}

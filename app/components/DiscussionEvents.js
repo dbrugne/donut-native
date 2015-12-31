@@ -31,6 +31,7 @@ var EventUserPromote = require('./events/UserPromote');
 var EventStatus = require('./events/Status');
 var EventTopic = require('./events/Topic');
 var UserBlock = require('./events/UserBlock');
+var Unviewed = require('./events/Unviewed');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -58,6 +59,7 @@ class DiscussionEvents extends Component {
     app.on('room:join', this.onJoin, this);
   }
   componentDidMount () {
+    app.on('viewedEvent', this.refreshData.bind(this), this);
     this.props.model.on('freshEvent', this.addFreshEvent.bind(this), this);
     this.props.model.on('messageSpam', this.onMarkedAsSpam.bind(this), this);
     this.props.model.on('messageUnspam', this.onMarkedAsUnspam.bind(this), this);
@@ -132,6 +134,9 @@ class DiscussionEvents extends Component {
     );
   }
   getComponent (type) {
+    if (type === 'unviewed') {
+      return Unviewed;
+    }
     if (type === 'date') {
       return EventDate;
     }
@@ -223,7 +228,7 @@ class DiscussionEvents extends Component {
         let method = (direction === 'older')
           ? 'prepend'
           : 'append';
-        state.dataSource = this.eventsDataSource[method](response.history);
+        state.dataSource = this.eventsDataSource[method](response.history, this.props.model.get('first_unviewed'));
       }
 
       this.setState(state);
@@ -241,7 +246,7 @@ class DiscussionEvents extends Component {
 
     // add on list top, the inverted view will display on bottom
     this.setState({
-      dataSource: this.eventsDataSource.append([{type: type, data: data}])
+      dataSource: this.eventsDataSource.append([{type: type, data: data}], this.props.model.get('first_unviewed'))
     });
   }
   onMarkedAsSpam (data) {
@@ -262,6 +267,11 @@ class DiscussionEvents extends Component {
 
     this.setState({
       dataSource: this.eventsDataSource.updateEvent(id, {spammed: false})
+    });
+  }
+  refreshData() {
+    this.setState({
+      dataSource: this.eventsDataSource.removeUnviewedBlock()
     });
   }
   onEdited (data) {

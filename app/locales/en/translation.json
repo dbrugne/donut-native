@@ -106,6 +106,7 @@
     "online": "is now online",
     "offline": "is now offline",
     "out": "just gone out",
-    "in": "just entered"
+    "in": "just entered",
+    "unread-messages": "UNREAD MESSAGES"
   }
 }

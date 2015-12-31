@@ -56,7 +56,7 @@ module.exports = React.createClass({
     return (
       <View key={this.props.data.id} style={{marginBottom: 10}}>
         <View style={[{flexDirection: 'column', flex:1, marginLeft:55}, this.props.data.first && {marginLeft:0}]}>
-          <View style={{}}>{message}</View>
+          <View>{message}</View>
           {this.renderFiles()}
         </View>
       </View>
