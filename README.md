@@ -102,3 +102,21 @@ Fix debbugger after 0.17.0 upgrade
         returnValue = __fbBatchedBridge[object.moduleMethod].apply(null, object.arguments);
       }
 ```
+
+Fix rightIcon on navigator
+
+- /www/donative/node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorNavigationBar.js:193
+```javascript
+ rendered = (
+      <View
+        ref={(ref) => {
+          this._components[componentName] = this._components[componentName].set(route, ref);
+        }}
+        pointerEvents={
+          route === this.props.navigator.navigationContext.currentRoute ? 'box-none' : 'none'
+        }
+        style={initialStage[componentName]}>
+        {content}
+      </View>
+    );
+```

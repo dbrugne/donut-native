@@ -7,7 +7,7 @@ var {
 
 module.exports = StyleSheet.create({
   event: {
-    marginVertical: 10
+    marginVertical: 8
   },
   statusBlock: {
     flexDirection: 'row',
@@ -34,7 +34,7 @@ module.exports = StyleSheet.create({
     marginRight:10
   },
   statusBlockText: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Open Sans',
     color: '#666666'
   },
@@ -60,7 +60,7 @@ module.exports = StyleSheet.create({
     color: '#999999', fontSize: 12, fontFamily: 'Open Sans'
   },
   messageContent: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Open Sans'
   },
   linksUrl: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
@@ -69,7 +69,7 @@ module.exports = StyleSheet.create({
   linksRoom: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
   linksUser: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
   linksGroup: {fontWeight: 'bold', color: '#333', fontFamily: 'Open sans'},
-  spammed: { fontStyle: 'italic', color: '#333', fontFamily: 'Open sans', fontSize: 12 },
-  eventText: { fontSize: 12, fontStyle:'italic', fontFamily: 'Open Sans', color: '#333333' },
-  edited: { color: '#0480be', fontFamily: 'Open sans', fontSize: 10 }
+  spammed: { fontStyle: 'italic', color: '#333', fontFamily: 'Open sans', fontSize: 14 },
+  eventText: { fontSize: 14, fontStyle:'italic', fontFamily: 'Open Sans', color: '#333333' },
+  edited: { color: '#0480be', fontFamily: 'Open sans', fontSize: 12 }
 });

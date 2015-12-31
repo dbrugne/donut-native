@@ -5,7 +5,7 @@ var {
   StyleSheet,
   View,
   Component,
-  TextInput,
+  TextInput
 } = React;
 var {
   Icon
@@ -46,13 +46,19 @@ class InputView extends Component {
         <TextInput style={styles.input}
                    ref='input'
                    onChangeText={(text) => this.setState({text})}
-                   onSubmitEditing={this.onSubmit.bind(this)}
                    placeholder={inputPlaceholder}
                    blurOnSubmit={false}
                    value={this.state.text}
-                   enablesReturnKeyAutomatically={true}
-                   returnKeyType='send'
+                   multiline={true}
           />
+        <Button style={styles.button} onPress={() => this.onSubmit()}>
+          <Icon
+            name='fontawesome|paper-plane'
+            size={34}
+            color='#FC2063'
+            style={styles.icon}
+            />
+        </Button>
       </View>
     );
   }
