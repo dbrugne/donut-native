@@ -105,6 +105,7 @@ Fix debbugger after 0.17.0 upgrade
 
 Fix rightIcon on navigator
 
+https://github.com/facebook/react-native/issues/4559
 - /www/donative/node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorNavigationBar.js:193
 ```javascript
  rendered = (
