@@ -15,8 +15,11 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
-// @Notifications
-#import "RCTPushNotificationManager.h"
+// @PushNotificationIOS
+#import "RCTPushNotificationManager.h" // https://facebook.github.io/react-native/docs/pushnotificationios.html
+// @Parse
+#import <Parse/Parse.h> // https://parse.com/apps/quickstart#parse_push/ios/native/existing
+#import "DonutParse.h"
 
 @implementation AppDelegate
 
@@ -49,7 +52,7 @@
   // Determine bundle identifier
   NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
   
-  // Determine the configuration to load...
+  // Determine the configuration to load
   // @source: http://www.itexico.com/blog/bid/99497/iOS-Mobile-Development-Using-Xcode-Targets-to-Reuse-the-Code
   NSString *donutEnvironment;
   #if ENV == 2
@@ -87,10 +90,16 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  //return YES;
+  
+  // @Parse
+  // only configure Parse, let PushNotificationsIOS trigger native ask permission process
+  [Parse setApplicationId:@"HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g"
+                clientKey:@"scK5G6HLyEATHuytp74POetQozngZBhs9eUmnp4q"];
+  
   // @FacebookLogin
   return [[FBSDKApplicationDelegate sharedInstance] application:application
                                   didFinishLaunchingWithOptions:launchOptions];
+  //return YES;
 }
 
 // @FacebookLogin
@@ -106,18 +115,36 @@
                                                      annotation:annotation];
 }
 
-// @Notifications
-// Required for the register event.
+// Required for push notifications (run on every app launch)
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+  // @PushNotificationsIOS
+  // PushNotificationsIOS 'register' event will be triggered
   [RCTPushNotificationManager application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+  
+  // @Parse
+  // Store the deviceToken in the current installation and save it to Parse
+  PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+  [currentInstallation setDeviceTokenFromData:deviceToken];
+  #if ENV == 2
+    currentInstallation[@"env"] = @"test";
+  #elif ENV == 1
+    currentInstallation[@"env"] = @"production";
+  #else
+    #warning "UNABLE TO DETERMINE DONUT CONFIGURATION TO END TO PARSE"
+  #endif
+  
+  [currentInstallation saveInBackground];
 }
 
-// @Notifications
-// Required for the notification event.
+// Required for push notifications
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification
 {
+  // @PushNotificationsIOS
   [RCTPushNotificationManager application:application didReceiveRemoteNotification:notification];
+  
+  // @Parse
+  //[PFPush handlePush:userInfo];
 }
 
 @end

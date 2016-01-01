@@ -40,6 +40,19 @@
 		6D830AD61C0779C5007AF824 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */; };
 		6D830AD71C0779C5007AF824 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD41C0779C5007AF824 /* FBSDKLoginKit.framework */; };
 		6D830AD81C0779C5007AF824 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD51C0779C5007AF824 /* FBSDKShareKit.framework */; };
+		6D8A2E791C36ABAC008B3871 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E771C36ABAC008B3871 /* Bolts.framework */; };
+		6D8A2E7A1C36ABAC008B3871 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E781C36ABAC008B3871 /* Parse.framework */; };
+		6D8A2E7C1C36AC44008B3871 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E7B1C36AC44008B3871 /* CFNetwork.framework */; };
+		6D8A2E7E1C36AC4C008B3871 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E7D1C36AC4C008B3871 /* AudioToolbox.framework */; };
+		6D8A2E801C36AC59008B3871 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E7F1C36AC59008B3871 /* CoreGraphics.framework */; };
+		6D8A2E821C36AC63008B3871 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E811C36AC63008B3871 /* CoreLocation.framework */; };
+		6D8A2E841C36AC6A008B3871 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E831C36AC6A008B3871 /* QuartzCore.framework */; };
+		6D8A2E861C36AC71008B3871 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E851C36AC71008B3871 /* Security.framework */; };
+		6D8A2E881C36AC78008B3871 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E871C36AC78008B3871 /* StoreKit.framework */; };
+		6D8A2E8A1C36AC80008B3871 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E891C36AC80008B3871 /* SystemConfiguration.framework */; };
+		6D8A2E8C1C36AC94008B3871 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E8B1C36AC94008B3871 /* libz.tbd */; };
+		6D8A2E8E1C36AC9C008B3871 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E8D1C36AC9C008B3871 /* libsqlite3.tbd */; };
+		6DAF46831C36B6BB004BD0A5 /* DonutParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF46821C36B6BB004BD0A5 /* DonutParse.m */; };
 		6DCC57EE1C0C689C008F42F0 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCC57ED1C0C6817008F42F0 /* libRCTPushNotification.a */; };
 		6DCC57F91C0CB960008F42F0 /* UIImagePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DCC57F81C0CB960008F42F0 /* UIImagePickerManager.m */; };
 		6DF0674D1C0F69740096C874 /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6DF067401C0F66F20096C874 /* FontAwesome.otf */; };
@@ -183,6 +196,20 @@
 		6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		6D830AD41C0779C5007AF824 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		6D830AD51C0779C5007AF824 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKShareKit.framework"; sourceTree = "<group>"; };
+		6D8A2E771C36ABAC008B3871 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/Bolts.framework; sourceTree = "<group>"; };
+		6D8A2E781C36ABAC008B3871 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Frameworks/Parse.framework; sourceTree = "<group>"; };
+		6D8A2E7B1C36AC44008B3871 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		6D8A2E7D1C36AC4C008B3871 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		6D8A2E7F1C36AC59008B3871 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		6D8A2E811C36AC63008B3871 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		6D8A2E831C36AC6A008B3871 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		6D8A2E851C36AC71008B3871 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		6D8A2E871C36AC78008B3871 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		6D8A2E891C36AC80008B3871 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		6D8A2E8B1C36AC94008B3871 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		6D8A2E8D1C36AC9C008B3871 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		6DAF46821C36B6BB004BD0A5 /* DonutParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DonutParse.m; path = donutMobile/DonutParse.m; sourceTree = "<group>"; };
+		6DAF46851C36BAC0004BD0A5 /* DonutParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DonutParse.h; path = donutMobile/DonutParse.h; sourceTree = "<group>"; };
 		6DCC57E81C0C6817008F42F0 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		6DCC57F71C0CB960008F42F0 /* UIImagePickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImagePickerManager.h; sourceTree = "<group>"; };
 		6DCC57F81C0CB960008F42F0 /* UIImagePickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImagePickerManager.m; sourceTree = "<group>"; };
@@ -206,6 +233,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D8A2E8E1C36AC9C008B3871 /* libsqlite3.tbd in Frameworks */,
+				6D8A2E8C1C36AC94008B3871 /* libz.tbd in Frameworks */,
+				6D8A2E8A1C36AC80008B3871 /* SystemConfiguration.framework in Frameworks */,
+				6D8A2E881C36AC78008B3871 /* StoreKit.framework in Frameworks */,
+				6D8A2E861C36AC71008B3871 /* Security.framework in Frameworks */,
+				6D8A2E841C36AC6A008B3871 /* QuartzCore.framework in Frameworks */,
+				6D8A2E821C36AC63008B3871 /* CoreLocation.framework in Frameworks */,
+				6D8A2E801C36AC59008B3871 /* CoreGraphics.framework in Frameworks */,
+				6D8A2E7E1C36AC4C008B3871 /* AudioToolbox.framework in Frameworks */,
+				6D8A2E7C1C36AC44008B3871 /* CFNetwork.framework in Frameworks */,
 				6DCC57EE1C0C689C008F42F0 /* libRCTPushNotification.a in Frameworks */,
 				6D830ACB1C0769ED007AF824 /* libRCTFBLogin.a in Frameworks */,
 				6D33B3581BF34334004CF107 /* libReactNativeIcons.a in Frameworks */,
@@ -216,8 +253,10 @@
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
+				6D8A2E7A1C36ABAC008B3871 /* Parse.framework in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				6D830AD61C0779C5007AF824 /* FBSDKCoreKit.framework in Frameworks */,
+				6D8A2E791C36ABAC008B3871 /* Bolts.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
@@ -311,6 +350,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				6DAF46851C36BAC0004BD0A5 /* DonutParse.h */,
+				6DAF46821C36B6BB004BD0A5 /* DonutParse.m */,
 			);
 			name = donutMobile;
 			sourceTree = "<group>";
@@ -370,6 +411,18 @@
 		6D830AD21C0777CB007AF824 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6D8A2E8D1C36AC9C008B3871 /* libsqlite3.tbd */,
+				6D8A2E8B1C36AC94008B3871 /* libz.tbd */,
+				6D8A2E891C36AC80008B3871 /* SystemConfiguration.framework */,
+				6D8A2E871C36AC78008B3871 /* StoreKit.framework */,
+				6D8A2E851C36AC71008B3871 /* Security.framework */,
+				6D8A2E831C36AC6A008B3871 /* QuartzCore.framework */,
+				6D8A2E811C36AC63008B3871 /* CoreLocation.framework */,
+				6D8A2E7F1C36AC59008B3871 /* CoreGraphics.framework */,
+				6D8A2E7D1C36AC4C008B3871 /* AudioToolbox.framework */,
+				6D8A2E7B1C36AC44008B3871 /* CFNetwork.framework */,
+				6D8A2E771C36ABAC008B3871 /* Bolts.framework */,
+				6D8A2E781C36ABAC008B3871 /* Parse.framework */,
 				6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */,
 				6D830AD41C0779C5007AF824 /* FBSDKLoginKit.framework */,
 				6D830AD51C0779C5007AF824 /* FBSDKShareKit.framework */,
@@ -734,6 +787,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DAF46831C36B6BB004BD0A5 /* DonutParse.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				6DCC57F91C0CB960008F42F0 /* UIImagePickerManager.m in Sources */,
@@ -819,7 +873,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Debug;
 				DEAD_CODE_STRIPPING = NO;
 				DONUT_ENVIRONMENT = TEST;
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -892,7 +951,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Release;
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -972,7 +1036,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Debug;
 				DEAD_CODE_STRIPPING = NO;
 				DONUT_ENVIRONMENT = TEST;
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
