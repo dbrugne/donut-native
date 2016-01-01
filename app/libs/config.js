@@ -4,12 +4,6 @@ var packageJson = require('../../package');
 
 // default
 var defaults = {
-  parse: {
-    url: 'https://api.parse.com/1/installations/',
-    appId: 'HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g',
-    restApiKey: 'cm5inOyCRXVRDAhQVsVvKgSmjvz7qJ9lwgm8niwk',
-    appName: 'donutMobile'
-  }
 };
 
 // build time
@@ -42,9 +36,7 @@ module.exports = function (nativeProps) {
       throw new Error('libs/config.js need to be called with native props before');
     }
     if (!nativeProps.DONUT_ENVIRONMENT) {
-      // @todo : uncomment when Android set nativeProps.DONUT_ENVIRONMENT
-      nativeProps.DONUT_ENVIRONMENT = 'test';
-//      throw new Error('libs/config.js native props should contains a DONUT_ENVIRONMENT key');
+      throw new Error('libs/config.js native props should contains a DONUT_ENVIRONMENT key');
     }
     if (!environments[nativeProps.DONUT_ENVIRONMENT]) {
       throw new Error('libs/config.js unknown environment', nativeProps.DONUT_ENVIRONMENT);
