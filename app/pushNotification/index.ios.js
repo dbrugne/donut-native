@@ -11,6 +11,8 @@ var {
 
 var utils = require('./utils');
 
+var DonutParse = require('react-native').NativeModules.DonutParse;
+
 var debug = require('./../libs/debug')('pushNotification');
 
 // @source: http://stackoverflow.com/questions/29683720/react-native-push-notifications-parse/30287223#30287223
@@ -19,7 +21,8 @@ module.exports = {
     PushNotificationIOS.addEventListener('register', this.onRegister.bind(this));
     PushNotificationIOS.addEventListener('notification', this.onNotification.bind(this));
 
-    this.checkAndRequestPermissions();
+    this.checkPermissions(); // @debug
+    this.requestPermissions();
   },
   componentWillUnmount () {
     PushNotificationIOS.removeEventListener('register', this.onRegister.bind(this));
@@ -27,7 +30,13 @@ module.exports = {
   },
   onRegister (deviceToken) {
     debug.log('onRegister', deviceToken);
-    utils.registerInstallation(deviceToken);
+
+    DonutParse.getParseInstallation((err, objectId) => {
+      if (err) {
+        console.warn(err);
+      }
+      utils.register(objectId);
+    });
   },
   onNotification (notification) {
     debug.log('onNotification', notification);
@@ -39,16 +48,6 @@ module.exports = {
         onPress: null
       }]
     );
-  },
-  abandonPermissions () {
-    debug.log('abandonPermissions');
-    PushNotificationIOS.abandonPermissions();
-  },
-  checkAndRequestPermissions () {
-    PushNotificationIOS.checkPermissions((permissions) => {
-      debug.log('checkPermissions', permissions);
-      PushNotificationIOS.requestPermissions();
-    });
   },
   checkPermissions () {
     PushNotificationIOS.checkPermissions((permissions) => {
