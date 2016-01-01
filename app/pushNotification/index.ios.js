@@ -28,9 +28,9 @@ module.exports = {
     debug.log('onRegister', deviceToken);
     DonutParse.getParseInstallationObjectId((err, objectId) => {
       if (err) {
-        debug.warn(err);
+        return debug.warn('onRegister', err);
       }
-      utils.register(objectId);
+      utils.registerDeviceOnDonut(objectId);
     });
   },
   onNotification (notification) {

@@ -16,9 +16,9 @@ module.exports = {
   registerDevice() {
     ParseManagerAndroid.getId((parseObjectId) => {
       if (!parseObjectId) {
-        return debug.warn('No objectId found for this device');
+        return debug.warn('registerDevice, no objectId found');
       }
-      utils.register(parseObjectId);
+      utils.registerDeviceOnDonut(parseObjectId);
     });
   }
 };
