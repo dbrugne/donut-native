@@ -18,12 +18,12 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(getParseInstallationId:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(getParseInstallationObjectId:(RCTResponseSenderBlock)callback)
 {
   PFInstallation *currentInstallation = [PFInstallation currentInstallation];
   NSString *objectId = currentInstallation.objectId;
   
-  RCTLogInfo(@"getParseInstallationId %@", objectId);
+  RCTLogInfo(@"getParseInstallationObjectId %@", objectId);
   if (!objectId) {
     callback(@[@"no parse objectId"]);
   } else {
