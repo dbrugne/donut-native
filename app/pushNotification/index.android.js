@@ -14,11 +14,11 @@ module.exports = {
     // don't remove because of /app/navigation/LoggedIn.js:60
   },
   registerDevice() {
-    ParseManagerAndroid.getString('deviceToken', (err, deviceToken) => {
-      if (err) {
-        return debug.warn(err);
+    ParseManagerAndroid.getId((parseObjectId) => {
+      if (!parseObjectId) {
+        return debug.warn('No objectId found for this device');
       }
-      utils.registerInstallation(deviceToken);
+      utils.register(parseObjectId);
     });
   }
 };

@@ -31,6 +31,7 @@ import android.content.Intent;
 // @Parse
 import com.parse.Parse;
 import com.notificationandroid.NotificationAndroidPackage;
+import com.parse.ParseInstallation;
 
 import android.util.Log;
 
@@ -91,6 +92,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .build();
 
         // Options
+        String env = "none";
         Object buildType = getBuildConfigValue("BUILD_TYPE");
         Object ServerIp = getBuildConfigValue("LOCAL_IP");
         Bundle b = new Bundle();
@@ -101,14 +103,20 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         }
         if (buildType != null && buildType.toString() == "release") {
             b.putString("DONUT_ENVIRONMENT", "production");
+            env = "production";
         } else {
             b.putString("DONUT_ENVIRONMENT", "test");
+            env = "test";
         }
         if (ServerIp == null) {
             b.putString("REACT_SERVER_ADDRESS", "null");
         } else {
             b.putString("REACT_SERVER_ADDRESS", ServerIp.toString());
         }
+        // register in parse installation with env field
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("env", env);
+        installation.saveInBackground();
         mReactRootView.startReactApplication(mReactInstanceManager, "donutMobile", b);
 
         setContentView(mReactRootView);
