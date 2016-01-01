@@ -54,7 +54,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "me.donut"
+        applicationId "me.donut.mobile"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
@@ -74,18 +74,21 @@ android {
         }
     }
     buildTypes {
-        //Build to connect a release apk to base test.donut.me
+        // no debug features, connect to donut.me
+        release {
+            minifyEnabled false  // Set this to true to enable Proguard
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+        }
+        // no debug features, connect to test.donut.me
         donutReleaseTest.initWith(buildTypes.release)
         donutReleaseTest {
             minifyEnabled false  // Set this to true to enable Proguard
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
         }
-        //Build to connect a release apk to base donut.me
-        release {
-            minifyEnabled false  // Set this to true to enable Proguard
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
+        // debug features, connect to test.donut.me
+        debug {
         }
     }
 }
