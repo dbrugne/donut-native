@@ -342,11 +342,10 @@ var oauth = _.extend({
       });
   },
 
-  _registerDevice: function (deviceToken, deviceData, callback) {
+  _registerDevice: function (parseObjectId, callback) {
     var data = {
       token: this.token,
-      device_token: deviceToken,
-      details: deviceData
+      parse_object_id: parseObjectId
     };
     this._oauthRequest('register-device', data, (err, response) => {
       if (err) {
