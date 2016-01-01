@@ -1,8 +1,5 @@
 'use strict';
 
-// @doc : https://parse.com/tutorials/ios-push-notifications
-// @doc : https://parse.com/docs/rest/guide/#push-notifications-installations
-
 var React = require('react-native');
 var {
   AlertIOS,
@@ -15,7 +12,6 @@ var DonutParse = require('react-native').NativeModules.DonutParse;
 
 var debug = require('./../libs/debug')('pushNotification');
 
-// @source: http://stackoverflow.com/questions/29683720/react-native-push-notifications-parse/30287223#30287223
 module.exports = {
   componentDidMount () {
     PushNotificationIOS.addEventListener('register', this.onRegister.bind(this));
@@ -32,7 +28,7 @@ module.exports = {
     debug.log('onRegister', deviceToken);
     DonutParse.getParseInstallationId((err, objectId) => {
       if (err) {
-        console.warn(err);
+        debug.warn(err);
       }
       utils.register(objectId);
     });
