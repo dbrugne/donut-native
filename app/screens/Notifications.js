@@ -78,7 +78,7 @@ class NotificationsView extends Component {
       <ListView
         dataSource={this.state.dataSource}
         renderRow={this.renderRow.bind(this)}
-        style={{flex: 1}}
+        style={{flex: 1, backgroundColor:'#ffffff'}}
         scrollEnabled={true}
         />
     );
@@ -112,7 +112,7 @@ class NotificationsView extends Component {
       var roomId = (n.data.room._id)
         ? n.data.room._id
         : n.data.room.id;
-      n.onPress = () => {this.props.navigator.push(navigation.getProfile({type: 'room', id: roomId, identifier: n.data.room.identifier}));}
+      n.onPress = _.bind(function() { this.props.navigator.push(navigation.getProfile({type: 'room', id: roomId, identifier: n.name})); }, this);
     } else if (n.data.group) {
       n.avatar = common.cloudinary.prepare(n.data.group.avatar, 45);
       n.avatarCircle = true;
@@ -121,7 +121,7 @@ class NotificationsView extends Component {
       var groupId = (n.data.group._id)
         ? n.data.group._id
         : n.data.group.id;
-      n.onPress= () => navigation.switchTo(navigation.getGroup({name: n.name, id: groupId}));
+      //n.onPress= () => navigation.switchTo(navigation.getGroup({name: n.name, id: groupId}));
     } else if (n.data.by_user) {
       n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 45);
       n.title = n.data.by_user.username;
@@ -177,10 +177,27 @@ class NotificationsView extends Component {
   }
 
   _renderNotification(n) {
+    if (n.onPress) {
+      return (
+        <View>
+          <TouchableHighlight
+            underlayColor= '#f0f0f0'
+            onPress={n.onPress}
+            >
+            <View>
+              {this._renderAvatar(n)}
+              <Text>{n.message}</Text>
+              <Text>{this._renderByUsername(n)}</Text>
+              <Text>{date.dayMonthTime(n.time)}</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      );
+    }
+
     return (
       <View>
         {this._renderAvatar(n)}
-        {this._renderMessage(n)}
         <Text>{n.message}</Text>
         <Text>{this._renderByUsername(n)}</Text>
         <Text>{date.dayMonthTime(n.time)}</Text>
@@ -194,7 +211,7 @@ class NotificationsView extends Component {
     }
 
     return(
-      <Image style={[{ width: 45, height: 45, borderRadius: 4 }, n.avatarCircle && {borderRadius:45}]} source={{uri: n.avatar}}/>
+      <Image style={[{ width: 44, height: 44, borderRadius: 4 }, n.avatarCircle && {borderRadius:22}]} source={{uri: n.avatar}}/>
     );
   }
 
@@ -205,24 +222,6 @@ class NotificationsView extends Component {
 
     return (
       <Text>{i18next.t('by-username', {username: n.username}) }</Text>
-    );
-  }
-
-  _renderMessage (n) {
-    return null; // @todo finish that
-    if (n.onPress) {
-      return (
-        <TouchableHighlight
-          underlayColor= '#414041'
-          onPress={n.onPress()}
-          >
-          <Text>{n.message}</Text>
-        </TouchableHighlight>
-      );
-    }
-
-    return (
-      <Text>{n.message}</Text>
     );
   }
 }

@@ -660,12 +660,14 @@ routes.getUserFieldEdit = function (data) {
 routes.getNotifications = function () {
   return getRoute({
     id: 'notification-center',
-    renderScene: function (navigator) {
-      let Notifications = require('../screens/Notifications');
-      return <Notifications navigator={navigator} />;
+    getSceneClass: function () {
+      return require('../screens/Notifications');
     },
     getTitle() {
       return i18next.t('navigation.notifications');
+    },
+    renderLeftButton: function (navigator) {
+      return (<LeftNavigation navigator={navigator} />);
     }
   });
 };
