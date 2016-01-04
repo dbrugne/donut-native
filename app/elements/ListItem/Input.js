@@ -25,9 +25,9 @@ class ListItemInput extends Component {
 
   render () {
     return (
-      <View>
+      <View style={{flex:1}}>
         {this._renderTitle()}
-        <View style={[s.listGroupItem, { justifyContent:'center', alignItem:'center', paddingTop: 5, paddingBottom: 5 }]}>
+        <View style={[s.listGroupItem, { justifyContent:'center', paddingTop: 5, paddingBottom: 5 }]}>
           <TextInput
             autoFocus={true}
             placeholder={this.props.placeholder}
