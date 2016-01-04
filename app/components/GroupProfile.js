@@ -99,12 +99,13 @@ class GroupProfileView extends Component {
     return null;
   }
   renderAction () {
+    // @todo implement onPress goto create donut
     if ((this.user.isMember || this.user.isOwner) && !this.user.isBanned) {
       return (
         <View>
-          <Button
+          <Button onPress={() => console.log('@todo implement create donut')}
             type='green'
-            label={i18next.t('group.create-donut')} />
+            label={i18next.t('group.create-donut') + ' TODO'} />
           <Button onPress={() => this.props.navigator.push(navigation.getGroupRoomsList({id: this.props.data.group_id, name: this.props.data.identifier, user: this.user}))}
             type='green'
             label={i18next.t('group.donut-list')} />
@@ -160,27 +161,27 @@ class GroupProfileView extends Component {
       // @todo implement onpress goto group exit
       list = (
         <View>
-          <ListItem
-              text={i18next.t('group.edit')}
+          <ListItem onPress={() => console.log('@todo implement group edit')}
+              text={i18next.t('group.edit') + ' TODO'}
               first={true}
               action='true'
               type='button'
               icon='fontawesome|pencil'
             />
-          <ListItem
-              text={i18next.t('group.access')}
+          <ListItem onPress={() => console.log('@todo implement group access')}
+              text={i18next.t('group.access') + ' TODO'}
               action='true'
               type='button'
               icon='fontawesome|key'
             />
-          <ListItem
-              text={i18next.t('group.user-list')}
+          <ListItem onPress={() => console.log('@todo implement group user-list')}
+              text={i18next.t('group.user-list') + ' TODO'}
               action='true'
               type='button'
               icon='fontawesome|users'
             />
-          <ListItem
-              text={i18next.t('group.allowed-users')}
+          <ListItem onPress={() => console.log('@todo implement group allowed-users')}
+              text={i18next.t('group.allowed-users') + ' TODO'}
               action='true'
               type='button'
               icon='fontawesome|check-circle'
@@ -191,8 +192,8 @@ class GroupProfileView extends Component {
     var quit = null;
     if (!this.user.isOwner && this.user.isMember) {
       quit = (
-        <ListItem
-            text={i18next.t('group.leave')}
+        <ListItem onPress={() => console.log('@todo implement group leave')}
+            text={i18next.t('group.leave') + ' TODO'}
             first={!(this.isOp || this.isAdmin)}
             action='true'
             type='button'

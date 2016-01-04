@@ -64,7 +64,7 @@ class DiscussionSettings extends Component {
       return (
         <View style={s.listGroup}>
           <ListItem
-            onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'user', id: this.props.model.get('id'), identidier: '@' + this.props.model.get('username')}));}}
+            onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'user', id: this.props.model.get('id'), identifier: this.props.model.get('identifier')}));}}
             text={i18next.t('local:see')}
             icon='fontawesome|eye'
             type='button'
