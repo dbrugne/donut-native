@@ -10,15 +10,18 @@ module.exports = {
   componentDidMount () {
     this.registerDevice();
   },
-  componentWillUnmount() {
+  componentWillUnmount () {
     // don't remove because of /app/navigation/LoggedIn.js:60
   },
-  registerDevice() {
+  registerDevice () {
     ParseManagerAndroid.getId((parseObjectId) => {
       if (!parseObjectId) {
         return debug.warn('registerDevice, no objectId found');
       }
       utils.registerDeviceOnDonut(parseObjectId);
     });
+  },
+  handleInitialNotification () {
+    // @todo : yfuks implement app cold launch from notification
   }
 };
