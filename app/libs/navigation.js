@@ -12,6 +12,8 @@ var {
   Icon
 } = require('react-native-icons');
 
+// @todo : refactor to route class + component + helper
+
 var _ = require('underscore');
 var debug = require('../libs/debug')('navigation');
 var Drawer = require('react-native-drawer');
