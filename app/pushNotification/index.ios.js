@@ -7,7 +7,6 @@ var {
 
 var DonutParse = require('react-native').NativeModules.DonutParse;
 var utils = require('./utils');
-var alert = require('../libs/alert');
 
 var debug = require('./../libs/debug')('pushNotification');
 
@@ -27,7 +26,8 @@ module.exports = {
     var n = PushNotificationIOS.popInitialNotification();
     if (n) {
       debug.log('handleInitialNotification');
-      this._handleNotification(n);
+      //this._handleNotification(n);
+      // @todo : go to notification center
     }
   },
   onRegister (deviceToken) {
@@ -46,9 +46,9 @@ module.exports = {
   _handleNotification (pushNotification) {
     console.log('_handleNotification', pushNotification);
 
-    if (pushNotification.getAlert()) {
+    if (pushNotification.getAlert() && !pushNotification.getData()) {
       // test notification from parse interface
-      return alert.show(pushNotification.getAlert());
+      return Alert.alert(pushNotification.getAlert());
     }
 
     // badge
@@ -73,14 +73,11 @@ module.exports = {
 
     var data = pushNotification.getData();
 
-//    var n = {
-//      alert: pushNotification.getAlert(),
-//      badge: pushNotification.getBadgeCount(),
-//      sound: pushNotification.getSound(),
-//      data: pushNotification.getData()
-//    };
     debug.log('handleNotification', data);
-    alert(data.title);
+    Alert.alert(pushNotification.getAlert(), data.title, [
+      {text: 'Go To Notifications', onPress: () => console.log('@todo')}, // // @todo : go to notification center
+      {text: 'Cancel', onPress: () => {}, style: 'cancel'}
+    ]);
   },
   checkPermissions () {
     PushNotificationIOS.checkPermissions((permissions) => {
@@ -106,4 +103,10 @@ module.exports = {
  *   debug.log('handleNotification', data);
  *   alert(data.alert);
  * }
+ *
+ *       alert: pushNotification.getAlert(),
+ badge: pushNotification.getBadgeCount(),
+ sound: pushNotification.getSound(),
+ data: pushNotification.getData()
+
  */
