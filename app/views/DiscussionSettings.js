@@ -6,21 +6,25 @@ var app = require('../libs/app');
 var s = require('../styles/style');
 var ListItem = require('../elements/ListItem');
 var navigation = require('../libs/navigation');
+var common = require('@dbrugne/donut-common/mobile');
 
 var {
   Component,
   Text,
   View,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Image
 } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'settings': '__identifier__ SETTINGS',
+  'change-topic': 'Change topic',
+  'no-topic': 'No topic',
   'see': 'See the profile',
   'block': 'Block this user',
-  'unblock': 'Unbock this user',
+  'unblock': 'Unblock this user',
   'edit': 'Edit',
   'access': 'Access',
   'allowed': 'Allowed users',
@@ -32,6 +36,9 @@ i18next.addResourceBundle('en', 'local', {
 class DiscussionSettings extends Component {
   constructor (props) {
     super(props);
+    this.isOwner = (currentUser.get('user_id') === props.model.get('owner_id'));
+    this.isAdmin = app.user.isAdmin();
+    this.isOp = (_.indexOf(props.model.get('op'),currentUser.get('user_id')) !== -1);
   }
   render () {
     // @todo link to room edit page
@@ -40,6 +47,13 @@ class DiscussionSettings extends Component {
 
     return (
       <ScrollView style={styles.main}>
+        <View style={styles.containerTop}>
+          {this._renderAvatar(this.props.model.get('avatar'))}
+          <Text style={styles.identifier}>
+            {this.props.model.get('identifier')}
+          </Text>
+        </View>
+        {this._renderTopic()}
         {this._renderLinks()}
       </ScrollView>
     );
@@ -50,8 +64,7 @@ class DiscussionSettings extends Component {
       return (
         <View style={s.listGroup}>
           <ListItem
-            onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'user', id: this.props.model.get('id'), identidier: '@' + this.props.model.get('username')}));}}
-            title={i18next.t('local:settings', {identifier: this.props.model.get('identifier')})}
+            onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'user', id: this.props.model.get('id'), identifier: this.props.model.get('identifier')}));}}
             text={i18next.t('local:see')}
             icon='fontawesome|eye'
             type='button'
@@ -70,11 +83,25 @@ class DiscussionSettings extends Component {
         </View>
       );
     } else {
+      let itemTopic = null;
+      if (this.isOp || this.isOwner || this.isAdmin) {
+        itemTopic = (
+          <ListItem
+            style={{marginBottom: 20}}
+            onPress={() => {this.props.navigator.push(navigation.getUpdateRoomTopic(this.props.model.get('id')))}}
+            text={i18next.t('local:change-topic')}
+            icon='fontawesome|edit'
+            type='button'
+            action={true}
+            first={true}
+            />
+        );
+      }
       return (
         <View style={s.listGroup}>
+          {itemTopic}
           <ListItem
             onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'room', id: this.props.model.get('id'), identifier: this.props.model.get('identifier')}));}}
-            title={i18next.t('local:settings', {identifier: this.props.model.get('identifier')})}
             text={i18next.t('local:see')}
             icon='fontawesome|eye'
             type='button'
@@ -114,6 +141,19 @@ class DiscussionSettings extends Component {
         </View>
       );
     }
+  }
+
+  _renderTopic () {
+    if (this.props.model.get('type') === 'onetoone') {
+      return null;
+    }
+    return (
+      <View style={styles.topic}>
+        <Text>
+          " {(this.props.model.get('topic')) ? this.props.model.get('topic') : i18next.t('local:no-topic')} "
+        </Text>
+      </View>
+    )
   }
 
   _renderBlock() {
@@ -160,6 +200,25 @@ class DiscussionSettings extends Component {
         />
     );
   }
+
+  _renderAvatar (avatar) {
+    if (!avatar) {
+      return null;
+    }
+    var avatarUrl = common.cloudinary.prepare(avatar, 60);
+    if (!avatarUrl) {
+      return null;
+    }
+    if (this.props.model.get('type') === 'room') {
+      return (<Image style={styles.avatarRoom} source={{uri: avatarUrl}}/>);
+    }
+    return (
+      <View style={styles.containerAvatarOne}>
+        <Image style={styles.avatarOne} source={{uri: avatarUrl}} />
+        <Text style={[styles.statusText, styles.status, this.props.model.get('status') === 'connecting' && styles.statusConnecting, this.props.model.get('status') === 'offline' && styles.statusOffline, this.props.model.get('status') === 'online' && styles.statusOnline]}>{this.props.model.get('status')}</Text>
+      </View>
+    );
+  }
 }
 
 var styles = StyleSheet.create({
@@ -167,7 +226,53 @@ var styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     backgroundColor: '#f0f0f0',
-    paddingTop: 20
+    paddingTop: 10
+  },
+  containerTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginBottom: 10
+  },
+  avatarRoom: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  containerAvatarOne: {
+    flexDirection: 'column'
+  },
+  avatarOne: {
+    width: 50,
+    height: 50
+  },
+  status: {
+    marginBottom: 8,
+    alignSelf: 'center',
+    textAlign: 'center',
+    flex:1,
+    fontWeight: '400',
+    fontSize: 12,
+    fontFamily: 'Open Sans',
+    width: 50,
+    paddingLeft:5,
+    paddingRight:5,
+    overflow: 'hidden'
+  },
+  statusOnline: { backgroundColor: 'rgba(79, 237, 192, 0.8)' },
+  statusConnecting: { backgroundColor: 'rgba(255, 218, 62, 0.8)' },
+  statusOffline: { backgroundColor: 'rgba(119,119,119,0.8)' },
+  statusText: {
+    color: '#FFFFFF',
+    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: 'Open Sans'
+  },
+  identifier: {
+    marginLeft: 10
+  },
+  topic: {
+    margin: 20
   }
 });
 

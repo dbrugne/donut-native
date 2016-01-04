@@ -145,8 +145,7 @@ public class ParsePushNotificationReceiver extends ParsePushBroadcastReceiver {
                         .setLargeIcon(result).build();
 
                 Intent notificationIntent = new Intent(ctx, MainActivity.class);
-                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
                 PendingIntent intent = PendingIntent.getActivity(ctx, notificationId,
                     notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);

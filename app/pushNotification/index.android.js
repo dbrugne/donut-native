@@ -13,8 +13,8 @@ module.exports = {
   componentWillUnmount () {
     // don't remove because of /app/navigation/LoggedIn.js:60
   },
-  registerDevice () {
-    ParseManagerAndroid.getId((parseObjectId) => {
+  registerDevice() {
+    ParseManagerAndroid.getParseInstallationObjectId((parseObjectId) => {
       if (!parseObjectId) {
         return debug.warn('registerDevice, no objectId found');
       }

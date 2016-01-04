@@ -6,8 +6,7 @@ var s = require('../styles/style');
 var {
   Component,
   View,
-  Text,
-  StyleSheet
+  Text
 } = React;
 
 var i18next = require('../libs/i18next');
@@ -25,10 +24,10 @@ class UserField extends Component {
   render () {
     var field = this.renderField();
     return (
-      <View style={styles.container}>
+      <View style={{flexDirection: 'column', justifyContent: 'center', backgroundColor: '#f0f0f0', flex:1}}>
         <Text style={[s.h1, {marginVertical:10, marginHorizontal: 10}]}>{i18next.t('local:change')} {this.key}</Text>
 
-        <View style={s.inputContainer}>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop:5}}>
           {field}
         </View>
 
@@ -41,14 +40,5 @@ class UserField extends Component {
     return (<View />);
   }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: '#f0f0f0',
-    flex:1
-  }
-});
 
 module.exports = UserField;
