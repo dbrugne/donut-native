@@ -11,7 +11,7 @@ var utils = require('./utils');
 var debug = require('./../libs/debug')('pushNotification');
 
 module.exports = {
-  componentDidMount () {
+  componentDidMount () { // @todo : refactor to component OR change name for .onLaunch/.onClose
     PushNotificationIOS.addEventListener('register', this.onRegister.bind(this));
     PushNotificationIOS.addEventListener('notification', this.onNotification.bind(this));
 
