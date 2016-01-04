@@ -2,16 +2,24 @@
 
 var React = require('react-native');
 var {
-  PushNotificationIOS
+  PushNotificationIOS,
+  AppStateIOS,
+  Alert
 } = React;
 
 var DonutParse = require('react-native').NativeModules.DonutParse;
 var utils = require('./utils');
+var navigation = require('../libs/navigation');
 
 var debug = require('./../libs/debug')('pushNotification');
 
+// @todo : add code on Notification view component to set icon badge to correct unviewed value on incoming viewed/done
+
 module.exports = {
-  componentDidMount () { // @todo : refactor to component OR change name for .onLaunch/.onClose
+  appState: 'active', // @todo : refactor to component
+  nextAppFocus: null,
+  componentDidMount () {
+    AppStateIOS.addEventListener('change', this.onAppStateChange.bind(this));
     PushNotificationIOS.addEventListener('register', this.onRegister.bind(this));
     PushNotificationIOS.addEventListener('notification', this.onNotification.bind(this));
 
@@ -19,15 +27,23 @@ module.exports = {
     this.requestPermissions();
   },
   componentWillUnmount () {
+    AppStateIOS.removeEventListener('change', this.onAppStateChange.bind(this));
     PushNotificationIOS.removeEventListener('register', this.onRegister.bind(this));
     PushNotificationIOS.removeEventListener('notification', this.onNotification.bind(this));
+  },
+  onAppStateChange (currentAppState) {
+    this.appState = currentAppState;
+    if (this.nextAppFocus) {
+      // run scheduled notification on app focus
+      this.nextAppFocus();
+      this.nextAppFocus = null;
+    }
   },
   handleInitialNotification () {
     var n = PushNotificationIOS.popInitialNotification();
     if (n) {
       debug.log('handleInitialNotification');
-      //this._handleNotification(n);
-      // @todo : go to notification center
+      this.goToNotificationCenter();
     }
   },
   onRegister (deviceToken) {
@@ -44,38 +60,26 @@ module.exports = {
     this._handleNotification(n);
   },
   _handleNotification (pushNotification) {
-    console.log('_handleNotification', pushNotification);
+    debug.log('_handleNotification', pushNotification);
+
+    if (this.appState !== 'active') {
+      // schedule notification for next app focus
+      this.nextAppFocus = () => {
+        this._handleNotification(pushNotification);
+      };
+      return debug.log('_handleNotification appState is active, do nothing');
+    }
 
     if (pushNotification.getAlert() && !pushNotification.getData()) {
       // test notification from parse interface
       return Alert.alert(pushNotification.getAlert());
     }
 
-    // badge
-    PushNotificationIOS.setApplicationIconBadgeNumber(0);
-    PushNotificationIOS.getApplicationIconBadgeNumber((n) => {
-      PushNotificationIOS.setApplicationIconBadgeNumber(n + 1); // @todo probably not work when app is closed, need to rely on parse managing
-    });
-
-    /**
-     * {
-     *   _data: {
-     *     parsePushId: objectId,
-     *     title: 'Nouveau message privé de @yangs',
-     *     img: 'https://res.cloudinary.com/roomly/image/upload/b_rgb:cc1f2f,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_48,w_48/v1422437207/sz0yn9kyfop1jpkaqs2o.jpg',
-     *     type: 'usermessage'
-     *    },
-     *   _alert: 'grunt Test push notification',
-     *   _sound: undefined,
-     *   _badgeCount: 17
-     * }
-     */
-
     var data = pushNotification.getData();
 
     debug.log('handleNotification', data);
     Alert.alert(pushNotification.getAlert(), data.title, [
-      {text: 'Go To Notifications', onPress: () => console.log('@todo')}, // // @todo : go to notification center
+      {text: 'Go To Notifications', onPress: () => this.goToNotificationCenter()},
       {text: 'Cancel', onPress: () => {}, style: 'cancel'}
     ]);
   },
@@ -87,26 +91,8 @@ module.exports = {
   requestPermissions () {
     debug.log('requestPermissions');
     PushNotificationIOS.requestPermissions();
+  },
+  goToNotificationCenter () {
+    navigation.switchTo(navigation.getNotifications());
   }
 };
-
-
-/**
- * {
- *   title: String, (Android only)
- *   alert: String
- *   badge: String Increment
- *   img: String (Android only)
- * }
- *
- * handleNotification (data) {
- *   debug.log('handleNotification', data);
- *   alert(data.alert);
- * }
- *
- *       alert: pushNotification.getAlert(),
- badge: pushNotification.getBadgeCount(),
- sound: pushNotification.getSound(),
- data: pushNotification.getData()
-
- */

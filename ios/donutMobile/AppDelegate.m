@@ -140,11 +140,12 @@
 // Required for push notifications
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification
 {
+  // @Notifications
+  // @source: http://stackoverflow.com/questions/11153631/increment-the-push-notification-badge-iphone
+  [UIApplication sharedApplication].applicationIconBadgeNumber = [[[notification objectForKey:@"aps"] objectForKey: @"badge"] intValue];
+  
   // @PushNotificationsIOS
   [RCTPushNotificationManager application:application didReceiveRemoteNotification:notification];
-  
-  // @Parse
-  //[PFPush handlePush:userInfo];
 }
 
 @end
