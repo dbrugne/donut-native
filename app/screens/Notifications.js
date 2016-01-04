@@ -5,6 +5,7 @@ var _ = require('underscore');
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
+var Link = require('../elements/Link');
 var LoadingView = require('../elements/Loading');
 var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
@@ -36,7 +37,7 @@ class NotificationsView extends Component {
       error: null,
       unread: 0,          // notifications
       more: false,
-      discussionsUnviewed: 0,
+      discussionsUnviewed: app.getUnviewed(),
       dataSource: new ListView.DataSource({
         rowHasChanged: function (row1, row2) {
           return (row1 !== row2);
@@ -91,8 +92,17 @@ class NotificationsView extends Component {
   }
 
   renderHeader() {
+    if (this.state.discussionsUnviewed === 0) {
+      return;
+    }
+
     return (
-      <Text style={{marginVertical: 10, marginHorizontal:10}}>{i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}</Text>
+      <Link style={{marginHorizontal: 10, marginVertical:20}}
+            underlayColor='transparent'
+            onPress={() => navigation.openDrawer()}
+            text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
+        >
+      </Link>
     );
   }
 
