@@ -117,6 +117,9 @@ class Index extends Component {
       this.computeUnviewed();
       debug.log('trigger readyToRoute');
       app.trigger('readyToRoute', data);
+
+      // handle cold launch from notification
+      PushNotifications.handleInitialNotification();
     });
   }
   computeUnviewed () {
