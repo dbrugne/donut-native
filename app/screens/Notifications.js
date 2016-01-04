@@ -24,6 +24,9 @@ var {
 var i18next = require('../libs/i18next');
 
 // @todo yls implement swipe to delete a notification
+// @todo implement discussion viewed update
+// @todo implement notification viewed update (done)
+// @todo implement notification pushed
 class NotificationsView extends Component {
 
   constructor (props) {
@@ -31,8 +34,9 @@ class NotificationsView extends Component {
     this.state = {
       loaded: false,
       error: null,
-      unread: 0,
+      unread: 0,          // notifications
       more: false,
+      discussionsUnviewed: 0,
       dataSource: new ListView.DataSource({
         rowHasChanged: function (row1, row2) {
           return (row1 !== row2);
@@ -78,31 +82,29 @@ class NotificationsView extends Component {
       <ListView
         dataSource={this.state.dataSource}
         renderRow={this.renderRow.bind(this)}
+        renderHeader={this.renderHeader.bind(this)}
+        renderFooter={this.renderFooter.bind(this)}
         style={{flex: 1, backgroundColor:'#ffffff'}}
         scrollEnabled={true}
         />
     );
+  }
 
-    //return (
-    //  <ListView
-    //    ref='listView'
-    //    style={{flex: 1}}
-    //    renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
-    //    dataSource={this.state.ds}
-    //    renderRow={this._renderRow}
-    //    renderHeader={this.renderFooter.bind(this)}
-    //    renderFooter={this.renderHeader.bind(this)}
-    //    onChangeVisibleRows={this.onChangeVisibleRows.bind(this)}
-    //    pageSize={4}
-    //    />
-    //);
+  renderHeader() {
+    return (
+      <Text style={{marginVertical: 10, marginHorizontal:10}}>{i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}</Text>
+    );
+  }
+
+  renderFooter() {
+    return (
+      <Text style={{}}>Load more</Text>
+    );
   }
 
   renderRow (n) {
     n.css = '';
-    n.href = '';
     n.name = '';
-    //n.html = '';
     n.avatarCircle = false;
     if (n.data.room) {
       n.avatar = common.cloudinary.prepare(n.data.room.avatar, 45);
@@ -121,7 +123,7 @@ class NotificationsView extends Component {
       var groupId = (n.data.group._id)
         ? n.data.group._id
         : n.data.group.id;
-      //n.onPress= () => navigation.switchTo(navigation.getGroup({name: n.name, id: groupId}));
+      n.onPress= () => navigation.switchTo(navigation.getGroup({name: n.name, id: groupId}));
     } else if (n.data.by_user) {
       n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 45);
       n.title = n.data.by_user.username;
@@ -152,18 +154,10 @@ class NotificationsView extends Component {
     if (n.type === 'roomjoinrequest') {
       n.onPress = null;
       n.css += 'open-room-users-allowed';
-      //var roomId = (n.data.room._id)
-      //  ? n.data.room._id
-      //  : n.data.room.id;
-      //n.html += 'data-room-id="' + roomId + '"';
       n.username = null;
     } else if (n.type === 'groupjoinrequest') {
       n.onPress = null;
       n.css += 'open-group-users-allowed';
-      //var groupId = (n.data.group._id)
-      //  ? n.data.group._id
-      //  : n.data.group.id;
-      //n.html += 'data-group-id="' + groupId + '"';
       n.username = null;
     } else if (n.type === 'roomdelete') {
       n.onPress = null;
@@ -179,32 +173,31 @@ class NotificationsView extends Component {
   _renderNotification(n) {
     if (n.onPress) {
       return (
-        <View>
-          <TouchableHighlight
-            underlayColor= '#f0f0f0'
-            onPress={n.onPress}
-            >
-            <View>
-              {this._renderAvatar(n)}
-              <Text>{n.message}</Text>
-              <Text>{this._renderByUsername(n)}</Text>
-              <Text>{date.dayMonthTime(n.time)}</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
+        <TouchableHighlight
+          underlayColor= '#f0f0f0'
+          onPress={n.onPress}
+          >
+          {this._renderContent(n)}
+        </TouchableHighlight>
       );
     }
-
+  }
+  _renderContent(n) {
     return (
-      <View>
-        {this._renderAvatar(n)}
-        <Text>{n.message}</Text>
-        <Text>{this._renderByUsername(n)}</Text>
-        <Text>{date.dayMonthTime(n.time)}</Text>
+      <View style={[{ paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderBottomWidth:1, borderBottomColor:'#f1f1f1', borderStyle:'solid'}, !n.viewed && {borderBottomColor:'#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
+        <View style={{ flexDirection:'row', justifyContent:'center', flex:1}}>
+          {this._renderAvatar(n)}
+          <View style={{ flexDirection:'column', justifyContent:'center', flex:1, marginLeft:10}}>
+            <Text>{n.message}</Text>
+            <View style={{ flexDirection:'row', alignItems:'center', flex:1}}>
+              <Text style={{ flex:1, fontSize:14 }}>{this._renderByUsername(n)}</Text>
+              <Text style={{ color:'#999999', fontSize:12 }}>{date.dayMonthTime(n.time)}</Text>
+            </View>
+          </View>
+        </View>
       </View>
     );
   }
-
   _renderAvatar(n) {
     if (!n.avatar) {
       return null;
@@ -214,7 +207,6 @@ class NotificationsView extends Component {
       <Image style={[{ width: 44, height: 44, borderRadius: 4 }, n.avatarCircle && {borderRadius:22}]} source={{uri: n.avatar}}/>
     );
   }
-
   _renderByUsername(n) {
     if (!n.username) {
       return null;

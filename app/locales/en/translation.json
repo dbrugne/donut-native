@@ -143,6 +143,9 @@
       "groupdeban": "You are no longer banned from community #__name__",
       "groupop": "You are moderator of community #__name__",
       "groupdeop": "You are no longer moderator of community #__name__"
-    }
+    },
+    "discussion-count": "You also have __count__ unviewed discussion",
+    "discussion-count_0": "You do not have unviewed discussions",
+    "discussion-count_plural": "You also have __count__ unviewed discussions"
   }
 }
