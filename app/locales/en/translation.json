@@ -1,6 +1,7 @@
 {
   "or": "or",
   "by": "by",
+  "by-username": "by @__username__",
   "send": "send",
   "save": "save",
   "online": "online",
@@ -38,7 +39,8 @@
     "not-confirmed": "Action authorized to verified accounts only. Verify your e-mail.",
     "group-banned": "You were banned from community",
     "domain": "This domain is not valid",
-    "unknownerror": "Unknown error, please retry later"
+    "unknownerror": "Unknown error, please retry later",
+    "notification-read-error": "An error has been raised while reading notifications"
   },
   "navigation": {
     "discover": "Discover",
@@ -64,6 +66,7 @@
     "ask-membership-request": "I request membership",
     "ask-membership-password": "I have the password",
     "ask-membership-email": "I have an authorized e-mail",
+    "notifications": "Notifications"
     "update-room-topic": "Change topic"
   },
   "group": {
@@ -110,5 +113,36 @@
     "out": "just gone out",
     "in": "just entered",
     "unread-messages": "UNREAD MESSAGES"
+  },
+  "notifications": {
+    "messages": {
+      "roomop": "You are moderator of __name__",
+      "roomdeop": "You are no longer moderator of __name__",
+      "roomkick": "You were kicked out of __name__",
+      "roomban": "You were banned from __name__",
+      "roomdeban": "You are no longer banned from __name__",
+      "roomvoice": "You are unmute in __name__",
+      "roomdevoice": "You are mute in __name__",
+      "roomallowed": "You are now authorized to join __name__",
+      "roomrefuse": "Your request to join __name__ has been refused",
+      "roomjoin": "@__username__ joined __name__",
+      "roomjoinrequest": "@__username__ wants to join __name__",
+      "roomtopic": "New topic in __name__, __topic__",
+      "roommessage": "New message in __name__",
+      "usermention": "You were mentionned in __name__",
+      "usermessage": "@__username__ __message__",
+      "roominvite": "@__username__ invites you to join __name__",
+      "roomdelete": "@__username__ delete your donut __name__",
+      "roomcreate": "@__username__ create the donut __name__",
+      "groupjoinrequest": "@__username__ wants to join #__name__",
+      "groupallowed": "You are now a member of  #__name__",
+      "groupdisallow": "You are no longer a member of #__name__",
+      "groupinvite": "@__username__ invites you to join #__name__",
+      "grouprefuse": "Your request to join #__name__ has been refused",
+      "groupban": "You were banned from community #__name__",
+      "groupdeban": "You are no longer banned from community #__name__",
+      "groupop": "You are moderator of community #__name__",
+      "groupdeop": "You are no longer moderator of community #__name__"
+    }
   }
 }

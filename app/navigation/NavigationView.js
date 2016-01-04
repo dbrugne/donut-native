@@ -26,7 +26,8 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'discover': 'discover',
   'search': 'search',
-  'create': 'create'
+  'create': 'create',
+  'notifications': 'Notifications'
 });
 
 class NavigationView extends Component {
@@ -84,6 +85,22 @@ class NavigationView extends Component {
                   />
               </View>
               <Text style={styles.linkText}>{i18next.t('local:create')}</Text>
+            </View>
+          </TouchableHighlight>
+
+          <TouchableHighlight style={styles.linkBlock}
+                              underlayColor= '#414041'
+                              onPress={() => navigation.switchTo(navigation.getNotifications())}>
+            <View style={styles.linkContainer}>
+              <View style={styles.iconCtn}>
+                <Icon
+                  name='fontawesome|globe'
+                  size={18}
+                  color='#ecf0f1'
+                  style={styles.icon}
+                  />
+              </View>
+              <Text style={styles.linkText}>{i18next.t('local:notifications')}</Text>
             </View>
           </TouchableHighlight>
 

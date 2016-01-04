@@ -657,6 +657,18 @@ routes.getUserFieldEdit = function (data) {
     }
   });
 };
+routes.getNotifications = function () {
+  return getRoute({
+    id: 'notification-center',
+    renderScene: function (navigator) {
+      let Notifications = require('../screens/Notifications');
+      return <Notifications navigator={navigator} />;
+    },
+    getTitle() {
+      return i18next.t('navigation.notifications');
+    }
+  });
+};
 routes.getNavigator = function (initialRoute) {
   // navigator id === initialRoute id
   var id = 'nav-' + initialRoute.id;
