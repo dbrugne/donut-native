@@ -53,6 +53,8 @@
 		6D8A2E8C1C36AC94008B3871 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E8B1C36AC94008B3871 /* libz.tbd */; };
 		6D8A2E8E1C36AC9C008B3871 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D8A2E8D1C36AC9C008B3871 /* libsqlite3.tbd */; };
 		6DAF46831C36B6BB004BD0A5 /* DonutParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF46821C36B6BB004BD0A5 /* DonutParse.m */; };
+		6DAF46871C36DCBB004BD0A5 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAF46861C36DCBA004BD0A5 /* Accounts.framework */; };
+		6DAF46891C36DCC5004BD0A5 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAF46881C36DCC5004BD0A5 /* Social.framework */; };
 		6DCC57EE1C0C689C008F42F0 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCC57ED1C0C6817008F42F0 /* libRCTPushNotification.a */; };
 		6DCC57F91C0CB960008F42F0 /* UIImagePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DCC57F81C0CB960008F42F0 /* UIImagePickerManager.m */; };
 		6DF0674D1C0F69740096C874 /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6DF067401C0F66F20096C874 /* FontAwesome.otf */; };
@@ -210,6 +212,8 @@
 		6D8A2E8D1C36AC9C008B3871 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		6DAF46821C36B6BB004BD0A5 /* DonutParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DonutParse.m; path = donutMobile/DonutParse.m; sourceTree = "<group>"; };
 		6DAF46851C36BAC0004BD0A5 /* DonutParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DonutParse.h; path = donutMobile/DonutParse.h; sourceTree = "<group>"; };
+		6DAF46861C36DCBA004BD0A5 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		6DAF46881C36DCC5004BD0A5 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		6DCC57E81C0C6817008F42F0 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		6DCC57F71C0CB960008F42F0 /* UIImagePickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImagePickerManager.h; sourceTree = "<group>"; };
 		6DCC57F81C0CB960008F42F0 /* UIImagePickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImagePickerManager.m; sourceTree = "<group>"; };
@@ -233,6 +237,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DAF46891C36DCC5004BD0A5 /* Social.framework in Frameworks */,
+				6DAF46871C36DCBB004BD0A5 /* Accounts.framework in Frameworks */,
 				6D8A2E8E1C36AC9C008B3871 /* libsqlite3.tbd in Frameworks */,
 				6D8A2E8C1C36AC94008B3871 /* libz.tbd in Frameworks */,
 				6D8A2E8A1C36AC80008B3871 /* SystemConfiguration.framework in Frameworks */,
@@ -411,6 +417,8 @@
 		6D830AD21C0777CB007AF824 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6DAF46881C36DCC5004BD0A5 /* Social.framework */,
+				6DAF46861C36DCBA004BD0A5 /* Accounts.framework */,
 				6D8A2E8D1C36AC9C008B3871 /* libsqlite3.tbd */,
 				6D8A2E8B1C36AC94008B3871 /* libz.tbd */,
 				6D8A2E891C36AC80008B3871 /* SystemConfiguration.framework */,
@@ -843,8 +851,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
 					"$(inherited)",
+					"DEBUG=1",
 					"ENV=2",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -888,7 +896,6 @@
 				INFOPLIST_FILE = donutMobile/Info.plist;
 				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = me.donut.mobile.test;
@@ -927,7 +934,10 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = "ENV=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ENV=1",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -941,7 +951,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "22b0c0c2-5aad-4c05-aa01-cccbe2c9e0c4";
+				PROVISIONING_PROFILE = "1da7a9aa-7d56-4030-826a-725e5d5cb83a";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -966,7 +976,6 @@
 				INFOPLIST_FILE = donutMobile/Info.plist;
 				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = me.donut.mobile;
@@ -1051,7 +1060,6 @@
 				INFOPLIST_FILE = donutMobile/Info.plist;
 				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = me.donut.mobile.test;
