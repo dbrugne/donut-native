@@ -24,13 +24,6 @@ class InputView extends Component {
 
     this.model = props.model;
   }
-  componentDidMount () {
-    // hide keyboard by triggering blur on TextInput
-    app.on('drawerWillOpen', () => this.refs.input.blur(), this);
-  }
-  componentWillUnmount () {
-    app.off(null, null, this);
-  }
   render() {
     var inputPlaceholder = 'Message ' + ((this.model.get('type') === 'room') ? 'dans ' + this.model.get('identifier') : 'à @' + this.model.get('username'));
     return (

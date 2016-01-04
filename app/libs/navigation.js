@@ -20,6 +20,7 @@ var app = require('./app');
 var Platform = require('Platform');
 var currentUser = require('../models/current-user');
 var i18next = require('../libs/i18next');
+var dismissKeyboard = require('dismissKeyboard');
 
 // @debug
 var currentFocused = function () {
@@ -801,8 +802,7 @@ routes.RootNavigator = React.createClass({
     );
   },
   onDrawerOpen () {
-    app.trigger('drawerWillOpen');
-
+    dismissKeyboard();
     debug.log('onDrawerOpen');
     drawerOpened = true;
     if (Platform.OS === 'ios') {
