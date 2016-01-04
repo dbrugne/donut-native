@@ -180,6 +180,8 @@ class NotificationsView extends Component {
           {this._renderContent(n)}
         </TouchableHighlight>
       );
+    } else {
+      return null;
     }
   }
   _renderContent(n) {
