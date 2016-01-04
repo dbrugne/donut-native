@@ -3,11 +3,7 @@
 var React = require('react-native');
 var {
   Component,
-  Text,
   View,
-  ScrollView,
-  StyleSheet,
-  Image
   } = React;
 
 var _ = require('underscore');
