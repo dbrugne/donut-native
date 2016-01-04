@@ -66,7 +66,7 @@
     "ask-membership-request": "I request membership",
     "ask-membership-password": "I have the password",
     "ask-membership-email": "I have an authorized e-mail",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
     "update-room-topic": "Change topic"
   },
   "group": {
