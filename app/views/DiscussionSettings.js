@@ -90,7 +90,7 @@ class DiscussionSettings extends Component {
             style={{marginBottom: 20}}
             onPress={() => {this.props.navigator.push(navigation.getUpdateRoomTopic(this.props.model.get('id')))}}
             text={i18next.t('local:change-topic')}
-            icon='fontawesome|pencil'
+            icon='fontawesome|edit'
             type='button'
             action={true}
             first={true}
