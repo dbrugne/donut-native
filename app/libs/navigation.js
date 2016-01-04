@@ -611,6 +611,18 @@ routes.getBlockedDiscussion = function (id, model) {
     }
   });
 };
+routes.getUpdateRoomTopic = function (id) {
+  return getRoute({
+    id: 'room-topic' + id,
+    renderScene: function () {
+      let UpdateRoomTopic = require('../views/UpdateRoomTopic');
+      return <UpdateRoomTopic id={id} />;
+    },
+    getTitle: function () {
+      return i18next.t('navigation.update-room-topic');
+    }
+  });
+};
 routes.getRoomUsers = function (id, model) {
   return getRoute({
     id: 'room-users-' + id,

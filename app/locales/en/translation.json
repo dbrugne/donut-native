@@ -1,6 +1,7 @@
 {
   "or": "or",
   "by": "by",
+  "send": "send",
   "save": "save",
   "online": "online",
   "offline": "offline",
@@ -62,7 +63,8 @@
     "ask-membership": "ask membership",
     "ask-membership-request": "I request membership",
     "ask-membership-password": "I have the password",
-    "ask-membership-email": "I have an authorized e-mail"
+    "ask-membership-email": "I have an authorized e-mail",
+    "update-room-topic": "Change topic"
   },
   "group": {
     "created": "created on",
