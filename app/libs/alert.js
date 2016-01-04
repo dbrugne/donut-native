@@ -1,13 +1,12 @@
 'use strict';
 
 var React = require('react-native');
-var Platform = require('Platform');
-
 var {
-  Component,
   AlertIOS,
   ToastAndroid
-  } = React;
+} = React;
+
+var Platform = require('Platform');
 
 module.exports = {
   show: function(string) {
