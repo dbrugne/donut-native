@@ -1,3 +1,5 @@
+'use strict';
+
 var currentUser = require('../models/current-user');
 
 var debug = require('./../libs/debug')('pushNotification');
