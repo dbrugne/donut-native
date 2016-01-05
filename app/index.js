@@ -41,11 +41,11 @@ module.exports = React.createClass({
     if (!this.state.currentUserReady) {
       var Launching = require('./views/Launching');
       return (
-        <Launching ref='current' text="chargement ..." />
+        <Launching ref='current' text="loading ..." />
       );
     }
     if (!this.state.isLoggedIn) {
-      var LoggedOut = require('./navigation/LoggedOut'); // @important, lazy load
+      var LoggedOut = require('./loggedOut/index'); // @important, lazy load
       return (
         <LoggedOut ref='current' />
       );

@@ -1,49 +1,41 @@
-'use strict';
-
 var React = require('react-native');
+var Platform = require('Platform');
+var s = require('../styles/style');
+var Alert = require('../libs/alert');
+var Link = require('../elements/Link');
+var Button = require('../elements/Button');
+
 var {
   Component,
-  StyleSheet,
   Text,
-  TextInput,
-  TouchableHighlight,
-  ScrollView,
   View,
-  Image,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  Image
 } = React;
 var {
   Icon
 } = require('react-native-icons');
 
-var Platform = require('Platform');
-var currentUser = require('../models/current-user');
-var s = require('../styles/style');
-var _ = require('underscore');
-var Alert = require('../libs/alert');
-var Button = require('../elements/Button');
-var Link = require('../elements/Link');
-
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'back': 'Back',
-  'signup': 'Sign up',
-  'username': 'Username',
-  'password': 'Password',
-  'mail': 'Mail'
+  'forgot': 'Forgot Password',
+  'what': 'What email address do you use to sign into Donut ?',
+  'reset': 'Reset',
+  'email': 'Email',
+  'back': 'back'
 });
 
-class Signup extends Component {
-  constructor (props) {
+class ForgotView extends Component {
+  constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
-      hasPassword: false,
-      username: ''
+      email: ''
     };
   }
 
-  render () {
+  render() {
     return (
       <View style={{flex:1, alignItems: 'stretch'}}>
         <ScrollView
@@ -55,56 +47,29 @@ class Signup extends Component {
             <View style={styles.logoCtn}>
               <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
             </View>
+
             <View style={styles.container}>
+              <Text style={[s.h1, s.textCenter]}>{i18next.t('local:forgot')}</Text>
+              <Text style={[s.spacer, s.p, s.textCenter]}>{i18next.t('local:what')}</Text>
+
               <View ref='email'
-                    style={[s.inputContainer, s.marginTop10]}>
+                    style={[s.inputContainer, s.marginTop5]}>
                 <TextInput
-                  placeholder={i18next.t('local:mail')}
+                  autoCapitalize='none'
+                  placeholder={i18next.t('local:email')}
                   onChange={(event) => this.setState({email: event.nativeEvent.text})}
-                  style={s.input}
-                  onSubmitEditing={() => this._focusNextField('1')}
-                  returnKeyType='next'
-                  keyboardType='email-address'
                   onFocus={this.inputFocused.bind(this, 'email')}
                   onBlur={this.inputBlured.bind(this, 'email')}
-                  value={this.state.email} />
-              </View>
-
-              <View
-                ref='password'
-                style={[s.inputContainer, s.marginTop10]}>
-                <TextInput
-                  ref='1'
-                  placeholder={i18next.t('local:password')}
-                  secureTextEntry={true}
-                  onChange={(event) => this.setState({password: event.nativeEvent.text})}
-                  style={s.input}
-                  onSubmitEditing={() => this._focusNextField('2')}
-                  returnKeyType='next'
-                  keyboardType='default'
-                  onFocus={this.inputFocused.bind(this, 'password')}
-                  onBlur={this.inputBlured.bind(this, 'password')}
-                  value={this.state.password} />
-              </View>
-
-              <View ref='username'
-                    style={[s.inputContainer, s.marginTop10]}>
-                <TextInput
-                  ref='2'
-                  placeholder={i18next.t('local:username')}
-                  onChange={(event) => this.setState({username: event.nativeEvent.text})}
-                  style={s.input}
+                  keyboardType='email-address'
                   returnKeyType='done'
-                  keyboardType='default'
-                  onFocus={this.inputFocused.bind(this, 'username')}
-                  onBlur={this.inputBlured.bind(this, 'username')}
-                  value=  {this.state.username} />
+                  style={[s.input, s.marginTop10]}
+                  value={this.state.email}/>
               </View>
 
-              <Button onPress={(this.onSubmitPressed.bind(this))}
-                      style={s.marginTop10}
+              <Button onPress={(this.onResetPressed.bind(this))}
+                      style={s.marginTop5}
                       type='pink'
-                      label={i18next.t('local:signup')}/>
+                      label={i18next.t('local:reset')} />
 
             </View>
 
@@ -115,6 +80,7 @@ class Signup extends Component {
                 color='#808080'
                 style={{width: 14, height: 14, marginTop:2, marginRight:2}}
                 />
+
               <Link onPress={(this.onBack.bind(this))}
                     text={i18next.t('local:back')}
                     linkStyle={[s.link, styles.textGray]}
@@ -124,7 +90,7 @@ class Signup extends Component {
           </View>
         </ScrollView>
       </View>
-    );
+    )
   }
 
   onBack() {
@@ -152,18 +118,16 @@ class Signup extends Component {
     );
   }
 
-  _focusNextField(nextField) {
-    this.refs[nextField].focus()
-  }
-
-  onSubmitPressed () {
-    if (!this.state.email || !this.state.password || !this.state.username) {
+  onResetPressed() {
+    if (!this.state.email) {
       return Alert.show(i18next.t('messages.not-complete'));
     }
 
-    currentUser.emailSignUp(this.state.email, this.state.password, this.state.username, (err) => {
+    currentUser.forgot(this.state.email, (err) => {
       if (err) {
-        Alert.show(err);
+        Alert.show(i18next.t('messages.' + err));
+      } else {
+        Alert.show(i18next.t('messages.success'));
       }
     });
   }
@@ -221,12 +185,17 @@ var styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#C3C3C3',
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    marginLeft:5
   },
   textGray: {
     fontWeight: 'normal',
     color: '#808080'
+  },
+  icon: {
+    width: 14,
+    height: 14
   }
 });
 
-module.exports = Signup;
+module.exports = ForgotView;

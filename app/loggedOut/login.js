@@ -1,12 +1,10 @@
 'use strict';
 
 var React = require('react-native');
-var SignupView = require('./LoggedOutSignup');
-var ForgotView = require('./LoggedOutForgot');
+var SignupView = require('./signup');
+var ForgotView = require('./forgot');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
-var _ = require('underscore');
-var $ = require('jquery');
 var Button = require('../elements/Button');
 var Link = require('../elements/Link');
 
@@ -64,6 +62,7 @@ class LoginView extends Component {
             style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               ref='1'
+              autoCapitalize='none'
               placeholder={i18next.t('local:mail')}
               onChange={(event) => this.setState({email: event.nativeEvent.text})}
               style={s.input}
@@ -79,6 +78,7 @@ class LoginView extends Component {
             style={[s.inputContainer, s.marginTop5]}>
             <TextInput
               ref='2'
+              autoCapitalize='none'
               placeholder={i18next.t('local:password')}
               secureTextEntry={true}
               onChange={(event) => this.setState({password: event.nativeEvent.text})}

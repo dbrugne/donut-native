@@ -10,20 +10,6 @@ var {
 } = React;
 
 class LoggedOut extends Component {
-  render () {
-    return (
-      <View style={styles.appContainer}>
-        <Navigator
-          ref='navigator'
-          debugOverlay={false}
-          renderScene={this.renderScene}
-          initialRoute={{ name: 'login', index: 0, component: require('../views/LoggedOutLogin') }}
-          onBack={() => {navigator.pop()}}
-          />
-      </View>
-    );
-  }
-
   componentDidMount() {
     var nav = (this.refs && this.refs.navigator) ? this.refs.navigator : null;
     if (Platform.OS === 'android' && nav) {
@@ -38,13 +24,24 @@ class LoggedOut extends Component {
       });
     }
   }
-
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       BackAndroid.removeEventListener('hardwareBackPress', () => {return true});
     }
   }
-
+  render () {
+    return (
+      <View style={styles.appContainer}>
+        <Navigator
+          ref='navigator'
+          debugOverlay={false}
+          renderScene={this.renderScene}
+          initialRoute={{ name: 'login', index: 0, component: require('./login') }}
+          onBack={() => {navigator.pop()}}
+        />
+      </View>
+    );
+  }
   renderScene (route, navigator) {
     return (<route.component name={route.name} navigator={navigator} client={this.client} />);
   }
