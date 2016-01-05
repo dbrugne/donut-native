@@ -3,7 +3,6 @@ var app = require('../libs/app');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var ListItem = require('../elements/ListItem');
-var ConfirmationModal = require('../components/ConfirmationModal');
 
 var {
   Component,
@@ -26,9 +25,6 @@ i18next.addResourceBundle('en', 'local', {
 class EditEmailView extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      showModal: false
-    }
   }
 
   render() {
@@ -45,7 +41,7 @@ class EditEmailView extends Component {
 
           {this._renderConfirmed()}
 
-          <ListItem onPress={() => this.setState({showModal: true})}
+          <ListItem onPress={() => Alert.askConfirmation(modalTitle, modalDescription, () => this.onDeletePressed(), () => {})}
                     text={i18next.t('local:delete')}
                     type='button'
                     warning='true'
@@ -54,9 +50,6 @@ class EditEmailView extends Component {
         </View>
 
         <View style={s.filler}></View>
-        {this.state.showModal ? <ConfirmationModal onCancel={() => this.setState({showModal: false}) }
-                                                   onConfirm={() => this.onDeletePressed()} title={modalTitle}
-                                                   text={modalDescription}/> : null}
       </View>
     )
   }
@@ -103,7 +96,6 @@ class EditEmailView extends Component {
   }
 
   onDeletePressed() {
-    this.setState({showModal: false});
     app.client.accountEmail(this.props.email.email, 'delete', (response) => {
       if (response.err) {
         Alert.show(response.err);

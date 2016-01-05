@@ -23,7 +23,6 @@ var hyperlink = require('../libs/hyperlink');
 var Link = require('../elements/Link');
 var Button = require('../elements/Button');
 var ListItem = require('../elements/ListItem');
-var ConfirmationModal = require('../components/ConfirmationModal');
 var alert = require('../libs/alert');
 
 var i18next = require('../libs/i18next');
@@ -31,9 +30,6 @@ var i18next = require('../libs/i18next');
 class GroupProfileView extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-      showModal: false
-    };
     this.members_count = (props.data.members && props.data.members.length) ? props.data.members.length : 0;
 
     this.user = {
@@ -75,9 +71,6 @@ class GroupProfileView extends Component {
             {this.renderCreatedAt()}
           </View>
         </View>
-        {this.state.showModal ? <ConfirmationModal onCancel={() => this.setState({showModal: false})}
-                                                   onConfirm={() => this.onGroupQuit()} title='Quit group'
-                                                   text='You will leave this community'/> : null}
       </ScrollView>
     );
   }
@@ -200,7 +193,7 @@ class GroupProfileView extends Component {
     var quit = null;
     if (!this.user.isOwner && this.user.isMember) {
       quit = (
-        <ListItem onPress={() => this.setState({showModal: true})}
+        <ListItem onPress={() => alert.askConfirmation('Quit group', 'You will leave this community', () => this.onGroupQuit(), () => {})}
             text={i18next.t('group.leave') + ' TODO'}
             first={!(this.isOp || this.isAdmin)}
             action='true'
@@ -217,7 +210,6 @@ class GroupProfileView extends Component {
     );
   }
   onGroupQuit () {
-    this.setState({showModal: false});
     if (this.user.isMember) {
       app.client.groupLeave(this.props.data.group_id, function (response) {
         if (response.err) {
