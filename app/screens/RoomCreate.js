@@ -59,6 +59,7 @@ class RoomCreateView extends Component {
 
         <View style={[s.inputContainer, {marginHorizontal: 10}]}>
           <TextInput style={s.input}
+                     autoCapitalize='none'
                      autoFocus={true}
                      placeholder={i18next.t('local:name')}
                      onChangeText={(text) => this.setState({roomName: text})}

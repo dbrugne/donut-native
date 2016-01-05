@@ -61,6 +61,7 @@ class ChangePasswordView extends Component {
           style={[s.inputContainer, s.marginTop5]}>
         <TextInput
           ref='1'
+          autoCapitalize='none'
           autoFocus={true}
           placeholder={i18next.t('local:old-password')}
           secureTextEntry={true}
@@ -91,6 +92,7 @@ class ChangePasswordView extends Component {
                   style={[s.inputContainer, s.marginTop5]}>
               <TextInput
                 ref='2'
+                autoCapitalize='none'
                 placeholder={i18next.t('local:new-password')}
                 secureTextEntry={true}
                 returnKeyType='next'
@@ -106,6 +108,7 @@ class ChangePasswordView extends Component {
                   style={[s.inputContainer, s.marginTop5]}>
               <TextInput
                 ref='3'
+                autoCapitalize='none'
                 placeholder={i18next.t('local:confirm')}
                 secureTextEntry={true}
                 returnKeyType='done'

@@ -8,10 +8,7 @@ var {
   View,
   Text,
   TextInput
-  } = React;
-var {
-  Icon
-  } = require('react-native-icons');
+} = React;
 
 class Input extends Component {
   /**

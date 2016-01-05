@@ -58,6 +58,7 @@ class SearchView extends Component {
           <View  style={styles.formInputContainer}>
             <TextInput style={styles.formInputFind}
               autoFocus={true}
+              autoCapitalize='none'
               placeholder={i18next.t('local:search')}
               onChangeText={(text) => this.setState({findValue: text})}
               value={this.state.findValue}

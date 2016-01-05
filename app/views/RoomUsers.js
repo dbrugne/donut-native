@@ -66,6 +66,7 @@ class RoomUsersView extends Component {
       <View style={{flex: 1}}>
         <View  style={styles.formInputContainer}>
           <TextInput style={styles.formInputFind}
+                     autoCapitalize='none'
                      placeholder={i18next.t('room-users:search')}
                      onChangeText={(text) => this.setState({findValue: text})}
                      value={this.state.findValue}

@@ -90,6 +90,7 @@ class Signup extends Component {
                     style={[s.inputContainer, s.marginTop10]}>
                 <TextInput
                   ref='2'
+                  autoCapitalize='none'
                   placeholder={i18next.t('local:username')}
                   onChange={(event) => this.setState({username: event.nativeEvent.text})}
                   style={s.input}

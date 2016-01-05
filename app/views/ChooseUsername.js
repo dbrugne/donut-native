@@ -44,6 +44,7 @@ class ChooseUsername extends Component {
 
           <View style={[s.inputContainer, s.marginTop10]}>
             <TextInput
+              autoCapitalize='none'
               placeholder={i18next.t('local:username')}
               onChange={(event) => this.setState({username: event.nativeEvent.text})}
               style={s.input}

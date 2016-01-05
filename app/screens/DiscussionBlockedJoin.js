@@ -91,6 +91,7 @@ class DiscussionBlockedJoin extends Component {
         <View style={{marginTop:10}}>
           <Text>{i18next.t('local:password')}</Text>
           <TextInput style={s.input}
+                     autoCapitalize='none'
                      placeholder={i18next.t('local:password-placeholder')}
                      onChangeText={(text) => this.setState({password: text})}
             />
