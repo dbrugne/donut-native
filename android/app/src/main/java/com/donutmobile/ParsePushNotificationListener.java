@@ -1,6 +1,7 @@
-package me.donut;
+package com.parsepushnotification;
 
 import com.parse.ParsePushBroadcastReceiver;
+import com.parse.ParseAnalytics;
 
 import android.util.Log;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.app.Notification;
 import android.app.Activity;
+import android.app.IntentService;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat.Builder;
@@ -16,21 +18,32 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import me.donut.R;
+import me.donut.mobile.R;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import java.util.UUID;
 import java.util.Date;
 import java.net.URL;
 
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+
 import org.json.JSONObject;
 import org.json.JSONException;
 
-public class ParsePushNotificationReceiver extends ParsePushBroadcastReceiver {
-    private final String TAG = "ParsePushBroadcastReceiver";
+public class ParsePushNotificationListener extends ParsePushBroadcastReceiver {
+    private final String TAG = "ParsePushBroadcastListener";
     public static final String PARSE_DATA_KEY = "com.parse.Data";
-
+    private static JSONObject initialNotification;
+    private static boolean initial = true;
+    
     @Override
     public void onReceive(Context context, Intent intent) {
+        /**
+         * Code not used (for custom largeImage on notif)
         JSONObject data = getDataFromIntent(intent);
         Log.d(TAG, "received message");
         String title = "Donut.me";
@@ -57,12 +70,59 @@ public class ParsePushNotificationReceiver extends ParsePushBroadcastReceiver {
 
         new sendNotification(context)
                 .execute(title, message, imgUrl);
+        */
+        ParseAnalytics.trackAppOpened(intent);
+        super.onReceive(context, intent);
     }
 
+    public static void setInitialTrue () {
+        initial = true;
+    }
+    
+    public static JSONObject getInitialNotification () {
+        if (initial == true) {
+            if (initialNotification == null) {
+                Log.d("1 2 3 4 5 6 7", "initial notif is null :'(");
+            } else {
+                initial = false;
+            }
+            return initialNotification;
+        }
+        return null;
+    }
+    
+    private static void setInitialNotification (final JSONObject obj) {
+        initialNotification = obj;
+    }
+    
     @Override
     protected void onPushOpen(Context context, Intent intent) {
-        Log.d(TAG, "onPushOpen() fired.");
-        
+        JSONObject data = getDataFromIntent(intent);
+        if (initial == true) {
+            setInitialNotification(getDataFromIntent(intent));
+        }
+        Bundle b = new Bundle();
+        b.putString("jsonObj", data.toString());
+
+            
+        // try to open the app
+        Intent i = context.getPackageManager().getLaunchIntentForPackage(context.getApplicationContext().getPackageName());
+        ParseAnalytics.trackAppOpenedInBackground(intent);
+
+        i.putExtra("notification", b);
+        // only if not in foreground, focus it if it's in background
+        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+
+        // try to broadcast event to js (only succes if app is open back/forground)
+        try {
+            Intent i2 = new Intent("PushNotificationsOpen");
+            i2.putExtra("notification", b);
+            context.sendBroadcast(i2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //super.onPushOpen(context, intent);
     }
 
     @Override
@@ -94,7 +154,8 @@ public class ParsePushNotificationReceiver extends ParsePushBroadcastReceiver {
       }
       return data;
     }
-    
+
+    /* not used (for custom largeImage on notif)
     private class sendNotification extends AsyncTask<String, Void, Bitmap> {
         Context ctx;
         String message;
@@ -159,5 +220,5 @@ public class ParsePushNotificationReceiver extends ParsePushBroadcastReceiver {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 }

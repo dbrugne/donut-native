@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.donut">
+    package="me.donut.mobile">
 
     <!-- @Parse @donut -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -21,11 +21,12 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission android:protectionLevel="signature"
-                android:name="me.donut.permission.C2D_MESSAGE" />
-    <uses-permission android:name="me.donut.permission.C2D_MESSAGE" />
+                android:name="me.donut.mobile.permission.C2D_MESSAGE" />
+    <uses-permission android:name="me.donut.mobile.permission.C2D_MESSAGE" />
     <!-- / @Parse -->
 
     <application
+      android:name=".DonutMobile"
       android:allowBackup="true"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
@@ -55,7 +56,7 @@
 
       <!-- @Parse -->
       <service android:name="com.parse.PushService" />
-      <receiver android:name=".ParsePushNotificationReceiver"
+      <receiver android:name="com.parsepushnotification.ParsePushNotificationListener"
                 android:exported="false">
           <intent-filter>
               <action android:name="com.parse.push.intent.RECEIVE" />
@@ -68,7 +69,7 @@
           <intent-filter>
               <action android:name="com.google.android.c2dm.intent.RECEIVE" />
               <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-              <category android:name="me.donut" />
+              <category android:name="me.donut.mobile" />
           </intent-filter>
       </receiver>
       <!-- / @Parse -->

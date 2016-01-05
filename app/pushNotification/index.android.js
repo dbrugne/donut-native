@@ -1,6 +1,11 @@
 'use strict';
 
 var ParseManagerAndroid = require('NativeModules').NotificationAndroidManager;
+var ParsePushNotification = require('NativeModules').ParsePushNotification;
+var {
+    DeviceEventEmitter
+  } = require('react-native');
+var navigation = require('../libs/navigation');
 
 var app = require('./../libs/app');
 var debug = require('./../libs/debug')('notifications');
@@ -9,9 +14,12 @@ var utils = require('./utils');
 module.exports = {
   componentDidMount () {
     this.registerDevice();
+    DeviceEventEmitter.addListener('remoteNotificationOpen', (e: Event) => {
+      this.goToNotificationCenter(e);
+    });
   },
   componentWillUnmount () {
-    // don't remove because of /app/navigation/LoggedIn.js:60
+    DeviceEventEmitter.removeAllListeners('remoteNotificationOpen');
   },
   registerDevice() {
     ParseManagerAndroid.getParseInstallationObjectId((parseObjectId) => {
@@ -22,6 +30,17 @@ module.exports = {
     });
   },
   handleInitialNotification () {
-    // @todo : yfuks implement app cold launch from notification
+    ParsePushNotification.popInitialNotification((err, notification) => {
+      if (err) {
+        return debug.warn('Android popInitialNotification error =>', err);
+      }
+      if (notification) {
+        this.goToNotificationCenter(notification);
+      }
+    });
+  },
+  goToNotificationCenter (e: Event) {
+    debug.log('Android notification opened =>', e);
+    navigation.switchTo(navigation.getNotifications());
   }
 };

@@ -1,4 +1,4 @@
-package me.donut;
+package me.donut.mobile;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -32,6 +32,7 @@ import android.content.Intent;
 import com.parse.Parse;
 import com.notificationandroid.NotificationAndroidPackage;
 import com.parse.ParseInstallation;
+import com.parsepushnotification.ParsePushNotificationPackage;
 
 import android.util.Log;
 
@@ -48,6 +49,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     // @Parse
     private NotificationAndroidPackage mNotificationAndroid;
+    private ParsePushNotificationPackage mParsePushNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +64,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
         // @Parse
         mNotificationAndroid = new NotificationAndroidPackage(this);
-        try {
-            Parse.initialize(this, "HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g", "scK5G6HLyEATHuytp74POetQozngZBhs9eUmnp4q");
-        } catch (IllegalStateException e) {
-            // Parse already initialized
-            e.printStackTrace();
-        }
+        mParsePushNotification = new ParsePushNotificationPackage(this);
 
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
@@ -85,7 +82,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .addPackage(mImagePicker)
 
                 // @Parse
-                 .addPackage(mNotificationAndroid)
+                .addPackage(mNotificationAndroid)
+                .addPackage(mParsePushNotification)
 
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
@@ -176,7 +174,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 
     private static Object getBuildConfigValue(String fieldName) {
         try {
-            Class c = Class.forName("me.donut.BuildConfig");
+            Class c = Class.forName("me.donut.mobile.BuildConfig");
             Field f = c.getDeclaredField(fieldName);
             f.setAccessible(true);
             return f.get(null);
