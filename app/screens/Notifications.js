@@ -27,7 +27,6 @@ var i18next = require('../libs/i18next');
 
 // @todo yls implement swipe to delete a notification
 // @todo implement discussion viewed update
-// @todo implement notification viewed update (done)
 // @todo implement notification pushed
 class NotificationsView extends Component {
 
@@ -49,11 +48,18 @@ class NotificationsView extends Component {
   componentDidMount() {
     //app.client.on('notification:new', this.onNewNotification, this);
     //app.client.on('notification:done', this.onDoneNotification, this);
-    app.client.notificationRead(null, null, 10, this.onData.bind(this));
+  }
+
+  onFocus () {
+    this.fetchData();
   }
 
   componentWillUnmount() {
-    app.client.off(null, null, this);
+    //app.client.off(null, null, this);
+  }
+
+  fetchData () {
+    return app.client.notificationRead(null, null, 10, this.onData.bind(this));
   }
 
   onData(response) {
@@ -118,7 +124,8 @@ class NotificationsView extends Component {
     } else {
       unreadNotifications = (
         <View style={{marginBottom:10}}>
-          <Text style={{marginHorizontal:10, marginBottom:10}}>{i18next.t('notifications.notification-count', {count: this.state.unread})}</Text>
+          <Text
+            style={{marginHorizontal:10, marginBottom:10}}>{i18next.t('notifications.notification-count', {count: this.state.unread})}</Text>
           <Button type='default'
                   onPress={this.tagAllAsRead.bind(this)}
                   loading={this.state.loadingTagAsRead}
