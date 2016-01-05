@@ -22,20 +22,6 @@ module.exports = function () {
 
       return this.blob[0];
     },
-    //getTopItemId () {
-    //  var top = this.getTopItem();
-    //  if (!top || !top.data) {
-    //    return;
-    //  }
-    //  return top.id;
-    //},
-    //getTopItem () {
-    //  if (!this.blob.length) {
-    //    return;
-    //  }
-    //
-    //  return this.blob[this.blob.length-1];
-    //},
     append (items) {
       if (!items || (_.isArray(items) && items.length === 0)){
         return this.dataSource.cloneWithRows(this.blob);
@@ -49,15 +35,10 @@ module.exports = function () {
 
       return this.dataSource.cloneWithRows(this.blob);
     },
-    updateNotification (id, attributes) {
-      _.find(this.blob, (e, idx) => {
-        if (e.data.id !== id) {
-          return false;
-        }
-        _.extend(e.data, attributes);
+    tagAsRead () {
+      _.each(this.blob, (e, idx) => {
+        _.extend(e.data, {read: true});
         this.blob[idx] = e;
-
-        return true;
       });
 
       return this.dataSource.cloneWithRows(this.blob);

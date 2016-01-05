@@ -6,6 +6,7 @@ var app = require('../libs/app');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var Link = require('../elements/Link');
+var Button = require('../elements/Button');
 var LoadingView = require('../elements/Loading');
 var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
@@ -36,6 +37,7 @@ class NotificationsView extends Component {
     this.state = {
       loaded: false,
       loadingMore: false,
+      loadingTagAsRead: false,
       error: null,
       unread: 0,
       more: false,
@@ -94,17 +96,43 @@ class NotificationsView extends Component {
   }
 
   renderHeader() {
-    if (this.state.discussionsUnviewed === 0) {
-      return;
+    let unviewedDiscussions = null;
+    if (this.state.discussionsUnviewed !== 0) {
+      unviewedDiscussions = (
+        <Link style={{marginHorizontal: 10, marginVertical:20}}
+              underlayColor='transparent'
+              onPress={() => navigation.openDrawer()}
+              text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
+          >
+        </Link>
+      )
+    }
+
+    let unreadNotifications = null;
+    if (this.state.unread === 0) {
+      unreadNotifications = (
+        <View style={{marginHorizontal: 10, marginVertical:20}}>
+          <Text>{i18next.t('notifications.no-unread-notification')}</Text>
+        </View>
+      );
+    } else {
+      unreadNotifications = (
+        <View style={{marginBottom:10}}>
+          <Text style={{marginHorizontal:10, marginBottom:10}}>{i18next.t('notifications.notification-count', {count: this.state.unread})}</Text>
+          <Button type='default'
+                  onPress={this.tagAllAsRead.bind(this)}
+                  loading={this.state.loadingTagAsRead}
+                  label={i18next.t('notifications.mark-as-read')}
+            />
+        </View>
+      );
     }
 
     return (
-      <Link style={{marginHorizontal: 10, marginVertical:20}}
-            underlayColor='transparent'
-            onPress={() => navigation.openDrawer()}
-            text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
-        >
-      </Link>
+      <View>
+        {unviewedDiscussions}
+        {unreadNotifications}
+      </View>
     );
   }
 
@@ -265,6 +293,18 @@ class NotificationsView extends Component {
         more: data.more,
         unread: data.unread,
         dataSource: this.notificationsDataSource.append(data.notifications)
+      });
+    });
+  }
+
+  tagAllAsRead() {
+    this.setState({loadingTagAsRead: true});
+
+    app.client.notificationViewed([], true, () => {
+      this.setState({
+        loadingTagAsRead: false,
+        unread: 0,
+        dataSource: this.notificationsDataSource.tagAsRead()
       });
     });
   }
