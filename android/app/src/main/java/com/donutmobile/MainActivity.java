@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
+// @CodePush
+import com.microsoft.codepush.react.CodePush;
+import android.support.v4.app.FragmentActivity;
+
 import com.facebook.react.LifecycleState;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
@@ -36,7 +40,7 @@ import com.parsepushnotification.ParsePushNotificationPackage;
 
 import android.util.Log;
 
-public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
+public class MainActivity extends FragmentActivity implements DefaultHardwareBackBtnHandler {
 
     private ReactInstanceManager mReactInstanceManager;
     private ReactRootView mReactRootView;
@@ -56,40 +60,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         super.onCreate(savedInstanceState);
         mReactRootView = new ReactRootView(this);
 
-        // @FacebookLogin
-        mFacebookLoginPackage = new FacebookLoginPackage(this);
-
-        // @ImagePicker
-        mImagePicker = new ImagePickerPackage(this);
-
-        // @Parse
-        mNotificationAndroid = new NotificationAndroidPackage(this);
-        mParsePushNotification = new ParsePushNotificationPackage(this);
-
-        mReactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(getApplication())
-                .setBundleAssetName("index.android.bundle")
-                .setJSMainModuleName("index.android")
-                .addPackage(new MainReactPackage())
-
-                // @Icons
-                .addPackage(new ReactNativeIcons())
-
-                 // @FacebookLogin
-                .addPackage(mFacebookLoginPackage)
-
-                // @ImagePicker
-                .addPackage(mImagePicker)
-
-                // @Parse
-                .addPackage(mNotificationAndroid)
-                .addPackage(mParsePushNotification)
-
-                .setUseDeveloperSupport(BuildConfig.DEBUG)
-                .setInitialLifecycleState(LifecycleState.RESUMED)
-                .build();
-
-        // Options
+        // Per-env configuration
         String env = "none";
         Object buildType = getBuildConfigValue("BUILD_TYPE");
         Object ServerIp = getBuildConfigValue("LOCAL_IP");
@@ -111,6 +82,56 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
         } else {
             b.putString("REACT_SERVER_ADDRESS", ServerIp.toString());
         }
+
+        // @CodePush
+        String codePushKey;
+        if (env == "production") {
+          codePushKey = "QUin28f78rg5cJaf-Ao3bF2APvsyVJgNW_EDe";
+        } else {
+          codePushKey = "F83XLkIqywhmOu-2Mi-HzsamPn8jVJgNW_EDe";
+        }
+        CodePush codePush = new CodePush(codePushKey, this);
+
+        // @FacebookLogin
+        mFacebookLoginPackage = new FacebookLoginPackage(this);
+
+        // @ImagePicker
+        mImagePicker = new ImagePickerPackage(this);
+
+        // @Parse
+        mNotificationAndroid = new NotificationAndroidPackage(this);
+        mParsePushNotification = new ParsePushNotificationPackage(this);
+
+        mReactInstanceManager = ReactInstanceManager.builder()
+                .setApplication(getApplication())
+
+                // @CodePush
+                //.setBundleAssetName("index.android.bundle")
+                .setJSBundleFile(codePush.getBundleUrl("index.android.bundle"))
+
+                .setJSMainModuleName("index.android")
+                .addPackage(new MainReactPackage())
+
+                // @CodePush
+                .addPackage(codePush.getReactPackage())
+
+                // @Icons
+                .addPackage(new ReactNativeIcons())
+
+                 // @FacebookLogin
+                .addPackage(mFacebookLoginPackage)
+
+                // @ImagePicker
+                .addPackage(mImagePicker)
+
+                // @Parse
+                .addPackage(mNotificationAndroid)
+                .addPackage(mParsePushNotification)
+
+                .setUseDeveloperSupport(BuildConfig.DEBUG)
+                .setInitialLifecycleState(LifecycleState.RESUMED)
+                .build();
+
         // register in parse installation with env field
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
         installation.put("env", env);
