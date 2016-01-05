@@ -100,7 +100,7 @@ function getRoute (route) {
         return drawer.close();
       }
 
-      var baseRoute = ['home', 'my-account', 'search', 'create-room', 'create-group'];
+      var baseRoute = ['home', 'my-account', 'search', 'create-room', 'create-group', 'notification-center'];
       var isDiscussion = (currentRoute && currentRoute.model && (currentRoute.model.get('type') === 'onetoone' || currentRoute.model.get('type') === 'room'));
       if (baseRoute.indexOf(currentRoute.id) !== -1 || isDiscussion) {
         return drawer.open();
