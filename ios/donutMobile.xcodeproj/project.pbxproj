@@ -36,6 +36,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		6D0531211C1B1FF500A9A042 /* environment.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D0531201C1B1FF500A9A042 /* environment.plist */; };
 		6D33B3581BF34334004CF107 /* libReactNativeIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D33B3571BF34306004CF107 /* libReactNativeIcons.a */; };
+		6D49AB981C3BCFF4008625EB /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D49AB8A1C3BCF3C008625EB /* libCodePush.a */; };
 		6D830ACB1C0769ED007AF824 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830ACA1C0769BD007AF824 /* libRCTFBLogin.a */; };
 		6D830AD61C0779C5007AF824 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */; };
 		6D830AD71C0779C5007AF824 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD41C0779C5007AF824 /* FBSDKLoginKit.framework */; };
@@ -142,6 +143,13 @@
 			remoteGlobalIDString = 2F5A3EB81ACDBF8000439386;
 			remoteInfo = ReactNativeIcons;
 		};
+		6D49AB891C3BCF3C008625EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D49AB581C3BBAD9008625EB /* CodePush.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = CodePush;
+		};
 		6D830AC91C0769BD007AF824 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6D830AC51C0769BD007AF824 /* RCTFBLogin.xcodeproj */;
@@ -194,6 +202,7 @@
 		6D05311D1C1B1FC400A9A042 /* environment_TEST.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = environment_TEST.plist; path = donutMobile/environment_TEST.plist; sourceTree = "<group>"; };
 		6D0531201C1B1FF500A9A042 /* environment.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = environment.plist; path = donutMobile/environment.plist; sourceTree = "<group>"; };
 		6D33B3521BF34305004CF107 /* ReactNativeIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeIcons.xcodeproj; path = "../node_modules/react-native-icons/ios/ReactNativeIcons.xcodeproj"; sourceTree = "<group>"; };
+		6D49AB581C3BBAD9008625EB /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		6D830AC51C0769BD007AF824 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBLogin.xcodeproj; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; };
 		6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		6D830AD41C0779C5007AF824 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
@@ -237,6 +246,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D49AB981C3BCFF4008625EB /* libCodePush.a in Frameworks */,
 				6DAF46891C36DCC5004BD0A5 /* Social.framework in Frameworks */,
 				6DAF46871C36DCBB004BD0A5 /* Accounts.framework in Frameworks */,
 				6D8A2E8E1C36AC9C008B3871 /* libsqlite3.tbd in Frameworks */,
@@ -406,6 +416,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6D49AB861C3BCF3C008625EB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6D49AB8A1C3BCF3C008625EB /* libCodePush.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		6D830AC61C0769BD007AF824 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -467,6 +485,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				6D49AB581C3BBAD9008625EB /* CodePush.xcodeproj */,
 				6DCC57F61C0CB960008F42F0 /* UIImagePickerManager */,
 				6DCC57E81C0C6817008F42F0 /* RCTPushNotification.xcodeproj */,
 				6D830AC51C0769BD007AF824 /* RCTFBLogin.xcodeproj */,
@@ -567,6 +586,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 6D49AB861C3BCF3C008625EB /* Products */;
+					ProjectRef = 6D49AB581C3BBAD9008625EB /* CodePush.xcodeproj */;
+				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -692,6 +715,13 @@
 			remoteRef = 6D33B3561BF34306004CF107 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		6D49AB8A1C3BCF3C008625EB /* libCodePush.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCodePush.a;
+			remoteRef = 6D49AB891C3BCF3C008625EB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		6D830ACA1C0769BD007AF824 /* libRCTFBLogin.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -772,7 +802,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "dir=${PROJECT_DIR}/${PROJECT_NAME}\necho \"Starting environment configuration for project: \" $dir\n\n# environment variable from value passed in to xcodebuild.\n# if not specified, we default to TEST\nenv=${DONUT_ENVIRONMENT}\nif [ -z \"$env\" ]\nthen\nenv=\"TEST\"\nfi\necho \"Using $env environment\"\n\n# copy the environment-specific file\ncp $dir/environment_$env.plist $dir/environment.plist\n\n# Date and time that we are running this build\nbuildDate=`date \"+%F %H:%M:%S\"`\ntodaysDay=`date \"+%d\"`\n\n# app settings\nappName=`/usr/libexec/PlistBuddy -c \"Print :appName\" \"$dir/environment.plist\"`\nFacebookAppID=`/usr/libexec/PlistBuddy -c \"Print :FacebookAppID\" \"$dir/environment.plist\"`\nFacebookURLScheme=`/usr/libexec/PlistBuddy -c \"Print :FacebookURLScheme\" \"$dir/environment.plist\"`\nFacebookDisplayName=`/usr/libexec/PlistBuddy -c \"Print :FacebookDisplayName\" \"$dir/environment.plist\"`\nversion=`/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" \"${PROJECT_DIR}/${PROJECT_NAME}/Info.plist\"`\n\nif [ \"$env\" != \"PROD\" ]\nthen\n# need to dynamically append today's day for non-prod\nappName=\"$appName $todaysDay\"\n# Last hash from the current branch\nversion=`git log --pretty=format:\"%h\" -1`\nfi\n\n# Build the preprocess file\ncd ${PROJECT_DIR}/${PROJECT_NAME}\npreprocessFile=\"environment_preprocess.h\"\necho \"Creating header file\"\n\necho -e \"//-----------------------------------------\" > $preprocessFile\necho -e \"// Auto generated file\" >> $preprocessFile\necho -e \"// Created $buildDate\" >> $preprocessFile\necho -e \"//-----------------------------------------\" >> $preprocessFile\necho -e \"\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT              $env\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_VERSION_NUMBER  $version\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_APP_NAME     $appName\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_FACEBOOK_APP_ID  $FacebookAppID\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_FACEBOOK_DISPLAY_NAME  $FacebookDisplayName\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_FACEBOOK_URL_SCHEME     $FacebookURLScheme\" >> $preprocessFile\n\n# dump out file to build log\ncat $preprocessFile\n\n# Force the system to process the plist file\necho \"Touching plist at: \" ${PROJECT_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-Info.plist\ntouch ${PROJECT_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-Info.plist\n\n# done\necho \"Done.\"";
+			shellScript = "dir=${PROJECT_DIR}/${PROJECT_NAME}\necho \"Starting environment configuration for project: \" $dir\n\n# environment variable from value passed in to xcodebuild.\n# if not specified, we default to TEST\nenv=${DONUT_ENVIRONMENT}\nif [ -z \"$env\" ]\nthen\nenv=\"TEST\"\nfi\necho \"Using $env environment\"\n\n# copy the environment-specific file\ncp $dir/environment_$env.plist $dir/environment.plist\n\n# Date and time that we are running this build\nbuildDate=`date \"+%F %H:%M:%S\"`\ntodaysDay=`date \"+%d\"`\n\n# app settings\nappName=`/usr/libexec/PlistBuddy -c \"Print :appName\" \"$dir/environment.plist\"`\nFacebookAppID=`/usr/libexec/PlistBuddy -c \"Print :FacebookAppID\" \"$dir/environment.plist\"`\nFacebookURLScheme=`/usr/libexec/PlistBuddy -c \"Print :FacebookURLScheme\" \"$dir/environment.plist\"`\nFacebookDisplayName=`/usr/libexec/PlistBuddy -c \"Print :FacebookDisplayName\" \"$dir/environment.plist\"`\nbuild=`/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" \"${PROJECT_DIR}/${PROJECT_NAME}/Info.plist\"`\nCodePushDeploymentKey=`/usr/libexec/PlistBuddy -c \"Print :CodePushDeploymentKey\" \"$dir/environment.plist\"`\n\nif [ \"$env\" != \"PROD\" ]\nthen\n# need to dynamically append today's day for non-prod\nappName=\"$appName $todaysDay\"\n# Last hash from the current branch\nbuild=`git log --pretty=format:\"%h\" -1`\nfi\n\n# Build the preprocess file\ncd ${PROJECT_DIR}/${PROJECT_NAME}\npreprocessFile=\"environment_preprocess.h\"\necho \"Creating header file\"\n\necho -e \"//-----------------------------------------\" > $preprocessFile\necho -e \"// Auto generated file\" >> $preprocessFile\necho -e \"// Created $buildDate\" >> $preprocessFile\necho -e \"//-----------------------------------------\" >> $preprocessFile\necho -e \"\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT              $env\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_BUILD  $build\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_APP_NAME     $appName\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_FACEBOOK_APP_ID  $FacebookAppID\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_FACEBOOK_DISPLAY_NAME  $FacebookDisplayName\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_FACEBOOK_URL_SCHEME     $FacebookURLScheme\" >> $preprocessFile\necho -e \"#define DONUT_ENVIRONMENT_CODEPUSH_KEY     $CodePushDeploymentKey\" >> $preprocessFile\n\n# Version key/value should be on his own line\nDONUT_VERSION=$(cat ${PROJECT_DIR}/../package.json \\\n| grep version \\\n| head -1 \\\n| awk -F: '{ print $2 }' \\\n| sed 's/[\",]//g')\necho $DONUT_VERSION\necho -e \"#define DONUT_ENVIRONMENT_VERSION     $DONUT_VERSION\" >> $preprocessFile\n\n# dump out file to build log\ncat $preprocessFile\n\n# Force the system to process the plist file\necho \"Touching plist at: \" ${PROJECT_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-Info.plist\ntouch ${PROJECT_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-Info.plist\n\n# done\necho \"Done.\"";
 		};
 		6D4E7E141C0E1CE8009C5F98 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -892,6 +922,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
+					"$(SRCROOT)/../node_modules/react-native-code-push/**",
 				);
 				INFOPLIST_FILE = donutMobile/Info.plist;
 				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";
@@ -951,7 +982,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "1da7a9aa-7d56-4030-826a-725e5d5cb83a";
+				PROVISIONING_PROFILE = "22b0c0c2-5aad-4c05-aa01-cccbe2c9e0c4";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -972,6 +1003,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
+					"$(SRCROOT)/../node_modules/react-native-code-push/**",
 				);
 				INFOPLIST_FILE = donutMobile/Info.plist;
 				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";
@@ -1056,6 +1088,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
+					"$(SRCROOT)/../node_modules/react-native-code-push/**",
 				);
 				INFOPLIST_FILE = donutMobile/Info.plist;
 				INFOPLIST_PREFIX_HEADER = "${PROJECT_DIR}/${PROJECT_NAME}/environment_preprocess.h";

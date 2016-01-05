@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!--
-   environment_TEST.plist
-   donutMobile
-
-   Created by Damien Brugne on 11/12/2015.
-   Copyright (c) 2015 DONUT SAS. All rights reserved.
--->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-    <dict>
-        <key>environment</key>
-        <string>TEST</string>
-        <key>appName</key>
-        <string>DONUT (test)</string>
-        <key>FacebookAppID</key>
-        <string>400694556754416</string>
-        <key>FacebookURLScheme</key>
-        <string>fb400694556754416</string>
-        <key>FacebookDisplayName</key>
-        <string>DONUT.me test</string>
-    </dict>
+<dict>
+	<key>environment</key>
+	<string>TEST</string>
+	<key>appName</key>
+	<string>DONUT (test)</string>
+	<key>FacebookAppID</key>
+	<string>400694556754416</string>
+	<key>FacebookURLScheme</key>
+	<string>fb400694556754416</string>
+	<key>CodePushDeploymentKey</key>
+	<string>F83XLkIqywhmOu-2Mi-HzsamPn8jVJgNW_EDe</string>
+	<key>FacebookDisplayName</key>
+	<string>DONUT.me test</string>
+</dict>
 </plist>

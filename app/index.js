@@ -3,6 +3,8 @@
 var React = require('react-native');
 var debug = require('./libs/debug')('system');
 
+import CodePush from 'react-native-code-push';
+
 module.exports = React.createClass({
   getInitialState () {
     // init configuration from initialProps from native
@@ -14,6 +16,11 @@ module.exports = React.createClass({
     };
   },
   componentDidMount () {
+    // check for new version
+    // @doc: https://github.com/Microsoft/react-native-code-push#codepushsync
+    CodePush.sync({ updateDialog: true, installMode: CodePush.InstallMode.IMMEDIATE });
+    // @todo : do it every n times
+
     // listen for currentUser status change
     var currentUser = require('./models/current-user');
     currentUser.on('authenticationChanged', () => {

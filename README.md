@@ -1,15 +1,11 @@
 # donut-native
 
-## TODO
+## CodePush
 
-* [ ] Set discussion 'focused' on navigation
-* [ ] Load code from AppHub (broken?)
-* [ ] AppStore store submission
-* [ ] Test Android (default conf?)
-* [ ] @dbrugne/donut-client
-* [ ] Icon and splashscreen Android
-* [ ] solve emoticons
-* [ ] push notifications logic implementation
+```
+react-native bundle --platform ios --entry-file index.ios.js --bundle-output codepush.js --dev false
+code-push release donutMobile codepush.js 1.0.0 --deploymentName Staging|Production
+```
 
 ## Pre-requisites
 
@@ -20,7 +16,8 @@ Requirements: https://facebook.github.io/react-native/docs/getting-started.html
 ```
 brew install watchman
 npm install -g react-native-cli
-npm install -g babel-cli # react-native-parsed-text
+npm install -g babel-cli # react-native-parsed-text (=> ???)
+npm install -g code-push-cli
 ```
 
 [Android installation and workaround](./Android.md)

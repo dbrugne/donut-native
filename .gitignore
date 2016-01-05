@@ -23,6 +23,7 @@ DerivedData
 project.xcworkspace
 ios/donutMobile/environment.plist
 ios/donutMobile/environment_preprocess.h
+codepush.js
 
 # Android/IJ
 #

@@ -11,12 +11,16 @@
 
 #import "RCTRootView.h"
 
+// @CodePush
+#import "CodePush.h"
+
 // @FacebookLogin
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 // @PushNotificationIOS
-#import "RCTPushNotificationManager.h" // https://facebook.github.io/react-native/docs/pushnotificationios.html
+#import "RCTPushNotificationManager.h"
+
 // @Parse
 #import <Parse/Parse.h> // https://parse.com/apps/quickstart#parse_push/ios/native/existing
 #import "DonutParse.h"
@@ -46,11 +50,17 @@
   #else
     // device with Release configuration: use embedded bundle
     #warning "STANDALONE BUNDLE"
-    jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+    //jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+    // @CodePush
+    jsCodeLocation = [CodePush bundleURL];
   #endif
   
-  // Determine bundle identifier
+  // Extract data from .plist
   NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+  NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+  NSString *donutVersion = [info objectForKey:@"CFBundleShortVersionString"];
+  NSString *donutBuild = [info objectForKey:@"CFBundleVersion"];
+  NSString *CodePushDeploymentKey = [info objectForKey:@"CodePushDeploymentKey"];
   
   // Determine the configuration to load
   // @source: http://www.itexico.com/blog/bid/99497/iOS-Mobile-Development-Using-Xcode-Targets-to-Reuse-the-Code
@@ -62,11 +72,6 @@
   #else
   #warning "UNABLE TO DETERMINE DONUT CONFIGURATION TO LOAD"
   #endif
-  
-  // ... and force test configuration for Release (test)
-  //if ([NSProcessInfo processInfo].environment[@"FORCE_TEST_CONFIGURATION"]) {
-  //  donutEnvironment = @"test";
-  //}
   
   NSString *reactServerAddress = @"localhost";
   #if DEBUG
@@ -82,7 +87,14 @@
 
   // Pass some properties to application
   // @doc: https://facebook.github.io/react-native/docs/communication-ios.html
-  rootView.appProperties = @{@"DONUT_ENVIRONMENT" : donutEnvironment, @"REACT_SERVER_ADDRESS" : reactServerAddress, @"BUNDLE_IDENTIFIER" : bundleIdentifier};
+  rootView.appProperties = @{
+        @"DONUT_ENVIRONMENT" : donutEnvironment,
+        @"REACT_SERVER_ADDRESS" : reactServerAddress,
+        @"BUNDLE_IDENTIFIER" : bundleIdentifier,
+        @"DONUT_VERSION" : donutVersion,
+        @"DONUT_BUILD" : donutBuild,
+        @"CODE_PUSH_KEY" : CodePushDeploymentKey
+  };
   NSLog(@"%@", rootView.appProperties);
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
