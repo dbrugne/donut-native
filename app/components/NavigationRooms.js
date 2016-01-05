@@ -149,7 +149,7 @@ var styles = StyleSheet.create({
   listView: {
   },
   item: {
-    marginVertical: 5,
+    marginVertical: 2,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -170,7 +170,7 @@ var styles = StyleSheet.create({
     color: '#ecf0f1',
     marginLeft: 10,
     flex:1,
-    marginVertical: 15
+    marginVertical: 10
   },
   unviewed: {
     fontSize: 20,
