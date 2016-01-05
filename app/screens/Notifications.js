@@ -287,12 +287,12 @@ class NotificationsView extends Component {
   onLoadMore() {
     this.setState({loadingMore: true});
 
-    app.client.notificationRead(null, this.notificationsDataSource.getBottomItemId(), 10, (data) => {
+    app.client.notificationRead(null, this.notificationsDataSource.getBottomItemTime(), 10, (data) => {
       this.setState({
         loadingMore: false,
         more: data.more,
         unread: data.unread,
-        dataSource: this.notificationsDataSource.append(data.notifications)
+        dataSource: this.notificationsDataSource.prepend(data.notifications)
       });
     });
   }

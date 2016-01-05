@@ -8,19 +8,19 @@ var date = require('../libs/date');
 module.exports = function () {
   var nds = {
     blob: [],
-    getBottomItemId () {
+    getBottomItemTime () {
       var bottom = this.getBottomItem();
-      if (!bottom || !bottom.data) {
+      if (!bottom || !bottom.time) {
         return;
       }
-      return bottom.id;
+      return bottom.time;
     },
     getBottomItem () {
       if (!this.blob.length) {
         return;
       }
 
-      return this.blob[0];
+      return this.blob[this.blob.length - 1];
     },
     append (items) {
       if (!items || (_.isArray(items) && items.length === 0)){
@@ -32,6 +32,19 @@ module.exports = function () {
       }
 
       this.blob = items.concat(this.blob);
+
+      return this.dataSource.cloneWithRows(this.blob);
+    },
+    prepend (items) {
+      if (!items || (_.isArray(items) && items.length === 0)){
+        return this.dataSource.cloneWithRows(this.blob);
+      }
+
+      if (!_.isArray(items)){
+        items = [items];
+      }
+
+      this.blob = this.blob.concat(items);
 
       return this.dataSource.cloneWithRows(this.blob);
     },
