@@ -48,7 +48,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center'
   },
   loading: {
-    height: 120
+    height: 30
   }
 });
 

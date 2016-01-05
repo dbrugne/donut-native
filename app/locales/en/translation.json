@@ -145,6 +145,7 @@
       "groupdeop": "You are no longer moderator of community #__name__"
     },
     "discussion-count": "You also have __count__ unviewed discussion",
-    "discussion-count_plural": "You also have __count__ unviewed discussions"
+    "discussion-count_plural": "You also have __count__ unviewed discussions",
+    "load-more": "Load more"
   }
 }
