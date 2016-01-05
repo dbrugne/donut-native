@@ -5,6 +5,8 @@ var _ = require('underscore');
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
+var Link = require('../elements/Link');
+var Button = require('../elements/Button');
 var LoadingView = require('../elements/Loading');
 var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
@@ -19,7 +21,7 @@ var {
   TouchableHighlight,
   Text,
   Image
-} = React;
+  } = React;
 
 var i18next = require('../libs/i18next');
 
@@ -29,30 +31,32 @@ var i18next = require('../libs/i18next');
 // @todo implement notification pushed
 class NotificationsView extends Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props);
+    this.notificationsDataSource = require('../libs/notificationsDataSource')();
     this.state = {
       loaded: false,
+      loadingMore: false,
+      loadingTagAsRead: false,
       error: null,
-      unread: 0,          // notifications
+      unread: 0,
       more: false,
-      discussionsUnviewed: 0,
-      dataSource: new ListView.DataSource({
-        rowHasChanged: function (row1, row2) {
-          return (row1 !== row2);
-        }
-      })
+      discussionsUnviewed: app.getUnviewed(),
+      dataSource: this.notificationsDataSource.dataSource
     };
   }
-  componentDidMount () {
+
+  componentDidMount() {
     //app.client.on('notification:new', this.onNewNotification, this);
     //app.client.on('notification:done', this.onDoneNotification, this);
     app.client.notificationRead(null, null, 10, this.onData.bind(this));
   }
-  componentWillUnmount () {
+
+  componentWillUnmount() {
     app.client.off(null, null, this);
   }
-  onData (response) {
+
+  onData(response) {
     if (response.err) {
       return this.setState({
         error: true
@@ -60,11 +64,12 @@ class NotificationsView extends Component {
     }
     this.setState({
       loaded: true,
-      dataSource: this.state.dataSource.cloneWithRows(response.notifications),
+      dataSource: this.notificationsDataSource.append(response.notifications),
       unread: response.unread,
       more: response.more
     });
   }
+
   render() {
     if (!this.state.loaded) {
       return (
@@ -91,18 +96,71 @@ class NotificationsView extends Component {
   }
 
   renderHeader() {
+    let unviewedDiscussions = null;
+    if (this.state.discussionsUnviewed !== 0) {
+      unviewedDiscussions = (
+        <Link style={{marginHorizontal: 10, marginVertical:20}}
+              underlayColor='transparent'
+              onPress={() => navigation.openDrawer()}
+              text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
+          >
+        </Link>
+      )
+    }
+
+    let unreadNotifications = null;
+    if (this.state.unread === 0) {
+      unreadNotifications = (
+        <View style={{marginHorizontal: 10, marginVertical:20}}>
+          <Text>{i18next.t('notifications.no-unread-notification')}</Text>
+        </View>
+      );
+    } else {
+      unreadNotifications = (
+        <View style={{marginBottom:10}}>
+          <Text style={{marginHorizontal:10, marginBottom:10}}>{i18next.t('notifications.notification-count', {count: this.state.unread})}</Text>
+          <Button type='default'
+                  onPress={this.tagAllAsRead.bind(this)}
+                  loading={this.state.loadingTagAsRead}
+                  label={i18next.t('notifications.mark-as-read')}
+            />
+        </View>
+      );
+    }
+
     return (
-      <Text style={{marginVertical: 10, marginHorizontal:10}}>{i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}</Text>
+      <View>
+        {unviewedDiscussions}
+        {unreadNotifications}
+      </View>
     );
   }
 
   renderFooter() {
+    if (!this.state.more) {
+      return null;
+    }
+
+    if (this.state.loadingMore) {
+      return (
+        <View style={{height:50}}>
+          <LoadingView />
+        </View>
+      );
+    }
+
     return (
-      <Text style={{}}>Load more</Text>
+      <TouchableHighlight
+        underlayColor='#f0f0f0'
+        onPress={this.onLoadMore.bind(this)}
+        style={{height:50, justifyContent:'center', alignItems:'center'}}
+        >
+        <Text style={{textAlign:'center'}}>{i18next.t('notifications.load-more')}</Text>
+      </TouchableHighlight>
     );
   }
 
-  renderRow (n) {
+  renderRow(n) {
     n.css = '';
     n.name = '';
     n.avatarCircle = false;
@@ -114,7 +172,9 @@ class NotificationsView extends Component {
       var roomId = (n.data.room._id)
         ? n.data.room._id
         : n.data.room.id;
-      n.onPress = _.bind(function() { this.props.navigator.push(navigation.getProfile({type: 'room', id: roomId, identifier: n.name})); }, this);
+      n.onPress = _.bind(function () {
+        this.props.navigator.push(navigation.getProfile({type: 'room', id: roomId, identifier: n.name}));
+      }, this);
     } else if (n.data.group) {
       n.avatar = common.cloudinary.prepare(n.data.group.avatar, 45);
       n.avatarCircle = true;
@@ -123,7 +183,7 @@ class NotificationsView extends Component {
       var groupId = (n.data.group._id)
         ? n.data.group._id
         : n.data.group.id;
-      n.onPress= () => navigation.switchTo(navigation.getGroup({name: n.name, id: groupId}));
+      n.onPress = () => navigation.switchTo(navigation.getGroup({name: n.name, id: groupId}));
     } else if (n.data.by_user) {
       n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 45);
       n.title = n.data.by_user.username;
@@ -174,7 +234,7 @@ class NotificationsView extends Component {
     if (n.onPress) {
       return (
         <TouchableHighlight
-          underlayColor= '#f0f0f0'
+          underlayColor='#f0f0f0'
           onPress={n.onPress}
           >
           {this._renderContent(n)}
@@ -184,9 +244,11 @@ class NotificationsView extends Component {
       return null;
     }
   }
+
   _renderContent(n) {
     return (
-      <View style={[{ paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderBottomWidth:1, borderBottomColor:'#f1f1f1', borderStyle:'solid'}, !n.viewed && {borderBottomColor:'#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
+      <View
+        style={[{ paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderBottomWidth:1, borderBottomColor:'#f1f1f1', borderStyle:'solid'}, !n.viewed && {borderBottomColor:'#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
         <View style={{ flexDirection:'row', justifyContent:'center', flex:1}}>
           {this._renderAvatar(n)}
           <View style={{ flexDirection:'column', justifyContent:'center', flex:1, marginLeft:10}}>
@@ -200,15 +262,18 @@ class NotificationsView extends Component {
       </View>
     );
   }
+
   _renderAvatar(n) {
     if (!n.avatar) {
       return null;
     }
 
-    return(
-      <Image style={[{ width: 44, height: 44, borderRadius: 4 }, n.avatarCircle && {borderRadius:22}]} source={{uri: n.avatar}}/>
+    return (
+      <Image style={[{ width: 44, height: 44, borderRadius: 4 }, n.avatarCircle && {borderRadius:22}]}
+             source={{uri: n.avatar}}/>
     );
   }
+
   _renderByUsername(n) {
     if (!n.username) {
       return null;
@@ -217,6 +282,31 @@ class NotificationsView extends Component {
     return (
       <Text>{i18next.t('by-username', {username: n.username}) }</Text>
     );
+  }
+
+  onLoadMore() {
+    this.setState({loadingMore: true});
+
+    app.client.notificationRead(null, this.notificationsDataSource.getBottomItemTime(), 10, (data) => {
+      this.setState({
+        loadingMore: false,
+        more: data.more,
+        unread: data.unread,
+        dataSource: this.notificationsDataSource.prepend(data.notifications)
+      });
+    });
+  }
+
+  tagAllAsRead() {
+    this.setState({loadingTagAsRead: true});
+
+    app.client.notificationViewed([], true, () => {
+      this.setState({
+        loadingTagAsRead: false,
+        unread: 0,
+        dataSource: this.notificationsDataSource.tagAsRead()
+      });
+    });
   }
 }
 

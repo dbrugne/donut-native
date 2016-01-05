@@ -39,7 +39,7 @@ var currentFocused = function () {
   return list.join(', ');
 };
 app.on('focusModelChanged', function () {
-  console.log('[FOCUSED] now focused view is: ', currentFocused());
+  debug.log('[FOCUSED] now focused view is: ', currentFocused());
 });
 // @debug
 
@@ -753,7 +753,9 @@ routes.switchTo = function (route) {
   }
   _pushOrJumpTo(rootNavigator.__navigator, routes.getNavigator(route));
 };
-
+routes.openDrawer = function() {
+  drawer.open();
+}
 routes.RootNavigator = React.createClass({
   componentDidMount () {
     rootNavigator = this.refs.navigator;

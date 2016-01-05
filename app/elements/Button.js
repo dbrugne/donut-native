@@ -27,7 +27,7 @@ class Button extends Component {
    *  disabled : true / [false]
    *  type: gray|default / blue / green / red / pink|primary / white : style to apply to the button
    *  help: help message bellow if any
-   *  icon: fontawesome code name of the icon to append top the button text
+   *  icon: fontawesome code name of the icon to append of the button text
    *  iconColor: color of the icon, default is #ffda3e
    * }
    */

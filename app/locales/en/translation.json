@@ -145,7 +145,11 @@
       "groupdeop": "You are no longer moderator of community #__name__"
     },
     "discussion-count": "You also have __count__ unviewed discussion",
-    "discussion-count_0": "You do not have unviewed discussions",
-    "discussion-count_plural": "You also have __count__ unviewed discussions"
+    "discussion-count_plural": "You also have __count__ unviewed discussions",
+    "notification-count": "You have __count__ unviewed notification",
+    "notification-count_plural": "You have __count__ unviewed notifications",
+    "no-unread-notification": "You do not have unread notification",
+    "mark-as-read": "Mark all notifications as read",
+    "load-more": "Load more"
   }
 }
