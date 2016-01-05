@@ -1,13 +1,8 @@
 'use strict';
 
-var React = require('react-native');
 var s = require('../../styles/style');
 var UserField = require('../UserField');
 var ListItem = require('../../elements/ListItem');
-
-var {
-  TextInput
-} = React;
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'local', {

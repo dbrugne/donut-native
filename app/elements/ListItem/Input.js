@@ -29,7 +29,6 @@ class ListItemInput extends Component {
         {this._renderTitle()}
         <View style={[s.listGroupItem, { justifyContent:'center', paddingTop: 5, paddingBottom: 5 }]}>
           <TextInput
-            autoCapitalize='none'
             autoFocus={true}
             placeholder={this.props.placeholder}
             onChange={this.props.onChange}
