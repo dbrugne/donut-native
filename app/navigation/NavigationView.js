@@ -39,75 +39,31 @@ class NavigationView extends Component {
     return (
       <ScrollView style={styles.main}>
         <CurrentUserView />
-        <View>
-          <TouchableHighlight style={styles.linkBlock}
-                              underlayColor= '#414041'
-                              onPress={() => navigation.switchTo(navigation.getHome())}>
-            <View style={styles.linkContainer}>
-              <View style={styles.iconCtn}>
-                <Icon
-                  name='fontawesome|home'
-                  size={18}
-                  color='#ecf0f1'
-                  style={styles.icon}
-                  />
-              </View>
-              <Text style={styles.linkText}>{i18next.t('local:discover')}</Text>
-            </View>
-          </TouchableHighlight>
-
-          <TouchableHighlight style={styles.linkBlock}
-                              underlayColor= '#414041'
-                              onPress={() => navigation.switchTo(navigation.getSearch())}>
-            <View style={styles.linkContainer}>
-              <View style={styles.iconCtn}>
-                <Icon
-                  name='fontawesome|search'
-                  size={18}
-                  color='#ecf0f1'
-                  style={styles.icon}
-                  />
-              </View>
-              <Text style={styles.linkText}>{i18next.t('local:search')}</Text>
-            </View>
-          </TouchableHighlight>
-
-          <TouchableHighlight style={styles.linkBlock}
-                              underlayColor= '#414041'
-                              onPress={() => navigation.switchTo(navigation.getRoomCreate())}>
-            <View style={styles.linkContainer}>
-              <View style={styles.iconCtn}>
-                <Icon
-                  name='fontawesome|plus'
-                  size={18}
-                  color='#ecf0f1'
-                  style={styles.icon}
-                  />
-              </View>
-              <Text style={styles.linkText}>{i18next.t('local:create')}</Text>
-            </View>
-          </TouchableHighlight>
-
-          <TouchableHighlight style={styles.linkBlock}
-                              underlayColor= '#414041'
-                              onPress={() => navigation.switchTo(navigation.getNotifications())}>
-            <View style={styles.linkContainer}>
-              <View style={styles.iconCtn}>
-                <Icon
-                  name='fontawesome|globe'
-                  size={18}
-                  color='#ecf0f1'
-                  style={styles.icon}
-                  />
-              </View>
-              <Text style={styles.linkText}>{i18next.t('local:notifications')}</Text>
-            </View>
-          </TouchableHighlight>
-
+        <View style={styles.actions}>
+          {this.renderAction('home', () => navigation.switchTo(navigation.getHome()))}
+          {this.renderAction('search', () => navigation.switchTo(navigation.getSearch()))}
+          {this.renderAction('plus', () => navigation.switchTo(navigation.getRoomCreate()))}
+          {this.renderAction('globe', () => navigation.switchTo(navigation.getNotifications()))}
         </View>
         <NavigationOnesView />
         <NavigationRoomsView />
       </ScrollView>
+    );
+  }
+
+  renderAction (icon, onPress) {
+    var iconName = 'fontawesome|' + icon;
+    return (
+      <TouchableHighlight style={styles.actionBlock}
+                          underlayColor= '#414041'
+                          onPress={onPress}>
+        <Icon
+          name={iconName}
+          size={26}
+          color='#ecf0f1'
+          style={styles.actionIcon}
+        />
+      </TouchableHighlight>
     );
   }
 };
@@ -118,32 +74,20 @@ var styles = StyleSheet.create({
     flexWrap: 'nowrap',
     backgroundColor: '#272627'
   },
-  linkContainer: {
+  title: { backgroundColor: '#1D1D1D'},
+  actions: {
     flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  actionBlock: {
+    flex: 1,
+    padding: 12,
     alignItems: 'center'
   },
-  linkBlock: {
-    borderTopColor: '#373737',
-    borderTopWidth: 0.5,
-    borderStyle: 'solid',
-    borderBottomColor: '#0E0D0E',
-    borderBottomWidth: 0.5
-  },
-  linkText: {
-    fontFamily: 'Open Sans',
-    fontSize: 16,
-    color: '#ecf0f1',
-    marginVertical: 15
-  },
-  iconCtn: {
-    marginVertical: 8,
-    marginHorizontal: 10
-  },
-  icon: {
-    width: 18,
-    height: 18
-  },
-  title: { backgroundColor: '#1D1D1D'}
+  actionIcon: {
+    width: 26,
+    height: 26
+  }
 });
 
 module.exports = NavigationView;
