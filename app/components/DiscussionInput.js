@@ -12,7 +12,6 @@ var {
   } = require('react-native-icons');
 var Button = require('react-native-button');
 var imageUpload = require('../libs/imageUpload');
-var Alert = require('../libs/alert');
 var app = require('../libs/app');
 
 class InputView extends Component {
@@ -30,9 +29,9 @@ class InputView extends Component {
       <View style={styles.inputContainer}>
         <Button style={styles.button} onPress={() => this._addImage()}>
           <Icon
-            name='fontawesome|plus'
-            size={34}
-            color='#666'
+            name='fontawesome|camera'
+            size={28}
+            color='#FC2063'
             style={styles.icon}
             />
         </Button>
@@ -47,7 +46,7 @@ class InputView extends Component {
         <Button style={styles.button} onPress={() => this.onSubmit()}>
           <Icon
             name='fontawesome|paper-plane'
-            size={34}
+            size={28}
             color='#FC2063'
             style={styles.icon}
             />
@@ -90,13 +89,13 @@ var styles = StyleSheet.create({
     flex: 1,
     padding: 3,
     paddingHorizontal: 5,
-    height: 40
+    height: 40,
+    fontSize: 14
   },
   icon: {
-    width: 34,
-    height: 34,
-    marginRight: 5,
-    marginLeft: 5,
+    width: 28,
+    height: 28,
+    marginHorizontal: 5,
     marginTop: 5
   },
   button: {
