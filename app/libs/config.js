@@ -8,7 +8,7 @@ var defaults = {
 
 // build time
 var buildTime = {
-  version: packageJson.version
+  DONUT_JS_VERSION: packageJson.version
 };
 
 // per-environment

@@ -26,7 +26,7 @@ class AboutView extends Component {
 
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      ds: ds.cloneWithRows([]),
+      ds: ds.cloneWithRows([])
     }
   }
 
@@ -39,7 +39,7 @@ class AboutView extends Component {
       <ScrollView>
         <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1, backgroundColor: '#f0f0f0' }}>
           <View style={s.listGroup}>
-            <ListItem text={i18next.t('local:version', {version: config.version})}
+            <ListItem text={i18next.t('local:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}
                       first={true}
                       type='text'
             />
