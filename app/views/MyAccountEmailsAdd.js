@@ -40,6 +40,7 @@ class AddEmailView extends Component {
             type='input-button'
             title={i18next.t('local:add-email')}
             first={true}
+            isEmail={true}
             />
 
         </View>

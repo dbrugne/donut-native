@@ -37,6 +37,7 @@ class ChangeEmailView extends Component {
             type='input-button'
             title={i18next.t('local:change')}
             first={true}
+            isEmail={true}
             />
 
         </View>
