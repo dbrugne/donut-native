@@ -16,7 +16,6 @@ var navigation = require('../libs/navigation');
 var ListItem = require('../elements/ListItem');
 var s = require('../styles/style');
 var alert = require('../libs/alert');
-var ConfirmationModal = require('../components/ConfirmationModal');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -43,10 +42,7 @@ class ProfileView extends Component {
       loading: true,
       isBanned: this.props.user.isBanned,
       isDevoiced: this.props.user.isDevoiced,
-      isOp: this.props.user.isOp,
-      modalTitle: '',
-      modalDescription: '',
-      onConfirm: null
+      isOp: this.props.user.isOp
     };
   }
 
@@ -78,9 +74,6 @@ class ProfileView extends Component {
             <Text style={s.listGroupItemSpacing}></Text>
           </View>
         </ScrollView>
-        {this.state.showModal ? <ConfirmationModal onCancel={() => this.setState({showModal: false}) }
-                                                   onConfirm={() => this.state.onConfirm()} title={this.state.modalTitle}
-                                                   text={this.state.modalDescription}/> : null}
       </View>
     );
   }
@@ -178,107 +171,106 @@ class ProfileView extends Component {
   }
 
   _onDeop () {
-    this.setState({
-      modalTitle: i18next.t('local:deop'),
-      modalDescription: i18next.t('local:modal-description-deop', {username: this.props.user.username}),
-      showModal: true,
-      onConfirm: () => {
+    alert.askConfirmation(
+      i18next.t('local:deop'),
+      i18next.t('local:modal-description-deop', {username: this.props.user.username}),
+      () => {
         app.client.roomDeop(this.props.roomId, this.props.user.user_id, (response) => {
           if (response.err) {
             return alert.show(response.err);
           }
-          this.setState({isOp: false, showModal: false});
+          this.setState({isOp: false});
           this.props.fc();
         });
-      }
-    });
+      },
+      () => {}
+    );
   }
   _onOp () {
-    this.setState({
-      modalTitle: i18next.t('local:op'),
-      modalDescription: i18next.t('local:modal-description-op', {username: this.props.user.username}),
-      showModal: true,
-      onConfirm: () => {
+    alert.askConfirmation(
+      i18next.t('local:op'),
+      i18next.t('local:modal-description-op', {username: this.props.user.username}),
+      () => {
         app.client.roomOp(this.props.roomId, this.props.user.user_id, (response) => {
           if (response.err) {
             return alert.show(response.err);
           }
-          this.setState({isOp: true, showModal: false});
+          this.setState({isOp: true});
           this.props.fc();
         });
-      }
-    });
+      },
+      () => {}
+    );
   }
   _onDevoice () {
-    this.setState({
-      modalTitle: i18next.t('local:devoice'),
-      modalDescription: i18next.t('local:modal-description-devoice', {username: this.props.user.username}),
-      showModal: true,
-      onConfirm: () => {
+    alert.askConfirmation(
+      i18next.t('local:devoice'),
+      i18next.t('local:modal-description-devoice', {username: this.props.user.username}),
+      () => {
         app.client.roomDevoice(this.props.roomId, this.props.user.user_id, null,(response) => {
           if (response.err) {
             return alert.show(response.err);
           }
-          this.setState({isDevoiced: true, showModal: false});
+          this.setState({isDevoiced: true});
           this.props.fc();
         });
-      }
-    });
+      },
+      () => {}
+    );
   }
   _onVoice () {
-    this.setState({
-      modalTitle: i18next.t('local:voice'),
-      modalDescription: i18next.t('local:modal-description-voice', {username: this.props.user.username}),
-      showModal: true,
-      onConfirm: () => {
+    alert.askConfirmation(
+      i18next.t('local:voice'),
+      i18next.t('local:modal-description-voice', {username: this.props.user.username}),
+      () => {
         app.client.roomVoice(this.props.roomId, this.props.user.user_id, (response) => {
           if (response.err) {
             return alert.show(response.err);
           }
-          this.setState({isDevoiced: false, showModal: false});
+          this.setState({isDevoiced: false});
           this.props.fc();
         });
-      }
-    });
+      },
+      () => {}
+    );
   }
   _onUnban() {
-    this.setState({
-      modalTitle: i18next.t('local:deban'),
-      modalDescription: i18next.t('local:modal-description-deban', {username: this.props.user.username}),
-      showModal: true,
-      onConfirm: () => {
+    alert.askConfirmation(
+      i18next.t('local:deban'),
+      i18next.t('local:modal-description-deban', {username: this.props.user.username}),
+      () => {
         app.client.roomDeban(this.props.roomId, this.props.user.user_id, (response) => {
           if (response.err) {
             return alert.show(response.err);
           }
-          this.setState({isBanned: false, showModal: false});
+          this.setState({isBanned: false});
           this.props.fc();
         });
-      }
-    });
+      },
+      () => {}
+    );
   }
   _onBan () {
-    this.setState({
-      modalTitle: i18next.t('local:ban'),
-      modalDescription: i18next.t('local:modal-description-ban', {username: this.props.user.username}),
-      showModal: true,
-      onConfirm: () => {
+    alert.askConfirmation(
+      i18next.t('local:ban'),
+      i18next.t('local:modal-description-ban', {username: this.props.user.username}),
+      () => {
         app.client.roomBan(this.props.roomId, this.props.user.user_id, null, (response) => {
           if (response.err) {
             return alert.show(response.err);
           }
-          this.setState({isBanned: true, showModal: false});
+          this.setState({isBanned: true});
           this.props.fc();
         });
-      }
-    });
+      },
+      () => {}
+    );
   }
   _onKick () {
-    this.setState({
-      modalTitle: i18next.t('local:kick'),
-      modalDescription: i18next.t('local:modal-description-kick', {username: this.props.user.username}),
-      showModal: true,
-      onConfirm: () => {
+    alert.askConfirmation(
+      i18next.t('local:kick'),
+      i18next.t('local:modal-description-kick', {username: this.props.user.username}),
+      () => {
         app.client.roomKick(this.props.roomId, this.props.user.user_id, null, (response) => {
           if (response.err) {
             return alert.show(response.err);
@@ -286,8 +278,9 @@ class ProfileView extends Component {
           this.props.navigator.pop();
           this.props.fc();
         });
-      }
-    });
+      },
+      () => {}
+    );
   }
 }
 

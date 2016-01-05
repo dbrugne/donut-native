@@ -2,8 +2,8 @@
 
 var React = require('react-native');
 var {
-  AlertIOS,
-  ToastAndroid
+  ToastAndroid,
+  Alert
 } = React;
 
 var Platform = require('Platform');
@@ -13,7 +13,20 @@ module.exports = {
     if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
-      AlertIOS.alert(string);
+      Alert.alert(
+        '',
+        string
+      );
     }
+  },
+  askConfirmation: function(title, message, onConfirm, onCancel) {
+    Alert.alert(
+      title,
+      message,
+      [
+        {text: 'Cancel', onPress: () => onCancel(), style: 'cancel'},
+        {text: 'OK', onPress: () => onConfirm()}
+      ]
+    );
   }
 };

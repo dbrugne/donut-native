@@ -59,7 +59,7 @@ class GroupAskMembershipRequest extends Component {
         if (response.err === 'allow-pending') {
           return alert.show(i18next.t('group.allow-pending'));
         }
-        return alert.show(i18next.t('messages.unknownerror'))
+        return alert.show(i18next.t(response.err));
       }
     });
   }
