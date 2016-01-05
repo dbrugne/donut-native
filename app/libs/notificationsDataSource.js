@@ -37,7 +37,7 @@ module.exports = function () {
     },
     tagAsRead () {
       _.each(this.blob, (e, idx) => {
-        _.extend(e.data, {read: true});
+        _.extend(e, {viewed: true});
         this.blob[idx] = e;
       });
 
