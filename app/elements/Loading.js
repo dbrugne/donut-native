@@ -40,8 +40,7 @@ var styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'center',
-    flex: 1,
-    backgroundColor: '#f0f0f0'
+    flex: 1
   },
   centered: {
     alignSelf: 'center',
