@@ -671,6 +671,13 @@ routes.getNotifications = function () {
     },
     renderLeftButton: function (navigator) {
       return (<LeftNavigation navigator={navigator} />);
+    },
+    _onDidFocus: function () {
+      // delay heavy processing logic (e.g. history fetching and rendering) to
+      // avoid animation leak (visibly onDidFocus is triggered before transition end)
+      setTimeout(() => {
+        this.scene.onFocus();
+      }, 100);
     }
   });
 };

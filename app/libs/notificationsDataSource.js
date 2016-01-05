@@ -23,6 +23,8 @@ module.exports = function () {
       return this.blob[this.blob.length - 1];
     },
     append (items) {
+      this.blob = [];
+
       if (!items || (_.isArray(items) && items.length === 0)){
         return this.dataSource.cloneWithRows(this.blob);
       }
