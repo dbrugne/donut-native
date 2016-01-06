@@ -31,6 +31,7 @@ var {
 
 var currentUser = require('../models/current-user');
 var FacebookLogin = require('../components/FacebookLogin');
+var LoadingModal = require('../components/LoadingModal');
 var t = null;
 
 class LoginView extends Component {
@@ -40,7 +41,8 @@ class LoginView extends Component {
     this.state = {
       email: '',
       password: '',
-      hasPassword: false
+      hasPassword: false,
+      showLoadingModal: false
     };
   }
 
@@ -117,7 +119,7 @@ class LoginView extends Component {
               <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
             </View>
             <View style={styles.container}>
-              <FacebookLogin />
+              <FacebookLogin showLoadingModal={() => this.setState({showLoadingModal: true})} hideLoadingModal={() => this.setState({showLoadingModal: false})}/>
               {loginForm}
             </View>
             <View style={styles.linkCtn}>
@@ -132,6 +134,7 @@ class LoginView extends Component {
             </View>
           </View>
         </ScrollView>
+        {this.state.showLoadingModal ? <LoadingModal /> : null}
       </View>
     );
   }
@@ -166,8 +169,9 @@ class LoginView extends Component {
       return Alert.show(i18next.t('messages.not-complete'));
     }
 
-    // @todo : loading screen
+    this.setState({showLoadingModal: true});
     currentUser.emailLogin(this.state.email, this.state.password, (err) => {
+      this.setState({showLoadingModal: false});
       if (err) {
         Alert.show(i18next.t('messages.' + err));
       }

@@ -4,6 +4,7 @@ var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var Link = require('../elements/Link');
 var Button = require('../elements/Button');
+var LoadingModal = require('../components/LoadingModal');
 
 var {
   Component,
@@ -31,7 +32,8 @@ class ForgotView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: ''
+      email: '',
+      showLoadingModal: false
     };
   }
 
@@ -89,6 +91,7 @@ class ForgotView extends Component {
             </View>
           </View>
         </ScrollView>
+        {this.state.showLoadingModal ? <LoadingModal /> : null}
       </View>
     )
   }
@@ -123,7 +126,9 @@ class ForgotView extends Component {
       return Alert.show(i18next.t('messages.not-complete'));
     }
 
+    this.setState({showLoadingModal: true});
     currentUser.forgot(this.state.email, (err) => {
+      this.setState({showLoadingModal: false});
       if (err) {
         Alert.show(i18next.t('messages.' + err));
       } else {
