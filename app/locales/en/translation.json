@@ -40,7 +40,13 @@
     "group-banned": "You were banned from community",
     "domain": "This domain is not valid",
     "unknownerror": "Unknown error, please retry later",
-    "notification-read-error": "An error has been raised while reading notifications"
+    "notification-read-error": "An error has been raised while reading notifications",
+    "user-not-found": "No user found",
+    "invalid-email": "Email is invalid",
+    "invalid-password": "Password is not valid",
+    "invalid-username": "Username isn't valid",
+    "existing-user": "This email address is already used",
+    "not-available": "This username is not available"
   },
   "navigation": {
     "discover": "Discover",
