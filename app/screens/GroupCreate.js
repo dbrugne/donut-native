@@ -22,7 +22,7 @@ i18next.addResourceBundle('en', 'local', {
   'name': 'name of community',
   'help': 'Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_). Caution the community name cannot be changed',
   'disclaimer': 'A community is a place where your members can gather and create donuts to chat with each other and external users if they want.',
-  'create': 'create'  
+  'create': 'create'
 });
 
 class RoomCreateView extends Component {
@@ -40,7 +40,6 @@ class RoomCreateView extends Component {
         <View style={[s.inputContainer, {marginHorizontal: 10}]}>
           <TextInput style={s.input}
                      autoCapitalize='none'
-                     autoFocus={true}
                      placeholder={i18next.t('local:name')}
                      onChangeText={(text) => this.setState({groupName: text})}
                      value={this.state.groupName}

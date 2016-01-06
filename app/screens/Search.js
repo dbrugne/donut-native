@@ -15,9 +15,7 @@ var {
 } = require('react-native-icons');
 
 var app = require('../libs/app');
-var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../libs/navigation');
-var s = require('../styles/style');
 var SearchResult = require('../elements/SearchResult');
 
 var i18next = require('../libs/i18next');
@@ -55,9 +53,8 @@ class SearchView extends Component {
     return (
       <View style={styles.main}>
         <View>
-          <View  style={styles.formInputContainer}>
+          <View style={styles.formInputContainer}>
             <TextInput style={styles.formInputFind}
-              autoFocus={true}
               autoCapitalize='none'
               placeholder={i18next.t('local:search')}
               onChangeText={(text) => this.setState({findValue: text})}
