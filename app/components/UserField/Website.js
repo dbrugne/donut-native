@@ -11,10 +11,11 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class UserFieldWebsite extends UserField {
+  key = 'website';
+
   constructor (props) {
     super(props);
   }
-  key = 'website';
 
   isValid () {
     if (!this.state.value) {
@@ -31,7 +32,8 @@ class UserFieldWebsite extends UserField {
   renderField () {
     return (
     <ListItem
-      autoFocus={true}
+      ref='input'
+      autoCapitalize='none'
       onPress= {() => this.onPress()}
       placeholder={i18next.t('local:placeholder')}
       value={this.state.value}

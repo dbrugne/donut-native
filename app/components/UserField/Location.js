@@ -11,15 +11,16 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class UserFieldLocation extends UserField {
+  key = 'location';
+
   constructor (props) {
     super(props);
   }
-  key = 'location';
 
   renderField () {
     return (
     <ListItem
-      autoFocus={true}
+      ref='input'
       onPress= {() => this.onPress()}
       placeholder={i18next.t('local:placeholder')}
       value={this.state.value}

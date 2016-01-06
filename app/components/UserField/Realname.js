@@ -11,15 +11,15 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class UserFieldRealname extends UserField {
+  key = 'realname';
   constructor (props) {
     super(props);
   }
-  key = 'realname';
 
   renderField () {
     return (
     <ListItem
-      autoFocus={true}
+      ref='input'
       onPress= {() => this.onPress()}
       placeholder={i18next.t('local:placeholder')}
       value={this.state.value}
