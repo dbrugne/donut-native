@@ -9,7 +9,7 @@ var {
   Component,
   Image,
   ScrollView
-} = React;
+  } = React;
 
 
 var _ = require('underscore');
@@ -33,16 +33,16 @@ class GroupProfileView extends Component {
     this.members_count = (props.data.members && props.data.members.length) ? props.data.members.length : 0;
 
     this.user = {
-      isMember : this.isCurrentUserIsMember(),
-      isOwner : currentUser.get('user_id') === props.data.owner_id,
-      isAdmin : app.user.isAdmin(),
-      isOp : this.isCurrentUserIsOP(),
-      isBanned : props.data.i_am_banned
+      isMember: this.isCurrentUserIsMember(),
+      isOwner: currentUser.get('user_id') === props.data.owner_id,
+      isAdmin: app.user.isAdmin(),
+      isOp: this.isCurrentUserIsOP(),
+      isBanned: props.data.i_am_banned
     }
   }
 
   render () {
-    var avatarUrl = common.cloudinary.prepare(this.props.data.avatar, 120);
+    var avatarUrl = common.cloudinary.prepare(this.props.data.avatar, 130);
     var description = _.unescape(this.props.data.description);
 
     // render
@@ -53,10 +53,11 @@ class GroupProfileView extends Component {
             <Image style={styles.avatar} source={{uri: avatarUrl}}/>
             <View style={styles.headerRight}>
               <Text style={styles.identifier}>{this.props.data.identifier}</Text>
-              <Link onPress={() => { navigation.switchTo(navigation.getProfile({type: 'user', id: this.props.data.owner_id, identifier: '@' + this.props.data.owner_username})) }}
-                    prepend={i18next.t('by')}
-                    text={'@' + this.props.data.owner_username}
-                    type='bold'
+              <Link
+                onPress={() => { navigation.switchTo(navigation.getProfile({type: 'user', id: this.props.data.owner_id, identifier: '@' + this.props.data.owner_username})) }}
+                prepend={i18next.t('by')}
+                text={'@' + this.props.data.owner_username}
+                type='bold'
                 />
             </View>
           </View>
@@ -99,17 +100,19 @@ class GroupProfileView extends Component {
     }
     return null;
   }
+
   renderAction () {
     // @todo implement onPress goto create donut
     if ((this.user.isMember || this.user.isOwner) && !this.user.isBanned) {
       return (
         <View>
           <Button onPress={() => console.log('@todo implement create donut')}
+                  type='green'
+                  label={i18next.t('group.create-donut') + ' TODO'}/>
+          <Button
+            onPress={() => this.props.navigator.push(navigation.getGroupRoomsList({id: this.props.data.group_id, name: this.props.data.identifier, user: this.user}))}
             type='green'
-            label={i18next.t('group.create-donut') + ' TODO'} />
-          <Button onPress={() => this.props.navigator.push(navigation.getGroupRoomsList({id: this.props.data.group_id, name: this.props.data.identifier, user: this.user}))}
-            type='green'
-            label={i18next.t('group.donut-list')} />
+            label={i18next.t('group.donut-list')}/>
         </View>
       );
     }
@@ -118,39 +121,43 @@ class GroupProfileView extends Component {
         <View>
           <Button onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(this.props.data.group_id))}
                   type='blue'
-                  label={i18next.t('group.request-membership')} />
-          <Button onPress={() => this.props.navigator.push(navigation.getGroupRoomsList({id: this.props.data.group_id, name: this.props.data.identifier, user: this.user}))}
-                  type='blue'
-                  label={i18next.t('group.donut-list')} />
+                  label={i18next.t('group.request-membership')}/>
+          <Button
+            onPress={() => this.props.navigator.push(navigation.getGroupRoomsList({id: this.props.data.group_id, name: this.props.data.identifier, user: this.user}))}
+            type='blue'
+            label={i18next.t('group.donut-list')}/>
         </View>
       );
     }
     return null;
   }
+
   renderWebsite () {
     if (this.props.data.website) {
       return (
         <ListItem onPress={() => hyperlink.open(this.props.data.website.href)}
-              text={this.props.data.website.title}
-              first={false}
-              action='true'
-              type='button'
-              icon='fontawesome|link'
-            />
+                  text={this.props.data.website.title}
+                  first={false}
+                  action='true'
+                  type='button'
+                  icon='fontawesome|link'
+          />
       );
     }
   }
+
   renderCreatedAt () {
     var text = i18next.t('group.created') + ' ' + date.longDateTime(this.props.data.created);
     return (
       <ListItem
-          text={text}
-          last={true}
-          action='false'
-          icon='fontawesome|clock-o'
-          />
+        text={text}
+        last={true}
+        action='false'
+        icon='fontawesome|clock-o'
+        />
     );
   }
+
   renderLinks () {
     var list = null;
     if (this.user.isOwner || this.user.isAdmin || this.user.isOp) {
@@ -163,29 +170,29 @@ class GroupProfileView extends Component {
       list = (
         <View>
           <ListItem onPress={() => console.log('@todo implement group edit')}
-              text={i18next.t('group.edit') + ' TODO'}
-              first={true}
-              action='true'
-              type='button'
-              icon='fontawesome|pencil'
+                    text={i18next.t('group.edit') + ' TODO'}
+                    first={true}
+                    action='true'
+                    type='button'
+                    icon='fontawesome|pencil'
             />
           <ListItem onPress={() => console.log('@todo implement group access')}
-              text={i18next.t('group.access') + ' TODO'}
-              action='true'
-              type='button'
-              icon='fontawesome|key'
+                    text={i18next.t('group.access') + ' TODO'}
+                    action='true'
+                    type='button'
+                    icon='fontawesome|key'
             />
           <ListItem onPress={() => console.log('@todo implement group user-list')}
-              text={i18next.t('group.user-list') + ' TODO'}
-              action='true'
-              type='button'
-              icon='fontawesome|users'
+                    text={i18next.t('group.user-list') + ' TODO'}
+                    action='true'
+                    type='button'
+                    icon='fontawesome|users'
             />
           <ListItem onPress={() => console.log('@todo implement group allowed-users')}
-              text={i18next.t('group.allowed-users') + ' TODO'}
-              action='true'
-              type='button'
-              icon='fontawesome|check-circle'
+                    text={i18next.t('group.allowed-users') + ' TODO'}
+                    action='true'
+                    type='button'
+                    icon='fontawesome|check-circle'
             />
         </View>
       );
@@ -193,12 +200,13 @@ class GroupProfileView extends Component {
     var quit = null;
     if (!this.user.isOwner && this.user.isMember) {
       quit = (
-        <ListItem onPress={() => alert.askConfirmation('Quit group', 'You will leave this community', () => this.onGroupQuit(), () => {})}
-            text={i18next.t('group.leave') + ' TODO'}
-            first={!(this.isOp || this.isAdmin)}
-            action='true'
-            type='button'
-            icon='fontawesome|close'
+        <ListItem
+          onPress={() => alert.askConfirmation('Quit group', 'You will leave this community', () => this.onGroupQuit(), () => {})}
+          text={i18next.t('group.leave') + ' TODO'}
+          first={!(this.isOp || this.isAdmin)}
+          action='true'
+          type='button'
+          icon='fontawesome|close'
           />
       );
     }
@@ -209,6 +217,7 @@ class GroupProfileView extends Component {
       </View>
     );
   }
+
   onGroupQuit () {
     if (this.user.isMember) {
       app.client.groupLeave(this.props.data.group_id, function (response) {
@@ -219,6 +228,7 @@ class GroupProfileView extends Component {
       });
     }
   }
+
   isCurrentUserIsMember () {
     return !!_.find(this.props.data.members, function (member) {
       if (currentUser.get('user_id') === member.user_id) {
@@ -226,6 +236,7 @@ class GroupProfileView extends Component {
       }
     });
   }
+
   isCurrentUserIsOP () {
     if (!this.members_count) {
       return false;
@@ -258,8 +269,8 @@ var styles = StyleSheet.create({
     flexDirection: 'row'
   },
   avatar: {
-    width: 80,
-    height: 80,
+    width: 120,
+    height: 120,
     borderRadius: 60,
     marginTop: 20,
     marginBottom: 10,
