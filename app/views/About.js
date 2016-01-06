@@ -1,8 +1,10 @@
 var _ = require('underscore');
 var React = require('react-native');
+var ListItem = require('../elements/ListItem');
 var s = require('../styles/style');
 var config = require('../libs/config')();
 var storage = require('../libs/storage');
+var app = require('../libs/app');
 
 var debug = require('../libs/debug')('storage');
 
@@ -16,7 +18,9 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'version': 'Version __version__'
+  'version': 'Version __version__',
+  'disconnect': 'Disconnect',
+  'connect': 'Connect'
 });
 
 class AboutView extends Component {
@@ -48,6 +52,14 @@ class AboutView extends Component {
                 <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('local:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}</Text>
               </View>
             </TouchableHighlight>
+            <ListItem text={i18next.t('local:connect')}
+                      type='button'
+                      onPress={() => { app.client.connect(); }}
+              />
+            <ListItem text={i18next.t('local:disconnect')}
+                      type='button'
+                      onPress={() => { app.client.disconnect(); }}
+              />
 
             {this._renderConfig()}
           </View>

@@ -766,14 +766,22 @@ routes.switchTo = function (route) {
   }
   _pushOrJumpTo(rootNavigator.__navigator, routes.getNavigator(route));
 };
-routes.openDrawer = function() {
+routes.openDrawer = function () {
   drawer.open();
-}
+};
 routes.RootNavigator = React.createClass({
+  getInitialState: function () {
+    return {
+      status: currentUser.get('status')
+    };
+  },
   componentDidMount () {
     rootNavigator = this.refs.navigator;
     drawer = this.refs.drawer;
     debug.log('mount RootNavigator');
+    currentUser.on('change:status', () => {
+      this.setState({status: currentUser.get('status')});
+    });
   },
   componentWillUnmount () {
     // reset navigation state (@logout)
@@ -784,6 +792,7 @@ routes.RootNavigator = React.createClass({
     knownRoutes = {};
     currentNavigator = null;
     currentRoute = null;
+    currentUser.off('change:status');
 
     debug.log('unmount RootNavigator');
   },
@@ -815,6 +824,31 @@ routes.RootNavigator = React.createClass({
           initialRoute={initialRoute}
           style={{ flex: 1 }}
           />
+        {
+          (this.state.status === 'offline')
+            ? <View style={{
+              height: 30,
+              backgroundColor: '#F00',
+              position: 'absolute',
+              top: navigationBarHeight,
+              left: 0,
+              right: 0,
+              alignItems: 'center',
+              justifyContent: 'center'}}>
+            <Text style={{color: '#FFF'}}>{this.state.status}</Text></View>
+            : (this.state.status === 'connecting')
+              ? <View style={{
+                height: 30,
+                backgroundColor: '#FA0',
+                position: 'absolute',
+                top: navigationBarHeight,
+                left: 0,
+                right: 0,
+                alignItems: 'center',
+                justifyContent: 'center'}}>
+            <Text style={{color: '#FFF'}}>{this.state.status}</Text></View>
+            : null
+        }
       </Drawer>
     );
   },
