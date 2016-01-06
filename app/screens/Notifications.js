@@ -4,19 +4,18 @@ var React = require('react-native');
 var _ = require('underscore');
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
-var s = require('../styles/style');
 var Link = require('../elements/Link');
 var Button = require('../elements/Button');
 var LoadingView = require('../elements/Loading');
 var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
 var date = require('../libs/date');
+var currentUser = require('../models/current-user');
 
 var {
   StyleSheet,
   View,
   ListView,
-  RecyclerViewBackedScrollView,
   Component,
   TouchableHighlight,
   Text,
@@ -30,7 +29,7 @@ var i18next = require('../libs/i18next');
 // @todo implement notification pushed
 class NotificationsView extends Component {
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.notificationsDataSource = require('../libs/notificationsDataSource')();
     this.state = {
@@ -45,24 +44,27 @@ class NotificationsView extends Component {
     };
   }
 
-  componentDidMount() {
-    //app.client.on('notification:new', this.onNewNotification, this);
-    //app.client.on('notification:done', this.onDoneNotification, this);
+  componentDidMount () {
+    currentUser.on('change:unreadNotifications', this.fetchData.bind(this));
+    app.on('viewedEvent', this.updateDiscussionsUnviewed.bind(this));
+    app.on('unviewedEvent', this.updateDiscussionsUnviewed.bind(this));
+  }
+
+  componentWillUnmount () {
+    currentUser.off('change');
+    app.off('viewedEvent');
+    app.off('unviewedEvent');
   }
 
   onFocus () {
     this.fetchData();
   }
 
-  componentWillUnmount() {
-    //app.client.off(null, null, this);
-  }
-
   fetchData () {
     return app.client.notificationRead(null, null, 10, this.onData.bind(this));
   }
 
-  onData(response) {
+  onData (response) {
     if (response.err) {
       return this.setState({
         error: true
@@ -71,12 +73,12 @@ class NotificationsView extends Component {
     this.setState({
       loaded: true,
       dataSource: this.notificationsDataSource.append(response.notifications),
-      unread: response.unread,
+      unread: currentUser.getUnreadNotifications(),
       more: response.more
     });
   }
 
-  render() {
+  render () {
     if (!this.state.loaded) {
       return (
         <LoadingView />
@@ -95,37 +97,36 @@ class NotificationsView extends Component {
         renderRow={this.renderRow.bind(this)}
         renderHeader={this.renderHeader.bind(this)}
         renderFooter={this.renderFooter.bind(this)}
-        style={{flex: 1, backgroundColor:'#ffffff'}}
-        scrollEnabled={true}
+        style={{flex: 1, backgroundColor: '#ffffff'}}
+        scrollEnabled
         />
     );
   }
 
-  renderHeader() {
+  renderHeader () {
     let unviewedDiscussions = null;
     if (this.state.discussionsUnviewed !== 0) {
       unviewedDiscussions = (
-        <Link style={{marginHorizontal: 10, marginVertical:20}}
+        <Link style={{marginHorizontal: 10, marginVertical: 20}}
               underlayColor='transparent'
               onPress={() => navigation.openDrawer()}
               text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
-          >
-        </Link>
-      )
+          />
+      );
     }
 
     let unreadNotifications = null;
     if (this.state.unread === 0) {
       unreadNotifications = (
-        <View style={{marginHorizontal: 10, marginVertical:20}}>
+        <View style={{marginHorizontal: 10, marginVertical: 20}}>
           <Text>{i18next.t('notifications.no-unread-notification')}</Text>
         </View>
       );
     } else {
       unreadNotifications = (
-        <View style={{marginBottom:10}}>
+        <View style={[{marginBottom: 10}, !unviewedDiscussions && {marginTop:10}]}>
           <Text
-            style={{marginHorizontal:10, marginBottom:10}}>{i18next.t('notifications.notification-count', {count: this.state.unread})}</Text>
+            style={{marginHorizontal: 10, marginBottom: 10}}>{i18next.t('notifications.notification-count', {count: this.state.unread})}</Text>
           <Button type='default'
                   onPress={this.tagAllAsRead.bind(this)}
                   loading={this.state.loadingTagAsRead}
@@ -143,7 +144,7 @@ class NotificationsView extends Component {
     );
   }
 
-  renderFooter() {
+  renderFooter () {
     if (!this.state.more) {
       return null;
     }
@@ -160,14 +161,14 @@ class NotificationsView extends Component {
       <TouchableHighlight
         underlayColor='#f0f0f0'
         onPress={this.onLoadMore.bind(this)}
-        style={{height:50, justifyContent:'center', alignItems:'center'}}
+        style={{height: 50, justifyContent: 'center', alignItems: 'center'}}
         >
-        <Text style={{textAlign:'center'}}>{i18next.t('notifications.load-more')}</Text>
+        <Text style={{textAlign: 'center'}}>{i18next.t('notifications.load-more')}</Text>
       </TouchableHighlight>
     );
   }
 
-  renderRow(n) {
+  renderRow (n) {
     n.css = '';
     n.name = '';
     n.avatarCircle = false;
@@ -237,7 +238,7 @@ class NotificationsView extends Component {
     return this._renderNotification(n);
   }
 
-  _renderNotification(n) {
+  _renderNotification (n) {
     if (n.onPress) {
       return (
         <TouchableHighlight
@@ -252,7 +253,7 @@ class NotificationsView extends Component {
     }
   }
 
-  _renderContent(n) {
+  _renderContent (n) {
     return (
       <View
         style={[{ paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderBottomWidth:1, borderBottomColor:'#f1f1f1', borderStyle:'solid'}, !n.viewed && {borderBottomColor:'#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
@@ -270,7 +271,7 @@ class NotificationsView extends Component {
     );
   }
 
-  _renderAvatar(n) {
+  _renderAvatar (n) {
     if (!n.avatar) {
       return null;
     }
@@ -281,7 +282,7 @@ class NotificationsView extends Component {
     );
   }
 
-  _renderByUsername(n) {
+  _renderByUsername (n) {
     if (!n.username) {
       return null;
     }
@@ -291,7 +292,7 @@ class NotificationsView extends Component {
     );
   }
 
-  onLoadMore() {
+  onLoadMore () {
     this.setState({loadingMore: true});
 
     app.client.notificationRead(null, this.notificationsDataSource.getBottomItemTime(), 10, (data) => {
@@ -304,7 +305,7 @@ class NotificationsView extends Component {
     });
   }
 
-  tagAllAsRead() {
+  tagAllAsRead () {
     this.setState({loadingTagAsRead: true});
 
     app.client.notificationViewed([], true, () => {
@@ -314,6 +315,12 @@ class NotificationsView extends Component {
         dataSource: this.notificationsDataSource.tagAsRead()
       });
     });
+  }
+
+  updateDiscussionsUnviewed () {
+    this.setState(
+      {discussionsUnviewed: app.getUnviewed()}
+    );
   }
 }
 
