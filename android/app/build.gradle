@@ -72,6 +72,12 @@ android {
             keyAlias MYAPP_RELEASE_KEY_ALIAS
             keyPassword MYAPP_RELEASE_KEY_PASSWORD
         }
+        donutReleaseTest {
+            storeFile file(MYAPP_RELEASE_TEST_STORE_FILE)
+            storePassword MYAPP_RELEASE_TEST_STORE_PASSWORD
+            keyAlias MYAPP_RELEASE_TEST_KEY_ALIAS
+            keyPassword MYAPP_RELEASE_TEST_KEY_PASSWORD
+        }
     }
     buildTypes {
         // no debug features, connect to donut.me
@@ -85,7 +91,7 @@ android {
         donutReleaseTest {
             minifyEnabled false  // Set this to true to enable Proguard
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.donutReleaseTest
         }
         // debug features, connect to test.donut.me
         debug {

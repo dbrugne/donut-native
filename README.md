@@ -45,7 +45,7 @@ For each scenario launch Xcode project select a scheme (listed bellow), select a
 * (to see log ```adb logcat```)
 
 **Android release with "test" DONUT_ENVIRONMENT**
-* (could be done only on MacOSX with android/app/donut-release-key.keystore)
+* (could be done on both MacOSX and Windows with android/app/debug.keystore)
 * ```cd android && ./gradlew assembledonutReleaseTest && ./gradlew installdonutReleaseTest && cd ..```
 
 **Android release with "production" DONUT_ENVIRONMENT**
