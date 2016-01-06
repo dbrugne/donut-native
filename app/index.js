@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react-native');
-var debug = require('./libs/debug')('system');
 
 import CodePush from 'react-native-code-push';
 
@@ -41,7 +40,7 @@ module.exports = React.createClass({
     if (!this.state.currentUserReady) {
       var Launching = require('./views/Launching');
       return (
-        <Launching ref='current' text="loading ..." />
+        <Launching ref='current' text='loading ...' />
       );
     }
     if (!this.state.isLoggedIn) {
@@ -50,7 +49,7 @@ module.exports = React.createClass({
         <LoggedOut ref='current' />
       );
     } else {
-      var LoggedIn = require('./navigation/LoggedIn'); // @important, lazy load
+      var LoggedIn = require('./loggedIn/index'); // @important, lazy load
       return (
         <LoggedIn ref='current' />
       );

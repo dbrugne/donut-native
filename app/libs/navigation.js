@@ -115,9 +115,9 @@ function getRoute (route) {
           style={ExNavigator.Styles.barBackButton} >
           <Icon name='fontawesome|angle-left'
                 size={18}
-                color='#3498db'
+                color='#fc2063'
                 style={[ExNavigator.Styles.barButtonIcon, {marginTop: 13, marginLeft: 5, width:18, height:18}]} />
-          <Text style={[ExNavigator.Styles.barButtonText, {marginTop: 11}]}> {i18next.t('navigation.back')}</Text>
+          <Text style={[ExNavigator.Styles.barButtonText, {marginTop: 11, color: '#fc2063'}]}> {i18next.t('navigation.back')}</Text>
         </TouchableOpacity>
       );
     }
@@ -262,10 +262,10 @@ var LeftNavigation = React.createClass({
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
         onPress={this.onPress}
-        style={ExNavigator.Styles.barBackButton} >
+        style={[{marginLeft: 5}, ExNavigator.Styles.barBackButton]} >
         <Icon name='fontawesome|bars'
-              size={20}
-              color='#111'
+              size={25}
+              color='#fc2063'
               style={[ExNavigator.Styles.barButtonIcon, {marginTop: 11, marginLeft: 5, width:22, height:22}]} />
         {unviewed}
       </TouchableOpacity>
@@ -586,7 +586,7 @@ routes.getDiscussion = function (id, model) {
           touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
           onPress={() => navigator.push(routes.getDiscussionSettings(id, model))}
           style={ExNavigator.Styles.barRightButton} >
-          <Icon name='fontawesome|cog' size={25} style={styles.settings} />
+          <Icon color='#fc2063' name='fontawesome|cog' size={25} style={styles.settings} />
         </TouchableOpacity>
       );
     },

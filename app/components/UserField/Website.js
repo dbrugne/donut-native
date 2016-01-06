@@ -10,6 +10,8 @@ i18next.addResourceBundle('en', 'local', {
   'placeholder': 'URL of a website'
 });
 
+// @todo : avoid uppercase in Input field only for this user attribute
+
 class UserFieldWebsite extends UserField {
   key = 'website';
 
@@ -33,7 +35,7 @@ class UserFieldWebsite extends UserField {
     return (
     <ListItem
       ref='input'
-      autoCapitalize='none'
+
       onPress= {() => this.onPress()}
       placeholder={i18next.t('local:placeholder')}
       value={this.state.value}

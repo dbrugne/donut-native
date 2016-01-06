@@ -33,7 +33,7 @@ module.exports = StyleSheet.create({
   buttonPink: {
     borderTopColor: '#E4396D',
     borderBottomColor: '#E4396D',
-    backgroundColor: "#fd5286" // Lighten 10%: #FF6CA0 / Darken 10%: #E4396D
+    backgroundColor: "#fc2063" // Lighten 10%: #FF6CA0 / Darken 10%: #E4396D
   },
   buttonGreen: {
     borderTopColor: '#0E9547',
