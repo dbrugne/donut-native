@@ -1,6 +1,5 @@
 var _ = require('underscore');
 var React = require('react-native');
-var ListItem = require('../elements/ListItem');
 var s = require('../styles/style');
 var config = require('../libs/config')();
 var storage = require('../libs/storage');
@@ -12,8 +11,8 @@ var {
   View,
   Text,
   ScrollView,
-  ListView
-} = React;
+  ListView, TouchableHighlight
+  } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -21,43 +20,66 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class AboutView extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      ds: ds.cloneWithRows([])
-    }
+      ds: ds.cloneWithRows([]),
+      config: false
+    };
   }
 
   componentDidMount () {
     this.fetchData();
   }
 
-  render() {
+  render () {
     return (
       <ScrollView>
         <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1, backgroundColor: '#f0f0f0' }}>
           <View style={s.listGroup}>
-            <ListItem text={i18next.t('local:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}
-                      first={true}
-                      type='text'
-            />
-            <ListView
-              style={{margin: 10, backgroundColor: '#FFF'}}
-              dataSource={this.state.ds}
-              scrollEnabled={false}
-              renderRow={(r) => (
+
+            <TouchableHighlight
+              onLongPress={this.toggleConfig.bind(this)}
+              underlayColor= '#DDD'
+              >
+              <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
+                <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('local:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}</Text>
+              </View>
+            </TouchableHighlight>
+
+            {this._renderConfig()}
+          </View>
+        </View>
+      </ScrollView>
+    );
+  }
+
+  _renderConfig() {
+    if (!this.state.config) {
+      return null;
+    }
+
+    return (
+      <ListView
+        style={{margin: 10, backgroundColor: '#FFF'}}
+        dataSource={this.state.ds}
+        scrollEnabled={false}
+        renderRow={(r) => (
                   <View style={{padding: 5}}>
                     <Text style={{fontWeight: 'bold'}}>{r.key}</Text>
                     <Text>{r.value}</Text>
                   </View>
                 )}
-            />
-          </View>
-        </View>
-      </ScrollView>
-    )
+        />
+    );
+  }
+
+  toggleConfig() {
+    this.setState({
+      config: !this.state.config
+    });
   }
 
   fetchData () {
@@ -68,7 +90,7 @@ class AboutView extends Component {
       var items = [];
       var parseNode = (v, k) => {
         if (_.isObject(v)) {
-          _.each(v, (_v, _k) => parseNode(_v, k+'.'+_k));
+          _.each(v, (_v, _k) => parseNode(_v, k + '.' + _k));
         } else {
           items.push({key: k, value: v});
         }
