@@ -93,8 +93,13 @@ task bundleDonutReleaseTestJsAndAssets(type: Exec) {
 
     // set up the call to the react-native cli
     workingDir reactRoot
-    commandLine "react-native", "bundle", "--platform", "android", "--dev", "false", "--entry-file",
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        commandLine "cmd","/c", "react-native", "bundle", "--platform", "android", "--dev", "false", "--entry-file",
             entryFile, "--bundle-output", jsBundleFileDonutReleaseTest, "--assets-dest", resourcesDirDonutReleaseTest
+    } else {
+        commandLine "react-native", "bundle", "--platform", "android", "--dev", "false", "--entry-file",
+            entryFile, "--bundle-output", jsBundleFileDonutReleaseTest, "--assets-dest", resourcesDirDonutReleaseTest
+    }
 
     enabled config.bundleInRelease ?: true
 }
