@@ -113,7 +113,7 @@ https://github.com/facebook/react-native/issues/4559
         pointerEvents={
           route === this.props.navigator.navigationContext.currentRoute ? 'box-none' : 'none'
         }
-        style={initialStage[componentName]}>
+        style={[initialStage[componentName], {marginLeft:0, flexDirection: 'row', justifyContent:'center'}]}>
         {content}
       </View>
     );

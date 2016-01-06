@@ -95,6 +95,17 @@ function getRoute (route) {
         }
       });
     },
+    renderTitle () {
+      let title = route.getTitle();
+      title = title.length > 18 ? title.substr(0, 18) + '…' : title;
+      return (
+        <View style={{alignSelf: 'center'}}>
+          <Text style={{fontFamily: '.HelveticaNeueInterface-MediumP4', fontSize: 16, color: '222', fontWeight: 'bold'}}>
+            {title}
+          </Text>
+        </View>
+      );
+    },
     onBack: function () {
       if (drawerOpened) {
         return drawer.close();
@@ -116,8 +127,8 @@ function getRoute (route) {
           <Icon name='fontawesome|angle-left'
                 size={18}
                 color='#fc2063'
-                style={[ExNavigator.Styles.barButtonIcon, {marginTop: 13, marginLeft: 5, width:18, height:18}]} />
-          <Text style={[ExNavigator.Styles.barButtonText, {marginTop: 11, color: '#fc2063'}]}> {i18next.t('navigation.back')}</Text>
+                style={[ExNavigator.Styles.barButtonIcon, {marginLeft: 5, width: 18, height: 18}, Platform.OS === 'android' ? {marginTop: 18} : {marginTop: 12} ]} />
+          <Text style={[ExNavigator.Styles.barButtonText, {color: '#fc2063'}, Platform.OS === 'android' ? {marginTop: 16} : {marginTop: 11} ]}> {i18next.t('navigation.back')}</Text>
         </TouchableOpacity>
       );
     }
@@ -262,11 +273,11 @@ var LeftNavigation = React.createClass({
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
         onPress={this.onPress}
-        style={[{marginLeft: 5}, ExNavigator.Styles.barBackButton]} >
+        style={ExNavigator.Styles.barBackButton} >
         <Icon name='fontawesome|bars'
               size={25}
               color='#fc2063'
-              style={[ExNavigator.Styles.barButtonIcon, {marginTop: 11, marginLeft: 5, width:22, height:22}]} />
+              style={[{marginLeft: 16, width:22, height:22}, Platform.OS === 'android' ? {marginTop: 14} : {marginTop: 11} ]} />
         {unviewed}
       </TouchableOpacity>
     );
@@ -696,11 +707,6 @@ routes.getNavigator = function (initialRoute) {
             initialRoute={initialRoute}
             style={{flex: 1}}
             sceneStyle={{ paddingTop: navigationBarHeight }}
-            titleStyle={{
-              fontSize: 16,
-              color: '222',
-              alignSelf: 'center'
-            }}
             />
         );
       },
