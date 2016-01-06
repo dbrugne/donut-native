@@ -122,7 +122,7 @@ class GroupAskMembershipEmail extends Component {
         if (response.err === 'wrong-format') {
           return alert.show(i18next.t('group.wrong-format-email'));
         }
-        return alert.show(i18next.t('messages.unknownerror'));
+        return alert.show(i18next.t('messages.' + response.err));
       }
     }, this));
   }

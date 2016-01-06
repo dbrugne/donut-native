@@ -46,7 +46,9 @@
     "invalid-password": "Password is not valid",
     "invalid-username": "Username isn't valid",
     "existing-user": "This email address is already used",
-    "not-available": "This username is not available"
+    "not-available": "This username is not available",
+    "mail-notconfirmed": "Verify your account ! Check your mailbox.",
+    "not-confirmed": "Action authorized to verified accounts only."
   },
   "navigation": {
     "discover": "Discover",

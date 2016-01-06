@@ -86,7 +86,7 @@ class RoomCreateView extends Component {
       alert.show(i18next.t('local:joining'));
       app.client.groupId('#' + this.state.groupName, (data) => {
         if (data.err) {
-          alert.show(response.err);
+          alert.show(i18next.t('messages.' + response.err));
         } else {
           // @todo spariaud finish joinGroup implementation
           app.trigger('joinGroup', data.group_id);

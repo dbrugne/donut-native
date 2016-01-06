@@ -19,6 +19,8 @@ var currentUser = require('../models/current-user');
 var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 
+var i18next = require('../libs/i18next');
+
 class CurrentUserView extends Component {
   constructor (props) {
     super(props);
@@ -81,6 +83,13 @@ class CurrentUserView extends Component {
             </View>
           </View>
         </TouchableHighlight>
+        {
+          (user.confirmed)
+            ? null
+            : <View style={{flex: 1, marginRight: 7, marginLeft: 7, backgroundColor: '#FC2063', padding: 5}}>
+                <Text style={{color: '#FFF'}}>{i18next.t('messages.mail-notconfirmed')}</Text>
+              </View>
+        }
       </View>
     );
   }

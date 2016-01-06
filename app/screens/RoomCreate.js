@@ -121,7 +121,7 @@ class RoomCreateView extends Component {
     var mode = (this.state.public) ? 'public' : 'private';
     app.client.roomCreate(this.state.roomName, mode, null, null, (response) => {
       if (response.err) {
-        alert.show(response.err);
+        alert.show(i18next.t('messages.' + response.err));
       } else {
         alert.show(i18next.t('local:joining'));
         app.client.roomId('#' + this.state.roomName, (data) => {
