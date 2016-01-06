@@ -19,6 +19,7 @@ var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var Button = require('../elements/Button');
 var Link = require('../elements/Link');
+var LoadingModal = require('../components/LoadingModal');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -36,7 +37,8 @@ class Signup extends Component {
       email: '',
       password: '',
       hasPassword: false,
-      username: ''
+      username: '',
+      showLoadingModal: false
     };
   }
 
@@ -123,6 +125,7 @@ class Signup extends Component {
             </View>
           </View>
         </ScrollView>
+        {this.state.showLoadingModal ? <LoadingModal /> : null}
       </View>
     );
   }
@@ -161,7 +164,9 @@ class Signup extends Component {
       return Alert.show(i18next.t('messages.not-complete'));
     }
 
+    this.setState({showLoadingModal: true});
     currentUser.emailSignUp(this.state.email, this.state.password, this.state.username, (err) => {
+      this.setState({showLoadingModal: false});
       if (err) {
         Alert.show(err);
       }

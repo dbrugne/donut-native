@@ -94,7 +94,9 @@ module.exports = React.createClass({
     var id = (data.credentials && data.credentials.userId)
       ? data.credentials.userId
       : data.userId;
+    this.props.showLoadingModal();
     currentUser.facebookLogin(token, id, function (err) {
+      this.props.hideLoadingModal();
       if (err) {
         debug.warn('onLogin.facebookLogin error', err);
       }
