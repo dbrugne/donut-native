@@ -33,7 +33,8 @@ class ListItemInput extends Component {
             placeholder={this.props.placeholder}
             onChange={this.props.onChange}
             style={[s.input, {marginTop:5}]}
-            value={this.props.value} />
+            value={this.props.value}
+            keyboardType={(this.props.isEmail) ? 'email-address' : 'default'}/>
 
           <TouchableHighlight onPress={this.props.onPress}
                               underlayColor='#41C87A'
