@@ -23,7 +23,6 @@ module.exports = function (state, id, initialRoute) {
           initialRoute={initialRoute}
           style={{flex: 1}}
           sceneStyle={{ paddingTop: navigationBarHeight }}
-          titleStyle={{ fontSize: 16, color: '#22222', alignSelf: 'center' }}
         />
       );
     },

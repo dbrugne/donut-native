@@ -3,7 +3,9 @@
 var React = require('react-native');
 var {
   TouchableOpacity,
-  Text
+  View,
+  Text,
+  Platform
 } = React;
 
 var Icon = require('react-native-icons').Icon;
@@ -16,6 +18,19 @@ var DrawerIcon = require('./components/DrawerIcon');
 
 var routeTemplate = {
   __type: 'route',
+  renderTitle () {
+    let title = this.getTitle();
+    title = title.length > 18
+      ? title.substr(0, 18) + '…'
+      : title;
+    return (
+      <View style={{alignSelf: 'center'}}>
+        <Text style={{fontFamily: '.HelveticaNeueInterface-MediumP4', fontSize: 16, color: '222', fontWeight: 'bold'}}>
+          {title}
+        </Text>
+      </View>
+    );
+  },
   onWillFocus () {
     // this.model is null for non discussion views
     app.setFocusedModel(this.model);
@@ -77,8 +92,8 @@ var nonInitialRouteTemplate = {
         <Icon name='fontawesome|angle-left'
               size={18}
               color='#fc2063'
-              style={[ExNavigator.Styles.barButtonIcon, {marginTop: 13, marginLeft: 5, width: 18, height: 18}]} />
-        <Text style={[ExNavigator.Styles.barButtonText, {marginTop: 11, color: '#fc2063'}]}> {i18next.t('navigation.back')}</Text>
+              style={[ExNavigator.Styles.barButtonIcon, {marginLeft: 5, width: 18, height: 18}, Platform.OS === 'android' ? {marginTop: 18} : {marginTop: 12}]} />
+        <Text style={[ExNavigator.Styles.barButtonText, {color: '#fc2063'}, Platform.OS === 'android' ? {marginTop: 16} : {marginTop: 11}]}> {i18next.t('navigation.back')}</Text>
       </TouchableOpacity>
     );
   }
@@ -140,6 +155,8 @@ module.exports = {
         return require('./routes/MyAccount');
       case 'About':
         return require('./routes/About');
+      case 'Eutc':
+        return require('./routes/Eutc');
     }
   }
 };

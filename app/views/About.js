@@ -64,7 +64,7 @@ class AboutView extends Component {
               />
             <ListItem text={i18next.t('local:eutc')}
                       type='button'
-                      onPress={() => { this.props.navigator.push(navigation.getEutc()); }}
+                      onPress={() => navigation.navigate('Eutc')}
               />
             {this._renderConfig()}
           </View>

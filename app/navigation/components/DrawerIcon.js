@@ -26,18 +26,18 @@ module.exports = React.createClass({
   },
   render () {
     var badge = (this.state.unviewed === true)
-      ? (<Icon name='fontawesome|circle' size={14} color='#fc2063' style={{position: 'absolute', top: 5, left: 20, width: 13, height: 13}} />)
+      ? (<Icon name='fontawesome|circle' size={14} color='#fc2063' style={{position: 'absolute', top: 8, left: 30, width: 13, height: 13}} />)
       : null;
 
     return (
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
         onPress={() => state.toggleDrawer()}
-        style={[{marginLeft: 5}, ExNavigator.Styles.barBackButton]} >
+        style={ExNavigator.Styles.barBackButton} >
         <Icon name='fontawesome|bars'
               size={25}
               color='#fc2063'
-              style={[ExNavigator.Styles.barButtonIcon, {marginTop: 11, marginLeft: 5, width: 22, height: 22}]} />
+              style={[{marginLeft: 16, width:22, height:22}, Platform.OS === 'android' ? {marginTop: 14} : {marginTop: 11}]} />
         {badge}
       </TouchableOpacity>
     );
