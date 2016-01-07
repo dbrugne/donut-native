@@ -192,8 +192,7 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFF'
+    justifyContent: 'center'
   },
   container2: {
     flex: 1,
@@ -207,9 +206,7 @@ var styles = StyleSheet.create({
     height: 120,
     borderRadius: 60,
     marginTop: 20,
-    marginBottom: 10,
-    borderColor: '#DCDCDC',
-    borderWidth: 2
+    marginBottom: 10
   },
   identifier: {
     color: '#333333',
