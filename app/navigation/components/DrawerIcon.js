@@ -2,7 +2,8 @@
 
 var React = require('react-native');
 var {
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } = React;
 
 var Icon = require('react-native-icons').Icon;

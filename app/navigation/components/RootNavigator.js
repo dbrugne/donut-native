@@ -1,13 +1,15 @@
 'use strict';
 
 var React = require('react-native');
-var Platform = require('Platform');
+var {
+  Platform
+} = React;
 
 var Drawer = require('react-native-drawer');
 import ExNavigator from '@exponent/react-native-navigator'; // @important: should be 'import'
 var BackButton = require('./AndroidBackButton');
 var state = require('../state');
-var app = require('../libs/app');
+var app = require('../../libs/app');
 var debug = require('../../libs/debug')('navigation');
 
 module.exports = React.createClass({
@@ -23,7 +25,7 @@ module.exports = React.createClass({
     state.rootNavigator = this.refs.rootNavigator;
     state.drawer = this.refs.drawer;
 
-    app.user.on('change:status', () => this.setState({status: currentUser.get('status')}), this);
+    app.user.on('change:status', () => this.setState({status: app.user.get('status')}), this);
   },
   componentWillUnmount () {
     debug.log('unmounting RootNavigator');
@@ -34,7 +36,7 @@ module.exports = React.createClass({
     app.user.off(null, null, this);
   },
   render () {
-    var Navigation = require('./NavigationView');
+    var Navigation = require('./DrawerContent');
 
     var navigationBarHeight = (Platform.OS === 'android')
       ? 56
