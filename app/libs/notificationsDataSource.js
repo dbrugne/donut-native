@@ -1,9 +1,8 @@
 var React = require('react-native');
 var {
   ListView
-  } = React;
+} = React;
 var _ = require('underscore');
-var date = require('../libs/date');
 
 module.exports = function () {
   var nds = {
