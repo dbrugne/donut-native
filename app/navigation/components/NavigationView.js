@@ -5,7 +5,6 @@ var React = require('react-native');
 var {
   StyleSheet,
   View,
-  Text,
   Component,
   TouchableHighlight,
   ScrollView
@@ -14,15 +13,12 @@ var {
   Icon
 } = require('react-native-icons');
 
-var _ = require('underscore');
-var app = require('../libs/app');
-var CurrentUserView = require('../components/CurrentUser');
-var NavigationOnesView = require('./../components/NavigationOnes');
-var NavigationRoomsView = require('./../components/NavigationRooms');
-var navigation = require('../libs/navigation');
-var s = require('../styles/style');
+var CurrentUserView = require('../../components/CurrentUser');
+var NavigationOnesView = require('./../../components/NavigationOnes');
+var NavigationRoomsView = require('./../../components/NavigationRooms');
+var navigation = require('../../navigation/index');
 
-var i18next = require('../libs/i18next');
+var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'discover': 'discover',
   'search': 'search',
@@ -34,23 +30,21 @@ class NavigationView extends Component {
   constructor (props) {
     super(props);
   }
-
   render () {
     return (
       <ScrollView style={styles.main}>
         <CurrentUserView />
         <View style={styles.actions}>
-          {this.renderAction('home', () => navigation.switchTo(navigation.getHome()))}
-          {this.renderAction('search', () => navigation.switchTo(navigation.getSearch()))}
-          {this.renderAction('plus', () => navigation.switchTo(navigation.getRoomCreate()))}
-          {this.renderAction('globe', () => navigation.switchTo(navigation.getNotifications()))}
+          {this.renderAction('home', () => navigation.navigate('Home'))}
+          {this.renderAction('search', () => navigation.navigate('Search'))}
+          {this.renderAction('plus', () => navigation.navigate('CreateRoom'))}
+          {this.renderAction('globe', () => navigation.navigate('Notifications'))}
         </View>
         <NavigationOnesView />
         <NavigationRoomsView />
       </ScrollView>
     );
   }
-
   renderAction (icon, onPress) {
     var iconName = 'fontawesome|' + icon;
     return (
@@ -74,7 +68,7 @@ var styles = StyleSheet.create({
     flexWrap: 'nowrap',
     backgroundColor: '#272627'
   },
-  title: { backgroundColor: '#1D1D1D'},
+  title: { backgroundColor: '#1D1D1D' },
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between'
