@@ -223,15 +223,19 @@ var style = {
     borderColor: '#faebcc',
     padding: 10,
     borderRadius: 4,
-    marginVertical:10,
-    marginHorizontal:10
+    marginVertical: 10,
+    marginHorizontal: 10
   },
   alertWarningText: {
     fontFamily: 'Open Sans',
     fontSize: 12,
     color: '#8a6d3b'
   },
-
+  block: {
+    color: '#333',
+    marginVertical: 20,
+    marginHorizontal: 10
+  },
   help: {
     color: '#777777',
     fontSize: 12

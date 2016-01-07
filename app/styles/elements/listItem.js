@@ -69,7 +69,7 @@ var style = {
     height: 30
   },
   listGroupItemTextWarning: {
-    color: '#ff3838'
+    color: '#e74c3c'
   },
   listGroupHelp: {
     fontSize: 12,

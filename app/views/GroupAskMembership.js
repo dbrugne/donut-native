@@ -4,15 +4,11 @@ var React = require('react-native');
 var {
   View,
   Text,
-  ActivityIndicatorIOS,
+  ScrollView,
   Component,
   StyleSheet
-} = React;
-var {
-  Icon
-} = require('react-native-icons');
+  } = React;
 
-var _ = require('underscore');
 var ListItem = require('../elements/ListItem');
 var s = require('../styles/style');
 var app = require('../libs/app');
@@ -20,6 +16,7 @@ var navigation = require('../libs/navigation');
 var MembershipRequest = require('./GroupAskMembershipRequest');
 var MembershipPassword = require('./GroupAskMembershipPassword');
 var MembershipEmail = require('./GroupAskMembershipEmail');
+var LoadingView = require('../elements/Loading');
 
 var i18next = require('../libs/i18next');
 
@@ -34,11 +31,13 @@ class GroupAskMembership extends Component {
     };
     this.data = {};
   }
+
   componentDidMount () {
     if (this.props.id) {
       app.client.groupJoin(this.props.id, null, this.onData.bind(this));
     }
   }
+
   onData (response) {
     if (response.err) {
       this.setState({
@@ -57,71 +56,64 @@ class GroupAskMembership extends Component {
       this.updateGroup();
     }
   }
+
   render () {
     if (this.state.loading || this.state.success) {
       return (
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>
-            <Text>loading</Text>
-          </Text>
-          <ActivityIndicatorIOS
-            animating={this.state.loading}
-            style={styles.loading}
-            size='small'
-            color='#666666'
-            />
-        </View>
+        <LoadingView />
       );
     }
+
     if (!this.state.success) {
-      var disclaimer = null;
-      if (this.data.options.disclaimer) {
-        disclaimer = (
-          <View style={s.alertWarning}>
-            <Text>{i18next.t('group.message-from')} @{this.data.options.owner_username}:</Text>
-            <View style={{flexDirection: 'row'}}>
-              <Icon
-                name='fontawesome|quote-right'
-                size={14}
-                color='#666'
-                style={{width: 14, height: 14, marginRight: 2}}
-                />
-              <Text>{this.data.options.disclaimer}</Text>
-            </View>
-          </View>
-        );
-      }
       return (
-        <View style={styles.main}>
+        <ScrollView style={styles.main}>
           <View style={styles.container}>
-            <Text style={styles.message}>{i18next.t('group.message-not-member')}</Text>
-            {disclaimer}
-          </View>
-          <View style={styles.containerOptions}>
+
+            <Text style={[s.block]}>{i18next.t('group.message-not-member')}</Text>
+
+            {this._renderDisclaimer()}
+
             {this.renderListOptions()}
+
           </View>
-        </View>
+        </ScrollView>
       );
     } else {
       return (
-        <View>
-          <Text></Text>
-        </View>
+        <View />
       );
     }
   }
+
+  _renderDisclaimer () {
+    if (!this.data.options.disclaimer) {
+      return null;
+    }
+    // <Text>{i18next.t('group.message-from')} @{this.data.options.owner_username}:</Text>
+    return (
+      <View style={[s.alertWarning, {flex: 1, marginVertical: 0, marginHorizontal: 0, borderRadius: 0}]}>
+        <View style={{flexDirection: 'column', flex: 1}}>
+          <Text
+            style={[s.alertWarningText, {fontStyle: 'italic'}]}>{this.data.options.disclaimer}</Text>
+        </View>
+      </View>
+    );
+  }
+
   renderListOptions () {
     var nbrOptions = (this.data.options.allowed_domains ? 1 : 0) + (this.data.options.password ? 1 : 0) + (this.data.options.request ? 1 : 0);
     if (nbrOptions > 1) {
       var request = null;
       var password = null;
       var email = null;
+
       if (this.data.options.request) {
         request = (
-          <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipRequest({id: this.props.id, isAllowedPending: this.data.options.isAllowedPending}))}
+          <ListItem
+            onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipRequest({id: this.props.id, isAllowedPending: this.data.options.isAllowedPending}))}
             text={i18next.t('group.request-title')}
-            first={true}
-            action='true'
+            first
+            action
             type='button'
             />
         );
@@ -129,52 +121,57 @@ class GroupAskMembership extends Component {
       if (this.data.options.password) {
         password = (
           <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipPassword(this.props.id))}
-            text={i18next.t('group.password-title')}
-            first={(!this.data.options.request)}
-            last={(!this.data.options.email)}
-            action='true'
-            type='button'
+                    text={i18next.t('group.password-title')}
+                    first={(!this.data.options.request)}
+                    last={(!this.data.options.email)}
+                    action
+                    type='button'
             />
         );
       }
       if (this.data.options.allowed_domains) {
         email = (
-          <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipEmail({id: this.props.id, domains: this.data.options.allowed_domains}))}
+          <ListItem
+            onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipEmail({id: this.props.id, domains: this.data.options.allowed_domains}))}
             text={i18next.t('group.email-title')}
-            last={true}
-            action='true'
+            last
+            action
             type='button'
             />
         );
       }
+
       return (
-        <View>
+        <View style={{paddingTop: 10, alignSelf: 'stretch'}}>
           {request}
           {password}
           {email}
         </View>
       );
     } else if (nbrOptions === 1) {
-        if (this.data.options.request) {
-          return (
-            <MembershipRequest id={this.props.id} isAllowedPending={this.data.options.isAllowedPending} />
-          );
-        } else if (this.data.options.password) {
-          return (
-            <MembershipPassword id={this.props.id} navigator={this.props.navigator} />
-          );
-        } else {
-          return (
-            <MembershipEmail id={this.props.id} domains={this.data.options.allowed_domains} />
-          );
-        }
+      if (this.data.options.request) {
+        return (
+          <MembershipRequest id={this.props.id} isAllowedPending={this.data.options.isAllowedPending}/>
+        );
+      } else if (this.data.options.password) {
+        return (
+          <MembershipPassword id={this.props.id} navigator={this.props.navigator}/>
+        );
+      } else {
+        return (
+          <MembershipEmail id={this.props.id} domains={this.data.options.allowed_domains}/>
+        );
+      }
     } else {
       return (
-        <View><Text>{i18next.t('group.other-request')}</Text></View>
+        <View style={{flex:1, alignSelf: 'stretch'}}>
+          <Text style={[s.block]}>{i18next.t('group.other-request')}</Text>
+        </View>
       );
     }
   }
-  updateGroup() {
+
+  updateGroup () {
     this.setState({
       success: true
     });
@@ -184,36 +181,15 @@ class GroupAskMembership extends Component {
 }
 
 var styles = StyleSheet.create({
-  // loading
-  titleContainer: {
+  main: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0'
+  },
+  container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  titleText: {
-    color: '#424242',
-    fontFamily: 'Open Sans',
-    fontSize: 16,
-    fontWeight: 'bold'
-  },
-  loading: {
-    height: 120
-  },
-  main: {
-    flex: 1
-  },
-  container: {
-    marginTop: 10,
-    backgroundColor: '#FFF'
-  },
-  containerOptions: {
-    flex: 1,
-    flexDirection: 'column',
-    marginTop: 10
-  },
-  message: {
-    color: '#424242',
-    fontSize: 16
   }
 });
 

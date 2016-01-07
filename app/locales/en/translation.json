@@ -93,7 +93,7 @@
     "create-donut": "create a donut",
     "manage-members": "manage memebers",
     "donut-list": "donut list",
-    "message-membership": "You are not yet a member of this community You can join public donuts or request access to a private donut. Members have special priviledges such as direct access to certain private donuts and to other members of this community.Before you request membership have a glance at this community access conditions :",
+    "message-membership": "You are not yet a member of this community. You can join public donuts or request access to a private donut. Members have special privileges such as direct access to certain private donuts and to other members of this community.Before you request membership, have a glance at this community access conditions",
     "message-member": "You are a member of this community",
     "message-ban": "You were banned from this community",
     "message-not-member": "Members have special priviledges such as direct access to certain private donuts and to other members of this community.",
