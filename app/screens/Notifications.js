@@ -21,6 +21,9 @@ var {
   Text,
   Image
   } = React;
+var {
+  Icon
+  } = require('react-native-icons');
 
 var i18next = require('../libs/i18next');
 
@@ -31,11 +34,19 @@ class NotificationsView extends Component {
 
   constructor (props) {
     super(props);
+    this.timeouts = {
+      loadingMore: null,
+      loadingTagAsRead: null,
+      loadingTagAsDone: null
+    };
+    this.timeoutTimer = 2000; // 2sec
     this.notificationsDataSource = require('../libs/notificationsDataSource')();
     this.state = {
       loaded: false,
       loadingMore: false,
       loadingTagAsRead: false,
+      loadingTagAsDone: false,
+      selecting: false,
       error: null,
       unread: 0,
       more: false,
@@ -48,6 +59,7 @@ class NotificationsView extends Component {
     currentUser.on('change:unreadNotifications', this.fetchData.bind(this));
     app.on('viewedEvent', this.updateDiscussionsUnviewed.bind(this));
     app.on('unviewedEvent', this.updateDiscussionsUnviewed.bind(this));
+    app.client.on('notification:done', this.onDoneNotification.bind(this));
   }
 
   componentWillUnmount () {
@@ -145,6 +157,21 @@ class NotificationsView extends Component {
   }
 
   renderFooter () {
+    if (this.state.selecting) {
+      return (
+        <View>
+          <Button type='green'
+                  onPress={this.markSelectedAsDone.bind(this)}
+                  loading={this.state.loadingTagAsDone}
+                  label='delete selected'
+            />
+          <Button type='red'
+                  onPress={this.cancelSelecting.bind(this)}
+                  label='cancel'
+            />
+        </View>
+      );
+    }
     if (!this.state.more) {
       return null;
     }
@@ -243,14 +270,98 @@ class NotificationsView extends Component {
       return (
         <TouchableHighlight
           underlayColor='#f0f0f0'
-          onPress={n.onPress}
+          onPress={this.state.selecting ? this.onLongPress.bind(this, n) : n.onPress}
+          onLongPress={this.onLongPress.bind(this, n)}
           >
           {this._renderContent(n)}
         </TouchableHighlight>
       );
     } else {
-      return null;
+      return (
+        <TouchableHighlight
+          underlayColor='#f0f0f0'
+          onLongPress={this.onLongPress.bind(this, n)}
+          >
+          {this._renderContent(n)}
+        </TouchableHighlight>
+      );
     }
+  }
+
+  onLongPress (elt) {
+    var id = elt.id;
+    if (!id) {
+      return;
+    }
+
+    this.setState({
+      selecting: true,
+      dataSource: this.notificationsDataSource.update(id, {selected: _.has(elt, 'selected') ? !elt.selected : true})
+    });
+  }
+
+  /**
+   * Click button "Cancel"
+   */
+  cancelSelecting () {
+    this.setState({
+      selecting: false,
+      dataSource: this.notificationsDataSource.clearSelection()
+    });
+  }
+
+  /**
+   * click button "Delete selected"
+   * @returns {*}
+   */
+  markSelectedAsDone () {
+    // prevent multiple click on button
+    if (this.state.loadingTagAsDone === true) {
+      return;
+    }
+
+    // get selected from datasource
+    let selected = this.notificationsDataSource.findWhere('selected', true);
+    if (selected.length === 0) {
+      return this.cancelSelecting();
+    }
+    let selectedIds = _.map(selected, (e) => {
+      return e.id;
+    });
+
+    // set button state as loading
+    this.setState({loadingTagAsDone: true});
+
+    // Add timeout to prevent loading too long & display error message
+    this.timeouts.loadingTagAsDone = setTimeout(() => {
+      alert.show(i18next.t('messages.error-try-again'));
+      this.setState({loadingTagAsDone: false});
+    }, this.timeoutTimer);
+
+    // call client to tag selected notifications as done and display error message if required
+    app.client.notificationDone(selectedIds, false, (err, data) => {
+      if (err && err.err) {
+        alert.show(i18next.t('messages.' + err.err));
+      }
+    });
+  }
+
+  /**
+   * If receiving message from server that some notifications as been done
+   * @param data
+   */
+  onDoneNotification (data) {
+    clearTimeout(this.timeouts.loadingTagAsDone);
+
+    let state = {loadingTagAsDone: false};
+
+    // remove notifications from blob & close selecting buttons (delete & cancel)
+    if (data.notifications && data.notifications.length > 0) {
+      state.dataSource = this.notificationsDataSource.markAsDone(data.notifications);
+      state.selecting = false;
+    }
+
+    this.setState(state);
   }
 
   _renderContent (n) {
@@ -272,6 +383,20 @@ class NotificationsView extends Component {
   }
 
   _renderAvatar (n) {
+    if (n.selected) {
+      return (
+        <View
+          style={[{ width: 44, height: 44, borderRadius: 4, backgroundColor: '#3498db', flexDirection: 'row' }, n.avatarCircle && {borderRadius:22}]}>
+          <Icon
+            name='fontawesome|check'
+            size={30}
+            color='#ecf0f1'
+            style={{width: 30, height: 30, alignSelf:'center', marginLeft:6}}
+            />
+        </View>
+      );
+    }
+
     if (!n.avatar) {
       return null;
     }

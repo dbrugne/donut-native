@@ -41,6 +41,7 @@
     "domain": "This domain is not valid",
     "unknownerror": "Unknown error, please retry later",
     "notification-read-error": "An error has been raised while reading notifications",
+    "notification-not-found": "Notification not found",
     "user-not-found": "No user found",
     "invalid-email": "Email is invalid",
     "invalid-password": "Password is not valid",
@@ -48,7 +49,8 @@
     "existing-user": "This email address is already used",
     "not-available": "This username is not available",
     "mail-notconfirmed": "Verify your account ! Check your mailbox.",
-    "not-confirmed": "Action authorized to verified accounts only."
+    "not-confirmed": "Action authorized to verified accounts only.",
+    "error-try-again": "Impossible to achieve this request, please try again later"
   },
   "navigation": {
     "discover": "Discover",
