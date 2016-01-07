@@ -35,7 +35,7 @@ class ListItem extends Component {
   }
 
   render () {
-    let Elt = ListItemInput; // Default element
+    let Elt = ListItemText; // Default element
 
     switch (this.props.type) {
       case 'switch':

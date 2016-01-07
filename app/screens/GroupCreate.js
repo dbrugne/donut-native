@@ -3,16 +3,12 @@
 var React = require('react-native');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
-var Button = require('../elements/Button');
-var s = require('../styles/style');
 var ListItem = require('../elements/ListItem');
 
 var {
   StyleSheet,
   Text,
-  TextInput,
   ScrollView,
-  View,
   Component
   } = React;
 

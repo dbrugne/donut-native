@@ -4,7 +4,6 @@ var React = require('react-native');
 var _ = require('underscore');
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
-var Link = require('../elements/Link');
 var ListItem = require('../elements/ListItem');
 var LoadingView = require('../elements/Loading');
 var alert = require('../libs/alert');
@@ -116,11 +115,16 @@ class NotificationsView extends Component {
     let unviewedDiscussions = null;
     if (this.state.discussionsUnviewed !== 0) {
       unviewedDiscussions = (
-        <Link style={{marginHorizontal: 10, marginBottom: 30}}
-              underlayColor='transparent'
-              onPress={() => navigation.openDrawer()}
-              text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
-          />
+        <View>
+          <ListItem type='button'
+                    onPress={() => navigation.openDrawer()}
+                    first
+                    last
+                    action
+                    text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
+            />
+          <Text style={s.listGroupItemSpacing}/>
+        </View>
       );
     }
 
@@ -133,16 +137,15 @@ class NotificationsView extends Component {
       );
     } else {
       unreadNotifications = (
-        <View style={[{marginBottom: 5}, s.listGroup]}>
-          <Text
-            style={{marginHorizontal: 10, marginBottom: 10}}>{i18next.t('notifications.notification-count', {count: this.state.unread})}</Text>
-          <ListItem type='button'
-                    onPress={this.tagAllAsRead.bind(this)}
-                    loading={this.state.loadingTagAsRead}
-                    first
-                    text={i18next.t('notifications.mark-as-read')}
-            />
-        </View>
+        <ListItem type='button'
+                  onPress={this.tagAllAsRead.bind(this)}
+                  loading={this.state.loadingTagAsRead}
+                  first
+                  last
+                  action
+                  title={i18next.t('notifications.notification-count', {count: this.state.unread})}
+                  text={i18next.t('notifications.mark-as-read')}
+          />
       );
     }
 
@@ -158,7 +161,7 @@ class NotificationsView extends Component {
     if (this.state.selecting) {
       return (
         <View>
-          <Text style={s.listGroupItemSpacing} />
+          <Text style={s.listGroupItemSpacing}/>
           <ListItem type='button'
                     onPress={this.markSelectedAsDone.bind(this)}
                     loading={this.state.loadingTagAsDone}
@@ -179,7 +182,7 @@ class NotificationsView extends Component {
 
     if (this.state.loadingMore) {
       return (
-        <View style={{height:50}}>
+        <View style={{height: 50}}>
           <LoadingView />
         </View>
       );
