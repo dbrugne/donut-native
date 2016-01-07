@@ -143,6 +143,16 @@ module.exports = {
         return require('./routes/Profile');
       case 'Group':
         return require('./routes/Group');
+      case 'GroupRooms':
+        return require('./routes/GroupRooms');
+      case 'GroupAsk':
+        return require('./routes/GroupAsk');
+      case 'GroupAskEmail':
+        return require('./routes/GroupAskEmail');
+      case 'GroupAskPassword':
+        return require('./routes/GroupAskPassword');
+      case 'GroupAskRequest':
+        return require('./routes/GroupAskRequest');
       case 'CreateRoom':
         return require('./routes/CreateRoom');
       case 'Notifications':

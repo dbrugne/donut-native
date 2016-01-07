@@ -51,16 +51,16 @@ class NotificationsView extends Component {
   }
 
   componentDidMount () {
-    currentUser.on('change:unreadNotifications', this.fetchData.bind(this));
-    app.on('viewedEvent', this.updateDiscussionsUnviewed.bind(this));
-    app.on('unviewedEvent', this.updateDiscussionsUnviewed.bind(this));
-    app.client.on('notification:done', this.onDoneNotification.bind(this));
+    app.user.on('change:unreadNotifications', this.fetchData, this);
+    app.client.on('notification:done', this.onDoneNotification, this);
+    app.on('viewedEvent', this.updateDiscussionsUnviewed, this);
+    app.on('unviewedEvent', this.updateDiscussionsUnviewed, this);
   }
 
   componentWillUnmount () {
-    currentUser.off('change');
-    app.off('viewedEvent');
-    app.off('unviewedEvent');
+    app.user.off(null, null, this);
+    app.client.off(null, null, this);
+    app.off(null, null, this);
   }
 
   onFocus () {
@@ -80,7 +80,7 @@ class NotificationsView extends Component {
     this.setState({
       loaded: true,
       dataSource: this.notificationsDataSource.append(response.notifications),
-      unread: currentUser.getUnreadNotifications(),
+      unread: app.user.getUnreadNotifications(),
       more: response.more
     });
   }

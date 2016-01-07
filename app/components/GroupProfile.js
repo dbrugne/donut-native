@@ -165,7 +165,7 @@ class GroupProfileView extends Component {
             type='button'
             last
             action
-            onPress={() => this.props.navigator.push(navigation.getGroupRoomsList({id: this.props.data.group_id, name: this.props.data.identifier, user: this.user}))}
+            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.user})}
             text={i18next.t('group.donut-list')}
             />
         </View>
@@ -178,14 +178,14 @@ class GroupProfileView extends Component {
             type='button'
             first
             action
-            onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(this.props.data.group_id))}
+            onPress={() => navigation.navigate('GroupAsk', this.props.data.group_id)}
             text={i18next.t('group.request-membership')}
             />
           <ListItem
             type='button'
             last
             action
-            onPress={() => this.props.navigator.push(navigation.getGroupRoomsList({id: this.props.data.group_id, name: this.props.data.identifier, user: this.user}))}
+            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.user})}
             text={i18next.t('group.donut-list')}
             />
         </View>
