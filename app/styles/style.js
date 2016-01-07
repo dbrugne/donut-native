@@ -148,8 +148,8 @@ var style = {
     height: 20
   },
   buttonBlue: {
-    borderColor: '#4a649d',
-    backgroundColor: "#4a649d"
+    borderColor: '#3B5998',
+    backgroundColor: "#3B5998"
   },
   // inputs
   input: {
