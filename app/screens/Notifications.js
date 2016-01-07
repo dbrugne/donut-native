@@ -4,15 +4,15 @@ var React = require('react-native');
 var _ = require('underscore');
 var app = require('../libs/app');
 var navigation = require('../navigation/index');
-var Link = require('../elements/Link');
-var Button = require('../elements/Button');
+var ListItem = require('../elements/ListItem');
 var LoadingView = require('../elements/Loading');
 var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
 var date = require('../libs/date');
+var currentUser = require('../models/current-user');
+var s = require('../styles/style');
 
 var {
-  StyleSheet,
   View,
   ListView,
   Component,
@@ -20,26 +20,47 @@ var {
   Text,
   Image
   } = React;
+var {
+  Icon
+  } = require('react-native-icons');
 
 var i18next = require('../libs/i18next');
 
-// @todo yls implement swipe to delete a notification
-// @todo implement discussion viewed update
-// @todo implement notification pushed
 class NotificationsView extends Component {
   constructor (props) {
     super(props);
+    this.timeouts = {
+      loadingMore: null,
+      loadingTagAsRead: null,
+      loadingTagAsDone: null
+    };
+    this.timeoutTimer = 2000; // 2sec
     this.notificationsDataSource = require('../libs/notificationsDataSource')();
     this.state = {
       loaded: false,
       loadingMore: false,
       loadingTagAsRead: false,
+      loadingTagAsDone: false,
+      selecting: false,
       error: null,
       unread: 0,
       more: false,
       discussionsUnviewed: app.getUnviewed(),
       dataSource: this.notificationsDataSource.dataSource
     };
+  }
+
+  componentDidMount () {
+    currentUser.on('change:unreadNotifications', this.fetchData.bind(this));
+    app.on('viewedEvent', this.updateDiscussionsUnviewed.bind(this));
+    app.on('unviewedEvent', this.updateDiscussionsUnviewed.bind(this));
+    app.client.on('notification:done', this.onDoneNotification.bind(this));
+  }
+
+  componentWillUnmount () {
+    currentUser.off('change');
+    app.off('viewedEvent');
+    app.off('unviewedEvent');
   }
 
   onFocus () {
@@ -59,7 +80,7 @@ class NotificationsView extends Component {
     this.setState({
       loaded: true,
       dataSource: this.notificationsDataSource.append(response.notifications),
-      unread: response.unread,
+      unread: currentUser.getUnreadNotifications(),
       more: response.more
     });
   }
@@ -83,9 +104,9 @@ class NotificationsView extends Component {
         renderRow={this.renderRow.bind(this)}
         renderHeader={this.renderHeader.bind(this)}
         renderFooter={this.renderFooter.bind(this)}
-        style={{flex: 1, backgroundColor:'#ffffff'}}
-        scrollEnabled={true}
-      />
+        style={{flex: 1, backgroundColor: '#f0f0f0'}}
+        scrollEnabled
+        />
     );
   }
 
@@ -93,38 +114,42 @@ class NotificationsView extends Component {
     let unviewedDiscussions = null;
     if (this.state.discussionsUnviewed !== 0) {
       unviewedDiscussions = (
-        <Link style={{marginHorizontal: 10, marginVertical:20}}
-              underlayColor='transparent'
-              onPress={() => require('../navigation/state').openDrawer()}
-              text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
-        >
-        </Link>
-      )
+        <View>
+          <ListItem type='button'
+                    onPress={() => require('../navigation/state').openDrawer()}
+                    first
+                    last
+                    action
+                    text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
+            />
+          <Text style={s.listGroupItemSpacing}/>
+        </View>
+      );
     }
 
     let unreadNotifications = null;
     if (this.state.unread === 0) {
       unreadNotifications = (
-        <View style={{marginHorizontal: 10, marginVertical:20}}>
+        <View style={{marginHorizontal: 10, marginBottom: 30}}>
           <Text>{i18next.t('notifications.no-unread-notification')}</Text>
         </View>
       );
     } else {
       unreadNotifications = (
-        <View style={{marginBottom:10}}>
-          <Text
-            style={{marginHorizontal:10, marginBottom:10}}>{i18next.t('notifications.notification-count', { count: this.state.unread })}</Text>
-          <Button type='default'
+        <ListItem type='button'
                   onPress={this.tagAllAsRead.bind(this)}
                   loading={this.state.loadingTagAsRead}
-                  label={i18next.t('notifications.mark-as-read')}
+                  first
+                  last
+                  action
+                  title={i18next.t('notifications.notification-count', {count: this.state.unread})}
+                  text={i18next.t('notifications.mark-as-read')}
           />
-        </View>
       );
     }
 
     return (
-      <View>
+      <View style={{marginTop: 30}}>
         {unviewedDiscussions}
         {unreadNotifications}
       </View>
@@ -132,13 +157,31 @@ class NotificationsView extends Component {
   }
 
   renderFooter () {
+    if (this.state.selecting) {
+      return (
+        <View>
+          <Text style={s.listGroupItemSpacing}/>
+          <ListItem type='button'
+                    onPress={this.markSelectedAsDone.bind(this)}
+                    loading={this.state.loadingTagAsDone}
+                    text={i18next.t('notifications.delete-selected')}
+                    first
+                    warning
+            />
+          <ListItem type='button'
+                    onPress={this.cancelSelecting.bind(this)}
+                    text={i18next.t('cancel')}
+            />
+        </View>
+      );
+    }
     if (!this.state.more) {
       return null;
     }
 
     if (this.state.loadingMore) {
       return (
-        <View style={{height:50}}>
+        <View style={{height: 50}}>
           <LoadingView />
         </View>
       );
@@ -148,10 +191,9 @@ class NotificationsView extends Component {
       <TouchableHighlight
         underlayColor='#f0f0f0'
         onPress={this.onLoadMore.bind(this)}
-        style={{height:50, justifyContent:'center', alignItems:'center'}}
-      >
-        <Text
-          style={{textAlign:'center'}}>{i18next.t('notifications.load-more')}</Text>
+        style={{height: 50, justifyContent: 'center', alignItems: 'center'}}
+        >
+        <Text style={{textAlign: 'center'}}>{i18next.t('notifications.load-more')}</Text>
       </TouchableHighlight>
     );
   }
@@ -237,15 +279,107 @@ class NotificationsView extends Component {
     if (n.onPress) {
       return (
         <TouchableHighlight
+          style={{backgroundColor: '#ffffff'}}
           underlayColor='#f0f0f0'
-          onPress={n.onPress}
-        >
+          onPress={this.state.selecting ? this.onLongPress.bind(this, n) : n.onPress}
+          onLongPress={this.onLongPress.bind(this, n)}
+          >
           {this._renderContent(n)}
         </TouchableHighlight>
       );
     } else {
-      return null;
+      return (
+        <TouchableHighlight
+          style={{backgroundColor: '#ffffff'}}
+          underlayColor='#f0f0f0'
+          onLongPress={this.onLongPress.bind(this, n)}
+          >
+          {this._renderContent(n)}
+        </TouchableHighlight>
+      );
     }
+  }
+
+  onLongPress (elt) {
+    var id = elt.id;
+    if (!id) {
+      return;
+    }
+
+    let selecting = true;
+    let selected = this.notificationsDataSource.findWhere('selected', true);
+    if (selected.length === 1 && _.has(elt, 'selected') && elt.selected) {
+      selecting = false;
+    }
+
+    this.setState({
+      selecting: selecting,
+      dataSource: this.notificationsDataSource.update(id, {selected: _.has(elt, 'selected') ? !elt.selected : true})
+    });
+  }
+
+  /**
+   * Click button "Cancel"
+   */
+  cancelSelecting () {
+    this.setState({
+      selecting: false,
+      dataSource: this.notificationsDataSource.clearSelection()
+    });
+  }
+
+  /**
+   * click button "Delete selected"
+   * @returns {*}
+   */
+  markSelectedAsDone () {
+    // prevent multiple click on button
+    if (this.state.loadingTagAsDone === true) {
+      return;
+    }
+
+    // get selected from datasource
+    let selected = this.notificationsDataSource.findWhere('selected', true);
+    if (selected.length === 0) {
+      return this.cancelSelecting();
+    }
+    let selectedIds = _.map(selected, (e) => {
+      return e.id;
+    });
+
+    // set button state as loading
+    this.setState({loadingTagAsDone: true});
+
+    // Add timeout to prevent loading too long & display error message
+    this.timeouts.loadingTagAsDone = setTimeout(() => {
+      alert.show(i18next.t('messages.error-try-again'));
+      this.setState({loadingTagAsDone: false});
+    }, this.timeoutTimer);
+
+    // call client to tag selected notifications as done and display error message if required
+    app.client.notificationDone(selectedIds, false, (err, data) => {
+      if (err && err.err) {
+        alert.show(i18next.t('messages.' + err.err));
+      }
+    });
+  }
+
+  /**
+   * If receiving message from server that some notifications as been done
+   * @param data
+   */
+  onDoneNotification (data) {
+    clearTimeout(this.timeouts.loadingTagAsDone);
+
+    let state = {loadingTagAsDone: false};
+
+    // remove notifications from blob & close selecting buttons (delete & cancel)
+    if (data.notifications && data.notifications.length > 0) {
+      state.dataSource = this.notificationsDataSource.markAsDone(data.notifications);
+      state.selecting = false;
+    }
+
+    this.setState(state);
   }
 
   _renderContent (n) {
@@ -270,6 +404,20 @@ class NotificationsView extends Component {
   }
 
   _renderAvatar (n) {
+    if (n.selected) {
+      return (
+        <View
+          style={[{ width: 44, height: 44, borderRadius: 4, backgroundColor: '#3498db', flexDirection: 'row' }, n.avatarCircle && {borderRadius:22}]}>
+          <Icon
+            name='fontawesome|check'
+            size={30}
+            color='#ecf0f1'
+            style={{width: 30, height: 30, alignSelf:'center', marginLeft:6}}
+            />
+        </View>
+      );
+    }
+
     if (!n.avatar) {
       return null;
     }
@@ -292,9 +440,16 @@ class NotificationsView extends Component {
   }
 
   onLoadMore () {
-    this.setState({ loadingMore: true });
+    this.setState({loadingMore: true});
+
+    // Add timeout to prevent loading too long & display error message
+    this.timeouts.loadingMore = setTimeout(() => {
+      alert.show(i18next.t('messages.error-try-again'));
+      this.setState({loadingMore: false});
+    }, this.timeoutTimer);
 
     app.client.notificationRead(null, this.notificationsDataSource.getBottomItemTime(), 10, (data) => {
+      clearTimeout(this.timeouts.loadingMore);
       this.setState({
         loadingMore: false,
         more: data.more,
@@ -305,9 +460,16 @@ class NotificationsView extends Component {
   }
 
   tagAllAsRead () {
-    this.setState({ loadingTagAsRead: true });
+    this.setState({loadingTagAsRead: true});
+
+    // Add timeout to prevent loading too long & display error message
+    this.timeouts.loadingTagAsRead = setTimeout(() => {
+      alert.show(i18next.t('messages.error-try-again'));
+      this.setState({loadingTagAsRead: false});
+    }, this.timeoutTimer);
 
     app.client.notificationViewed([], true, () => {
+      clearTimeout(this.timeouts.loadingTagAsRead);
       this.setState({
         loadingTagAsRead: false,
         unread: 0,
@@ -315,14 +477,12 @@ class NotificationsView extends Component {
       });
     });
   }
-}
 
-var styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    flex: 1,
-    marginTop: 10
+  updateDiscussionsUnviewed () {
+    this.setState(
+      {discussionsUnviewed: app.getUnviewed()}
+    );
   }
-});
+}
 
 module.exports = NotificationsView;

@@ -88,11 +88,11 @@ class Discussion extends Component {
     // render spinner
     this.setState({showLoadingModal: true});
     imageUpload.uploadToCloudinary(this.state.imageSource, null, 'discussion', (err, data) => {
+      this.setState({showLoadingModal: false});
       if (err) {
         return Alert.show(err);
       }
       this.props.model.sendMessage(null, [data]);
-      this.setState({showLoadingModal: false});
     });
   }
 }

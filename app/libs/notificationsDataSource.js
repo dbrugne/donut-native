@@ -25,11 +25,11 @@ module.exports = function () {
     append (items) {
       this.blob = [];
 
-      if (!items || (_.isArray(items) && items.length === 0)){
+      if (!items || (_.isArray(items) && items.length === 0)) {
         return this.dataSource.cloneWithRows(this.blob);
       }
 
-      if (!_.isArray(items)){
+      if (!_.isArray(items)) {
         items = [items];
       }
 
@@ -38,11 +38,11 @@ module.exports = function () {
       return this.dataSource.cloneWithRows(this.blob);
     },
     prepend (items) {
-      if (!items || (_.isArray(items) && items.length === 0)){
+      if (!items || (_.isArray(items) && items.length === 0)) {
         return this.dataSource.cloneWithRows(this.blob);
       }
 
-      if (!_.isArray(items)){
+      if (!_.isArray(items)) {
         items = [items];
       }
 
@@ -57,6 +57,43 @@ module.exports = function () {
       });
 
       return this.dataSource.cloneWithRows(this.blob);
+    },
+    update (id, attributes) {
+      _.find(this.blob, (e, idx) => {
+        if (e.id === id) {
+          _.extend(e, attributes);
+          this.blob[idx] = e;
+          return true;
+        }
+      });
+
+      return this.dataSource.cloneWithRows(this.blob);
+    },
+    clearSelection () {
+      _.each(this.blob, (e, idx) => {
+        if (e.selected === true) {
+          _.extend(e, {selected: false});
+          this.blob[idx] = e;
+        }
+      });
+
+      return this.dataSource.cloneWithRows(this.blob);
+    },
+    markAsDone (ids) {
+      this.blob = _.filter(this.blob, (e) => {
+        return !_.contains(ids, e.id);
+      });
+
+      return this.dataSource.cloneWithRows(this.blob);
+    },
+    findWhere (key, value) {
+      let find = [];
+      _.each(this.blob, (e) => {
+        if (e[key] === value) {
+          find.push(e);
+        }
+      });
+      return find;
     }
   };
 

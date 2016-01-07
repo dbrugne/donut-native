@@ -55,7 +55,7 @@ class GroupAskMembershipPassword extends Component {
         if (response.err === 'wrong-password') {
           return alert.show(i18next.t('group.wrong-password'));
         }
-        return alert.show(i18next.t('messages.unknownerror'));
+        return alert.show(i18next.t('messages.' + response.err));
       }
     },this));
   }

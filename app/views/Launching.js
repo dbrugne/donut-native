@@ -33,7 +33,8 @@ var styles = StyleSheet.create({
     flex: 1,
     marginTop: 50,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#FFF'
   },
   text: {
     fontFamily: 'Open Sans',

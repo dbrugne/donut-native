@@ -207,7 +207,8 @@ class SearchView extends Component {
       skip: skip
     };
     app.client.search(this.state.findValue, options, (response) => {
-      if (response.err) {
+      if (response.err || response === 'not-connected') {
+        this.setState({loading: false});
         return this.resetList(null);
       }
       this.resultBlob = (!this.state.more) ? response[this.state.type].list : this.resultBlob.concat(response[this.state.type].list);
