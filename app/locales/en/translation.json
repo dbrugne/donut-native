@@ -78,7 +78,8 @@
     "ask-membership-password": "I have the password",
     "ask-membership-email": "I have an authorized e-mail",
     "notifications": "Notifications",
-    "update-room-topic": "Change topic"
+    "update-room-topic": "Change topic",
+    "eutc": "EUTC"
   },
   "group": {
     "created": "created on",

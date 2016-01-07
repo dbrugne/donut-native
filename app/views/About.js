@@ -5,6 +5,7 @@ var s = require('../styles/style');
 var config = require('../libs/config')();
 var storage = require('../libs/storage');
 var app = require('../libs/app');
+var navigation = require('../libs/navigation');
 
 var debug = require('../libs/debug')('storage');
 
@@ -20,7 +21,8 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'version': 'Version __version__',
   'disconnect': 'Disconnect',
-  'connect': 'Connect'
+  'connect': 'Connect',
+  'eutc': 'EUTC'
 });
 
 class AboutView extends Component {
@@ -60,7 +62,10 @@ class AboutView extends Component {
                       type='button'
                       onPress={() => { app.client.disconnect(); }}
               />
-
+            <ListItem text={i18next.t('local:eutc')}
+                      type='button'
+                      onPress={() => { this.props.navigator.push(navigation.getEutc()); }}
+              />
             {this._renderConfig()}
           </View>
         </View>

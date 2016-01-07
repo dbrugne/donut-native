@@ -291,6 +291,18 @@ var LeftNavigation = React.createClass({
   }
 });
 
+routes.getEutc = function () {
+  return getRoute({
+    id: 'eutc',
+    renderScene: function (navigator) {
+      let Eutc = require('../loggedOut/eutc');
+      return <Eutc navigator={navigator} fromNavigation={true}/>;
+    },
+    getTitle: function () {
+      return i18next.t('navigation.eutc');
+    }
+  });
+};
 routes.getHome = function () {
   return getRoute({
     id: 'home',
