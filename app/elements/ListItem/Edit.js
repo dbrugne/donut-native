@@ -1,22 +1,32 @@
 'use strict';
 
 var React = require('react-native');
-var Platform = require('Platform');
 var s = require('../../styles/elements/listItem');
+var ListItemAbstract = require('./Abstract');
 
 var {
-  Component,
   View,
   TouchableHighlight,
   Text
-} = React;
+  } = React;
 
-class ListItemEdit extends Component {
-  constructor (props) {
-    super(props);
+class ListItemEdit extends ListItemAbstract {
+  _renderContent () {
+    return (
+      <TouchableHighlight onPress={() => this.props.onPress()}
+                          underlayColor='#DDD'
+                          style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}
+        >
+        <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
+          {this._renderLeftIcon()}
+          {this._renderElement()}
+          {this._renderRightIcon()}
+        </View>
+      </TouchableHighlight>
+    );
   }
 
-  render () {
+  _renderElement () {
     var value;
     if (this.props.value && this.props.value.length < 30) {
       value = this.props.value;
@@ -25,30 +35,12 @@ class ListItemEdit extends Component {
     }
 
     return (
-      <View>
-        {this._renderTitle()}
-        <TouchableHighlight onPress={() => this.props.onPress()}
-                            underlayColor= '#DDD'
-          >
-          <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
-            {this.props.leftIcon}
-            <Text style={s.listGroupItemText}>{this.props.text}</Text>
-            <View style={{alignSelf: 'center', flexDirection: 'row', alignItems:'center'}}>
-              <Text style={{color: '#999', fontFamily: 'Open Sans', fontSize: 16, paddingBottom: 1, marginRight: 10}}>{value}</Text>
-            </View>
-            {this.props.rightIcon}
-          </View>
-        </TouchableHighlight>
+      <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
+        <Text style={s.listGroupItemText}>{this.props.text}</Text>
+        <View style={{alignSelf: 'center', flexDirection: 'row', alignItems:'center'}}>
+          <Text style={{color: '#999', fontFamily: 'Open Sans', fontSize: 16, paddingBottom: 1, marginRight: 10}}>{value}</Text>
+        </View>
       </View>
-    );
-  }
-
-  _renderTitle() {
-    if (!this.props.title) {
-      return null;
-    }
-    return (
-      <Text style={s.listGroupTitle}>{this.props.title}</Text>
     );
   }
 }

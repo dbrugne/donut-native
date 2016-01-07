@@ -1,16 +1,11 @@
 'use strict';
 
 var React = require('react-native');
-var Platform = require('Platform');
 var s = require('../../styles/elements/listItem');
-var Button = require('../Button');
+var ListItemAbstract = require('./Abstract');
 
 var {
-  Component,
-  View,
-  TextInput,
-  TouchableHighlight,
-  Text
+  TextInput
 } = React;
 
 var i18next = require('../../libs/i18next');
@@ -18,40 +13,14 @@ i18next.addResourceBundle('en', 'local', {
   'save': 'Save'
 });
 
-class ListItemInput extends Component {
-  constructor (props) {
-    super(props);
-  }
-
-  render () {
+class ListItemInput extends ListItemAbstract {
+  _renderElement () {
     return (
-      <View style={{flex:1}}>
-        {this._renderTitle()}
-        <View style={[s.listGroupItem, { justifyContent:'center', paddingTop: 5, paddingBottom: 5 }]}>
-          <TextInput
-            autoFocus={true}
-            placeholder={this.props.placeholder}
-            onChange={this.props.onChange}
-            style={[s.input, {marginTop:5}]}
-            value={this.props.value}
-            keyboardType={(this.props.isEmail) ? 'email-address' : 'default'}/>
-
-          <TouchableHighlight onPress={this.props.onPress}
-                              underlayColor='#41C87A'
-                              style={[s.button, s.buttonGreen, {borderWidth: 0, padding:10}, this.props.loading && s.buttonLoading]}>
-            <Text style={[s.label, s.labelGreen, this.props.loading && s.labelLoading]}>{i18next.t('local:save')}</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
-    );
-  }
-
-  _renderTitle() {
-    if (!this.props.title) {
-      return null;
-    }
-    return (
-      <Text style={s.listGroupTitle}>{this.props.title}</Text>
+      <TextInput
+        {...this.props}
+        autoFocus
+        style={[s.input]}
+        keyboardType={(this.props.isEmail) ? 'email-address' : 'default'}/>
     );
   }
 }
