@@ -5,9 +5,7 @@ var s = require('../elements/SearchResult/style');
 var LoadingView = require('../elements/Loading');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/mobile');
-var SearchResultUser = require('../elements/SearchResult/SearchResultUser');
-var navigation = require('../libs/navigation');
-var currentUser = require('../models/current-user');
+var navigation = require('../navigation/index');
 
 var {
   Component,
@@ -21,7 +19,7 @@ var {
   } = React;
 var {
   Icon
-  } = require('react-native-icons');
+} = require('react-native-icons');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'room-users', {
@@ -96,11 +94,7 @@ class RoomUsersView extends Component {
     return (
       <View>
         <View style={{flexDirection: 'row'}}>
-          <TouchableHighlight style={{flex: 1}} onPress={() => {this.props.navigator.push(navigation.getProfile({
-                type: 'user',
-                id: user.user_id,
-                identifier: '@' + user.username
-              }))}}>
+          <TouchableHighlight style={{flex: 1}} onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}>
             <View style={s.container}>
               <Image
                 source={{uri: avatarUrl}}

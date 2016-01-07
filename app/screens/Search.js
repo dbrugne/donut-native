@@ -10,12 +10,10 @@ var {
   ListView,
   Component,
 } = React;
-var {
-  Icon
-} = require('react-native-icons');
+var Icon = require('react-native-icons').Icon;
 
 var app = require('../libs/app');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 var SearchResult = require('../elements/SearchResult');
 
 var i18next = require('../libs/i18next');
@@ -41,7 +39,7 @@ class SearchView extends Component {
       findValue: '',
       more: false,
       dataSource: ds.cloneWithRows([]),
-      loading : false
+      loading: false
     };
 
     this.nextValue = '';
@@ -103,7 +101,7 @@ class SearchView extends Component {
     if (this.state.type === 'rooms') {
       return (
         <SearchResult
-          onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'room', id: rowData.room_id, identifier: rowData.identifier}));}}
+          onPress={() => navigation.navigate('Profile', {type: 'room', id: rowData.room_id, identifier: rowData.identifier})}
           image={rowData.avatar}
           type='room'
           identifier={rowData.identifier}
@@ -113,7 +111,7 @@ class SearchView extends Component {
     } else if (this.state.type === 'users') {
       return (
         <SearchResult
-          onPress={() => this.props.navigator.push(navigation.getProfile({type: 'user', id: rowData.user_id, identifier: '@' + rowData.username}))}
+          onPress={() => navigation.navigate('Profile', {type: 'user', id: rowData.user_id, identifier: '@' + rowData.username})}
           image={rowData.avatar}
           type='user'
           identifier={'@' + rowData.username}
@@ -125,7 +123,7 @@ class SearchView extends Component {
     } else if (this.state.type === 'groups') {
       return (
         <SearchResult
-          onPress={() => navigation.switchTo(navigation.getGroup({name: rowData.group_name, id: rowData.group_id}))}
+          onPress={() => navigation.navigate('Group', {id: rowData.group_id, name: rowData.name})}
           image={rowData.avatar}
           type='group'
           identifier={'#' + rowData.name}

@@ -5,21 +5,19 @@ var {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight,
   Component,
   Image,
   ScrollView
-  } = React;
+} = React;
 
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
-var Button = require('../elements/Button');
 var Link = require('../elements/Link');
 var ListItem = require('../elements/ListItem');
 
@@ -35,7 +33,7 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class RoomProfileView extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.data = props.data;
@@ -51,11 +49,11 @@ class RoomProfileView extends Component {
         <ListItem
           text={data.website.title}
           type='edit-button'
-          first={true}
-          action={true}
+          first
+          action
           onPress={() => hyperlink.open(data.website.href)}
           icon='fontawesome|link'
-          />
+        />
       );
     }
 
@@ -111,7 +109,7 @@ class RoomProfileView extends Component {
         <View style={styles.container}>
           {this._renderAvatar(data.avatar)}
           <Text style={styles.identifier}>{data.identifier}</Text>
-          <Link onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})); }}
+          <Link onPress={() => navigation.navigate('Profile', {type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})}
                 prepend={i18next.t('local:by')}
                 text= {'@' + data.owner_username}
                 type='bold'
@@ -122,7 +120,7 @@ class RoomProfileView extends Component {
         <View style={s.listGroup}>
           <Text style={s.listGroupItemSpacing}></Text>
           <ListItem
-            text={i18next.t('local:join')+' '+data.users_count}
+            text={i18next.t('local:join') + ' ' + data.users_count}
             type='edit-button'
             first={true}
             action={true}

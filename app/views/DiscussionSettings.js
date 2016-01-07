@@ -64,12 +64,12 @@ class DiscussionSettings extends Component {
       return (
         <View style={s.listGroup}>
           <ListItem
-            onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'user', id: this.props.model.get('id'), identifier: this.props.model.get('identifier')}));}}
+            onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('id'), identifier: this.props.model.get('identifier')})}
             text={i18next.t('local:see')}
             icon='fontawesome|eye'
             type='button'
-            first={true}
-            action={true}
+            first
+            action
             />
           {this._renderBlock()}
           <Text style={s.listGroupItemSpacing}></Text>
@@ -77,8 +77,8 @@ class DiscussionSettings extends Component {
             onPress={() => this.props.model.leave()}
             text={i18next.t('local:close')}
             type='button'
-            first={true}
-            warning={true}
+            first
+            warning
             />
         </View>
       );
@@ -101,7 +101,7 @@ class DiscussionSettings extends Component {
         <View style={s.listGroup}>
           {itemTopic}
           <ListItem
-            onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'room', id: this.props.model.get('id'), identifier: this.props.model.get('identifier')}));}}
+            onPress={() => navigation.navigate('Profile', {type: 'room', id: this.props.model.get('id'), identifier: this.props.model.get('identifier')})}
             text={i18next.t('local:see')}
             icon='fontawesome|eye'
             type='button'

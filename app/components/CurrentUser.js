@@ -11,20 +11,18 @@ var {
 } = React;
 var {
   Icon
-  } = require('react-native-icons');
+} = require('react-native-icons');
 
 var common = require('@dbrugne/donut-common/mobile');
-var app = require('../libs/app');
 var currentUser = require('../models/current-user');
-var navigation = require('../libs/navigation');
-var s = require('../styles/style');
+var navigation = require('../navigation/index');
 
 class CurrentUserView extends Component {
   constructor (props) {
     super(props);
     this.state = {
       data: currentUser.toJSON()
-    }
+    };
   }
   componentDidMount () {
     currentUser.on('change', this.onChange.bind(this));
@@ -37,7 +35,7 @@ class CurrentUserView extends Component {
 
     // currentUser not already loaded with first 'welcome'
     if (!user.username) {
-      return (<View></View>);
+      return null;
     }
 
     var username = (user.username)
@@ -59,7 +57,7 @@ class CurrentUserView extends Component {
       <View style={styles.main}>
         <TouchableHighlight
           underlayColor= '#414041'
-          onPress={() => navigation.switchTo(navigation.getMyAccount())}>
+          onPress={() => navigation.navigate('MyAccount')}>
           <View style={{flexDirection: 'row', backgroundColor: '1D1D1D', alignItems:'center', justifyContent:'center'}}>
             <View style={styles.avatarCtn}>
               <View style={[styles.linkContainer, {position: 'relative'}]}>

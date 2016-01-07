@@ -5,7 +5,7 @@ var ParsePushNotification = require('NativeModules').ParsePushNotification;
 var {
     DeviceEventEmitter
   } = require('react-native');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 
 var app = require('./../libs/app');
 var debug = require('./../libs/debug')('notifications');
@@ -41,6 +41,6 @@ module.exports = {
   },
   goToNotificationCenter (e: Event) {
     debug.log('Android notification opened =>', e);
-    navigation.switchTo(navigation.getNotifications());
+    navigation.navigate('Notifications');
   }
 };

@@ -2,15 +2,12 @@
 
 var React = require('react-native');
 var {
-  Image,
   ListView,
-  Component,
-  ActivityIndicatorIOS
+  Component
 } = React;
 
-var _ = require('underscore');
 var app = require('./../libs/app');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 var SearchResult = require('../elements/SearchResult');
 var LoadingView = require('../elements/Loading');
 
@@ -59,7 +56,7 @@ class HomeView extends Component {
   renderRow(room) {
     return (
       <SearchResult
-        onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'room', id: room.room_id, identifier: room.identifier}));}}
+        onPress={() => navigation.navigate('Profile', {type: 'room', id: room.room_id, identifier: room.identifier})}
         image={room.avatar}
         type='room'
         identifier={room.identifier}

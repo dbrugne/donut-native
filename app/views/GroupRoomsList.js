@@ -13,7 +13,7 @@ var _ = require('underscore');
 var app = require('../libs/app');
 var LoadingModal = require('../components/LoadingModal');
 var SearchResult = require('../elements/SearchResult');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 
 class GroupRoomsListView extends Component {
   constructor (props) {
@@ -87,7 +87,7 @@ class GroupRoomsListView extends Component {
     return (
       <View>
         <SearchResult
-          onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'room', id: rowData.room_id, identifier: rowData.identifier}));}}
+          onPress={() => navigation.navigate('Profile', {type: 'room', id: rowData.room_id, identifier: rowData.identifier})}
           image={rowData.avatar}
           type='room'
           identifier={rowData.identifier}
@@ -101,7 +101,7 @@ class GroupRoomsListView extends Component {
 
 var styles = StyleSheet.create({
   main: {
-    flex:1
+    flex: 1
   },
   loading: {
     flex: 1,

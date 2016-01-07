@@ -1,11 +1,9 @@
 'use strict';
 
-var _ = require('underscore');
 var React = require('react-native');
 var currentUser = require('../models/current-user');
 var s = require('../styles/style');
-var app = require('../libs/app');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 var ListItem = require('../elements/ListItem');
 
 var {
@@ -13,12 +11,8 @@ var {
   Text,
   ScrollView,
   View,
-  StyleSheet,
-  TouchableHighlight
-  } = React;
-var {
-  Icon
-  } = require('react-native-icons');
+  StyleSheet
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -43,10 +37,9 @@ class MyAccountView extends Component {
     return (
       <ScrollView style={styles.main}>
         <View style={s.listGroup}>
-
           <ListItem onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
                     text={i18next.t('local:edit')}
-                    first={true}
+                    first
                     action='true'
                     type='button'
                     title={i18next.t('local:manage')}
@@ -56,13 +49,12 @@ class MyAccountView extends Component {
                     action='true'
                     type='button'
             />
-
           <Text style={s.listGroupItemSpacing}></Text>
           <ListItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmails())}
                     text={i18next.t('local:manage-emails')}
                     action='true'
                     type='button'
-                    first={true}
+                    first
                     title={i18next.t('local:login')}
             />
           <ListItem onPress={() => this.props.navigator.push(navigation.getMyAccountPassword())}
@@ -70,12 +62,11 @@ class MyAccountView extends Component {
                     action='true'
                     type='button'
             />
-
           <Text style={s.listGroupItemSpacing}></Text>
-          <ListItem onPress={() => this.props.navigator.push(navigation.getAbout())}
+          <ListItem onPress={() => navigation.navigate('About')}
                     text={i18next.t('local:about')}
                     action='true'
-                    first={true}
+                    first
                     type='button'
             />
           <ListItem onPress={() => currentUser.logout()}
@@ -83,13 +74,11 @@ class MyAccountView extends Component {
                     type='button'
                     warning='true'
             />
-
         </View>
       </ScrollView>
-    )
+    );
   }
 }
-
 
 var styles = StyleSheet.create({
   main: {

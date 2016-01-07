@@ -1,11 +1,8 @@
 'use strict';
 
 var React = require('react-native');
-
 var {
-  Component,
-  BackAndroid,
-  Platform
+  Component
 } = React;
 var Launching = require('../views/Launching');
 var ChooseUsername = require('../views/ChooseUsername');
@@ -14,12 +11,9 @@ var _ = require('underscore');
 var debug = require('../libs/debug')('navigation');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 
 var PushNotifications = require('../pushNotification/index');
-
-// @todo : if application is backgrounded for > 5 mn disconnect
-// @todo : when disconnected block every views/navigation except drawer+my account+logout
 
 class Index extends Component {
   constructor (props) {
@@ -44,18 +38,8 @@ class Index extends Component {
     // push notifications
     PushNotifications.componentDidMount();
 
-    // back android
-    if (Platform.OS === 'android') {
-      BackAndroid.addEventListener('hardwareBackPress', () => {
-        var focusedRoute = navigation.getFocusedRoute();
-        focusedRoute.onBack();
-        // if callback don't return true the default callback is called
-        return true;
-      });
-    }
-
     // client
-    app.client.connect();
+    app.client.connect(); // closed automatically (react-native) after 50s when app is backgrounded
   }
   componentWillUnmount () {
     app.off(null, null, this);
@@ -70,11 +54,6 @@ class Index extends Component {
 
     // push notifications
     PushNotifications.componentWillUnmount();
-
-    // back android
-    if (Platform.OS === 'android') {
-      BackAndroid.removeEventListener('hardwareBackPress', () => {return true});
-    }
 
     // client
     app.client.disconnect();
@@ -91,7 +70,7 @@ class Index extends Component {
       );
     }
 
-    var RootNavigator = require('../libs/navigation').RootNavigator;
+    var RootNavigator = require('../navigation/components/RootNavigator');
     return (
       <RootNavigator featured={this.state.featured} />
     );
@@ -157,14 +136,12 @@ class Index extends Component {
     }
   }
   onAddDiscussion (model) {
-    if (this.nextFocus === model.get('id') && (model.get('blocked') === false || model.get('type') === 'onetoone')) {
-      navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
-    } else if (this.nextFocus === model.get('id')) {
-      navigation.switchTo(navigation.getBlockedDiscussion(model.get('id'), model));
+    if (this.nextFocus === model.get('id')) {
+      navigation.navigate('Discussion', model);
     }
   }
   onRemoveDiscussion (model) {
-    navigation.removeDiscussionRoute(model.get('id'), model);
+    navigation.removeDiscussionRoute(model);
   }
   onJoinRoom (id) {
     if (!id) {
@@ -172,10 +149,8 @@ class Index extends Component {
     }
 
     var model = app.rooms.find((m) => m.get('room_id') === id);
-    if (model && model.get('blocked') === false) {
-      return navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
-    } else if (model) {
-      return navigation.switchTo(navigation.getBlockedDiscussion(model.get('id'), model));
+    if (model) {
+      return navigation.navigate('Discussion', model);
     }
 
     this.nextFocus = id;
@@ -198,7 +173,7 @@ class Index extends Component {
     console.log(id);
     var model = app.ones.find((m) => m.get('user_id') === id);
     if (model) {
-      return navigation.switchTo(navigation.getDiscussion(model.get('id'), model));
+      return navigation.navigate('Discussion', model);
     }
 
     this.nextFocus = id;
