@@ -205,8 +205,8 @@ function _popNicely (navigator, index) {
 
 routes.removeDiscussionRoute = function (id, model) {
   var _route = (!model.get('blocked'))
-    ? routes.getDiscussion(id)
-    : routes.getBlockedDiscussion(id);
+    ? routes.getDiscussion(id, model)
+    : routes.getBlockedDiscussion(id, model);
   var route = routes.getNavigator(_route);
   var existingRoute = rootNavigator.getCurrentRoutes().find((element) => element === route);
   if (!existingRoute) {

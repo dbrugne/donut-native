@@ -43,7 +43,7 @@ class DiscussionBlocked extends Component {
     super(props);
   }
 
-  render() {
+  render () {
     let description = null;
     if (this.props.model.get('description')) {
       description = (
