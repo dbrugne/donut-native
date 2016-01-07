@@ -900,8 +900,8 @@ var styles = StyleSheet.create({
   },
   unviewed: {
     position: 'absolute',
-    top: 5,
-    left: 20,
+    top: 8,
+    left: 30,
     width: 13,
     height: 13
   }
