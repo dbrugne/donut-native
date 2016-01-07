@@ -341,7 +341,7 @@ routes.getRoomCreate = function () {
   return getRoute({
     id: 'create-room',
     getSceneClass: function () {
-      return require('../screens/RoomCreate');
+      return require('../screens/RoomCreation');
     },
     getTitle: function () {
       return i18next.t('navigation.create-donut');
@@ -809,7 +809,7 @@ routes.RootNavigator = React.createClass({
     debug.log('unmount RootNavigator');
   },
   render () {
-    var Navigation = require('../navigation/NavigationView');
+    var Navigation = require('../navigation/components/DrawerContent');
     var initialRoute = currentNavigator = routes.getNavigator(routes.getHome());
     return (
       <Drawer
