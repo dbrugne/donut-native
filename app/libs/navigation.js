@@ -388,7 +388,7 @@ routes.getGroup = function (element) {
   return getRoute({
     id: 'group-home',
     renderScene: function (navigator) {
-      let GroupHome = require('../screens/GroupHome');
+      let GroupHome = require('../screens/Group');
       return <GroupHome navigator={navigator} element={element} />;
     },
     getTitle: function () {
@@ -415,7 +415,7 @@ routes.getGroupAskMembership = function (id) {
   return getRoute({
     id: 'group-ask-membership' + id,
     renderScene: function (navigator) {
-      let GroupAskMembership = require('../views/GroupAskMembership');
+      let GroupAskMembership = require('../views/GroupAsk');
       return <GroupAskMembership navigator={navigator} id={id}/>;
     },
     getTitle: function () {
@@ -427,7 +427,7 @@ routes.getGroupAskMembershipRequest = function (element) {
   return getRoute({
     id: 'group-ask-membership-request' + element.id + '-' + element.isAllowedPending,
     renderScene: function () {
-      let GroupAskMembershipRequest = require('../views/GroupAskMembershipRequest');
+      let GroupAskMembershipRequest = require('../views/GroupAskRequest');
       return <GroupAskMembershipRequest id={element.id} isAllowedPending={element.isAllowedPending} scroll />;
     },
     getTitle: function () {
@@ -439,7 +439,7 @@ routes.getGroupAskMembershipPassword = function (id) {
   return getRoute({
     id: 'group-ask-membership-password' + id,
     renderScene: function (navigator) {
-      let GroupAskMembershipPassword = require('../views/GroupAskMembershipPassword');
+      let GroupAskMembershipPassword = require('../views/GroupAskPassword');
       return <GroupAskMembershipPassword navigator={navigator} id={id} scroll />;
     },
     getTitle: function () {
@@ -451,7 +451,7 @@ routes.getGroupAskMembershipEmail = function (element) {
   return getRoute({
     id: 'group-ask-membership-email' + element.id,
     renderScene: function () {
-      let GroupAskMembershipEmail = require('../views/GroupAskMembershipEmail');
+      let GroupAskMembershipEmail = require('../views/GroupAskEmail');
       return <GroupAskMembershipEmail id={element.id} domains={element.domains} scroll />;
     },
     getTitle: function () {
