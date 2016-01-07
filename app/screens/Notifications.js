@@ -162,13 +162,13 @@ class NotificationsView extends Component {
           <ListItem type='button'
                     onPress={this.markSelectedAsDone.bind(this)}
                     loading={this.state.loadingTagAsDone}
-                    text='delete selected'
+                    text={i18next.t('notifications.delete-selected')}
                     first
                     warning
             />
           <ListItem type='button'
                     onPress={this.cancelSelecting.bind(this)}
-                    text='cancel'
+                    text={i18next.t('cancel')}
             />
         </View>
       );
