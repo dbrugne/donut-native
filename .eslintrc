@@ -1,10 +1,6 @@
 {
   "extends": ["semistandard", "standard-react"],
-  "globals": {
-    "describe": true,
-    "it": true,
-    "PROCESS.env.PORT": true,
-    "define": true,
-    "cloudinary": true
+  "rules": {
+    "react/react-in-jsx-scope": 1
   }
 }
