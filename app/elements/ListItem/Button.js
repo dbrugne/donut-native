@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var Platform = require('Platform');
+var LoadingView = require('../Loading');
 var s = require('../../styles/elements/listItem');
 
 var {
@@ -9,7 +9,7 @@ var {
   View,
   TouchableHighlight,
   Text
-} = React;
+  } = React;
 
 class ListItemButton extends Component {
   constructor (props) {
@@ -22,19 +22,32 @@ class ListItemButton extends Component {
         {this._renderTitle()}
         <TouchableHighlight onPress={() => this.props.onPress()}
                             style={this.props.style}
-                            underlayColor= '#DDD'
+                            underlayColor='#DDD'
           >
-          <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
-            {this.props.leftIcon}
-            <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{this.props.text}</Text>
-            {this.props.rightIcon}
+          <View
+            style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
+            {this._renderText()}
           </View>
         </TouchableHighlight>
       </View>
     );
   }
 
-  _renderTitle() {
+  _renderText () {
+    if (this.props.loading) {
+      return <LoadingView />;
+    }
+
+    return (
+      <View>
+        {this.props.leftIcon}
+        <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{this.props.text}</Text>
+        {this.props.rightIcon}
+      </View>
+    );
+  }
+
+  _renderTitle () {
     if (!this.props.title) {
       return null;
     }

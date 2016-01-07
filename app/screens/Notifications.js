@@ -5,15 +5,15 @@ var _ = require('underscore');
 var app = require('../libs/app');
 var navigation = require('../libs/navigation');
 var Link = require('../elements/Link');
-var Button = require('../elements/Button');
+var ListItem = require('../elements/ListItem');
 var LoadingView = require('../elements/Loading');
 var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
 var date = require('../libs/date');
 var currentUser = require('../models/current-user');
+var s = require('../styles/style');
 
 var {
-  StyleSheet,
   View,
   ListView,
   Component,
@@ -27,9 +27,6 @@ var {
 
 var i18next = require('../libs/i18next');
 
-// @todo yls implement swipe to delete a notification
-// @todo implement discussion viewed update
-// @todo implement notification pushed
 class NotificationsView extends Component {
 
   constructor (props) {
@@ -109,7 +106,7 @@ class NotificationsView extends Component {
         renderRow={this.renderRow.bind(this)}
         renderHeader={this.renderHeader.bind(this)}
         renderFooter={this.renderFooter.bind(this)}
-        style={{flex: 1, backgroundColor: '#ffffff'}}
+        style={{flex: 1, backgroundColor: '#f0f0f0'}}
         scrollEnabled
         />
     );
@@ -119,7 +116,7 @@ class NotificationsView extends Component {
     let unviewedDiscussions = null;
     if (this.state.discussionsUnviewed !== 0) {
       unviewedDiscussions = (
-        <Link style={{marginHorizontal: 10, marginVertical: 20}}
+        <Link style={{marginHorizontal: 10, marginBottom: 30}}
               underlayColor='transparent'
               onPress={() => navigation.openDrawer()}
               text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
@@ -130,26 +127,27 @@ class NotificationsView extends Component {
     let unreadNotifications = null;
     if (this.state.unread === 0) {
       unreadNotifications = (
-        <View style={{marginHorizontal: 10, marginVertical: 20}}>
+        <View style={{marginHorizontal: 10, marginBottom: 30}}>
           <Text>{i18next.t('notifications.no-unread-notification')}</Text>
         </View>
       );
     } else {
       unreadNotifications = (
-        <View style={[{marginBottom: 10}, !unviewedDiscussions && {marginTop:10}]}>
+        <View style={[{marginBottom: 5}, s.listGroup]}>
           <Text
             style={{marginHorizontal: 10, marginBottom: 10}}>{i18next.t('notifications.notification-count', {count: this.state.unread})}</Text>
-          <Button type='default'
-                  onPress={this.tagAllAsRead.bind(this)}
-                  loading={this.state.loadingTagAsRead}
-                  label={i18next.t('notifications.mark-as-read')}
+          <ListItem type='button'
+                    onPress={this.tagAllAsRead.bind(this)}
+                    loading={this.state.loadingTagAsRead}
+                    first
+                    text={i18next.t('notifications.mark-as-read')}
             />
         </View>
       );
     }
 
     return (
-      <View>
+      <View style={{marginTop: 30}}>
         {unviewedDiscussions}
         {unreadNotifications}
       </View>
@@ -160,14 +158,17 @@ class NotificationsView extends Component {
     if (this.state.selecting) {
       return (
         <View>
-          <Button type='green'
-                  onPress={this.markSelectedAsDone.bind(this)}
-                  loading={this.state.loadingTagAsDone}
-                  label='delete selected'
+          <Text style={s.listGroupItemSpacing} />
+          <ListItem type='button'
+                    onPress={this.markSelectedAsDone.bind(this)}
+                    loading={this.state.loadingTagAsDone}
+                    text='delete selected'
+                    first
+                    warning
             />
-          <Button type='red'
-                  onPress={this.cancelSelecting.bind(this)}
-                  label='cancel'
+          <ListItem type='button'
+                    onPress={this.cancelSelecting.bind(this)}
+                    text='cancel'
             />
         </View>
       );
@@ -269,6 +270,7 @@ class NotificationsView extends Component {
     if (n.onPress) {
       return (
         <TouchableHighlight
+          style={{backgroundColor: '#ffffff'}}
           underlayColor='#f0f0f0'
           onPress={this.state.selecting ? this.onLongPress.bind(this, n) : n.onPress}
           onLongPress={this.onLongPress.bind(this, n)}
@@ -279,6 +281,7 @@ class NotificationsView extends Component {
     } else {
       return (
         <TouchableHighlight
+          style={{backgroundColor: '#ffffff'}}
           underlayColor='#f0f0f0'
           onLongPress={this.onLongPress.bind(this, n)}
           >
@@ -294,8 +297,14 @@ class NotificationsView extends Component {
       return;
     }
 
+    let selecting = true;
+    let selected = this.notificationsDataSource.findWhere('selected', true);
+    if (selected.length === 1 && _.has(elt, 'selected') && elt.selected) {
+      selecting = false;
+    }
+
     this.setState({
-      selecting: true,
+      selecting: selecting,
       dataSource: this.notificationsDataSource.update(id, {selected: _.has(elt, 'selected') ? !elt.selected : true})
     });
   }
@@ -420,7 +429,14 @@ class NotificationsView extends Component {
   onLoadMore () {
     this.setState({loadingMore: true});
 
+    // Add timeout to prevent loading too long & display error message
+    this.timeouts.loadingMore = setTimeout(() => {
+      alert.show(i18next.t('messages.error-try-again'));
+      this.setState({loadingMore: false});
+    }, this.timeoutTimer);
+
     app.client.notificationRead(null, this.notificationsDataSource.getBottomItemTime(), 10, (data) => {
+      clearTimeout(this.timeouts.loadingMore);
       this.setState({
         loadingMore: false,
         more: data.more,
@@ -433,7 +449,14 @@ class NotificationsView extends Component {
   tagAllAsRead () {
     this.setState({loadingTagAsRead: true});
 
+    // Add timeout to prevent loading too long & display error message
+    this.timeouts.loadingTagAsRead = setTimeout(() => {
+      alert.show(i18next.t('messages.error-try-again'));
+      this.setState({loadingTagAsRead: false});
+    }, this.timeoutTimer);
+
     app.client.notificationViewed([], true, () => {
+      clearTimeout(this.timeouts.loadingTagAsRead);
       this.setState({
         loadingTagAsRead: false,
         unread: 0,
@@ -448,13 +471,5 @@ class NotificationsView extends Component {
     );
   }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    flex: 1,
-    marginTop: 10
-  }
-});
 
 module.exports = NotificationsView;
