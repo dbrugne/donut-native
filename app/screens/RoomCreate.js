@@ -43,7 +43,7 @@ class RoomCreateView extends Component {
     return (
       <ScrollView style={styles.container}>
 
-        <Text style={[styles.infoRoomName]}>{i18next.t('local:disclaimer2')}</Text>
+        <Text style={[styles.block]}>{i18next.t('local:disclaimer2')}</Text>
 
         <ListItem
           type='input'
@@ -56,7 +56,7 @@ class RoomCreateView extends Component {
           help={i18next.t('local:help')}
           />
 
-        <Text style={[styles.infoRoomName]}>{i18next.t('local:disclaimer')}</Text>
+        <Text style={[styles.block]}>{i18next.t('local:disclaimer')}</Text>
 
         <ListItem
           type='switch'
@@ -80,7 +80,7 @@ class RoomCreateView extends Component {
           />
 
         <Text style={styles.listGroupItemSpacing}/>
-        <Text style={[styles.infoRoomName]}>{i18next.t('local:community')}</Text>
+        <Text style={[styles.block]}>{i18next.t('local:community')}</Text>
         <ListItem
           type='button'
           first
@@ -90,7 +90,7 @@ class RoomCreateView extends Component {
           text={i18next.t('local:create-community')}
           />
 
-        <Text style={[styles.infoRoomName]}/>
+        <Text style={[styles.block]}/>
 
       </ScrollView>
     );
@@ -131,32 +131,10 @@ var styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f0f0f0'
   },
-  help: {
-    fontSize: 10,
-    color: '#737373',
-    marginVertical: 5
-  },
-  infoRoomName: {
+  block: {
     color: '#333',
     marginVertical: 20,
     marginHorizontal: 10
-  },
-  modes: {
-    flexDirection: 'column',
-    marginBottom: 10
-  },
-  modeOption: {
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-    alignItems: 'center'
-  },
-  button: {
-    height: 25,
-    width: 100,
-    backgroundColor: '#16a085',
-    borderRadius: 3,
-    justifyContent: 'center',
-    alignSelf: 'center'
   }
 });
 
