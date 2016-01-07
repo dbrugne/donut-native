@@ -4,19 +4,15 @@ var React = require('react-native');
 var {
   View,
   Text,
-  Component,
-  StyleSheet
-} = React;
+  Component
+  } = React;
 
-var Input = require('../elements/Input');
-var Button = require('../elements/Button');
+var s = require('../styles/style');
 var alert = require('../libs/alert');
 var app = require('../libs/app');
+var ListItem = require('../elements/ListItem');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'membershipRequest', {
-
-});
 
 class GroupAskMembershipRequest extends Component {
   constructor (props) {
@@ -25,32 +21,38 @@ class GroupAskMembershipRequest extends Component {
       motivations: ''
     };
   }
+
   render () {
     if (this.props.isAllowedPending) {
       return (
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <Text style={{fontSize: 20, textAlign: 'center'}}>{i18next.t('group.allowed-pending')}</Text>
-        </View>
+        <Text style={[s.block]}>{i18next.t('group.allowed-pending')}</Text>
       );
     }
     return (
-      <View style={{backgroundColor: '#f0f0f0'}}>
-        <Text style={{fontSize: 20}}>
-          {i18next.t('group.info-request')}
-        </Text>
-        <View style={{backgroundColor: '#FFF', height: 80}}>
-          <Input
-            placeholder={i18next.t('group.placeholder-request')}
-            multiline={true}
-            onChangeText={(text) => this.setState({motivations: text})}
-            />
-        </View>
-        <Button onPress={this.onSendRequest.bind(this)}
-          type='green'
-          label={i18next.t('group.send')} />
+      <View style={{alignSelf: 'stretch'}}>
+        <Text style={[s.block]}>{i18next.t('group.info-request')}</Text>
+
+        <ListItem
+          onChangeText={(text) => this.setState({motivations: text})}
+          multiline
+          placeholder={i18next.t('group.placeholder-request')}
+          first
+          type='input'
+          />
+
+        <Text style={s.listGroupItemSpacing} />
+        <ListItem
+          onPress={this.onSendRequest.bind(this)}
+          last
+          action
+          type='button'
+          text={i18next.t('group.send')}
+          />
+
       </View>
     );
   }
+
   onSendRequest () {
     app.client.groupRequest(this.props.id, this.state.motivations, function (response) {
       if (response.success) {
