@@ -6,12 +6,12 @@ var {
   Text,
   Component,
   ListView,
+  ScrollView,
   StyleSheet
-} = React;
+  } = React;
 
+var s = require('../styles/style');
 var _ = require('underscore');
-var Input = require('../elements/Input');
-var Button = require('../elements/Button');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var ListItem = require('../elements/ListItem');
@@ -29,39 +29,55 @@ class GroupAskMembershipEmail extends Component {
       dataSource: ds.cloneWithRows(this.domains)
     };
   }
+
   render () {
-    return (
-      <View style={styles.main}>
-        <View>
-          <Text style={{fontSize: 20}}>
-            {i18next.t('group.info-email')}
-          </Text>
-          <Text style={styles.label}>
-            {i18next.t('group.email')}
-          </Text>
-          <View style={{backgroundColor: '#FFF'}}>
-            <Input
-              placeholder={i18next.t('group.email')}
-              onChangeText={(text) => this.setState({email: text})}
-              />
-          </View>
-          <Text style={styles.label}>
-            {i18next.t('group.domains')}
-          </Text>
-        </View>
-        <View style={styles.elementContainer}>
-          <ListView
-            dataSource={this.state.dataSource}
-            renderRow={this.renderElement.bind(this)}
-            />
-        </View>
-        <Button onPress={this.onAddEmail.bind(this)}
-                type='green'
-                label={i18next.t('group.add-email')} />
+    let content = (
+      <View style={{flex: 1, alignSelf: 'stretch'}}>
+
+        <Text style={[s.block]}>{i18next.t('group.info-email')}</Text>
+
+        <ListItem
+          onChangeText={(text) => this.setState({email: text})}
+          placeholder={i18next.t('group.email')}
+          first
+          title={i18next.t('group.email')}
+          type='input'
+          keyboardType='email-address'
+          />
+
+        <Text style={s.listGroupItemSpacing}/>
+        <Text style={s.listGroupTitle}>{i18next.t('group.domains')}</Text>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this.renderElement.bind(this)}
+          />
+
+        <Text style={s.listGroupItemSpacing}/>
+        <ListItem
+          onPress={this.onAddEmail.bind(this)}
+          last
+          action
+          type='button'
+          text={i18next.t('group.add-email')}
+          />
+
       </View>
     );
+
+    if (this.props.scroll) {
+      return (
+        <ScrollView style={styles.main}>
+          <View style={styles.container}>
+            {content}
+          </View>
+        </ScrollView>
+      );
+    }
+
+    return content;
   }
-  renderElement(element) {
+
+  renderElement (element) {
     return (
       <ListItem text={element.name}
                 type='switch'
@@ -70,13 +86,14 @@ class GroupAskMembershipEmail extends Component {
         />
     );
   }
+
   updateElement (nameDomain) {
     if (this.select === nameDomain) {
       return;
     }
     _.each(this.domains, _.bind(function (domain) {
       if (domain.name === this.select) {
-       domain.isSelect = false;
+        domain.isSelect = false;
       }
       domain.isSelect = (domain.name === nameDomain);
     }, this));
@@ -87,6 +104,7 @@ class GroupAskMembershipEmail extends Component {
     this.select = nameDomain;
     this.render();
   }
+
   getDomains () {
     if (!this.props.domains) {
       return null;
@@ -104,6 +122,7 @@ class GroupAskMembershipEmail extends Component {
     }, this));
     return listDomains;
   }
+
   onAddEmail () {
     if (!this.select || _.indexOf(this.props.domains, this.select) === -1) {
       return alert.show(i18next.t('messages.unknownerror'));
@@ -130,16 +149,14 @@ class GroupAskMembershipEmail extends Component {
 
 var styles = StyleSheet.create({
   main: {
-    flex: 1,
+    flexDirection: 'column',
+    flexWrap: 'wrap',
     backgroundColor: '#f0f0f0'
   },
-  label: {
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-  elementContainer: {
+  container: {
     flex: 1,
-    flexDirection: 'column'
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
