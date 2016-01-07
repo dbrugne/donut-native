@@ -151,15 +151,15 @@ class GroupAskMembership extends Component {
     } else if (nbrOptions === 1) {
       if (this.data.options.request) {
         return (
-          <MembershipRequest id={this.props.id} isAllowedPending={this.data.options.isAllowedPending}/>
+          <MembershipRequest id={this.props.id} isAllowedPending={this.data.options.isAllowedPending} scroll={false} />
         );
       } else if (this.data.options.password) {
         return (
-          <MembershipPassword id={this.props.id} navigator={this.props.navigator}/>
+          <MembershipPassword id={this.props.id} navigator={this.props.navigator} scroll={false} />
         );
       } else {
         return (
-          <MembershipEmail id={this.props.id} domains={this.data.options.allowed_domains}/>
+          <MembershipEmail id={this.props.id} domains={this.data.options.allowed_domains} scroll={false} />
         );
       }
     } else {

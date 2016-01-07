@@ -5,7 +5,9 @@ var {
   View,
   Text,
   Component,
-  ListView
+  ListView,
+  ScrollView,
+  StyleSheet
   } = React;
 
 var s = require('../styles/style');
@@ -29,7 +31,7 @@ class GroupAskMembershipEmail extends Component {
   }
 
   render () {
-    return (
+    let content = (
       <View style={{flex: 1, alignSelf: 'stretch'}}>
 
         <Text style={[s.block]}>{i18next.t('group.info-email')}</Text>
@@ -61,6 +63,18 @@ class GroupAskMembershipEmail extends Component {
 
       </View>
     );
+
+    if (this.props.scroll) {
+      return (
+        <ScrollView style={styles.main}>
+          <View style={styles.container}>
+            {content}
+          </View>
+        </ScrollView>
+      );
+    }
+
+    return content;
   }
 
   renderElement (element) {
@@ -132,5 +146,18 @@ class GroupAskMembershipEmail extends Component {
     }, this));
   }
 }
+
+var styles = StyleSheet.create({
+  main: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0'
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+});
 
 module.exports = GroupAskMembershipEmail;

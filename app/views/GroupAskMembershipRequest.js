@@ -4,7 +4,9 @@ var React = require('react-native');
 var {
   View,
   Text,
-  Component
+  Component,
+  ScrollView,
+  StyleSheet
   } = React;
 
 var s = require('../styles/style');
@@ -23,34 +25,48 @@ class GroupAskMembershipRequest extends Component {
   }
 
   render () {
+    let content = null;
     if (this.props.isAllowedPending) {
-      return (
+      content = (
         <Text style={[s.block]}>{i18next.t('group.allowed-pending')}</Text>
       );
+    } else {
+      content = (
+        <View style={{alignSelf: 'stretch'}}>
+          <Text style={[s.block]}>{i18next.t('group.info-request')}</Text>
+
+          <ListItem
+            onChangeText={(text) => this.setState({motivations: text})}
+            multiline
+            placeholder={i18next.t('group.placeholder-request')}
+            first
+            type='input'
+            />
+
+          <Text style={s.listGroupItemSpacing} />
+          <ListItem
+            onPress={this.onSendRequest.bind(this)}
+            last
+            action
+            type='button'
+            text={i18next.t('group.send')}
+            />
+
+        </View>
+      );
     }
-    return (
-      <View style={{alignSelf: 'stretch'}}>
-        <Text style={[s.block]}>{i18next.t('group.info-request')}</Text>
 
-        <ListItem
-          onChangeText={(text) => this.setState({motivations: text})}
-          multiline
-          placeholder={i18next.t('group.placeholder-request')}
-          first
-          type='input'
-          />
+    if (this.props.scroll) {
+      return (
+        <ScrollView style={styles.main}>
+          <View style={styles.container}>
+            {content}
+          </View>
+        </ScrollView>
+      );
+    }
 
-        <Text style={s.listGroupItemSpacing} />
-        <ListItem
-          onPress={this.onSendRequest.bind(this)}
-          last
-          action
-          type='button'
-          text={i18next.t('group.send')}
-          />
-
-      </View>
-    );
+    return content;
   }
 
   onSendRequest () {
@@ -66,5 +82,18 @@ class GroupAskMembershipRequest extends Component {
     });
   }
 }
+
+var styles = StyleSheet.create({
+  main: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0'
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+});
 
 module.exports = GroupAskMembershipRequest;

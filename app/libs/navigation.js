@@ -428,7 +428,7 @@ routes.getGroupAskMembershipRequest = function (element) {
     id: 'group-ask-membership-request' + element.id + '-' + element.isAllowedPending,
     renderScene: function () {
       let GroupAskMembershipRequest = require('../views/GroupAskMembershipRequest');
-      return <GroupAskMembershipRequest id={element.id} isAllowedPending={element.isAllowedPending}/>;
+      return <GroupAskMembershipRequest id={element.id} isAllowedPending={element.isAllowedPending} scroll />;
     },
     getTitle: function () {
       return i18next.t('navigation.ask-membership-request');
@@ -440,7 +440,7 @@ routes.getGroupAskMembershipPassword = function (id) {
     id: 'group-ask-membership-password' + id,
     renderScene: function (navigator) {
       let GroupAskMembershipPassword = require('../views/GroupAskMembershipPassword');
-      return <GroupAskMembershipPassword navigator={navigator} id={id}/>;
+      return <GroupAskMembershipPassword navigator={navigator} id={id} scroll />;
     },
     getTitle: function () {
       return i18next.t('navigation.ask-membership-password');
@@ -452,7 +452,7 @@ routes.getGroupAskMembershipEmail = function (element) {
     id: 'group-ask-membership-email' + element.id,
     renderScene: function () {
       let GroupAskMembershipEmail = require('../views/GroupAskMembershipEmail');
-      return <GroupAskMembershipEmail id={element.id} domains={element.domains} />;
+      return <GroupAskMembershipEmail id={element.id} domains={element.domains} scroll />;
     },
     getTitle: function () {
       return i18next.t('navigation.ask-membership-email');

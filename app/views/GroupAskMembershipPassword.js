@@ -4,7 +4,9 @@ var React = require('react-native');
 var {
   View,
   Text,
-  Component
+  Component,
+  ScrollView,
+  StyleSheet
   } = React;
 
 var alert = require('../libs/alert');
@@ -23,7 +25,7 @@ class GroupAskMembershipPassword extends Component {
   }
 
   render () {
-    return (
+    let content = (
       <View style={{flex: 1, alignSelf: 'stretch'}}>
 
         <Text style={s.listGroupItemSpacing} />
@@ -46,6 +48,18 @@ class GroupAskMembershipPassword extends Component {
           />
       </View>
     );
+
+    if (this.props.scroll) {
+      return (
+        <ScrollView style={styles.main}>
+          <View style={styles.container}>
+            {content}
+          </View>
+        </ScrollView>
+      );
+    }
+
+    return content;
   }
 
   onSendPassword () {
@@ -65,5 +79,18 @@ class GroupAskMembershipPassword extends Component {
     });
   }
 }
+
+var styles = StyleSheet.create({
+  main: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0'
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+});
 
 module.exports = GroupAskMembershipPassword;
