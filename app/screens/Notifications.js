@@ -21,7 +21,7 @@ var {
   } = React;
 var {
   Icon
-  } = require('react-native-icons');
+} = require('react-native-icons');
 
 var i18next = require('../libs/i18next');
 

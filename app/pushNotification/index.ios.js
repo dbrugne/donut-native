@@ -13,8 +13,6 @@ var navigation = require('../navigation/index');
 
 var debug = require('./../libs/debug')('pushNotification');
 
-// @todo : add code on Notification view component to set icon badge to correct unviewed value on incoming viewed/done
-
 module.exports = {
   appState: 'active', // @todo : refactor to component
   nextAppFocus: null,
