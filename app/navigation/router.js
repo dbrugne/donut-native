@@ -183,7 +183,12 @@ module.exports = {
         return require('./routes/About');
       case 'Eutc':
         return require('./routes/Eutc');
-
+      case 'RoomTopic':
+        return require('./routes/RoomTopic');
+      case 'RoomUsers':
+        return require('./routes/RoomUsers');
+      case 'RoomUser':
+        return require('./routes/RoomUser');
     }
   }
 };

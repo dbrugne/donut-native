@@ -109,7 +109,7 @@ class RoomUsersView extends Component {
             </View>
           </TouchableHighlight>
           { isAdminOrOp ?
-            <TouchableHighlight style={{width: 100, height: 100}} onPress={() => this.props.navigator.push(navigation.getManageUser(this.props.model.get('id'), user, () => this.fetchData()))}>
+            <TouchableHighlight style={{width: 100, height: 100}} onPress={() => navigation.navigate('RoomUser', this.props.model.get('id'), user, () => this.fetchData())}>
               <View style={[s.container, {justifyContent:'center'}]}>
                 <Text style={{fontSize: 17, alignSelf: 'center'}}>{i18next.t('room-users:edit')}</Text>
               </View>

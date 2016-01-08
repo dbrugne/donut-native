@@ -3,8 +3,8 @@
 var React = require('react-native');
 var {
   Component,
-  View,
-  } = React;
+  View
+} = React;
 
 var _ = require('underscore');
 var Input = require('../elements/Input');
@@ -20,7 +20,6 @@ class UpdateRoomTopicView extends Component {
       topic: ''
     };
   }
-
   render () {
     return (
       <View style={{backgroundColor: '#f0f0f0'}}>
@@ -28,7 +27,8 @@ class UpdateRoomTopicView extends Component {
           <Input
             placeholder='change topic'
             onChangeText={(text) => this.setState({topic: text})}
-            />
+            value={this.props.model.get('topic')}
+          />
         </View>
         <Button onPress={this.onSendTopic.bind(this)}
                 type='green'
@@ -36,12 +36,11 @@ class UpdateRoomTopicView extends Component {
       </View>
     );
   }
-
   onSendTopic () {
-    if (!this.props.id) {
+    if (!this.props.model) {
       return;
     }
-    app.client.roomTopic(this.props.id, this.state.topic, _.bind(function (response) {
+    app.client.roomTopic(this.props.model.get('id'), this.state.topic, _.bind(function (response) {
       if (response.success) {
         return alert.show('success');
       }

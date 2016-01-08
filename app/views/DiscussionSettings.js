@@ -5,7 +5,7 @@ var currentUser = require('../models/current-user');
 var app = require('../libs/app');
 var s = require('../styles/style');
 var ListItem = require('../elements/ListItem');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 var common = require('@dbrugne/donut-common/mobile');
 
 var {
@@ -88,7 +88,7 @@ class DiscussionSettings extends Component {
         itemTopic = (
           <ListItem
             style={{marginBottom: 20}}
-            onPress={() => {this.props.navigator.push(navigation.getUpdateRoomTopic(this.props.model.get('id')))}}
+            onPress={() => navigation.navigate('RoomTopic', this.props.model)}
             text={i18next.t('local:change-topic')}
             icon='fontawesome|edit'
             type='button'
@@ -105,29 +105,15 @@ class DiscussionSettings extends Component {
             text={i18next.t('local:see')}
             icon='fontawesome|eye'
             type='button'
-            first={true}
-            action={true}
+            first
+            action
             />
           <ListItem
-            onPress={() => {this.props.navigator.push(navigation.getRoomUsers(this.props.model.get('id'), this.props.model));}}
+            onPress={() => navigation.navigate('RoomUsers', this.props.model)}
             text={i18next.t('local:users')}
             icon='fontawesome|users'
             type='button'
-            action={true}
-            />
-          <ListItem
-            onPress={() => console.log('@todo implement edit page')}
-            text={i18next.t('local:edit')+' TODO'}
-            icon='fontawesome|pencil'
-            type='button'
-            action={true}
-            />
-          <ListItem
-            onPress={() => console.log('@todo implement edit page')}
-            text={i18next.t('local:access')+' TODO'}
-            icon='fontawesome|key'
-            type='button'
-            action={true}
+            action
             />
           {this._renderAllowedUsers()}
           <Text style={s.listGroupItemSpacing}></Text>
@@ -135,8 +121,8 @@ class DiscussionSettings extends Component {
             onPress={() => this.props.model.leave()}
             text={i18next.t('local:leave')}
             type='button'
-            first={true}
-            warning={true}
+            first
+            warning
             />
         </View>
       );
@@ -150,7 +136,7 @@ class DiscussionSettings extends Component {
     return (
       <View style={styles.topic}>
         <Text>
-          " {(this.props.model.get('topic')) ? this.props.model.get('topic') : i18next.t('local:no-topic')} "
+          "{(this.props.model.get('topic')) ? this.props.model.get('topic') : i18next.t('local:no-topic')}"
         </Text>
       </View>
     )

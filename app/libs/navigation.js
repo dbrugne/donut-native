@@ -630,7 +630,7 @@ routes.getUpdateRoomTopic = function (id) {
   return getRoute({
     id: 'room-topic' + id,
     renderScene: function () {
-      let UpdateRoomTopic = require('../views/UpdateRoomTopic');
+      let UpdateRoomTopic = require('../views/RoomTopic');
       return <UpdateRoomTopic id={id} />;
     },
     getTitle: function () {
@@ -654,7 +654,7 @@ routes.getManageUser = function (roomId, user, fc) {
   return getRoute({
     id: 'manage-user-' + user.user_id,
     renderScene: function (navigator) {
-      let RoomUsers = require('../views/ManageUser');
+      let RoomUsers = require('../views/RoomUser');
       return <RoomUsers navigator={navigator} user={user} roomId={roomId} fc={fc}/>;
     },
     getTitle: function () {
