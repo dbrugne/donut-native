@@ -31,7 +31,7 @@ class Home extends Component {
   render () {
     var version = config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')';
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, backgroundColor: '#f0f0f0'}}>
         {this._renderConfirmed()}
         <HomeFeatured {...this.props} />
         <Text>DONUT {version}</Text>
