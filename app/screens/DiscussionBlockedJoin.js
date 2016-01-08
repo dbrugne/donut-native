@@ -29,8 +29,6 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class DiscussionBlockedJoin extends Component {
-  passwordPattern = /(.{4,255})$/i;
-
   constructor (props) {
     super(props);
   }
@@ -162,12 +160,6 @@ var styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 16
   },
-  disclaimerCtn: {
-
-  },
-  disclaimer: {
-
-  }
 });
 
 module.exports = DiscussionBlockedJoin;

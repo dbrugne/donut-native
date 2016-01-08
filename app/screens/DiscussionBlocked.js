@@ -73,19 +73,17 @@ class DiscussionBlocked extends Component {
           </TouchableHighlight>
           {description}
         </View>
-        <View style={styles.container2}>
 
-          {disclaimer}
-          {banned}
-          {kicked}
-          {join}
+        {this._renderDisclaimer()}
+        {banned}
+        {kicked}
+        {join}
 
-          <Link onPress={() => this.props.model.leaveBlocked()}
-                text={i18next.t('local:close')}
-                type='underlined'
-            />
+        <Link onPress={() => this.props.model.leaveBlocked()}
+              text={i18next.t('local:close')}
+              type='underlined'
+          />
 
-        </View>
       </ScrollView>
     );
   }
@@ -106,14 +104,24 @@ class DiscussionBlocked extends Component {
 
   _renderDisclaimer() {
     if (!this.props.model.get('disclaimer') || this.props.model.get('disclaimer').length === 0) {
-      return (
-        <View></View>
-      );
+      return null;
     }
-    var disclaimer = _.unescape(this.props.model.get('disclaimer'));
+
+    let disclaimer = _.unescape(this.props.model.get('disclaimer'));
     return (
-      <View style={[styles.disclaimerCtn, s.alertWarning]}>
-        <Text style={[styles.disclaimer, s.alertWarningText]}>{disclaimer}</Text>
+      <View style={[s.alertWarning, {marginLeft: 0, marginRight: 0, marginBottom: 0}]}>
+        <Text style={s.alertWarningText}>{i18next.t('room.message-membership')}</Text>
+        <View style={{marginTop: 10, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center'}}>
+          <Icon
+            name='fontawesome|quote-right'
+            size={14}
+            color='#8a6d3b'
+            style={{width: 14, height: 14, marginTop: 2}}
+            />
+          <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
+            <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{disclaimer}</Text>
+          </View>
+        </View>
       </View>
     );
   }
@@ -166,17 +174,21 @@ class DiscussionBlocked extends Component {
     }
 
     return (
-      <View>
-        <Text> {i18next.t('local:kicked')} </Text>
+      <View style={[s.alertError, {marginHorizontal: 0}]}>
         <Link onPress={(this.onJoin.bind(this))}
+              prepend={i18next.t('local:kicked')}
+              append={i18next.t('local:rejoin')}
               text={i18next.t('local:click')}
+              linkStyle={s.alertErrorText}
+              prependStyle={s.alertErrorText}
+              appendStyle={s.alertErrorText}
+              type='underlined'
           />
-        <Text> {i18next.t('local:rejoin')} </Text>
       </View>
     );
   }
 
-  onJoin() {
+  onJoin () {
     app.trigger('joinRoom', this.props.model.get('id'));
   }
 }
@@ -191,13 +203,6 @@ var styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  container2: {
-    flex: 1,
-    borderTopWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#DDD',
-    paddingTop: 10
   },
   avatar: {
     width: 120,

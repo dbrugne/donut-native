@@ -59,6 +59,7 @@ class GroupProfileView extends Component {
             />
           {this._renderDescription()}
         </View>
+
         <View style={{flex:1}}>
           {this.renderMessage()}
         </View>
@@ -134,6 +135,7 @@ class GroupProfileView extends Component {
       return null;
     }
 
+    let disclaimer = _.unescape(this.props.data.disclaimer);
     return (
       <View style={{marginTop: 10, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center'}}>
         <Icon
@@ -143,7 +145,7 @@ class GroupProfileView extends Component {
           style={{width: 14, height: 14, marginTop: 2}}
           />
         <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
-          <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{this.props.data.disclaimer}</Text>
+          <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{disclaimer}</Text>
         </View>
       </View>
     );

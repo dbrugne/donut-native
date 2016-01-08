@@ -51,9 +51,13 @@ module.exports = StyleSheet.create({
   },
   username: {
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Open Sans',
     color: '#333333'
+  },
+  username2: {
+    color: '#999999',
+    fontWeight: 'normal'
   },
   time: {color: '#999', fontSize: 12, fontFamily: 'Open Sans', marginLeft:3},
   date: {

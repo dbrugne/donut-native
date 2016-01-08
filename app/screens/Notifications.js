@@ -383,8 +383,7 @@ class NotificationsView extends Component {
 
   _renderContent (n) {
     return (
-      <View
-        style={[{ paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderBottomWidth:1, borderBottomColor:'#f1f1f1', borderStyle:'solid'}, !n.viewed && {borderBottomColor:'#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
+      <View style={[{height: 62, paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderBottomWidth:1, borderBottomColor:'#f1f1f1', borderStyle:'solid'}, !n.viewed && {borderBottomColor:'#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
         <View style={{ flexDirection:'row', justifyContent:'center', flex:1}}>
           {this._renderAvatar(n)}
           <View

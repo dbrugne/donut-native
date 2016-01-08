@@ -7,33 +7,23 @@ var date = require('../../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
 
 var {
-  Component,
   View,
   Text,
   Image
 } = React;
-class UserBlock extends Component {
-  /**
-   * @param props = {
-   *  text: string to display on element
-   *  username
-   *  realname
-   *  user_id
-   *  time
-   * }
-   */
-  constructor (props) {
-    super(props);
-  }
 
+module.exports = React.createClass({
+  propTypes: {
+    data: React.PropTypes.object.isRequired,
+    navigator: React.PropTypes.object.isRequired
+  },
   render () {
     return (
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', flex:1, alignItems: 'center'}}>
         {this._renderAvatar()}
         <View style={{flexDirection: 'column', flex:1}}>
-          <View style={{flexDirection: 'row', flex:1}}>
+          <View style={{flexDirection: 'row', flex:1, alignItems: 'center'}}>
             <Username
-              style={{marginRight:0, fontWeight: 'bold', fontSize: 14, fontFamily: 'Open Sans', color: '#333333'}}
               user_id={this.props.data.user_id}
               username={this.props.data.username}
               realname={this.props.data.realname}
@@ -45,8 +35,7 @@ class UserBlock extends Component {
         </View>
       </View>
     );
-  }
-
+  },
   _renderAvatar () {
     if (!(this.props.data.avatar || this.props.data.avatarRaw)) {
       return null;
@@ -61,6 +50,4 @@ class UserBlock extends Component {
       <Image style={{width: 34, height: 34, borderRadius:3, marginLeft:10, marginRight:10}} source={{uri: avatar}}/>
     );
   }
-}
-
-module.exports = UserBlock;
+});

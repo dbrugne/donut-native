@@ -19,20 +19,22 @@ class LinkUnderlined extends Component {
 
   render() {
     return (
-      <TouchableHighlight style={[s.link, s.linkUnderlined]}
-                          onPress={() => this.props.onPress()}
-                          underlayColor='transparent'
-        >
-        <View>
-          <Text>
-            <Text style={this.props.prependStyle}>{this.prepend}</Text>
-            <Text style={[s.text, s.textUnderlined, this.props.linkStyle]}>
-              {this.props.text}
+      <View style={this.props.style}>
+        <TouchableHighlight style={[s.link, s.linkUnderlined]}
+                            onPress={() => this.props.onPress()}
+                            underlayColor='transparent'
+          >
+          <View>
+            <Text>
+              <Text style={this.props.prependStyle}>{this.prepend}</Text>
+              <Text style={[s.text, s.textUnderlined, this.props.linkStyle]}>
+                {this.props.text}
+              </Text>
+              <Text style={this.props.appendStyle}>{this.append}</Text>
             </Text>
-            <Text style={this.props.appendStyle}>{this.append}</Text>
-          </Text>
-        </View>
-      </TouchableHighlight>
+          </View>
+        </TouchableHighlight>
+      </View>
     )
   }
 }

@@ -118,6 +118,9 @@
     "placeholder-request": "Your motivations, background ...",
     "success-request": "Request sent ! You will be notified when accepted."
   },
+  "room": {
+    "message-membership": "You are not yet a member of this donut. Before you request membership, have a glance at this donut access conditions"
+  },
   "events": {
     "online": "is now online",
     "offline": "is now offline",
