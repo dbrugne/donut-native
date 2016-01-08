@@ -6,7 +6,7 @@ var i18next = require('../../libs/i18next');
 module.exports = function () {
   return {
     getSceneClass () {
-      return require('../../views/MyAccountInformation');
+      return require('../../views/MyAccountEdit');
     },
     getTitle () {
       return i18next.t('navigation.my-informations');

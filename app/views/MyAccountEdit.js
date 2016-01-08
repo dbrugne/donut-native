@@ -1,11 +1,9 @@
 var React = require('react-native');
 var app = require('../libs/app');
-var Platform = require('Platform');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
 var LoadingView = require('../elements/Loading');
 var Alert = require('../libs/alert');
-var currentUser = require('../models/current-user');
 var ListItem = require('../elements/ListItem');
 var navigation = require('../navigation/index');
 var imageUpload = require('../libs/imageUpload');
@@ -33,7 +31,7 @@ class MyAccountInformation extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      username: currentUser.get('username'),
+      username: app.user.get('username'),
       realname: '',
       bio: '',
       color: '',
@@ -46,27 +44,26 @@ class MyAccountInformation extends Component {
     };
   }
 
-  componentWillUnmount() {
-    currentUser.off('change:avatar');
-    currentUser.off('change:color');
-  }
-
-  componentDidMount() {
+  componentDidMount () {
     this.fetchData();
-    currentUser.on('change:avatar', (model) => {
+    app.user.on('change:avatar', (model) => {
       this.setState({
         avatar: common.cloudinary.prepare(model.get('avatar'), 120)
       });
-    });
-    currentUser.on('change:color', (model) => {
+    }, this);
+    app.user.on('change:color', (model) => {
       this.setState({
         color: model.get('color')
       });
-    });
+    }, this);
+  }
+
+  componentWillUnmount () {
+    app.user.off(null, null, this);
   }
 
   fetchData() {
-    app.client.userRead(currentUser.get('user_id'), {more: true, admin: true}, (response) => {
+    app.client.userRead(app.user.get('user_id'), {more: true, admin: true}, (response) => {
       this.setState({
         realname: response.realname,
         bio: response.bio,
@@ -131,7 +128,6 @@ class MyAccountInformation extends Component {
     return (
       <ScrollView style={{backgroundColor: '#f0f0f0'}}>
         <View style={styles.container}>
-
         <View style={styles.containerHorizontal}>
           {this._renderAvatar(this.state.avatar)}
           <View style={styles.containerVertical}>
@@ -150,32 +146,29 @@ class MyAccountInformation extends Component {
                     type='edit-button'
                     action={true}
                     value={this.state.realname}
-                    onPress={() => this.onUserEdit(require('../components/UserField/Realname'), this.state.realname)}
+                    onPress={() => this.onUserEdit(require('./MyAccountEditRealname'), this.state.realname)}
             />
 
           <ListItem text={i18next.t('local:biography')}
                     type='edit-button'
                     action={true}
                     value={this.state.bio}
-                    onPress={() => this.onUserEdit(require('../components/UserField/Bio'), this.state.bio)}
+                    onPress={() => this.onUserEdit(require('./MyAccountEditBio'), this.state.bio)}
             />
-
           <ListItem text={i18next.t('local:location')}
                     type='edit-button'
                     action={true}
                     value={this.state.location}
-                    onPress={() => this.onUserEdit (require('../components/UserField/Location'), this.state.location)}
+                    onPress={() => this.onUserEdit (require('./MyAccountEditLocation'), this.state.location)}
             />
-
           <ListItem text={i18next.t('local:website')}
                     type='edit-button'
                     action={true}
                     value={this.state.website}
-                    onPress={() => this.onUserEdit(require('../components/UserField/Website'), this.state.website)}
+                    onPress={() => this.onUserEdit(require('./MyAccountEditWebsite'), this.state.website)}
             />
 
-          <Text style={s.filler}></Text>
-
+          <Text style={s.filler} />
         </View>
       </ScrollView>
     );

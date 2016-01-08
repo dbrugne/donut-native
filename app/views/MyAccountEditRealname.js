@@ -1,11 +1,11 @@
 'use strict';
 
 var React = require('react-native');
-var s = require('../../styles/style');
-var UserField = require('../UserField');
-var ListItem = require('../../elements/ListItem');
+var s = require('../styles/style');
+var UserField = require('../components/UserField');
+var ListItem = require('../elements/ListItem');
 
-var i18next = require('../../libs/i18next');
+var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'placeholder': 'name and first name'
 });
