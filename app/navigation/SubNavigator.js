@@ -57,7 +57,7 @@ module.exports = function (state, id, initialRoute) {
     onWillBlur: function (event) {
       this.focused = false;
       // find currently focused route
-      var nav = state.existingNavigators[id].scene.__navigator;
+      var nav = state.existingNavigators[id].scene.__navigator; // @todo crash when i'm banned from this room
       var route = nav.state.routeStack[nav.state.presentedIndex];
       route.onWillBlur();
     },
