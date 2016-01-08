@@ -179,6 +179,8 @@ module.exports = {
         return require('./routes/MyAccountPassword');
       case 'MyAccountPreferences':
         return require('./routes/MyAccountPreferences');
+      case 'UserField':
+        return require('./routes/UserField');
       case 'About':
         return require('./routes/About');
       case 'Eutc':

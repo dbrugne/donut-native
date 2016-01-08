@@ -5,24 +5,17 @@ var {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight,
   Component,
   Image,
   ScrollView
 } = React;
-var {
-  Icon
-} = require('react-native-icons');
 
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
-var currentUser = require('../models/current-user');
-var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
-var Button = require('../elements/Button');
 var ListItem = require('../elements/ListItem');
 
 var i18next = require('../libs/i18next');

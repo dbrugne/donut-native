@@ -7,7 +7,7 @@ var LoadingView = require('../elements/Loading');
 var Alert = require('../libs/alert');
 var currentUser = require('../models/current-user');
 var ListItem = require('../elements/ListItem');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 var imageUpload = require('../libs/imageUpload');
 
 var {
@@ -106,12 +106,12 @@ class MyAccountInformation extends Component {
     });
   }
 
-  onUserEdit(component, value) {
-    return this.props.navigator.push(navigation.getUserFieldEdit({
+  onUserEdit (component, value) {
+    navigation.navigate('UserField', {
       component,
       value,
       onSave: this.saveUserData.bind(this)
-    }));
+    });
   }
 
   render() {
