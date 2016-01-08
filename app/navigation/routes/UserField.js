@@ -8,6 +8,9 @@ module.exports = function (data) {
     },
     getTitle () {
       return i18next.t('navigation.change-value');
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };

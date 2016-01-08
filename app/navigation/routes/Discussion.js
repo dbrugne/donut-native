@@ -5,6 +5,7 @@ var {
 var Icon = require('react-native-icons').Icon;
 import ExNavigator from '@exponent/react-native-navigator';
 var navigation = require('../index');
+var state = require('../state');
 
 module.exports = function (model) {
   return {
@@ -48,6 +49,13 @@ module.exports = function (model) {
       }
 
       this.scene.onFocus();
+    },
+    onBack () {
+      if (state.drawerState === 'opened') {
+        state.drawer.close();
+      } else {
+        state.drawer.open();
+      }
     }
   };
 };

@@ -10,6 +10,9 @@ module.exports = function (roomId, user, parentCallback) {
     },
     getTitle () {
       return i18next.t('navigation.manage-user');
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };

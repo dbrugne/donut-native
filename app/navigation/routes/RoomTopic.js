@@ -10,6 +10,9 @@ module.exports = function (model) {
     },
     getTitle () {
       return i18next.t('navigation.update-room-topic');
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };

@@ -11,6 +11,9 @@ module.exports = function (element) {
     },
     getTitle () {
       return i18next.t('navigation.ask-membership-request');
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };

@@ -10,6 +10,9 @@ module.exports = function (element) {
     },
     getTitle () {
       return element.identifier;
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };
