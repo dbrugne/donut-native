@@ -2,7 +2,7 @@
 
 var React = require('react-native');
 var LoadingView = require('../Loading');
-var s = require('./style');
+var s = require('./../../styles/button');
 
 var {
   View,

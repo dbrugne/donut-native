@@ -7,7 +7,7 @@ var ButtonGreen = require('./Button/Green');
 var ButtonPink = require('./Button/Pink');
 var ButtonRed = require('./Button/Red');
 var ButtonWhite = require('./Button/White');
-var s = require('./Button/style');
+var s = require('./../styles/button');
 
 var {
   Component,

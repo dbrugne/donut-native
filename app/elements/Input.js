@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var s = require('./Input/style');
+var s = require('./../styles/input');
 
 var {
   Component,
