@@ -4,11 +4,13 @@ var React = require('react-native');
 var _ = require('underscore');
 var s = require('../styles/style');
 var Link = require('../components/Link');
+var ListItem = require('../components/ListItem');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
 var DiscussionBlockedJoin = require('./DiscussionBlockedJoin');
 var navigation = require('../navigation/index');
 var ConnectionState = require('../components/ConnectionState');
+var app = require('../libs/app');
 
 var {
   StyleSheet,
@@ -51,7 +53,6 @@ class DiscussionBlocked extends Component {
       );
     }
 
-    let disclaimer = this._renderDisclaimer();
     let banned = this._renderBanned();
     let kicked = this._renderKicked();
     let join = null;
@@ -82,10 +83,14 @@ class DiscussionBlocked extends Component {
           {kicked}
           {join}
 
-          <Link onPress={() => this.props.model.leaveBlocked()}
-                text={i18next.t('local:close')}
-                type='underlined'
-            />
+        <ListItem type='button'
+                  onPress={() => this.props.model.leaveBlocked()}
+                  text={i18next.t('local:close')}
+                  ation
+                  first
+                  last
+                  warning
+                  />
 
         </ScrollView>
       </View>
@@ -231,12 +236,6 @@ var styles = StyleSheet.create({
     color: '#333333',
     fontFamily: 'Open Sans',
     fontSize: 16
-  },
-  disclaimerCtn: {
-
-  },
-  disclaimer: {
-
   }
 });
 
