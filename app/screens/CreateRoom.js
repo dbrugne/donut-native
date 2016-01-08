@@ -4,7 +4,7 @@ var React = require('react-native');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var navigation = require('../navigation/index');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 var ConnectionState = require('../components/ConnectionState');
 
 var {

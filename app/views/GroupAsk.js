@@ -16,7 +16,7 @@ var navigation = require('../navigation/index');
 var MembershipRequest = require('./GroupAskRequest');
 var MembershipPassword = require('./GroupAskPassword');
 var MembershipEmail = require('./GroupAskEmail');
-var LoadingView = require('../elements/Loading');
+var LoadingView = require('../components/Loading');
 var ConnectionState = require('../components/ConnectionState');
 
 var i18next = require('../libs/i18next');

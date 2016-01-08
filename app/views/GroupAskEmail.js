@@ -14,7 +14,7 @@ var s = require('../styles/style');
 var _ = require('underscore');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 var ConnectionState = require('../components/ConnectionState');
 
 var i18next = require('../libs/i18next');

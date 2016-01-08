@@ -10,9 +10,9 @@ var {
 } = React;
 
 var app = require('../libs/app');
-var RoomProfile = require('../components/RoomProfile');
-var UserProfile = require('../components/UserProfile');
 var ConnectionState = require('../components/ConnectionState');
+var RoomProfile = require('./ProfileRoom');
+var UserProfile = require('./ProfileUser');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
