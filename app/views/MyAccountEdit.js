@@ -145,39 +145,40 @@ class MyAccountInformation extends Component {
 
             <ListItem text={i18next.t('local:avatar')}
                       type='edit-button'
-                      first={true}
-                      action={true}
+                      first
+                      action
                       onPress={() => this._updateAvatar()}
               />
             <ListItem text={i18next.t('local:realname')}
                       type='edit-button'
-                      action={true}
+                      action
                       value={this.state.realname}
                       onPress={() => this.onUserEdit(require('../components/UserField/Realname'), this.state.realname)}
               />
 
             <ListItem text={i18next.t('local:biography')}
                       type='edit-button'
-                      action={true}
+                      action
                       value={this.state.bio}
                       onPress={() => this.onUserEdit(require('../components/UserField/Bio'), this.state.bio)}
               />
 
             <ListItem text={i18next.t('local:location')}
                       type='edit-button'
-                      action={true}
+                      action
                       value={this.state.location}
                       onPress={() => this.onUserEdit (require('../components/UserField/Location'), this.state.location)}
               />
 
             <ListItem text={i18next.t('local:website')}
                       type='edit-button'
-                      action={true}
+                      action
+                      last
                       value={this.state.website}
                       onPress={() => this.onUserEdit(require('../components/UserField/Website'), this.state.website)}
               />
 
-            <Text style={s.filler}></Text>
+            <Text style={s.filler} />
 
           </View>
         </ScrollView>
