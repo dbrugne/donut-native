@@ -10,10 +10,8 @@ var {
 } = React;
 
 var app = require('../libs/app');
-var common = require('@dbrugne/donut-common/mobile');
 var RoomProfile = require('../components/RoomProfile');
 var UserProfile = require('../components/UserProfile');
-var navigation = require('../libs/navigation');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
