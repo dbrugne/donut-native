@@ -13,7 +13,7 @@ var _ = require('underscore');
 var hyperlink = require('../../libs/hyperlink');
 var s = require('../../styles/events');
 var app = require('../../libs/app');
-var FileComponent = require('../../elements/File');
+var FileComponent = require('../File');
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'local', {

@@ -6,8 +6,8 @@ var ForgotView = require('./forgot');
 var EutcView = require('./eutc');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
-var Button = require('../elements/Button');
-var Link = require('../elements/Link');
+var Button = require('../components/Button');
+var Link = require('../components/Link');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {

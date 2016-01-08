@@ -12,7 +12,7 @@ var {
 
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/mobile');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 var s = require('../styles/style');
 var alert = require('../libs/alert');
 var ConnectionState = require('../components/ConnectionState');

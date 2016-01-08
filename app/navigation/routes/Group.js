@@ -6,7 +6,7 @@ module.exports = function (element) {
     id: 'group' + element.id,
     initial: true,
     renderScene: function (navigator) {
-      let GroupHome = require('../../screens/Group');
+      let GroupHome = require('../../views/Group');
       return <GroupHome navigator={navigator} element={element} />;
     },
     getTitle () {

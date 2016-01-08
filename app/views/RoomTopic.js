@@ -7,8 +7,8 @@ var {
 } = React;
 
 var _ = require('underscore');
-var Input = require('../elements/Input');
-var Button = require('../elements/Button');
+var Input = require('../components/Input');
+var Button = require('../components/Button');
 var i18next = require('../libs/i18next');
 var app = require('../libs/app');
 var alert = require('../libs/alert');

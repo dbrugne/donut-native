@@ -1,6 +1,6 @@
 var React = require('react-native');
 var Platform = require('Platform');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var s = require('../styles/style');

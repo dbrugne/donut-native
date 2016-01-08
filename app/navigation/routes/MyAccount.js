@@ -7,7 +7,7 @@ module.exports = function () {
     id: 'my-account',
     initial: true,
     getSceneClass () {
-      return require('../../screens/MyAccount');
+      return require('../../views/MyAccount');
     },
     getTitle () {
       return i18next.t('navigation.my-account');

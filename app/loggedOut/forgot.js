@@ -2,8 +2,8 @@ var React = require('react-native');
 var Platform = require('Platform');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
-var Link = require('../elements/Link');
-var Button = require('../elements/Button');
+var Link = require('../components/Link');
+var Button = require('../components/Button');
 var LoadingModal = require('../components/LoadingModal');
 
 var {

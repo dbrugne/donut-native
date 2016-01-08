@@ -7,7 +7,7 @@ module.exports = function () {
     id: 'notification',
     initial: true,
     getSceneClass () {
-      return require('../../screens/Notifications');
+      return require('../../views/Notifications');
     },
     getTitle () {
       return i18next.t('navigation.notifications');

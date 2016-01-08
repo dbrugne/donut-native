@@ -7,7 +7,7 @@ module.exports = function () {
     id: 'search',
     initial: true,
     getSceneClass () {
-      return require('../../screens/Search');
+      return require('../../views/Search');
     },
     getTitle () {
       return i18next.t('navigation.search');
