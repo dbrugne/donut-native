@@ -25,7 +25,7 @@ var style = {
     borderStyle: 'solid'
   },
   listGroupTitle: {
-    color: '#777777',
+    color: '#999999',
     fontFamily: 'Open Sans',
     fontSize: 14,
     marginHorizontal: 10,
@@ -57,7 +57,7 @@ var style = {
     paddingTop: 2
   },
   listGroupItemValue: {
-    color: '#777',
+    color: '#999999',
     fontFamily: 'Open Sans',
     fontSize: 12,
     marginRight: 10,

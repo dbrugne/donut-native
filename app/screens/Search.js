@@ -262,7 +262,10 @@ var styles = StyleSheet.create({
   },
   button: {
     height: 40,
-    flex: 1
+    flex: 1,
+    borderBottomWidth:1,
+    borderStyle: 'solid',
+    borderColor: '#3498db'
   },
   buttonActive: {
     borderBottomWidth:3,
@@ -306,7 +309,7 @@ var styles = StyleSheet.create({
   },
   description: {
     marginLeft: 5,
-    color: '#777',
+    color: '#999999',
     fontFamily: 'Open Sans',
     fontSize: 16,
     fontStyle: 'italic'

@@ -24,16 +24,23 @@ class SearchResultRoom extends Component {
       <TouchableHighlight onPress={this.props.onPress} >
         <View style={s.container}>
           {this._renderThumbnail(this.props.image)}
+          {this._renderMode()}
           <View style={s.rightContainer}>
             <View style={s.topContainer}>
               <Text style={s.title}>{this.props.identifier}</Text>
-              <Text style={s.mode}>{(this.props.mode) ? this.props.mode : ''}</Text>
             </View>
             {this._renderDescription()}
           </View>
         </View>
       </TouchableHighlight>
     );
+  }
+
+  _renderMode() {
+    if (!this.props.mode) {
+      return null;
+    }
+    return (<Text style={s.mode}>{this.props.mode}</Text>);
   }
 
   _renderThumbnail (thumbnail) {

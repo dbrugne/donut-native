@@ -404,7 +404,7 @@ routes.getGroupRoomsList = function (element) {
     id: 'group-rooms-list' + element.user.isMember,
     renderScene: function (navigator) {
       let GroupRoomsList = require('../views/GroupRoomsList');
-      return <GroupRoomsList navigator={navigator} id={element.id} user={element.user}/>;
+      return <GroupRoomsList navigator={navigator} id={element.id} user={element.user} />;
     },
     getTitle: function () {
       return element.name;

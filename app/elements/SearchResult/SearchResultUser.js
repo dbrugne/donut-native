@@ -29,7 +29,7 @@ class SearchResultUser extends Component {
           <View style={s.rightContainer}>
             <Text>
               {this._renderRealname()}
-              <Text style={[s.title, this.props.realname && {fontWeight: 'normal', color:'#777'}]}>{this.props.identifier}</Text>
+              <Text style={[s.title, this.props.realname && {fontWeight: 'normal', color:'#999999'}]}>{this.props.identifier}</Text>
             </Text>
             {this._renderBio()}
           </View>

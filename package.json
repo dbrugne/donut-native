@@ -28,6 +28,10 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "fs": "0.0.2",
+    "grunt": "^0.4.5",
+    "grunt-exec": "^0.4.6",
+    "grunt-extend-config": "^0.9.3",
     "semistandard": "^7.0.4"
   }
 }
