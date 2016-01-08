@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var React = require('react-native');
 var {
   TouchableOpacity
@@ -13,7 +14,7 @@ module.exports = function (model) {
     initial: true,
     model: model, // only for discussion routes
     renderScene: function (navigator) {
-      var Discussion = (model.get('blocked') === true)
+      var Discussion = (_.contains(['kicked', 'banned', true], model.get('blocked'))) // @todo dbrugne why kicked or true hrtr ???
         ? require('../../views/DiscussionBlocked')
         : require('../../views/Discussion');
 
@@ -48,7 +49,9 @@ module.exports = function (model) {
         return;
       }
 
-      this.scene.onFocus();
+      if (this.scene.onFocus) {
+        this.scene.onFocus();
+      }
     },
     onBack () {
       if (state.drawerState === 'opened') {
