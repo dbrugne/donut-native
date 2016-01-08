@@ -11,6 +11,9 @@ module.exports = function (element) {
     },
     getTitle () {
       return element.name;
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };

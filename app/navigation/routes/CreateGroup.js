@@ -8,6 +8,9 @@ module.exports = function () {
     },
     getTitle () {
       return i18next.t('navigation.create-group');
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };

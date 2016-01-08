@@ -9,6 +9,9 @@ module.exports = function (element, refreshParentView) {
     },
     getTitle () {
       return i18next.t('navigation.manage-email');
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };

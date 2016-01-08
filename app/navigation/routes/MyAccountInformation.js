@@ -10,6 +10,9 @@ module.exports = function () {
     },
     getTitle () {
       return i18next.t('navigation.my-informations');
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };

@@ -11,6 +11,9 @@ module.exports = function (id) {
     },
     getTitle () {
       return i18next.t('navigation.ask-membership-password');
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };

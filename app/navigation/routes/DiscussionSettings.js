@@ -11,6 +11,9 @@ module.exports = function (model) {
     },
     getTitle () {
       return i18next.t('navigation.settings');
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };

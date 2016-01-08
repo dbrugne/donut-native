@@ -6,17 +6,17 @@ var {
   BackAndroid
 } = React;
 
-var state = require('./../state');
+var state = require('../state');
 
 module.exports = React.createClass({
   componentDidMount () {
     if (Platform.OS === 'android') {
-      BackAndroid.addEventListener('hardwareBackPress', this.onPress.bind(this));
+      BackAndroid.addEventListener('hardwareBackPress', () => this.onPress());
     }
   },
   componentWillUnmount () {
     if (Platform.OS === 'android') {
-      BackAndroid.removeEventListener('hardwareBackPress', this.onPress.bind(this));
+      BackAndroid.removeEventListener('hardwareBackPress', () => this.onPress());
     }
   },
   render () {
@@ -24,9 +24,12 @@ module.exports = React.createClass({
   },
   onPress () {
     if (state.currentRoute && state.currentRoute.onBack) {
-      state.currentRoute.onBack();
-      // returning true to prevent default back button action to be run
-      return true;
+      if (typeof state.currentRoute.onBack === 'function') {
+        state.currentRoute.onBack();
+        // returning true to prevent default back button action to be run
+        return true;
+      }
+      return false;
     }
   }
 });

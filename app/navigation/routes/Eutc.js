@@ -9,6 +9,9 @@ module.exports = function () {
     },
     getTitle () {
       return i18next.t('navigation.eutc');
+    },
+    onBack () {
+      this.scene.props.navigator.pop();
     }
   };
 };

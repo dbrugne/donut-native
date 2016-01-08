@@ -1,4 +1,5 @@
 var React = require('react-native');
+var state = require('../state');
 
 module.exports = function (element) {
   return {
@@ -10,6 +11,13 @@ module.exports = function (element) {
     },
     getTitle () {
       return element.name;
+    },
+    onBack () {
+      if (state.drawerState === 'opened') {
+        state.drawer.close();
+      } else {
+        state.drawer.open();
+      }
     }
   };
 };
