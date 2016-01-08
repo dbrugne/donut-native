@@ -18,8 +18,7 @@ module.exports = React.createClass({
       <View style={[s.userBlock, s.event, {marginBottom:0}]}>
         {this._renderAvatar(this.props.data.avatar)}
         <View style={{flexDirection:'row', marginLeft:55}}>
-          <Username style={s.username}
-                    user_id={this.props.data.user_id}
+          <Username user_id={this.props.data.user_id}
                     username={this.props.data.username}
                     realname={this.props.data.realname}
                     navigator={this.props.navigator} />
