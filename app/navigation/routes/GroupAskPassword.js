@@ -7,7 +7,7 @@ module.exports = function (id) {
   return {
     renderScene: function (navigator) {
       let GroupAskMembershipPassword = require('../../views/GroupAskPassword');
-      return (<GroupAskMembershipPassword navigator={navigator} id={id} />);
+      return (<GroupAskMembershipPassword navigator={navigator} id={id} scroll />);
     },
     getTitle () {
       return i18next.t('navigation.ask-membership-password');
