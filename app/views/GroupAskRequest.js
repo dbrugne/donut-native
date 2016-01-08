@@ -12,7 +12,7 @@ var {
 var s = require('../styles/style');
 var alert = require('../libs/alert');
 var app = require('../libs/app');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
 

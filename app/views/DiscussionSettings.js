@@ -4,7 +4,7 @@ var _ = require('underscore');
 var currentUser = require('../models/current-user');
 var app = require('../libs/app');
 var s = require('../styles/style');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 var navigation = require('../navigation/index');
 var common = require('@dbrugne/donut-common/mobile');
 

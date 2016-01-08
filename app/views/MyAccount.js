@@ -4,7 +4,7 @@ var React = require('react-native');
 var currentUser = require('../models/current-user');
 var s = require('../styles/style');
 var navigation = require('../navigation/index');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 
 var {
   Component,

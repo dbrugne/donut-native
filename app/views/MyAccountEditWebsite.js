@@ -3,7 +3,7 @@
 var React = require('react-native');
 var s = require('../styles/style');
 var UserField = require('../components/UserField');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {

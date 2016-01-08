@@ -3,7 +3,7 @@ var React = require('react-native');
 var app = require('../libs/app');
 var s = require('../styles/style');
 var alert = require('../libs/alert');
-var Button = require('../elements/Button');
+var Button = require('../components/Button');
 
 var {
   Component,

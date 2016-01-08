@@ -17,8 +17,8 @@ var Platform = require('Platform');
 var currentUser = require('../models/current-user');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
-var Button = require('../elements/Button');
-var Link = require('../elements/Link');
+var Button = require('../components/Button');
+var Link = require('../components/Link');
 var LoadingModal = require('../components/LoadingModal');
 
 var i18next = require('../libs/i18next');

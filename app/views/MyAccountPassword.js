@@ -1,10 +1,10 @@
 var React = require('react-native');
 var Platform = require('Platform');
 var currentUser = require('../models/current-user');
-var LoadingView = require('../elements/Loading');
+var LoadingView = require('../components/Loading');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
-var Button = require('../elements/Button');
+var Button = require('../components/Button');
 
 var s = require('../styles/style');
 

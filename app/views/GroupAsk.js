@@ -9,14 +9,14 @@ var {
   StyleSheet
   } = React;
 
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 var s = require('../styles/style');
 var app = require('../libs/app');
 var navigation = require('../navigation/index');
 var MembershipRequest = require('./GroupAskRequest');
 var MembershipPassword = require('./GroupAskPassword');
 var MembershipEmail = require('./GroupAskEmail');
-var LoadingView = require('../elements/Loading');
+var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
 

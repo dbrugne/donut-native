@@ -2,9 +2,9 @@ var React = require('react-native');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
-var LoadingView = require('../elements/Loading');
+var LoadingView = require('../components/Loading');
 var Alert = require('../libs/alert');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 var navigation = require('../navigation/index');
 var imageUpload = require('../libs/imageUpload');
 

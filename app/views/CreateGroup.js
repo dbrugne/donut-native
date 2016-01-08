@@ -3,7 +3,7 @@
 var React = require('react-native');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 
 var {
   StyleSheet,

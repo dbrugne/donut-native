@@ -3,10 +3,10 @@
 var React = require('react-native');
 var s = require('../styles/style');
 var app = require('../libs/app');
-var Link = require('../elements/Link');
+var Link = require('../components/Link');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
-var Button = require('../elements/Button');
+var Button = require('../components/Button');
 var Alert = require('../libs/alert');
 
 var {

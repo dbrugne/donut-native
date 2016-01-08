@@ -16,7 +16,7 @@ var app = require('../libs/app');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {

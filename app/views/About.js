@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var React = require('react-native');
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 var s = require('../styles/style');
 var config = require('../libs/config')();
 var storage = require('../libs/storage');

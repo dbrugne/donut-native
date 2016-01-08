@@ -21,8 +21,8 @@ var navigation = require('../navigation/index');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
-var Link = require('../elements/Link');
-var ListItem = require('../elements/ListItem');
+var Link = require('../components/Link');
+var ListItem = require('../components/ListItem');
 var alert = require('../libs/alert');
 
 var i18next = require('../libs/i18next');
