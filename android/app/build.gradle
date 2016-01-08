@@ -47,7 +47,16 @@ apply plugin: "com.android.application"
  * ]
  */
 
+import groovy.json.JsonSlurper
+
 apply from: "react.gradle"
+
+def computeVersionName() {
+    // dynamically retrieve version from package.json
+    def slurper = new JsonSlurper()
+    def json = slurper.parse(file('../../package.json'), "utf-8")
+    return json.version
+}
 
 android {
     compileSdkVersion 23
@@ -58,7 +67,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0.0"
+        versionName computeVersionName()
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -89,12 +98,14 @@ android {
         // no debug features, connect to test.donut.me
         donutReleaseTest.initWith(buildTypes.release)
         donutReleaseTest {
+            applicationIdSuffix ".test"
             minifyEnabled false  // Set this to true to enable Proguard
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.donutReleaseTest
         }
         // debug features, connect to test.donut.me
         debug {
+            applicationIdSuffix ".debug"
         }
     }
 }

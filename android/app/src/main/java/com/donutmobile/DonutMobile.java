@@ -8,6 +8,6 @@ public class DonutMobile extends Application
     @Override
     public void onCreate() {
         super.onCreate();
-        Parse.initialize(getApplicationContext(), "HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g", "scK5G6HLyEATHuytp74POetQozngZBhs9eUmnp4q");
+        Parse.initialize(this, "HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g", "scK5G6HLyEATHuytp74POetQozngZBhs9eUmnp4q");
     }
 }
