@@ -565,17 +565,6 @@ routes.getAbout = function () {
     }
   });
 };
-routes.getColorPicker = function () {
-  return getRoute({
-    id: 'color-picker',
-    getSceneClass: function () {
-      return require('../views/ColorPicker');
-    },
-    getTitle: function () {
-      return i18next.t('navigation.color-picker');
-    }
-  });
-};
 routes.getDiscussionSettings = function (id, model) {
   return getRoute({
     id: 'discussion-settings-' + id,

@@ -22,7 +22,6 @@ var {
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'avatar': 'Avatar',
-  'color': 'Color',
   'realname': 'Realname',
   'biography': 'Biography',
   'location': 'Location',
@@ -31,7 +30,7 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class MyAccountInformation extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       username: currentUser.get('username'),
@@ -146,12 +145,6 @@ class MyAccountInformation extends Component {
                     first={true}
                     action={true}
                     onPress={() => this._updateAvatar()}
-            />
-          <ListItem text={i18next.t('local:color')}
-                    type='color-button'
-                    action={true}
-                    color={this.state.color}
-                    onPress={() => this.props.navigator.push(navigation.getColorPicker())}
             />
           <ListItem text={i18next.t('local:realname')}
                     type='edit-button'
