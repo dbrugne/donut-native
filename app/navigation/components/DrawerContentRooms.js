@@ -78,7 +78,7 @@ class NavigationRoomsView extends Component {
         <TouchableHighlight
           style={styles.linkBlock}
           underlayColor= '#414041'
-          onPress={() => navigation.navigate('group', {name: e.group_name, id: e.group_id})}
+          onPress={() => navigation.navigate('Group', {name: e.group_name, id: e.group_id})}
           >
           <View style={styles.item}>
             <Text style={styles.itemTitle}>#{e.group_name}</Text>
