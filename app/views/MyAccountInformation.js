@@ -9,6 +9,7 @@ var currentUser = require('../models/current-user');
 var ListItem = require('../elements/ListItem');
 var navigation = require('../navigation/index');
 var imageUpload = require('../libs/imageUpload');
+var ConnectionState = require('../components/ConnectionState');
 
 var {
   Component,
@@ -129,55 +130,58 @@ class MyAccountInformation extends Component {
     }
 
     return (
-      <ScrollView style={{backgroundColor: '#f0f0f0'}}>
-        <View style={styles.container}>
+      <View style={{flex: 1}}>
+        <ConnectionState/>
+        <ScrollView style={{backgroundColor: '#f0f0f0'}}>
+          <View style={styles.container}>
 
-        <View style={styles.containerHorizontal}>
-          {this._renderAvatar(this.state.avatar)}
-          <View style={styles.containerVertical}>
-            {realname}
-            <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
+          <View style={styles.containerHorizontal}>
+            {this._renderAvatar(this.state.avatar)}
+            <View style={styles.containerVertical}>
+              {realname}
+              <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
+            </View>
           </View>
-        </View>
 
-          <ListItem text={i18next.t('local:avatar')}
-                    type='edit-button'
-                    first={true}
-                    action={true}
-                    onPress={() => this._updateAvatar()}
-            />
-          <ListItem text={i18next.t('local:realname')}
-                    type='edit-button'
-                    action={true}
-                    value={this.state.realname}
-                    onPress={() => this.onUserEdit(require('../components/UserField/Realname'), this.state.realname)}
-            />
+            <ListItem text={i18next.t('local:avatar')}
+                      type='edit-button'
+                      first={true}
+                      action={true}
+                      onPress={() => this._updateAvatar()}
+              />
+            <ListItem text={i18next.t('local:realname')}
+                      type='edit-button'
+                      action={true}
+                      value={this.state.realname}
+                      onPress={() => this.onUserEdit(require('../components/UserField/Realname'), this.state.realname)}
+              />
 
-          <ListItem text={i18next.t('local:biography')}
-                    type='edit-button'
-                    action={true}
-                    value={this.state.bio}
-                    onPress={() => this.onUserEdit(require('../components/UserField/Bio'), this.state.bio)}
-            />
+            <ListItem text={i18next.t('local:biography')}
+                      type='edit-button'
+                      action={true}
+                      value={this.state.bio}
+                      onPress={() => this.onUserEdit(require('../components/UserField/Bio'), this.state.bio)}
+              />
 
-          <ListItem text={i18next.t('local:location')}
-                    type='edit-button'
-                    action={true}
-                    value={this.state.location}
-                    onPress={() => this.onUserEdit (require('../components/UserField/Location'), this.state.location)}
-            />
+            <ListItem text={i18next.t('local:location')}
+                      type='edit-button'
+                      action={true}
+                      value={this.state.location}
+                      onPress={() => this.onUserEdit (require('../components/UserField/Location'), this.state.location)}
+              />
 
-          <ListItem text={i18next.t('local:website')}
-                    type='edit-button'
-                    action={true}
-                    value={this.state.website}
-                    onPress={() => this.onUserEdit(require('../components/UserField/Website'), this.state.website)}
-            />
+            <ListItem text={i18next.t('local:website')}
+                      type='edit-button'
+                      action={true}
+                      value={this.state.website}
+                      onPress={() => this.onUserEdit(require('../components/UserField/Website'), this.state.website)}
+              />
 
-          <Text style={s.filler}></Text>
+            <Text style={s.filler}></Text>
 
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
+      </View>
     );
   }
 

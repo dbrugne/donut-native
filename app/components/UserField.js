@@ -2,6 +2,7 @@
 
 var React = require('react-native');
 var s = require('../styles/style');
+var ConnectionState = require('./ConnectionState');
 
 var {
   Component,
@@ -31,6 +32,7 @@ class UserField extends Component {
     var field = this.renderField();
     return (
       <View style={{flexDirection: 'column', justifyContent: 'center', backgroundColor: '#f0f0f0', flex: 1}}>
+        <ConnectionState/>
         <Text style={[s.h1, {marginVertical: 10, marginHorizontal: 10}]}>{i18next.t('local:change')} {this.key}</Text>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 5}}>
           {field}

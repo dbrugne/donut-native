@@ -4,6 +4,7 @@ var ListItem = require('../elements/ListItem');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var s = require('../styles/style');
+var ConnectionState = require('../components/ConnectionState');
 
 var {
   Component,
@@ -27,6 +28,7 @@ class ChangeEmailView extends Component {
   render() {
     return (
       <View style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0', paddingTop: 20, flex: 1 }}>
+        <ConnectionState/>
         <View style={s.listGroup}>
 
           <ListItem

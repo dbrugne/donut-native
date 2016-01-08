@@ -5,6 +5,7 @@ var s = require('../styles/style');
 var config = require('../libs/config')();
 var storage = require('../libs/storage');
 var app = require('../libs/app');
+var ConnectionState = require('../components/ConnectionState');
 
 var debug = require('../libs/debug')('storage');
 
@@ -40,22 +41,25 @@ class AboutView extends Component {
 
   render () {
     return (
-      <ScrollView>
-        <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1, backgroundColor: '#f0f0f0' }}>
-          <View style={s.listGroup}>
+      <View style={{flex: 1}}>
+        <ConnectionState/>
+        <ScrollView>
+          <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1, backgroundColor: '#f0f0f0' }}>
+            <View style={s.listGroup}>
 
-            <TouchableHighlight
-              onLongPress={this.toggleConfig.bind(this)}
-              underlayColor= '#DDD'
-              >
-              <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
-                <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('local:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}</Text>
-              </View>
-            </TouchableHighlight>
-            {this._renderConfig()}
+              <TouchableHighlight
+                onLongPress={this.toggleConfig.bind(this)}
+                underlayColor= '#DDD'
+                >
+                <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
+                  <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('local:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}</Text>
+                </View>
+              </TouchableHighlight>
+              {this._renderConfig()}
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     );
   }
 

@@ -11,6 +11,7 @@ var {
 
 var GroupProfile = require('../components/GroupProfile');
 var app = require('../libs/app');
+var ConnectionState = require('../components/ConnectionState');
 
 class GroupHomeView extends Component {
 
@@ -47,6 +48,7 @@ class GroupHomeView extends Component {
     if (this.state.loading) {
       return (
         <View style={styles.titleContainer}>
+          <ConnectionState/>
           <Text style={styles.titleText}>
             <Text>loading</Text>
             <Text>#{this.props.element.name}</Text>

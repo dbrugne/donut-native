@@ -6,6 +6,7 @@ var ListItem = require('../elements/ListItem');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var s = require('../styles/style');
+var ConnectionState = require('../components/ConnectionState');
 
 var {
   Component,
@@ -67,6 +68,7 @@ class UserPreferencesView extends Component {
 
     return (
       <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1, backgroundColor: '#f0f0f0' }}>
+        <ConnectionState/>
         <Text style={[s.h1, s.textCenter, s.marginTop5]}>{i18next.t('local:set-preferences')}</Text>
 
         <Text style={[s.listGroupTitle, s.marginTop20]}>{i18next.t('local:notify-me')}</Text>

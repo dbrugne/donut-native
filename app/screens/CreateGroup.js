@@ -4,12 +4,14 @@ var React = require('react-native');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var ListItem = require('../elements/ListItem');
+var ConnectionState = require('../components/ConnectionState');
 
 var {
   StyleSheet,
   Text,
   ScrollView,
-  Component
+  Component,
+  View
   } = React;
 
 var i18next = require('../libs/i18next');
@@ -31,33 +33,36 @@ class RoomCreateView extends Component {
 
   render () {
     return (
-      <ScrollView style={styles.container}>
+      <View style={{flex: 1}}>
+        <ConnectionState/>
+        <ScrollView style={styles.container}>
 
-        <Text style={styles.block}>{i18next.t('local:disclaimer2')}</Text>
+          <Text style={styles.block}>{i18next.t('local:disclaimer2')}</Text>
 
-        <ListItem
-          type='input'
-          first
-          last
-          autoCapitalize='none'
-          placeholder={i18next.t('local:name')}
-          onChangeText={(text) => this.setState({groupName: text})}
-          value={this.state.groupName}
-          help={i18next.t('local:help')}
-          />
+          <ListItem
+            type='input'
+            first
+            last
+            autoCapitalize='none'
+            placeholder={i18next.t('local:name')}
+            onChangeText={(text) => this.setState({groupName: text})}
+            value={this.state.groupName}
+            help={i18next.t('local:help')}
+            />
 
-        <Text style={[styles.block]}>{i18next.t('local:disclaimer')}</Text>
+          <Text style={[styles.block]}>{i18next.t('local:disclaimer')}</Text>
 
-        <ListItem
-          type='button'
-          first
-          last
-          action
-          onPress={(this.onGroupCreate.bind(this))}
-          text={i18next.t('local:create')}
-          />
+          <ListItem
+            type='button'
+            first
+            last
+            action
+            onPress={(this.onGroupCreate.bind(this))}
+            text={i18next.t('local:create')}
+            />
 
-      </ScrollView>
+        </ScrollView>
+      </View>
     );
   }
 

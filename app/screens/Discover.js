@@ -10,6 +10,7 @@ var {
 var config = require('../libs/config')();
 var HomeFeatured = require('../components/HomeFeatured');
 var currentUser = require('../models/current-user');
+var ConnectionState = require('../components/ConnectionState');
 
 var i18next = require('../libs/i18next');
 
@@ -32,6 +33,7 @@ class Discover extends Component {
     var version = config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')';
     return (
       <View style={{flex: 1, backgroundColor: '#f0f0f0'}}>
+        <ConnectionState/>
         {this._renderConfirmed()}
         <HomeFeatured {...this.props} />
         <Text>DONUT {version}</Text>

@@ -4,6 +4,7 @@ var app = require('../libs/app');
 var ListItem = require('../elements/ListItem');
 var Alert = require('../libs/alert');
 var s = require('../styles/style');
+var ConnectionState = require('../components/ConnectionState');
 
 var {
   Component,
@@ -30,6 +31,7 @@ class AddEmailView extends Component {
     return (
 
       <View style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0', paddingTop: 20, flex: 1 }}>
+        <ConnectionState/>
         <View style={s.listGroup}>
 
           <ListItem

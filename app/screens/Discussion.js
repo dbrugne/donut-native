@@ -18,6 +18,7 @@ var LoadingModal = require('../components/LoadingModal');
 var ConfirmationModal = require('../components/ConfirmationModal');
 var imageUpload = require('../libs/imageUpload');
 var Alert = require('../libs/alert');
+var ConnectionState = require('../components/ConnectionState');
 
 class Discussion extends Component {
   constructor (props) {
@@ -62,6 +63,7 @@ class Discussion extends Component {
   render() {
     return (
       <View style={styles.main}>
+        <ConnectionState/>
         <EventsView ref='events' title={this.props.model.get('identifier')} model={this.props.model} {...this.props} />
         <InputView ref='input'
                    model={this.props.model}

@@ -15,6 +15,7 @@ var common = require('@dbrugne/donut-common/mobile');
 var ListItem = require('../elements/ListItem');
 var s = require('../styles/style');
 var alert = require('../libs/alert');
+var ConnectionState = require('../components/ConnectionState');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -56,6 +57,7 @@ class ProfileView extends Component {
     }
     return (
       <View style={{flex: 1}}>
+        <ConnectionState/>
         <ScrollView style={styles.main}>
           <View style={[styles.container, {position: 'relative'}]}>
             <Image style={styles.avatar} source={{uri: avatarUrl}} />

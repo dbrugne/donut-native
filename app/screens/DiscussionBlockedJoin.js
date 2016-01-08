@@ -8,6 +8,7 @@ var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
 var Button = require('../elements/Button');
 var Alert = require('../libs/alert');
+var ConnectionState = require('../components/ConnectionState');
 
 var {
   StyleSheet,
@@ -38,7 +39,8 @@ class DiscussionBlockedJoin extends Component {
     let password = this._renderPassword();
 
     return (
-      <View>
+      <View style={{flex: 1}}>
+        <ConnectionState/>
         {allowUserRequest}
         {password}
       </View>

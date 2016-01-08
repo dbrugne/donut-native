@@ -15,6 +15,7 @@ var _ = require('underscore');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var ListItem = require('../elements/ListItem');
+var ConnectionState = require('../components/ConnectionState');
 
 var i18next = require('../libs/i18next');
 
@@ -66,11 +67,14 @@ class GroupAskMembershipEmail extends Component {
 
     if (this.props.scroll) {
       return (
-        <ScrollView style={styles.main}>
-          <View style={styles.container}>
-            {content}
-          </View>
-        </ScrollView>
+        <View style={{flex: 1}}>
+          <ConnectionState/>
+          <ScrollView style={styles.main}>
+            <View style={styles.container}>
+              {content}
+            </View>
+          </ScrollView>
+        </View>
       );
     }
 

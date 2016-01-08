@@ -13,34 +13,21 @@ var app = require('../../libs/app');
 var debug = require('../../libs/debug')('navigation');
 
 module.exports = React.createClass({
-  getInitialState: function () {
-    return {
-      status: app.user.get('status')
-    };
-  },
   componentDidMount () {
     debug.log('mounting RootNavigator');
 
     // set navigation state
     state.rootNavigator = this.refs.rootNavigator;
     state.drawer = this.refs.drawer;
-
-    app.user.on('change:status', () => this.setState({status: app.user.get('status')}), this);
   },
   componentWillUnmount () {
     debug.log('unmounting RootNavigator');
 
     // reset navigation state (@logout)
     state.reset();
-
-    app.user.off(null, null, this);
   },
   render () {
     var Navigation = require('./DrawerContent');
-
-    var navigationBarHeight = (Platform.OS === 'android')
-      ? 56
-      : 64;
 
     return (
       <Drawer
@@ -63,31 +50,6 @@ module.exports = React.createClass({
           initialRoute={state.getInitialRoute()}
           style={{ flex: 1 }}
         />
-        {
-          (this.state.status === 'offline')
-            ? <View style={{
-              height: 30,
-              backgroundColor: '#F00',
-              position: 'absolute',
-              top: navigationBarHeight,
-              left: 0,
-              right: 0,
-              alignItems: 'center',
-              justifyContent: 'center'}}>
-            <Text style={{color: '#FFF'}}>{this.state.status}</Text></View>
-            : (this.state.status === 'connecting')
-            ? <View style={{
-                height: 30,
-                backgroundColor: '#FA0',
-                position: 'absolute',
-                top: navigationBarHeight,
-                left: 0,
-                right: 0,
-                alignItems: 'center',
-                justifyContent: 'center'}}>
-            <Text style={{color: '#FFF'}}>{this.state.status}</Text></View>
-            : null
-        }
       </Drawer>
     );
   },

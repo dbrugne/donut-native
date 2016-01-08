@@ -12,6 +12,7 @@ var {
 var app = require('../libs/app');
 var RoomProfile = require('../components/RoomProfile');
 var UserProfile = require('../components/UserProfile');
+var ConnectionState = require('../components/ConnectionState');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {

@@ -71,18 +71,6 @@ var initialRouteTemplate = {
 };
 
 var nonInitialRouteTemplate = {
-  onBack () {
-    if (state.drawerState === 'opened') {
-      return require('./index').closeDrawer();
-    }
-
-    var baseRoute = ['home', 'my-account', 'search', 'create-room', 'create-group', 'notification'];
-    var isDiscussion = (state.currentRoute && state.currentRoute.model && (state.currentRoute.model.get('type') === 'onetoone' || state.currentRoute.model.get('type') === 'room'));
-    if (baseRoute.indexOf(state.currentRoute.id) !== -1 || isDiscussion) {
-      return require('./index').openDrawer();
-    }
-    this.scene.props.navigator.pop();
-  },
   renderBackButton (navigator) {
     return (
       <TouchableOpacity

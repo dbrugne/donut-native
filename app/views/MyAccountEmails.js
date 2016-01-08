@@ -8,6 +8,7 @@ var ListItem = require('../elements/ListItem');
 var app = require('../libs/app');
 var navigation = require('../navigation/index');
 var s = require('../styles/style');
+var ConnectionState = require('../components/ConnectionState');
 
 var {
   Component,
@@ -60,25 +61,28 @@ class EmailsView extends Component {
     }
 
     return (
-      <ScrollView
-        style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0', paddingTop: 20, flex: 1 }}>
-        <View style={s.listGroup}>
+      <View style={{flex: 1}}>
+        <ConnectionState/>
+        <ScrollView
+          style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0', paddingTop: 20, flex: 1 }}>
+          <View style={s.listGroup}>
 
-          {this._renderMainEmail()}
+            {this._renderMainEmail()}
 
-          {this._renderAdditionalEmails()}
+            {this._renderAdditionalEmails()}
 
-          <ListItem
-            onPress={() => navigation.navigate('MyAccountEmailsAdd', this.fetchData.bind(this))}
-            text={i18next.t('local:add-email')}
-            type='button'
-            action='true'
-            first='true'
-            />
+            <ListItem
+              onPress={() => navigation.navigate('MyAccountEmailsAdd', this.fetchData.bind(this))}
+              text={i18next.t('local:add-email')}
+              type='button'
+              action='true'
+              first='true'
+              />
 
-        </View>
-        <View style={s.filler} />
-      </ScrollView>
+          </View>
+          <View style={s.filler} />
+        </ScrollView>
+      </View>
     );
   }
 

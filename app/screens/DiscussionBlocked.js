@@ -8,6 +8,7 @@ var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
 var DiscussionBlockedJoin = require('./DiscussionBlockedJoin');
 var navigation = require('../navigation/index');
+var ConnectionState = require('../components/ConnectionState');
 
 var {
   StyleSheet,
@@ -61,30 +62,33 @@ class DiscussionBlocked extends Component {
     }
 
     return (
-      <ScrollView style={styles.main}>
-        <View style={styles.container}>
-          {this._renderAvatar(this.props.model.get('avatar'))}
-          <Text style={styles.identifier}>{this.props.model.get('identifier')}</Text>
-          <TouchableHighlight onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('owner_id'), identifier: '@' + this.props.model.get('owner_username')})}>
-            <Text>
-              <Text>{i18next.t('local:by')} </Text>
-              <Text style={styles.ownerUsername}>@{this.props.model.get('owner_username')}</Text>
-            </Text>
-          </TouchableHighlight>
-          {description}
-        </View>
+      <View style={{flex: 1}}>
+        <ConnectionState/>
+        <ScrollView style={styles.main}>
+          <View style={styles.container}>
+            {this._renderAvatar(this.props.model.get('avatar'))}
+            <Text style={styles.identifier}>{this.props.model.get('identifier')}</Text>
+            <TouchableHighlight onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('owner_id'), identifier: '@' + this.props.model.get('owner_username')})}>
+              <Text>
+                <Text>{i18next.t('local:by')} </Text>
+                <Text style={styles.ownerUsername}>@{this.props.model.get('owner_username')}</Text>
+              </Text>
+            </TouchableHighlight>
+            {description}
+          </View>
 
-        {this._renderDisclaimer()}
-        {banned}
-        {kicked}
-        {join}
+          {this._renderDisclaimer()}
+          {banned}
+          {kicked}
+          {join}
 
-        <Link onPress={() => this.props.model.leaveBlocked()}
-              text={i18next.t('local:close')}
-              type='underlined'
-          />
+          <Link onPress={() => this.props.model.leaveBlocked()}
+                text={i18next.t('local:close')}
+                type='underlined'
+            />
 
-      </ScrollView>
+        </ScrollView>
+      </View>
     );
   }
 

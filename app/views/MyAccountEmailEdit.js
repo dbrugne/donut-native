@@ -3,6 +3,7 @@ var app = require('../libs/app');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var ListItem = require('../elements/ListItem');
+var ConnectionState = require('../components/ConnectionState');
 
 var {
   Component,
@@ -32,6 +33,7 @@ class EditEmailView extends Component {
     var modalDescription = i18next.t('local:modal-description');
     return (
       <View style={styles.main}>
+        <ConnectionState/>
 
         <View style={s.listGroup}>
 
