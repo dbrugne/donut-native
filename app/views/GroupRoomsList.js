@@ -3,6 +3,7 @@
 var React = require('react-native');
 var {
   StyleSheet,
+  ScrollView,
   View,
   Text,
   Component,
@@ -68,40 +69,46 @@ class GroupRoomsListView extends Component {
         <View style={styles.loading}>
           <LoadingModal />
         </View>
-      )
+      );
     }
     return (
-      <View style={styles.main}>
-        <Text>List Donuts</Text>
-        <View style={styles.listContainer} >
+      <ScrollView style={styles.main}>
+        <View style={styles.container}>
           <ListView
             dataSource={this.state.dataSource}
             renderRow={this.renderElement.bind(this)}
+            style={{alignSelf: 'stretch'}}
             />
         </View>
-      </View>
+      </ScrollView>
     );
   }
 
   renderElement (rowData) {
     return (
-      <View>
-        <SearchResult
-          onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'room', id: rowData.room_id, identifier: rowData.identifier}));}}
-          image={rowData.avatar}
-          type='room'
-          identifier={rowData.identifier}
-          description={rowData.description}
-          mode={(!rowData.mode || rowData.mode === 'public') ? 'public' : (rowData.allow_group_member) ? 'member' : 'private'}
-          />
-      </View>
+      <SearchResult
+        onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'room', id: rowData.room_id, identifier: rowData.identifier}));}}
+        image={rowData.avatar}
+        type='room'
+        identifier={rowData.identifier}
+        description={rowData.description}
+        mode={(!rowData.mode || rowData.mode === 'public') ? 'public' : (rowData.allow_group_member) ? 'member' : 'private'}
+        />
     );
   }
 }
 
 var styles = StyleSheet.create({
   main: {
-    flex:1
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0'
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    justifyContent: 'center'
   },
   loading: {
     flex: 1,

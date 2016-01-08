@@ -5,7 +5,6 @@ var {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight,
   Component,
   Image,
   ScrollView
@@ -19,7 +18,6 @@ var navigation = require('../libs/navigation');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
-var Button = require('../elements/Button');
 var Link = require('../elements/Link');
 var ListItem = require('../elements/ListItem');
 
@@ -51,8 +49,8 @@ class RoomProfileView extends Component {
         <ListItem
           text={data.website.title}
           type='edit-button'
-          first={true}
-          action={true}
+          first
+          action
           onPress={() => hyperlink.open(data.website.href)}
           icon='fontawesome|link'
           />
@@ -61,50 +59,51 @@ class RoomProfileView extends Component {
 
     var createdAt = (
     <ListItem
-      text={i18next.t('local:created-on', {date: date.longDate(data.created)})}
+      text={i18next.t('local:created-on', {date: date.shortDate(data.created)})}
+      type='text'
       icon='fontawesome|clock-o'
       />
     );
 
-    var links = null;
-    if (currentUser.get('user_id') === data.owner_id || currentUser.isAdmin()) {
-      // @todo implement onpress goto room edit
-      // @todo implement onpress goto room users
-      // @todo implement onpress goto room access
-      // @todo implement onpress goto room delete
-      links = (
-        <View>
-          <ListItem
-            text={i18next.t('local:edit')}
-            type='edit-button'
-            action={true}
-            icon='fontawesome|pencil'
-            />
-
-          <ListItem
-            text={i18next.t('local:manage-users')}
-            type='edit-button'
-            action={true}
-            icon='fontawesome|users'
-            />
-
-          <ListItem
-            text={i18next.t('local:access')}
-            type='edit-button'
-            action={true}
-            icon='fontawesome|key'
-            />
-
-          <ListItem
-            text={i18next.t('local:delete')}
-            type='edit-button'
-            action={true}
-            icon='fontawesome|trash-o'
-            />
-
-        </View>
-      );
-    }
+    // var links = null;
+    // if (currentUser.get('user_id') === data.owner_id || currentUser.isAdmin()) {
+    //   // @todo implement onpress goto room edit
+    //   // @todo implement onpress goto room users
+    //   // @todo implement onpress goto room access
+    //   // @todo implement onpress goto room delete
+    //   links = (
+    //     <View>
+    //       <ListItem
+    //         text={i18next.t('local:edit')}
+    //         type='edit-button'
+    //         action
+    //         icon='fontawesome|pencil'
+    //         />
+    //
+    //       <ListItem
+    //         text={i18next.t('local:manage-users')}
+    //         type='edit-button'
+    //         action
+    //         icon='fontawesome|users'
+    //         />
+    //
+    //       <ListItem
+    //         text={i18next.t('local:access')}
+    //         type='edit-button'
+    //         action
+    //         icon='fontawesome|key'
+    //         />
+    //
+    //       <ListItem
+    //         text={i18next.t('local:delete')}
+    //         type='edit-button'
+    //         action
+    //         icon='fontawesome|trash-o'
+    //         />
+    //
+    //     </View>
+    //   );
+    // }
 
     return (
       <ScrollView style={styles.main}>
@@ -124,8 +123,9 @@ class RoomProfileView extends Component {
           <ListItem
             text={i18next.t('local:join')+' '+data.users_count}
             type='edit-button'
-            first={true}
-            action={true}
+            first
+            action
+            last
             onPress={() => app.trigger('joinRoom', data.room_id)}
             icon='fontawesome|user'
             iconColor='#f1c40f'
@@ -133,7 +133,6 @@ class RoomProfileView extends Component {
           <Text style={s.listGroupItemSpacing}></Text>
           {website}
           {createdAt}
-          {links}
         </View>
       </ScrollView>
     );
@@ -143,7 +142,7 @@ class RoomProfileView extends Component {
     if (!avatar) {
       return null;
     }
-    var avatarUrl = common.cloudinary.prepare(avatar, 50);
+    var avatarUrl = common.cloudinary.prepare(avatar, 130);
     if (!avatarUrl) {
       return null;
     }
@@ -163,17 +162,14 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFF'
+    justifyContent: 'center'
   },
   avatar: {
     width: 120,
     height: 120,
     borderRadius: 60,
     marginTop: 20,
-    marginBottom: 10,
-    borderColor: '#DCDCDC',
-    borderWidth: 2
+    marginBottom: 10
   },
   identifier: {
     color: '#333333',

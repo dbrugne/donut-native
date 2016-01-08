@@ -13,21 +13,31 @@ var {
 var Button = require('react-native-button');
 var imageUpload = require('../libs/imageUpload');
 var app = require('../libs/app');
+var currentUser = require('../models/current-user');
+var i18next = require('../libs/i18next');
 
 class InputView extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      text: ''
+      text: '',
+      userConfirmed: currentUser.get('confirmed') || (props.model.get('type') === 'room' && props.model.get('mode') === 'public')
     };
 
     this.model = props.model;
   }
-  render() {
-    var inputPlaceholder = 'Message ' + ((this.model.get('type') === 'room') ? 'dans ' + this.model.get('identifier') : 'à @' + this.model.get('username'));
+  render () {
+    var inputPlaceholder;
+    if (this.state.userConfirmed) {
+      inputPlaceholder = 'Message ' + ((this.model.get('type') === 'room')
+          ? 'dans ' + this.model.get('identifier')
+          : 'à @' + this.model.get('username'));
+    } else {
+      inputPlaceholder = i18next.t('messages.not-confirmed');
+    }
     return (
       <View style={styles.inputContainer}>
-        <Button style={styles.button} onPress={() => this._addImage()}>
+        <Button style={styles.button} onPress={() => this._addImage()} disabled={!this.state.userConfirmed}>
           <Icon
             name='fontawesome|camera'
             size={28}
@@ -42,8 +52,9 @@ class InputView extends Component {
                    blurOnSubmit={false}
                    value={this.state.text}
                    multiline={true}
+                   editable={this.state.userConfirmed}
           />
-        <Button style={styles.button} onPress={() => this.onSubmit()}>
+        <Button style={styles.button} onPress={() => this.onSubmit()} disabled={!this.state.userConfirmed}>
           <Icon
             name='fontawesome|paper-plane'
             size={28}

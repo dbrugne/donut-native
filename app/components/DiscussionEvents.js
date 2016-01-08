@@ -224,7 +224,7 @@ class DiscussionEvents extends Component {
         }
       }
 
-      if (response.history || response.history.length) {
+      if (response.history && response.history.length) {
         let method = (direction === 'older')
           ? 'prepend'
           : 'append';

@@ -209,7 +209,8 @@ class SearchView extends Component {
       skip: skip
     };
     app.client.search(this.state.findValue, options, (response) => {
-      if (response.err) {
+      if (response.err || response === 'not-connected') {
+        this.setState({loading: false});
         return this.resetList(null);
       }
       this.resultBlob = (!this.state.more) ? response[this.state.type].list : this.resultBlob.concat(response[this.state.type].list);
@@ -263,7 +264,10 @@ var styles = StyleSheet.create({
   },
   button: {
     height: 40,
-    flex: 1
+    flex: 1,
+    borderBottomWidth:1,
+    borderStyle: 'solid',
+    borderColor: '#3498db'
   },
   buttonActive: {
     borderBottomWidth:3,
@@ -307,7 +311,7 @@ var styles = StyleSheet.create({
   },
   description: {
     marginLeft: 5,
-    color: '#777',
+    color: '#999999',
     fontFamily: 'Open Sans',
     fontSize: 16,
     fontStyle: 'italic'

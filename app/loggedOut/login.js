@@ -3,6 +3,7 @@
 var React = require('react-native');
 var SignupView = require('./signup');
 var ForgotView = require('./forgot');
+var EutcView = require('./eutc');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var Button = require('../elements/Button');
@@ -16,7 +17,8 @@ i18next.addResourceBundle('en', 'local', {
   'signup': 'Sign up',
   'signin': 'Sign in',
   'password': 'Password',
-  'mail': 'Mail'
+  'mail': 'Mail',
+  'eutc': 'EUTC'
 });
 
 var {
@@ -132,6 +134,12 @@ class LoginView extends Component {
                     type='bold'
                 />
             </View>
+            <Link onPress={(this.onEutcPressed.bind(this))}
+                  text={i18next.t('local:eutc')}
+                  style={styles.centered}
+                  linkStyle={s.link}
+                  type='bold'
+              />
           </View>
         </ScrollView>
         {this.state.showLoadingModal ? <LoadingModal /> : null}
@@ -189,6 +197,13 @@ class LoginView extends Component {
     this.props.navigator.push({
       title: 'Create',
       component: SignupView
+    });
+  }
+
+  onEutcPressed () {
+    this.props.navigator.push({
+      title: 'EUTC',
+      component: EutcView
     });
   }
 }

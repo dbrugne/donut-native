@@ -95,6 +95,17 @@ function getRoute (route) {
         }
       });
     },
+    renderTitle () {
+      let title = route.getTitle();
+      title = title.length > 18 ? title.substr(0, 18) + '…' : title;
+      return (
+        <View style={{alignSelf: 'center'}}>
+          <Text style={{fontFamily: '.HelveticaNeueInterface-MediumP4', fontSize: 16, color: '222', fontWeight: 'bold'}}>
+            {title}
+          </Text>
+        </View>
+      );
+    },
     onBack: function () {
       if (drawerOpened) {
         return drawer.close();
@@ -116,8 +127,8 @@ function getRoute (route) {
           <Icon name='fontawesome|angle-left'
                 size={18}
                 color='#fc2063'
-                style={[ExNavigator.Styles.barButtonIcon, {marginTop: 13, marginLeft: 5, width:18, height:18}]} />
-          <Text style={[ExNavigator.Styles.barButtonText, {marginTop: 11, color: '#fc2063'}]}> {i18next.t('navigation.back')}</Text>
+                style={[ExNavigator.Styles.barButtonIcon, {marginLeft: 5, width: 18, height: 18}, Platform.OS === 'android' ? {marginTop: 18} : {marginTop: 12} ]} />
+          <Text style={[ExNavigator.Styles.barButtonText, {color: '#fc2063'}, Platform.OS === 'android' ? {marginTop: 16} : {marginTop: 11} ]}> {i18next.t('navigation.back')}</Text>
         </TouchableOpacity>
       );
     }
@@ -194,8 +205,8 @@ function _popNicely (navigator, index) {
 
 routes.removeDiscussionRoute = function (id, model) {
   var _route = (!model.get('blocked'))
-    ? routes.getDiscussion(id)
-    : routes.getBlockedDiscussion(id);
+    ? routes.getDiscussion(id, model)
+    : routes.getBlockedDiscussion(id, model);
   var route = routes.getNavigator(_route);
   var existingRoute = rootNavigator.getCurrentRoutes().find((element) => element === route);
   if (!existingRoute) {
@@ -262,11 +273,11 @@ var LeftNavigation = React.createClass({
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
         onPress={this.onPress}
-        style={[{marginLeft: 5}, ExNavigator.Styles.barBackButton]} >
+        style={ExNavigator.Styles.barBackButton} >
         <Icon name='fontawesome|bars'
               size={25}
               color='#fc2063'
-              style={[ExNavigator.Styles.barButtonIcon, {marginTop: 11, marginLeft: 5, width:22, height:22}]} />
+              style={[{marginLeft: 16, width:22, height:22}, Platform.OS === 'android' ? {marginTop: 14} : {marginTop: 11} ]} />
         {unviewed}
       </TouchableOpacity>
     );
@@ -280,6 +291,18 @@ var LeftNavigation = React.createClass({
   }
 });
 
+routes.getEutc = function () {
+  return getRoute({
+    id: 'eutc',
+    renderScene: function (navigator) {
+      let Eutc = require('../loggedOut/eutc');
+      return <Eutc navigator={navigator} fromNavigation={true}/>;
+    },
+    getTitle: function () {
+      return i18next.t('navigation.eutc');
+    }
+  });
+};
 routes.getHome = function () {
   return getRoute({
     id: 'home',
@@ -381,7 +404,7 @@ routes.getGroupRoomsList = function (element) {
     id: 'group-rooms-list' + element.user.isMember,
     renderScene: function (navigator) {
       let GroupRoomsList = require('../views/GroupRoomsList');
-      return <GroupRoomsList navigator={navigator} id={element.id} user={element.user}/>;
+      return <GroupRoomsList navigator={navigator} id={element.id} user={element.user} />;
     },
     getTitle: function () {
       return element.name;
@@ -405,7 +428,7 @@ routes.getGroupAskMembershipRequest = function (element) {
     id: 'group-ask-membership-request' + element.id + '-' + element.isAllowedPending,
     renderScene: function () {
       let GroupAskMembershipRequest = require('../views/GroupAskMembershipRequest');
-      return <GroupAskMembershipRequest id={element.id} isAllowedPending={element.isAllowedPending}/>;
+      return <GroupAskMembershipRequest id={element.id} isAllowedPending={element.isAllowedPending} scroll />;
     },
     getTitle: function () {
       return i18next.t('navigation.ask-membership-request');
@@ -417,7 +440,7 @@ routes.getGroupAskMembershipPassword = function (id) {
     id: 'group-ask-membership-password' + id,
     renderScene: function (navigator) {
       let GroupAskMembershipPassword = require('../views/GroupAskMembershipPassword');
-      return <GroupAskMembershipPassword navigator={navigator} id={id}/>;
+      return <GroupAskMembershipPassword navigator={navigator} id={id} scroll />;
     },
     getTitle: function () {
       return i18next.t('navigation.ask-membership-password');
@@ -429,7 +452,7 @@ routes.getGroupAskMembershipEmail = function (element) {
     id: 'group-ask-membership-email' + element.id,
     renderScene: function () {
       let GroupAskMembershipEmail = require('../views/GroupAskMembershipEmail');
-      return <GroupAskMembershipEmail id={element.id} domains={element.domains} />;
+      return <GroupAskMembershipEmail id={element.id} domains={element.domains} scroll />;
     },
     getTitle: function () {
       return i18next.t('navigation.ask-membership-email');
@@ -696,11 +719,6 @@ routes.getNavigator = function (initialRoute) {
             initialRoute={initialRoute}
             style={{flex: 1}}
             sceneStyle={{ paddingTop: navigationBarHeight }}
-            titleStyle={{
-              fontSize: 16,
-              color: '222',
-              alignSelf: 'center'
-            }}
             />
         );
       },
@@ -760,14 +778,22 @@ routes.switchTo = function (route) {
   }
   _pushOrJumpTo(rootNavigator.__navigator, routes.getNavigator(route));
 };
-routes.openDrawer = function() {
+routes.openDrawer = function () {
   drawer.open();
-}
+};
 routes.RootNavigator = React.createClass({
+  getInitialState: function () {
+    return {
+      status: currentUser.get('status')
+    };
+  },
   componentDidMount () {
     rootNavigator = this.refs.navigator;
     drawer = this.refs.drawer;
     debug.log('mount RootNavigator');
+    currentUser.on('change:status', () => {
+      this.setState({status: currentUser.get('status')});
+    });
   },
   componentWillUnmount () {
     // reset navigation state (@logout)
@@ -778,6 +804,7 @@ routes.RootNavigator = React.createClass({
     knownRoutes = {};
     currentNavigator = null;
     currentRoute = null;
+    currentUser.off('change:status');
 
     debug.log('unmount RootNavigator');
   },
@@ -809,6 +836,31 @@ routes.RootNavigator = React.createClass({
           initialRoute={initialRoute}
           style={{ flex: 1 }}
           />
+        {
+          (this.state.status === 'offline')
+            ? <View style={{
+              height: 30,
+              backgroundColor: '#F00',
+              position: 'absolute',
+              top: navigationBarHeight,
+              left: 0,
+              right: 0,
+              alignItems: 'center',
+              justifyContent: 'center'}}>
+            <Text style={{color: '#FFF'}}>{this.state.status}</Text></View>
+            : (this.state.status === 'connecting')
+              ? <View style={{
+                height: 30,
+                backgroundColor: '#FA0',
+                position: 'absolute',
+                top: navigationBarHeight,
+                left: 0,
+                right: 0,
+                alignItems: 'center',
+                justifyContent: 'center'}}>
+            <Text style={{color: '#FFF'}}>{this.state.status}</Text></View>
+            : null
+        }
       </Drawer>
     );
   },
@@ -860,8 +912,8 @@ var styles = StyleSheet.create({
   },
   unviewed: {
     position: 'absolute',
-    top: 5,
-    left: 20,
+    top: 8,
+    left: 30,
     width: 13,
     height: 13
   }

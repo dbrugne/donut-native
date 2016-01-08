@@ -1,4 +1,5 @@
 {
+  "cancel": "cancel",
   "or": "or",
   "by": "by",
   "by-username": "by @__username__",
@@ -40,7 +41,17 @@
     "group-banned": "You were banned from community",
     "domain": "This domain is not valid",
     "unknownerror": "Unknown error, please retry later",
-    "notification-read-error": "An error has been raised while reading notifications"
+    "notification-read-error": "An error has been raised while reading notifications",
+    "notification-not-found": "Notification not found",
+    "user-not-found": "No user found",
+    "invalid-email": "Email is invalid",
+    "invalid-password": "Password is not valid",
+    "invalid-username": "Username isn't valid",
+    "existing-user": "This email address is already used",
+    "not-available": "This username is not available",
+    "mail-notconfirmed": "Verify your account ! Check your mailbox.",
+    "not-confirmed": "Action authorized to verified accounts only.",
+    "error-try-again": "Impossible to achieve this request, please try again later"
   },
   "navigation": {
     "discover": "Discover",
@@ -67,7 +78,8 @@
     "ask-membership-password": "I have the password",
     "ask-membership-email": "I have an authorized e-mail",
     "notifications": "Notifications",
-    "update-room-topic": "Change topic"
+    "update-room-topic": "Change topic",
+    "eutc": "EUTC"
   },
   "group": {
     "created": "created on",
@@ -81,7 +93,7 @@
     "create-donut": "create a donut",
     "manage-members": "manage memebers",
     "donut-list": "donut list",
-    "message-membership": "You are not yet a member of this community You can join public donuts or request access to a private donut. Members have special priviledges such as direct access to certain private donuts and to other members of this community.Before you request membership have a glance at this community access conditions :",
+    "message-membership": "You are not yet a member of this community. You can join public donuts or request access to a private donut. Members have special privileges such as direct access to certain private donuts and to other members of this community.Before you request membership, have a glance at this community access conditions",
     "message-member": "You are a member of this community",
     "message-ban": "You were banned from this community",
     "message-not-member": "Members have special priviledges such as direct access to certain private donuts and to other members of this community.",
@@ -106,6 +118,9 @@
     "allow-pending": "An access request is already pending",
     "placeholder-request": "Your motivations, background ...",
     "success-request": "Request sent ! You will be notified when accepted."
+  },
+  "room": {
+    "message-membership": "You are not yet a member of this donut. Before you request membership, have a glance at this donut access conditions"
   },
   "events": {
     "online": "is now online",
@@ -150,6 +165,7 @@
     "notification-count_plural": "You have __count__ unviewed notifications",
     "no-unread-notification": "You do not have unread notification",
     "mark-as-read": "Mark all notifications as read",
-    "load-more": "Load more"
+    "load-more": "Load more",
+    "delete-selected": "Delete selected"
   }
 }

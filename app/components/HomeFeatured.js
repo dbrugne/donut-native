@@ -2,17 +2,20 @@
 
 var React = require('react-native');
 var {
-  Image,
   ListView,
-  Component,
-  ActivityIndicatorIOS
+  Text,
+  Component
 } = React;
 
-var _ = require('underscore');
 var app = require('./../libs/app');
 var navigation = require('../libs/navigation');
 var SearchResult = require('../elements/SearchResult');
 var LoadingView = require('../elements/Loading');
+
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'local', {
+  'welcome': 'Welcome'
+});
 
 class HomeView extends Component {
   constructor (props) {
@@ -39,7 +42,7 @@ class HomeView extends Component {
       loaded: true
     });
   }
-  render() {
+  render () {
     if (!this.state.loaded) {
       return (
         <LoadingView />
@@ -49,14 +52,19 @@ class HomeView extends Component {
     return (
       <ListView
         dataSource={this.state.dataSource}
+        renderHeader={this.renderHeader}
         renderRow={this.renderRow.bind(this)}
         style={{flex: 1}}
-        scrollEnabled={true}
+        scrollEnabled
       />
     );
   }
 
-  renderRow(room) {
+  renderHeader() {
+    return (<Text style={{marginVertical: 20, marginHorizontal: 10}}>{i18next.t('local:welcome')}</Text>);
+  }
+
+  renderRow (room) {
     return (
       <SearchResult
         onPress={() => {this.props.navigator.push(navigation.getProfile({type: 'room', id: room.room_id, identifier: room.identifier}));}}

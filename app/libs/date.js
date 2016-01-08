@@ -5,6 +5,13 @@ i18next.addResourceBundle('en', 'dates', dates);
 var ONE_DAY = 60 * 60 * 24; // in seconds
 
 window.d = module.exports = {
+  shortDate: function (date) { // Do MMMM YYYY
+    var myDate = new Date(date);
+    if (isNaN(myDate)) {
+      return;
+    }
+    return myDate.getDate() + ' ' + i18next.t('dates:date.months.' + myDate.getMonth()) + ' ' + myDate.getFullYear();
+  },
   longDate: function (date) { // dddd Do MMMM YYYY
     var myDate = new Date(date);
     if (isNaN(myDate)) {

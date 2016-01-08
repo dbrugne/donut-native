@@ -151,7 +151,7 @@ class UserProfileView extends Component {
     if (!avatar) {
       return null;
     }
-    var avatarUrl = common.cloudinary.prepare(avatar, 120);
+    var avatarUrl = common.cloudinary.prepare(avatar, 130);
     if (!avatarUrl) {
       return null;
     }

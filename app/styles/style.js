@@ -12,12 +12,12 @@ var style = {
 
   // colors
   // clNavLeft: { color: '#434a54'},
-  // clText: { color: '#333'},
+  clText: {color: '#333'},
+  clNeutral: {color: '#999999'},
   // clClouds: { color: '#ecf0f1'},
   // clSuccess: { color: '#4fedc0'},
   // clWarning: { color: '#ffda3e'},
   // clError: { color: '#ff3838'},
-  // clNeutral: { color: '#777777'},
   // clBackgroundGrayed: { color: '#f0f0f0'},
   // clDrawer: { color: '#272627' }
   // clDrawer2: { color: '#1D1D1D' }
@@ -44,12 +44,12 @@ var style = {
     marginBottom: 10,
     marginHorizontal: 10
   },
-  textCenter: { alignSelf: 'center'},
-  filler: { flex:1, alignSelf: 'stretch' },
+  textCenter: {alignSelf: 'center'},
+  filler: {flex: 1, alignSelf: 'stretch'},
   // util elements
-  marginTop5: { marginTop: 5},
-  marginTop10: { marginTop: 10},
-  marginTop20: { marginTop: 20},
+  marginTop5: {marginTop: 5},
+  marginTop10: {marginTop: 10},
+  marginTop20: {marginTop: 20},
   // List groups
   listGroup: {
     flexWrap: 'wrap',
@@ -59,11 +59,11 @@ var style = {
     marginBottom: 20
   },
   listGroupTitle: {
-    color: '#777777',
+    color: '#999999',
     fontFamily: 'Open Sans',
     fontSize: 14,
-    marginHorizontal:10,
-    marginVertical:2
+    marginHorizontal: 10,
+    marginVertical: 2
   },
   listGroupItem: {
     flex: 1,
@@ -81,8 +81,7 @@ var style = {
     borderBottomWidth: 0.5,
     borderStyle: 'solid'
   },
-  listGroupItemFirst: {
-  },
+  listGroupItemFirst: {},
   listGroupItemSpacing: {
     flex: 1,
     paddingTop: 10,
@@ -148,8 +147,8 @@ var style = {
     height: 20
   },
   buttonBlue: {
-    borderColor: '#4a649d',
-    backgroundColor: "#4a649d"
+    borderColor: '#3B5998',
+    backgroundColor: "#3B5998"
   },
   // inputs
   input: {
@@ -166,7 +165,7 @@ var style = {
     paddingRight: 10,
     fontFamily: 'Open Sans',
     fontSize: 14,
-    flex:1
+    flex: 1
   },
   inputLabel: {
     fontFamily: 'Open Sans',
@@ -176,13 +175,13 @@ var style = {
     alignSelf: 'flex-start',
     marginLeft: 10,
     marginRight: 10,
-    paddingTop:10
+    paddingTop: 10
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop:5
+    marginTop: 5
   },
   // links
   link: {
@@ -197,8 +196,8 @@ var style = {
     borderColor: '#ebccd1',
     padding: 10,
     borderRadius: 4,
-    marginVertical:10,
-    marginHorizontal:10
+    marginVertical: 10,
+    marginHorizontal: 10
   },
   alertErrorText: {
     fontFamily: 'Open Sans',
@@ -210,8 +209,8 @@ var style = {
     borderColor: '#d6e9c6',
     padding: 10,
     borderRadius: 4,
-    marginVertical:10,
-    marginHorizontal:10
+    marginVertical: 10,
+    marginHorizontal: 10
   },
   alertSuccessText: {
     fontFamily: 'Open Sans',
@@ -223,17 +222,21 @@ var style = {
     borderColor: '#faebcc',
     padding: 10,
     borderRadius: 4,
-    marginVertical:10,
-    marginHorizontal:10
+    marginVertical: 10,
+    marginHorizontal: 10
   },
   alertWarningText: {
     fontFamily: 'Open Sans',
     fontSize: 12,
     color: '#8a6d3b'
   },
-
+  block: {
+    color: '#333',
+    marginVertical: 20,
+    marginHorizontal: 10
+  },
   help: {
-    color: '#777777',
+    color: '#999999',
     fontSize: 12
   }
 };

@@ -23,19 +23,19 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  "by": "by",
-  "allowed": "This donut is private.",
-  "request": "To request access, ",
-  "click": "click here.",
-  "password": "direct access",
-  "password-placeholder": "password",
-  "join": "join",
-  "banned": "You were banned from this donut on __at__",
-  "groupbanned": "You were banned from this community on __at__",
-  "reason": "for the following reason: ",
-  "kicked": "You have been kicked out from this donut.",
-  "rejoin": " to get back in.",
-  "close": "Close this donut"
+  'by': 'by',
+  'allowed': 'This donut is private.',
+  'request': 'To request access, ',
+  'click': 'click here.',
+  'password': 'direct access',
+  'password-placeholder': 'password',
+  'join': 'join',
+  'banned': 'You were banned from this donut on __at__',
+  'groupbanned': 'You were banned from this community on __at__',
+  'reason': 'for the following reason: ',
+  'kicked': 'You have been kicked out from this donut.',
+  'rejoin': ' to get back in.',
+  'close': 'Close this donut'
 });
 
 class DiscussionBlocked extends Component {
@@ -43,7 +43,7 @@ class DiscussionBlocked extends Component {
     super(props);
   }
 
-  render() {
+  render () {
     let description = null;
     if (this.props.model.get('description')) {
       description = (
@@ -51,8 +51,6 @@ class DiscussionBlocked extends Component {
       );
     }
 
-
-    let disclaimer = this._renderDisclaimer();
     let banned = this._renderBanned();
     let kicked = this._renderKicked();
     let join = null;
@@ -75,19 +73,17 @@ class DiscussionBlocked extends Component {
           </TouchableHighlight>
           {description}
         </View>
-        <View style={styles.container2}>
 
-          {disclaimer}
-          {banned}
-          {kicked}
-          {join}
+        {this._renderDisclaimer()}
+        {banned}
+        {kicked}
+        {join}
 
-          <Link onPress={() => this.props.model.leaveBlocked()}
-                text={i18next.t('local:close')}
-                type='underlined'
-            />
+        <Link onPress={() => this.props.model.leaveBlocked()}
+              text={i18next.t('local:close')}
+              type='underlined'
+          />
 
-        </View>
       </ScrollView>
     );
   }
@@ -108,14 +104,24 @@ class DiscussionBlocked extends Component {
 
   _renderDisclaimer() {
     if (!this.props.model.get('disclaimer') || this.props.model.get('disclaimer').length === 0) {
-      return (
-        <View></View>
-      );
+      return null;
     }
-    var disclaimer = _.unescape(this.props.model.get('disclaimer'));
+
+    let disclaimer = _.unescape(this.props.model.get('disclaimer'));
     return (
-      <View style={[styles.disclaimerCtn, s.alertWarning]}>
-        <Text style={[styles.disclaimer, s.alertWarningText]}>{disclaimer}</Text>
+      <View style={[s.alertWarning, {marginLeft: 0, marginRight: 0, marginBottom: 0}]}>
+        <Text style={s.alertWarningText}>{i18next.t('room.message-membership')}</Text>
+        <View style={{marginTop: 10, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center'}}>
+          <Icon
+            name='fontawesome|quote-right'
+            size={14}
+            color='#8a6d3b'
+            style={{width: 14, height: 14, marginTop: 2}}
+            />
+          <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
+            <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{disclaimer}</Text>
+          </View>
+        </View>
       </View>
     );
   }
@@ -168,17 +174,21 @@ class DiscussionBlocked extends Component {
     }
 
     return (
-      <View>
-        <Text> {i18next.t('local:kicked')} </Text>
+      <View style={[s.alertError, {marginHorizontal: 0}]}>
         <Link onPress={(this.onJoin.bind(this))}
+              prepend={i18next.t('local:kicked')}
+              append={i18next.t('local:rejoin')}
               text={i18next.t('local:click')}
+              linkStyle={s.alertErrorText}
+              prependStyle={s.alertErrorText}
+              appendStyle={s.alertErrorText}
+              type='underlined'
           />
-        <Text> {i18next.t('local:rejoin')} </Text>
       </View>
     );
   }
 
-  onJoin() {
+  onJoin () {
     app.trigger('joinRoom', this.props.model.get('id'));
   }
 }
@@ -192,24 +202,14 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFF'
-  },
-  container2: {
-    flex: 1,
-    borderTopWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#DDD',
-    paddingTop: 10
+    justifyContent: 'center'
   },
   avatar: {
     width: 120,
     height: 120,
     borderRadius: 60,
     marginTop: 20,
-    marginBottom: 10,
-    borderColor: '#DCDCDC',
-    borderWidth: 2
+    marginBottom: 10
   },
   identifier: {
     color: '#333333',

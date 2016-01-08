@@ -7,8 +7,8 @@ var Util = require('../util');
 var style = {
   listGroupItem: {
     flex: 1,
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: '#fff',
@@ -25,11 +25,11 @@ var style = {
     borderStyle: 'solid'
   },
   listGroupTitle: {
-    color: '#777777',
+    color: '#999999',
     fontFamily: 'Open Sans',
     fontSize: 14,
-    marginHorizontal:10,
-    marginVertical:2
+    marginHorizontal: 10,
+    marginVertical: 2
   },
   listGroupItemLast: {
 
@@ -52,10 +52,12 @@ var style = {
     color: '#333333',
     fontFamily: 'Open Sans',
     fontSize: 16,
-    flex: 1
+    flex: 1,
+    height: 30,
+    paddingTop: 2
   },
   listGroupItemValue: {
-    color: '#777',
+    color: '#999999',
     fontFamily: 'Open Sans',
     fontSize: 12,
     marginRight: 10,
@@ -63,25 +65,28 @@ var style = {
     overflow: 'hidden'
   },
   ListGroupItemToggleRight: {
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
+    height: 30
   },
   listGroupItemTextWarning: {
-    color: '#ff3838'
+    color: '#e74c3c'
+  },
+  listGroupHelp: {
+    fontSize: 12,
+    color: '#737373',
+    fontStyle: 'italic',
+    marginVertical: 5,
+    marginHorizontal: 10
   },
   input: {
     backgroundColor: '#FFF',
-    color: "#858585",
-    paddingBottom: 3,
-    paddingTop: 3,
-    paddingLeft: 10,
-    paddingRight: 10,
+    color: '#858585',
     fontFamily: 'Open Sans',
     fontSize: 16,
-    flex:1,
-    height: 30,
+    flex: 1,
     borderRadius: 0,
     padding: 0,
-    marginLeft: 0
+    height: 30
   },
   button: {
     alignSelf: 'flex-end',

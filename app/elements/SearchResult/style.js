@@ -2,9 +2,7 @@
 
 var React = require('react-native');
 
-var {
-  StyleSheet,
-  } = React;
+var { StyleSheet } = React;
 
 module.exports = StyleSheet.create({
   container: {
@@ -12,10 +10,10 @@ module.exports = StyleSheet.create({
     height: 100,
     padding: 5,
     flex: 1,
-    backgroundColor: '#f0f0f0',
-    borderTopWidth:1,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
     borderStyle: 'solid',
-    borderTopColor: '#FFF',
+    borderTopColor: '#EEEEEE',
     borderBottomWidth: 1,
     borderBottomColor: '#D7D7D7'
   },
@@ -23,20 +21,20 @@ module.exports = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    position:'absolute',
-    left:5,
-    top:25
+    position: 'absolute',
+    left: 5,
+    top: 25
   },
   thumbnailUser: {
     width: 50,
     height: 50,
-    position:'absolute',
-    left:5,
-    top:25
+    position: 'absolute',
+    left: 5,
+    top: 25
   },
   rightContainer: {
-    height:90,
-    marginLeft:60,
+    height: 90,
+    marginLeft: 60,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -53,15 +51,24 @@ module.exports = StyleSheet.create({
     color: '#333'
   },
   mode: {
-    fontSize: 14,
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontWeight: '400',
+    fontSize: 10,
     fontFamily: 'Open Sans',
-    alignSelf: 'flex-end'
+    width: 50,
+    paddingLeft: 5,
+    paddingRight: 5,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 10,
+    left: 5
   },
   description: {
-    color: '#777',
+    color: '#999999',
     fontFamily: 'Open Sans',
     fontSize: 12,
-    height:50,
+    height: 50,
     overflow: 'hidden'
   },
   statusText: {
@@ -77,14 +84,14 @@ module.exports = StyleSheet.create({
     fontSize: 10,
     fontFamily: 'Open Sans',
     width: 50,
-    paddingLeft:5,
-    paddingRight:5,
+    paddingLeft: 5,
+    paddingRight: 5,
     overflow: 'hidden',
     position: 'absolute',
     bottom: 10,
-    left:5
+    left: 5
   },
-  statusOnline: { backgroundColor: 'rgba(79, 237, 192, 0.8)' },
-  statusConnecting: { backgroundColor: 'rgba(255, 218, 62, 0.8)' },
-  statusOffline: { backgroundColor: 'rgba(119,119,119,0.8)' }
+  statusOnline: {backgroundColor: 'rgba(79, 237, 192, 0.8)'},
+  statusConnecting: {backgroundColor: 'rgba(255, 218, 62, 0.8)'},
+  statusOffline: {backgroundColor: 'rgba(119,119,119,0.8)'}
 });

@@ -168,7 +168,7 @@ class Signup extends Component {
     currentUser.emailSignUp(this.state.email, this.state.password, this.state.username, (err) => {
       this.setState({showLoadingModal: false});
       if (err) {
-        Alert.show(err);
+        Alert.show(i18next.t('messages.' + err));
       }
     });
   }

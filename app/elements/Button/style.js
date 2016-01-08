@@ -78,7 +78,7 @@ module.exports = StyleSheet.create({
     height: 20
   },
   help: {
-    color: '#777777',
+    color: '#999999',
     fontSize: 12
   }
 });

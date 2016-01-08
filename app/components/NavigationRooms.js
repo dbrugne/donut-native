@@ -73,7 +73,7 @@ class NavigationRoomsView extends Component {
   renderElement (e) {
     var group = null;
     if (e.group_id && e.group_name && e.group_id !== this.lastGroup) {
-      this.lastGroup =  e.group_id;
+      this.lastGroup = e.group_id;
       group = (
         <TouchableHighlight
           style={styles.linkBlock}
@@ -89,7 +89,7 @@ class NavigationRoomsView extends Component {
 
     var model = app.rooms.get(e.room_id);
     if (!model) {
-      return(<View></View>);
+      return (<View/>);
     }
 
     if (e.blocked) {
