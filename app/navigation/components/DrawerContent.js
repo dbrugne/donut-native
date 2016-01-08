@@ -12,9 +12,9 @@ var {
 } = React;
 var Icon = require('react-native-icons').Icon;
 
-var CurrentUserView = require('../../components/CurrentUser');
-var NavigationOnesView = require('./../../components/NavigationOnes');
-var NavigationRoomsView = require('./../../components/NavigationRooms');
+var CurrentUserView = require('./DrawerContentUser');
+var NavigationOnesView = require('./DrawerContentOnes');
+var NavigationRoomsView = require('./DrawerContentRooms');
 var navigation = require('../../navigation/index');
 var app = require('../../libs/app');
 

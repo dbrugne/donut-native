@@ -14,10 +14,10 @@ var {
 } = require('react-native-icons');
 
 var common = require('@dbrugne/donut-common/mobile');
-var currentUser = require('../models/current-user');
-var navigation = require('../navigation/index');
+var currentUser = require('../../models/current-user');
+var navigation = require('../index');
 
-var i18next = require('../libs/i18next');
+var i18next = require('../../libs/i18next');
 
 class CurrentUserView extends Component {
   constructor (props) {

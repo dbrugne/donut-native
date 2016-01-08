@@ -11,10 +11,10 @@ var {
   TouchableHighlight
 } = React;
 
-var app = require('../libs/app');
-var navigation = require('../navigation/index');
+var app = require('../../libs/app');
+var navigation = require('../index');
 
-var i18next = require('../libs/i18next');
+var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'rooms': 'ROOMS'
 });

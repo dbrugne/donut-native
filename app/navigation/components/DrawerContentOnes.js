@@ -13,10 +13,10 @@ var {
   } = React;
 
 var common = require('@dbrugne/donut-common/mobile');
-var app = require('../libs/app');
-var navigation = require('../navigation/index');
+var app = require('../../libs/app');
+var navigation = require('../index');
 
-var i18next = require('../libs/i18next');
+var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'ones': 'ONE TO ONES'
 });
