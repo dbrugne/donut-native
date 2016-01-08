@@ -19,7 +19,7 @@ module.exports = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 12,
     fontWeight: '400',
-    color: '#777777',
+    color: '#999999',
     marginVertical: 5,
     marginHorizontal: 10
   },
