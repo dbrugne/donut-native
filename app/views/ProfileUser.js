@@ -24,7 +24,7 @@ i18next.addResourceBundle('en', 'local', {
   'unlock': 'unblock this user',
   'lock': 'block this user',
   'blocked': 'this user blocked you',
-  'discuss': 'discuss'
+  'discuss': 'Chat'
 });
 
 class UserProfileView extends Component {

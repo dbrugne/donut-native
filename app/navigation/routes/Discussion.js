@@ -1,7 +1,8 @@
 var _ = require('underscore');
 var React = require('react-native');
 var {
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
   } = React;
 var Icon = require('react-native-icons').Icon;
 import ExNavigator from '@exponent/react-native-navigator';
@@ -33,14 +34,10 @@ module.exports = function (model) {
           touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
           onPress={() => navigation.navigate('DiscussionSettings', model)}
           style={ExNavigator.Styles.barRightButton}>
-          <Icon color='#fc2063' name='fontawesome|cog' size={25}
-                style={{
-                  width: 24,
-                  height: 24,
-                  fontSize: 18,
-                  marginRight: 10,
-                  paddingVertical: 20
-                }} />
+          <Icon name='fontawesome|cog'
+                size={25}
+                color='#999998'
+                style={[ExNavigator.Styles.barButtonIcon, {marginRight: 16, width: 22, height: 22}, Platform.OS === 'android' ? {marginTop: 0} : {marginTop: 0}]} />
         </TouchableOpacity>
       );
     },

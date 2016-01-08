@@ -36,7 +36,7 @@ module.exports = React.createClass({
         style={ExNavigator.Styles.barBackButton} >
         <Icon name='fontawesome|bars'
               size={25}
-              color='#fc2063'
+              color='#999998'
               style={[{marginLeft: 16, width:22, height:22}, Platform.OS === 'android' ? {marginTop: 14} : {marginTop: 11}]} />
         {badge}
       </TouchableOpacity>

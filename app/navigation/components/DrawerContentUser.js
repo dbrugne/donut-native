@@ -75,7 +75,7 @@ class CurrentUserView extends Component {
               <Icon
                 name='fontawesome|gear'
                 size={18}
-                color='#ecf0f1'
+                color='#999998'
                 style={styles.icon}
                 />
             </View>

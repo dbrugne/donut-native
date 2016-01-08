@@ -10,9 +10,9 @@ var {
 var {
   Icon
   } = require('react-native-icons');
+
 var Button = require('react-native-button');
 var imageUpload = require('../libs/imageUpload');
-var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var i18next = require('../libs/i18next');
 
@@ -41,7 +41,7 @@ class InputView extends Component {
           <Icon
             name='fontawesome|camera'
             size={28}
-            color='#FC2063'
+            color='#999998'
             style={styles.icon}
             />
         </Button>
@@ -51,14 +51,14 @@ class InputView extends Component {
                    placeholder={inputPlaceholder}
                    blurOnSubmit={false}
                    value={this.state.text}
-                   multiline={true}
+                   multiline
                    editable={this.state.userConfirmed}
           />
         <Button style={styles.button} onPress={() => this.onSubmit()} disabled={!this.state.userConfirmed}>
           <Icon
             name='fontawesome|paper-plane'
             size={28}
-            color='#FC2063'
+            color='#999998'
             style={styles.icon}
             />
         </Button>

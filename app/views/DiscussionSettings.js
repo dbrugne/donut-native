@@ -23,14 +23,14 @@ i18next.addResourceBundle('en', 'local', {
   'settings': '__identifier__ SETTINGS',
   'change-topic': 'Change topic',
   'no-topic': 'No topic',
-  'see': 'See the profile',
+  'see': 'See profile',
   'block': 'Block this user',
   'unblock': 'Unblock this user',
   'edit': 'Edit',
   'access': 'Access',
   'allowed': 'Allowed users',
   'leave': 'Leave this donut',
-  'close': 'Close this private discussion',
+  'close': 'Close this discussion',
   'users': 'Users list'
 }, true, true);
 
