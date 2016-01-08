@@ -9,7 +9,6 @@ var LoadingView = require('../elements/Loading');
 var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
 var date = require('../libs/date');
-var currentUser = require('../models/current-user');
 var s = require('../styles/style');
 
 var {
@@ -116,7 +115,7 @@ class NotificationsView extends Component {
       unviewedDiscussions = (
         <View>
           <ListItem type='button'
-                    onPress={() => require('../navigation/state').openDrawer()}
+                    onPress={() => navigation.openDrawer()}
                     first
                     last
                     action

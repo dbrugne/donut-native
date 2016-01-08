@@ -3,6 +3,33 @@ var state = require('./state');
 var debug = require('../libs/debug')('navigation');
 
 module.exports = {
+
+  // =============================
+  // Drawer
+  // =============================
+
+  openDrawer () {
+    if (state.drawer && state.drawerState === 'closed') {
+      state.drawer.open();
+    }
+  },
+  closeDrawer () {
+    if (state.drawer && state.drawerState === 'opened') {
+      state.drawer.close();
+    }
+  },
+  toggleDrawer () {
+    if (state.drawerState === 'opened') {
+      this.closeDrawer();
+    } else {
+      this.openDrawer();
+    }
+  },
+
+  // =============================
+  // Navigation
+  // =============================
+
   navigate () {
     if (!arguments.length) {
       return debug.warn('.navigate() was called without argument');
@@ -16,7 +43,7 @@ module.exports = {
     }
 
     // always close drawer on navigation
-    state.closeDrawer();
+    this.closeDrawer();
 
     if (route.initial === true) {
       var navigator = state.getNavigator(route);
@@ -30,6 +57,11 @@ module.exports = {
       state.currentNavigator.scene.__navigator.push(route);
     }
   },
+
+  // =============================
+  // Navigator component override
+  // =============================
+
   _switchTo (route) {
     this._pushOrJumpTo(state.rootNavigator.__navigator, route);
   },

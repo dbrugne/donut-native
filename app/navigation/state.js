@@ -46,23 +46,6 @@ module.exports = {
   // Drawer
   // =============================
 
-  openDrawer () {
-    if (this.drawer && this.drawerState === 'closed') {
-      this.drawer.open();
-    }
-  },
-  closeDrawer () {
-    if (this.drawer && this.drawerState === 'opened') {
-      this.drawer.close();
-    }
-  },
-  toggleDrawer () {
-    if (this.drawerState === 'opened') {
-      this.closeDrawer();
-    } else {
-      this.openDrawer();
-    }
-  },
   onDrawerDidOpen () {
     dismissKeyboard();
     debug.log('onDrawerOpen', this.drawerState);

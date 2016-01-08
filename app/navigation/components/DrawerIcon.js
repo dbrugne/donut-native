@@ -9,7 +9,6 @@ var {
 var Icon = require('react-native-icons').Icon;
 import ExNavigator from '@exponent/react-native-navigator'; // @important: should be 'import'
 var app = require('../../libs/app');
-var state = require('../state');
 
 module.exports = React.createClass({
   getInitialState () {
@@ -33,7 +32,7 @@ module.exports = React.createClass({
     return (
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
-        onPress={() => state.toggleDrawer()}
+        onPress={() => require('../index').toggleDrawer()}
         style={ExNavigator.Styles.barBackButton} >
         <Icon name='fontawesome|bars'
               size={25}
