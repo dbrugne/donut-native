@@ -4,52 +4,26 @@ var React = require('react-native');
 var LinkUnderlined = require('./Link/Underlined');
 var LinkBold = require('./Link/Bold');
 
-var {
-  Component,
-  View,
-  Text,
-  TouchableHighlight
-} = React;
-
-class Link extends Component {
-  /**
-   * @param props = {
-   *  onPress: callback action when button is pressed
-   *  text: text to display on link
-   *  type: underlined|default / bold|username : style to apply to the button
-   *  linkStyle: style to apply to the text
-   * }
-   */
-  constructor (props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <View style={this.props.style}>
-        {this._renderLink()}
-      </View>
-    )
-  }
-
-  _renderLink() {
-    let Element = LinkUnderlined;
+module.exports = React.createClass({
+  propTypes: {
+    onPress: React.PropTypes.func.isRequired,
+    text: React.PropTypes.string.isRequired,
+    type: React.PropTypes.oneOf(['underlined', 'bold']).isRequired,
+    prepend: React.PropTypes.string,
+    append: React.PropTypes.string,
+    style: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number]),
+    linkStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number]),
+    prependStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number]),
+    apendStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number])
+  },
+  render () {
     switch (this.props.type) {
       case 'bold':
-      case 'username':
-        Element = LinkBold;
-        break;
+        return (<LinkBold {...this.props} />);
       case 'underlined':
-      case 'default':
-        default:
-        Element = LinkUnderlined;
-        break;
+        return (<LinkUnderlined {...this.props} />);
+      default:
+        return null;
     }
-
-    return (
-      <Element {...this.props} />
-    );
   }
-}
-
-module.exports = Link;
+});
