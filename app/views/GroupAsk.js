@@ -9,7 +9,7 @@ var {
   StyleSheet
   } = React;
 
-var ListItem = require('../elements/ListItem');
+var ListItem = require('../components/ListItem');
 var s = require('../styles/style');
 var app = require('../libs/app');
 var navigation = require('../navigation/index');

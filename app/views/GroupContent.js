@@ -167,7 +167,7 @@ class GroupProfileView extends Component {
             type='button'
             last
             action
-            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.user})}
+            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user})}
             text={i18next.t('group.donut-list')}
             />
         </View>
@@ -187,7 +187,7 @@ class GroupProfileView extends Component {
             type='button'
             last
             action
-            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.user})}
+            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user})}
             text={i18next.t('group.donut-list')}
             />
         </View>
@@ -264,12 +264,11 @@ class GroupProfileView extends Component {
       quit = (
         <ListItem
           onPress={() => alert.askConfirmation('Quit group', 'You will leave this community', () => this.onGroupQuit(), () => {})}
-          text={i18next.t('group.leave') + ' TODO'}
+          text={i18next.t('group.leave')}
           first={!(this.isOp || this.isAdmin)}
           action
           warning
           type='button'
-          icon='fontawesome|close'
           iconColor='#e74c3c'
           />
       );
