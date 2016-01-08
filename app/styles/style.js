@@ -238,6 +238,12 @@ var style = {
   help: {
     color: '#999999',
     fontSize: 12
+  },
+  topic: {
+    fontFamily: 'Open Sans',
+    color: '#999999',
+    fontSize: 12,
+    fontStyle: 'italic'
   }
 };
 

@@ -52,9 +52,7 @@ class DiscussionSettings extends Component {
         <ScrollView style={styles.main}>
           <View style={styles.containerTop}>
             {this._renderAvatar(this.props.model.get('avatar'))}
-            <Text style={styles.identifier}>
-              {this.props.model.get('identifier')}
-            </Text>
+            <Text style={{marginTop: 10}}>{this.props.model.get('identifier')}</Text>
           </View>
           {this._renderTopic()}
           {this._renderLinks()}
@@ -138,10 +136,8 @@ class DiscussionSettings extends Component {
       return null;
     }
     return (
-      <View style={styles.topic}>
-        <Text>
-          "{(this.props.model.get('topic')) ? this.props.model.get('topic') : i18next.t('local:no-topic')}"
-        </Text>
+      <View style={{marginHorizontal: 10, marginBottom:20 , alignSelf: 'center'}}>
+        <Text style={s.topic}>{(this.props.model.get('topic')) ? this.props.model.get('topic') : i18next.t('local:no-topic')}</Text>
       </View>
     );
   }
@@ -221,7 +217,7 @@ var styles = StyleSheet.create({
     paddingTop: 10
   },
   containerTop: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     alignSelf: 'center',
     marginBottom: 10
@@ -229,7 +225,7 @@ var styles = StyleSheet.create({
   avatarRoom: {
     width: 50,
     height: 50,
-    borderRadius: 25,
+    borderRadius: 25
   },
   containerAvatarOne: {
     flexDirection: 'column'
@@ -259,12 +255,6 @@ var styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 16,
     fontFamily: 'Open Sans'
-  },
-  identifier: {
-    marginLeft: 10
-  },
-  topic: {
-    margin: 20
   }
 });
 
