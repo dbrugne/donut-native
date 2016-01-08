@@ -11,8 +11,8 @@ var {
 
 var _ = require('underscore');
 var debug = require('../libs/debug')('navigation');
-var EventsView = require('../components/DiscussionEvents');
-var InputView = require('../components/DiscussionInput');
+var EventsView = require('./DiscussionEvents');
+var InputView = require('./DiscussionInput');
 var animation = require('../libs/animations').keyboard;
 var LoadingModal = require('../components/LoadingModal');
 var ConfirmationModal = require('../components/ConfirmationModal');

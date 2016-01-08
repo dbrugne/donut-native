@@ -24,14 +24,14 @@ var app = require('../libs/app');
 var s = require('../styles/style');
 
 var eventsPrepare = require('../libs/eventsPrepare');
-var EventDate = require('./events/Date');
-var EventMessage = require('./events/Message');
-var EventPromote = require('./events/Promote');
-var EventUserPromote = require('./events/UserPromote');
-var EventStatus = require('./events/Status');
-var EventTopic = require('./events/Topic');
-var UserBlock = require('./events/UserBlock');
-var Unviewed = require('./events/Unviewed');
+var EventDate = require('./../components/events/Date');
+var EventMessage = require('./../components/events/Message');
+var EventPromote = require('./../components/events/Promote');
+var EventUserPromote = require('./../components/events/UserPromote');
+var EventStatus = require('./../components/events/Status');
+var EventTopic = require('./../components/events/Topic');
+var UserBlock = require('./../components/events/UserBlock');
+var Unviewed = require('./../components/events/Unviewed');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
