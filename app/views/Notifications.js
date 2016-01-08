@@ -228,7 +228,7 @@ class NotificationsView extends Component {
       var groupId = (n.data.group._id)
         ? n.data.group._id
         : n.data.group.id;
-      n.onPress = () => navigation.navigate('Profile', {
+      n.onPress = () => navigation.navigate('Group', {
         name: n.name,
         id: groupId
       });
