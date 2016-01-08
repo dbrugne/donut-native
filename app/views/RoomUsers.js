@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react-native');
 var _ = require('underscore');
-var s = require('../elements/SearchResult/style');
+var s = require('../styles/search');
 var LoadingView = require('../elements/Loading');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/mobile');

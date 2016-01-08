@@ -14,7 +14,7 @@ var Icon = require('react-native-icons').Icon;
 
 var app = require('../libs/app');
 var navigation = require('../navigation/index');
-var SearchResult = require('../elements/SearchResult');
+var SearchResult = require('./SearchResult');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {

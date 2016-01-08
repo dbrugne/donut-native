@@ -2,9 +2,9 @@
 
 var React = require('react-native');
 
-var SearchResultUser = require('./SearchResult/SearchResultUser');
-var SearchResultRoom = require('./SearchResult/SearchResultRoom');
-var SearchResultGroup = require('./SearchResult/SearchResultGroup');
+var SearchResultUser = require('./SearchResultUser');
+var SearchResultRoom = require('./SearchResultRoom');
+var SearchResultGroup = require('./SearchResultGroup');
 
 module.exports = React.createClass({
   propTypes: {

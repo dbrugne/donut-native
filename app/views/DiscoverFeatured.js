@@ -9,7 +9,7 @@ var {
 
 var app = require('./../libs/app');
 var navigation = require('../navigation/index');
-var SearchResult = require('../elements/SearchResult');
+var SearchResult = require('./SearchResult');
 var LoadingView = require('../elements/Loading');
 
 var i18next = require('../libs/i18next');

@@ -13,7 +13,7 @@ var {
 var _ = require('underscore');
 var app = require('../libs/app');
 var LoadingModal = require('../components/LoadingModal');
-var SearchResult = require('../elements/SearchResult');
+var SearchResult = require('./SearchResult');
 var navigation = require('../navigation/index');
 
 class GroupRoomsListView extends Component {
