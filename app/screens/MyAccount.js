@@ -23,57 +23,66 @@ i18next.addResourceBundle('en', 'local', {
   'manage-emails': 'Manage emails',
   'change-password': 'Change password',
   'about': 'About',
+  'eutc': 'Privacy and conditions',
   'logout': 'Logout'
 });
 
 class MyAccountView extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
-
     this.data = props.data;
   }
-
-  render() {
+  render () {
     return (
       <ScrollView style={styles.main}>
         <View style={s.listGroup}>
-          <ListItem onPress={() => this.props.navigator.push(navigation.getMyAccountInformation())}
-                    text={i18next.t('local:edit')}
-                    first
-                    action='true'
-                    type='button'
-                    title={i18next.t('local:manage')}
-            />
-          <ListItem onPress={() => this.props.navigator.push(navigation.getMyAccountPreferences())}
-                    text={i18next.t('local:change-preferences')}
-                    action='true'
-                    type='button'
-            />
+          <ListItem
+            onPress={() => navigation.navigate('MyAccountInformation')}
+            text={i18next.t('local:edit')}
+            first
+            action
+            type='button'
+            title={i18next.t('local:manage')}
+          />
+          <ListItem
+            onPress={() => navigation.navigate('MyAccountPreferences')}
+            text={i18next.t('local:change-preferences')}
+            action
+            type='button'
+          />
           <Text style={s.listGroupItemSpacing}></Text>
-          <ListItem onPress={() => this.props.navigator.push(navigation.getMyAccountEmails())}
-                    text={i18next.t('local:manage-emails')}
-                    action='true'
-                    type='button'
-                    first
-                    title={i18next.t('local:login')}
-            />
-          <ListItem onPress={() => this.props.navigator.push(navigation.getMyAccountPassword())}
-                    text={i18next.t('local:change-password')}
-                    action='true'
-                    type='button'
-            />
+          <ListItem
+            onPress={() => navigation.navigate('MyAccountEmails')}
+            text={i18next.t('local:manage-emails')}
+            action
+            type='button'
+            first
+            title={i18next.t('local:login')}
+          />
+          <ListItem
+            onPress={() => navigation.navigate('MyAccountPassword')}
+            text={i18next.t('local:change-password')}
+            action
+            type='button'
+          />
           <Text style={s.listGroupItemSpacing}></Text>
-          <ListItem onPress={() => navigation.navigate('About')}
-                    text={i18next.t('local:about')}
-                    action='true'
-                    first
+          <ListItem
+            onPress={() => navigation.navigate('About')}
+            text={i18next.t('local:about')}
+            action
+            first
+            type='button'
+          />
+          <ListItem text={i18next.t('local:eutc')}
                     type='button'
-            />
-          <ListItem onPress={() => currentUser.logout()}
-                    text={i18next.t('local:logout')}
-                    type='button'
-                    warning='true'
-            />
+                    onPress={() => navigation.navigate('Eutc')}
+          />
+          <ListItem
+            onPress={() => currentUser.logout()}
+            text={i18next.t('local:logout')}
+            type='button'
+            warning
+          />
         </View>
       </ScrollView>
     );

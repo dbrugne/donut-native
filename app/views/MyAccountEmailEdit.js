@@ -101,7 +101,7 @@ class EditEmailView extends Component {
         Alert.show(response.err);
       } else {
         Alert.show(i18next.t('messages.success'));
-        this.props.func();
+        this.props.refreshParentView();
         this.props.navigator.pop();
       }
     });
@@ -123,7 +123,7 @@ class EditEmailView extends Component {
         Alert.show(response.err);
       } else {
         Alert.show(i18next.t('messages.success'));
-        this.props.func();
+        this.props.refreshParentView();
         this.props.navigator.pop();
       }
     });

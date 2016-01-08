@@ -5,7 +5,6 @@ var s = require('../styles/style');
 var config = require('../libs/config')();
 var storage = require('../libs/storage');
 var app = require('../libs/app');
-var navigation = require('../libs/navigation');
 
 var debug = require('../libs/debug')('storage');
 
@@ -21,8 +20,7 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'version': 'Version __version__',
   'disconnect': 'Disconnect',
-  'connect': 'Connect',
-  'eutc': 'EUTC'
+  'connect': 'Connect'
 });
 
 class AboutView extends Component {
@@ -54,18 +52,6 @@ class AboutView extends Component {
                 <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('local:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}</Text>
               </View>
             </TouchableHighlight>
-            <ListItem text={i18next.t('local:connect')}
-                      type='button'
-                      onPress={() => { app.client.connect(); }}
-              />
-            <ListItem text={i18next.t('local:disconnect')}
-                      type='button'
-                      onPress={() => { app.client.disconnect(); }}
-              />
-            <ListItem text={i18next.t('local:eutc')}
-                      type='button'
-                      onPress={() => navigation.navigate('Eutc')}
-              />
             {this._renderConfig()}
           </View>
         </View>
@@ -73,27 +59,39 @@ class AboutView extends Component {
     );
   }
 
-  _renderConfig() {
+  _renderConfig () {
     if (!this.state.config) {
       return null;
     }
 
     return (
-      <ListView
-        style={{margin: 10, backgroundColor: '#FFF'}}
-        dataSource={this.state.ds}
-        scrollEnabled={false}
-        renderRow={(r) => (
-                  <View style={{padding: 5}}>
-                    <Text style={{fontWeight: 'bold'}}>{r.key}</Text>
-                    <Text>{r.value}</Text>
-                  </View>
-                )}
+      <View>
+        <ListItem
+          text={i18next.t('local:connect')}
+          type='button'
+          onPress={() => { app.client.connect(); }}
         />
+        <ListItem
+          text={i18next.t('local:disconnect')}
+          type='button'
+          onPress={() => { app.client.disconnect(); }}
+        />
+        <ListView
+          style={{margin: 10, backgroundColor: '#FFF'}}
+          dataSource={this.state.ds}
+          scrollEnabled={false}
+          renderRow={(r) => (
+            <View style={{padding: 5}}>
+              <Text style={{fontWeight: 'bold'}}>{r.key}</Text>
+              <Text>{r.value}</Text>
+            </View>
+          )}
+        />
+      </View>
     );
   }
 
-  toggleConfig() {
+  toggleConfig () {
     this.setState({
       config: !this.state.config
     });

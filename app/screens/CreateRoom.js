@@ -3,7 +3,7 @@
 var React = require('react-native');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 var ListItem = require('../elements/ListItem');
 
 var {
@@ -86,7 +86,7 @@ class RoomCreateView extends Component {
           first
           last
           action
-          onPress={() => navigation.switchTo(navigation.getGroupCreate())}
+          onPress={() => navigation.navigate('CreateGroup')}
           text={i18next.t('local:create-community')}
           />
 

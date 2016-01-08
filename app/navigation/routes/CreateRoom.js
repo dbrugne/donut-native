@@ -6,7 +6,7 @@ module.exports = function () {
     id: 'create-room',
     initial: true,
     getSceneClass () {
-      return require('../../screens/RoomCreation');
+      return require('../../screens/CreateRoom');
     },
     getTitle () {
       return i18next.t('navigation.create-donut');

@@ -17,7 +17,7 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class ChangeEmailView extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       email: this.props.email
@@ -56,7 +56,7 @@ class ChangeEmailView extends Component {
         alert.show(response.err);
       } else {
         alert.show(i18next.t('messages.success'));
-        this.props.func();
+        this.props.refreshParentView();
         this.props.navigator.pop();
       }
     });

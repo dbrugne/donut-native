@@ -5,7 +5,6 @@ var i18next = require('../../libs/i18next');
 
 module.exports = function (element) {
   return {
-    id: 'group-ask-email-' + element.id,
     renderScene: function (navigator) {
       let GroupAskMembershipEmail = require('../../views/GroupAskEmail');
       return (<GroupAskMembershipEmail navigator={navigator} id={element.id} domains={element.domains} />);

@@ -155,6 +155,8 @@ module.exports = {
         return require('./routes/GroupAskRequest');
       case 'CreateRoom':
         return require('./routes/CreateRoom');
+      case 'CreateGroup':
+        return require('./routes/CreateGroup');
       case 'Notifications':
         return require('./routes/Notifications');
       case 'Discussion':
@@ -163,10 +165,25 @@ module.exports = {
         return require('./routes/DiscussionSettings');
       case 'MyAccount':
         return require('./routes/MyAccount');
+      case 'MyAccountEmail':
+        return require('./routes/MyAccountEmail');
+      case 'MyAccountEmailEdit':
+        return require('./routes/MyAccountEmailEdit');
+      case 'MyAccountEmails':
+        return require('./routes/MyAccountEmails');
+      case 'MyAccountEmailsAdd':
+        return require('./routes/MyAccountEmailsAdd');
+      case 'MyAccountInformation':
+        return require('./routes/MyAccountInformation');
+      case 'MyAccountPassword':
+        return require('./routes/MyAccountPassword');
+      case 'MyAccountPreferences':
+        return require('./routes/MyAccountPreferences');
       case 'About':
         return require('./routes/About');
       case 'Eutc':
         return require('./routes/Eutc');
+
     }
   }
 };

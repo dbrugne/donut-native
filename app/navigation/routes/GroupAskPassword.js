@@ -5,7 +5,6 @@ var i18next = require('../../libs/i18next');
 
 module.exports = function (id) {
   return {
-    id: 'group-ask-password-' + id,
     renderScene: function (navigator) {
       let GroupAskMembershipPassword = require('../../views/GroupAskPassword');
       return (<GroupAskMembershipPassword navigator={navigator} id={id} />);

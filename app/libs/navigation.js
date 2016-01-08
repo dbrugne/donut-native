@@ -341,7 +341,7 @@ routes.getRoomCreate = function () {
   return getRoute({
     id: 'create-room',
     getSceneClass: function () {
-      return require('../screens/RoomCreation');
+      return require('../screens/CreateRoom');
     },
     getTitle: function () {
       return i18next.t('navigation.create-donut');
@@ -358,7 +358,7 @@ routes.getGroupCreate = function () {
   return getRoute({
     id: 'create-group',
     getSceneClass: function () {
-      return require('../screens/GroupCreate');
+      return require('../screens/CreateGroup');
     },
     getTitle: function () {
       return i18next.t('navigation.create-group');
