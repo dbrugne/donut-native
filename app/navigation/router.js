@@ -79,9 +79,9 @@ var nonInitialRouteTemplate = {
         style={ExNavigator.Styles.barBackButton} >
         <Icon name='fontawesome|angle-left'
               size={18}
-              color='#fc2063'
+              color='#999998'
               style={[ExNavigator.Styles.barButtonIcon, {marginLeft: 5, width: 18, height: 18}, Platform.OS === 'android' ? {marginTop: 18} : {marginTop: 12}]} />
-        <Text style={[ExNavigator.Styles.barButtonText, {color: '#fc2063'}, Platform.OS === 'android' ? {marginTop: 16} : {marginTop: 11}]}> {i18next.t('navigation.back')}</Text>
+        <Text style={[ExNavigator.Styles.barButtonText, {color: '#999998'}, Platform.OS === 'android' ? {marginTop: 16} : {marginTop: 11}]}> {i18next.t('navigation.back')}</Text>
       </TouchableOpacity>
     );
   }

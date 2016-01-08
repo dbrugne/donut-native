@@ -70,9 +70,9 @@ class ProfileView extends Component {
             {role}
           </View>
           <View style={[s.listGroup]}>
-            <Text style={s.listGroupItemSpacing}></Text>
+            <Text style={s.listGroupItemSpacing} />
             {this._renderActions()}
-            <Text style={s.listGroupItemSpacing}></Text>
+            <Text style={s.listGroupItemSpacing} />
           </View>
         </ScrollView>
       </View>

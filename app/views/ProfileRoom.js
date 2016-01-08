@@ -27,7 +27,7 @@ i18next.addResourceBundle('en', 'local', {
   'edit': 'edit',
   'manage-users': 'manage users',
   'access': 'access',
-  'delete': 'supprimer ce donut',
+  'delete': 'delete this donut',
   'by': 'by',
   'join': 'join'
 });
@@ -119,7 +119,7 @@ class RoomProfileView extends Component {
           <Text style={styles.description}>{description}</Text>
         </View>
         <View style={s.listGroup}>
-          <Text style={s.listGroupItemSpacing}></Text>
+          <Text style={s.listGroupItemSpacing} />
           <ListItem
             text={i18next.t('local:join') + ' ' + data.users_count}
             type='edit-button'
@@ -130,7 +130,7 @@ class RoomProfileView extends Component {
             icon='fontawesome|user'
             iconColor='#f1c40f'
             />
-          <Text style={s.listGroupItemSpacing}></Text>
+          <Text style={s.listGroupItemSpacing} />
           {website}
           {createdAt}
         </View>

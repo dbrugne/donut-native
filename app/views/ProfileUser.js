@@ -121,7 +121,7 @@ class UserProfileView extends Component {
           {isBannedLink}
         </View>
         <View style={[s.listGroup]}>
-          <Text style={s.listGroupItemSpacing}></Text>
+          <Text style={s.listGroupItemSpacing} />
           <ListItem
             text={i18next.t('local:discuss')}
             type='edit-button'
@@ -130,7 +130,7 @@ class UserProfileView extends Component {
             onPress={() => app.trigger('joinUser', data.user_id)}
             />
 
-          <Text style={s.listGroupItemSpacing}></Text>
+          <Text style={s.listGroupItemSpacing} />
           {location}
           {website}
           {registeredAt}

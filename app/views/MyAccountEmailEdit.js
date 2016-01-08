@@ -61,7 +61,7 @@ class EditEmailView extends Component {
       return (
         <View>
           {this._renderMain()}
-          <Text style={s.listGroupItemSpacing}></Text>
+          <Text style={s.listGroupItemSpacing} />
         </View>
       );
     } else {
@@ -76,7 +76,7 @@ class EditEmailView extends Component {
                     title={i18next.t('local:not-validated')}
             />
 
-          <Text style={s.listGroupItemSpacing}></Text>
+          <Text style={s.listGroupItemSpacing} />
         </View>
       );
     }

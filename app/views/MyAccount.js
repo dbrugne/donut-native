@@ -53,7 +53,7 @@ class MyAccountView extends Component {
               action
               type='button'
             />
-            <Text style={s.listGroupItemSpacing}></Text>
+            <Text style={s.listGroupItemSpacing} />
             <ListItem
               onPress={() => navigation.navigate('MyAccountEmails')}
               text={i18next.t('local:manage-emails')}
@@ -68,7 +68,7 @@ class MyAccountView extends Component {
               action
               type='button'
             />
-            <Text style={s.listGroupItemSpacing}></Text>
+            <Text style={s.listGroupItemSpacing} />
             <ListItem
               onPress={() => navigation.navigate('About')}
               text={i18next.t('local:about')}

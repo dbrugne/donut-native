@@ -76,7 +76,7 @@ class DiscussionSettings extends Component {
             action
             />
           {this._renderBlock()}
-          <Text style={s.listGroupItemSpacing}></Text>
+          <Text style={s.listGroupItemSpacing} />
           <ListItem
             onPress={() => this.props.model.leave()}
             text={i18next.t('local:close')}
@@ -96,8 +96,8 @@ class DiscussionSettings extends Component {
             text={i18next.t('local:change-topic')}
             icon='fontawesome|edit'
             type='button'
-            action={true}
-            first={true}
+            action
+            first
             />
         );
       }
@@ -120,7 +120,7 @@ class DiscussionSettings extends Component {
             action
             />
           {this._renderAllowedUsers()}
-          <Text style={s.listGroupItemSpacing}></Text>
+          <Text style={s.listGroupItemSpacing} />
           <ListItem
             onPress={() => this.props.model.leave()}
             text={i18next.t('local:leave')}
@@ -143,52 +143,54 @@ class DiscussionSettings extends Component {
           "{(this.props.model.get('topic')) ? this.props.model.get('topic') : i18next.t('local:no-topic')}"
         </Text>
       </View>
-    )
+    );
   }
 
   _renderBlock() {
+    return null;
     // @todo implement user block action
     // @todo implement user block action
-    if (this.props.model.get('banned') === false) {
-      return (
-        <ListItem
-          onPress={() => console.log('@todo implement user block action')}
-          text={i18next.t('local:block')+' TODO'}
-          icon='fontawesome|ban'
-          iconColor='#e74c3c'
-          type='button'
-          action={true}
-          warning={true}
-          />
-      );
-    } else {
-      return (
-        <ListItem
-          onPress={() => console.log('@todo implement user deblock action')}
-          text={i18next.t('local:unblock')+' TODO'}
-          icon='fontawesome|ban'
-          type='button'
-          action={true}
-          />
-      );
-    }
+    //if (this.props.model.get('banned') === false) {
+    //  return (
+    //    <ListItem
+    //      onPress={() => console.log('@todo implement user block action')}
+    //      text={i18next.t('local:block')+' TODO'}
+    //      icon='fontawesome|ban'
+    //      iconColor='#e74c3c'
+    //      type='button'
+    //      action
+    //      warning
+    //      />
+    //  );
+    //} else {
+    //  return (
+    //    <ListItem
+    //      onPress={() => console.log('@todo implement user deblock action')}
+    //      text={i18next.t('local:unblock')+' TODO'}
+    //      icon='fontawesome|ban'
+    //      type='button'
+    //      action
+    //      />
+    //  );
+    //}
   }
 
   _renderAllowedUsers() {
-    if (this.props.model.get('mode') !== 'public') {
-      return null;
-    }
-
-    return (
-      // @todo open allowed users page
-      <ListItem
-        onPress={() => console.log('@todo implement allowed users page')}
-        text={i18next.t('local:allowed')+' TODO'}
-        icon='fontawesome|shield'
-        type='button'
-        action={true}
-        />
-    );
+    return null;
+    //if (this.props.model.get('mode') !== 'public') {
+    //  return null;
+    //}
+    //
+    //return (
+    //  // @todo open allowed users page
+    //  <ListItem
+    //    onPress={() => console.log('@todo implement allowed users page')}
+    //    text={i18next.t('local:allowed')+' TODO'}
+    //    icon='fontawesome|shield'
+    //    type='button'
+    //    action={true}
+    //    />
+    //);
   }
 
   _renderAvatar (avatar) {
