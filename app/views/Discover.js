@@ -8,7 +8,7 @@ var {
 } = React;
 
 var config = require('../libs/config')();
-var HomeFeatured = require('../components/HomeFeatured');
+var HomeFeatured = require('./DiscoverFeatured');
 var currentUser = require('../models/current-user');
 
 var i18next = require('../libs/i18next');

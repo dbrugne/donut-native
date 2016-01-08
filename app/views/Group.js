@@ -9,7 +9,7 @@ var {
   StyleSheet
 } = React;
 
-var GroupProfile = require('../components/GroupProfile');
+var GroupContent = require('./GroupContent');
 var app = require('../libs/app');
 
 class GroupHomeView extends Component {
@@ -61,7 +61,7 @@ class GroupHomeView extends Component {
       );
     }
     return (
-      <GroupProfile data={this.state.data} navigator={this.props.navigator} />
+      <GroupContent data={this.state.data} navigator={this.props.navigator} />
     );
   }
   onRefresh () {
