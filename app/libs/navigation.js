@@ -307,7 +307,7 @@ routes.getHome = function () {
   return getRoute({
     id: 'home',
     getSceneClass: function () {
-      return require('../screens/Home');
+      return require('../screens/Discover');
     },
     getTitle: function () {
       return i18next.t('navigation.discover');

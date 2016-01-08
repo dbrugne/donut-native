@@ -101,7 +101,7 @@ var nonInitialRouteTemplate = {
 
 module.exports = {
   getDefaultRoute () {
-    return this.getRoute('Home');
+    return this.getRoute('Discover');
   },
   getRoute (name, args) {
     if (!/^[a-zA-Z-]+$/.test(name)) {
@@ -135,8 +135,8 @@ module.exports = {
   _load (name) {
     // cannot load dynamical name with require() due to packager
     switch (name) {
-      case 'Home':
-        return require('./routes/Home');
+      case 'Discover':
+        return require('./routes/Discover');
       case 'Search':
         return require('./routes/Search');
       case 'Profile':

@@ -44,7 +44,7 @@ class DrawerContent extends Component {
       <ScrollView style={styles.main}>
         <CurrentUserView />
         <View style={styles.actions}>
-          {this.renderAction('home', false, () => navigation.navigate('Home'))}
+          {this.renderAction('home', false, () => navigation.navigate('Discover'))}
           {this.renderAction('search', false, () => navigation.navigate('Search'))}
           {this.renderAction('plus', false, () => navigation.navigate('CreateRoom'))}
           {this.renderAction('globe', true, () => navigation.navigate('Notifications'))}

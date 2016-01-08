@@ -6,7 +6,7 @@ module.exports = function () {
     id: 'home',
     initial: true,
     getSceneClass () {
-      return require('../../screens/Home');
+      return require('../../screens/Discover');
     },
     getTitle () {
       return i18next.t('navigation.discover');

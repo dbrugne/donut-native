@@ -13,7 +13,7 @@ var currentUser = require('../models/current-user');
 
 var i18next = require('../libs/i18next');
 
-class Home extends Component {
+class Discover extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -52,4 +52,4 @@ class Home extends Component {
   }
 }
 
-module.exports = Home;
+module.exports = Discover;
