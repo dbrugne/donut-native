@@ -307,7 +307,7 @@ routes.getHome = function () {
   return getRoute({
     id: 'home',
     getSceneClass: function () {
-      return require('../screens/Discover');
+      return require('../views/Discover');
     },
     getTitle: function () {
       return i18next.t('navigation.discover');
@@ -324,7 +324,7 @@ routes.getSearch = function () {
   return getRoute({
     id: 'search',
     getSceneClass: function () {
-      return require('../screens/Search');
+      return require('../views/Search');
     },
     getTitle: function () {
       return i18next.t('navigation.search');
@@ -341,7 +341,7 @@ routes.getRoomCreate = function () {
   return getRoute({
     id: 'create-room',
     getSceneClass: function () {
-      return require('../screens/CreateRoom');
+      return require('../views/CreateRoom');
     },
     getTitle: function () {
       return i18next.t('navigation.create-donut');
@@ -358,7 +358,7 @@ routes.getGroupCreate = function () {
   return getRoute({
     id: 'create-group',
     getSceneClass: function () {
-      return require('../screens/CreateGroup');
+      return require('../views/CreateGroup');
     },
     getTitle: function () {
       return i18next.t('navigation.create-group');
@@ -375,7 +375,7 @@ routes.getProfile = function (element) {
   return getRoute({
     id: 'profile-' + element.id,
     renderScene: function (navigator) {
-      let Profile = require('../screens/Profile');
+      let Profile = require('../views/Profile');
       return <Profile navigator={navigator} element={element} />;
     },
     getTitle() {
@@ -388,7 +388,7 @@ routes.getGroup = function (element) {
   return getRoute({
     id: 'group-home',
     renderScene: function (navigator) {
-      let GroupHome = require('../screens/Group');
+      let GroupHome = require('../views/Group');
       return <GroupHome navigator={navigator} element={element} />;
     },
     getTitle: function () {
@@ -464,7 +464,7 @@ routes.getMyAccount = function () {
   return getRoute({
     id: 'my-account',
     getSceneClass: function () {
-      return require('../screens/MyAccount');
+      return require('../views/MyAccount');
     },
     getTitle: function () {
       return i18next.t('navigation.my-account');
@@ -583,7 +583,7 @@ routes.getDiscussion = function (id, model) {
     id: 'discussion-' + id,
     model: model, // only for discussion routes
     renderScene: function (navigator) {
-      let Discussion = require('../screens/Discussion');
+      let Discussion = require('../views/Discussion');
       return <Discussion navigator={navigator} model={model} />;
     },
     getTitle: function () {
@@ -615,7 +615,7 @@ routes.getBlockedDiscussion = function (id, model) {
   return getRoute({
     id: 'discussion-blocked-' + id,
     renderScene: function (navigator) {
-      let DiscussionBlocked = require('../screens/DiscussionBlocked');
+      let DiscussionBlocked = require('../views/DiscussionBlocked');
       return <DiscussionBlocked navigator={navigator} model={model} />;
     },
     getTitle: function () {
@@ -676,7 +676,7 @@ routes.getNotifications = function () {
   return getRoute({
     id: 'notification-center',
     getSceneClass: function () {
-      return require('../screens/Notifications');
+      return require('../views/Notifications');
     },
     getTitle() {
       return i18next.t('navigation.notifications');

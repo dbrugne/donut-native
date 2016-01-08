@@ -13,8 +13,8 @@ module.exports = function (model) {
     model: model, // only for discussion routes
     renderScene: function (navigator) {
       var Discussion = (model.get('blocked') === true)
-        ? require('../../screens/DiscussionBlocked')
-        : require('../../screens/Discussion');
+        ? require('../../views/DiscussionBlocked')
+        : require('../../views/Discussion');
 
       return <Discussion navigator={navigator} model={model}/>;
     },

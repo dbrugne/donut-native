@@ -5,7 +5,7 @@ module.exports = function (element) {
   return {
     id: 'profile-' + element.id,
     renderScene: function (navigator) {
-      let Profile = require('../../screens/Profile');
+      let Profile = require('../../views/Profile');
       return <Profile navigator={navigator} element={element} />;
     },
     getTitle () {
