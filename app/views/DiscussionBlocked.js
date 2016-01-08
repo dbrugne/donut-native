@@ -20,7 +20,7 @@ var {
   TouchableHighlight,
   Image,
   Text
-} = React;
+  } = React;
 var Icon = require('react-native-icons').Icon;
 
 var i18next = require('../libs/i18next');
@@ -69,7 +69,8 @@ class DiscussionBlocked extends Component {
           <View style={styles.container}>
             {this._renderAvatar(this.props.model.get('avatar'))}
             <Text style={styles.identifier}>{this.props.model.get('identifier')}</Text>
-            <TouchableHighlight onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('owner_id'), identifier: '@' + this.props.model.get('owner_username')})}>
+            <TouchableHighlight
+              onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('owner_id'), identifier: '@' + this.props.model.get('owner_username')})}>
               <Text>
                 <Text>{i18next.t('local:by')} </Text>
                 <Text style={styles.ownerUsername}>@{this.props.model.get('owner_username')}</Text>
@@ -78,19 +79,18 @@ class DiscussionBlocked extends Component {
             {description}
           </View>
 
-          {this._renderDisclaimer()}
           {banned}
           {kicked}
           {join}
 
-        <ListItem type='button'
-                  onPress={() => this.props.model.leaveBlocked()}
-                  text={i18next.t('local:close')}
-                  ation
-                  first
-                  last
-                  warning
-                  />
+          <ListItem type='button'
+                    onPress={() => this.props.model.leaveBlocked()}
+                    text={i18next.t('local:close')}
+                    ation
+                    first
+                    last
+                    warning
+            />
 
         </ScrollView>
       </View>
@@ -111,31 +111,7 @@ class DiscussionBlocked extends Component {
     );
   }
 
-  _renderDisclaimer() {
-    if (!this.props.model.get('disclaimer') || this.props.model.get('disclaimer').length === 0) {
-      return null;
-    }
-
-    let disclaimer = _.unescape(this.props.model.get('disclaimer'));
-    return (
-      <View style={[s.alertWarning, {marginLeft: 0, marginRight: 0, marginBottom: 0}]}>
-        <Text style={s.alertWarningText}>{i18next.t('room.message-membership')}</Text>
-        <View style={{marginTop: 10, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center'}}>
-          <Icon
-            name='fontawesome|quote-right'
-            size={14}
-            color='#8a6d3b'
-            style={{width: 14, height: 14, marginTop: 2}}
-            />
-          <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
-            <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{disclaimer}</Text>
-          </View>
-        </View>
-      </View>
-    );
-  }
-
-  _renderBanned() {
+  _renderBanned () {
     if (this.props.model.get('blocked') !== 'banned' && this.props.model.get('blocked') !== 'groupbanned') {
       return null;
     }
@@ -143,8 +119,8 @@ class DiscussionBlocked extends Component {
     let bannedAt = null;
     if (this.props.model.get('banned_at')) {
       bannedAt = (
-        <Text>
-          {i18next.t('local:'+this.props.model.get('blocked'), {at: date.dateTime(this.props.model.get('banned_at'))})}
+        <Text style={s.alertErrorText}>
+          {i18next.t('local:' + this.props.model.get('blocked'), {at: date.dateTime(this.props.model.get('banned_at'))})}
         </Text>
       );
     }
@@ -152,23 +128,23 @@ class DiscussionBlocked extends Component {
     let bannedReason = null;
     if (this.props.model.get('reason')) {
       bannedReason = (
-        <View>
-            <Text>{i18next.t('local:reason')}</Text>
-            <View>
-              <Icon
-                name='fontawesome|quote-right'
-                size={20}
-                color='#ffda3e'
-                style={s.buttonIcon}
-                />
-              <Text>{this.props.model.get('reason')}</Text>
-            </View>
+        <View style={{marginTop: 10, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center'}}>
+          <Icon
+            name='fontawesome|quote-right'
+            size={14}
+            color='#a94442'
+            style={{width: 14, height: 14, marginTop: 2}}
+            />
+          <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
+            <Text
+              style={[s.alertErrorText, {fontStyle: 'italic', paddingLeft: 5}]}>{this.props.model.get('reason')}</Text>
+          </View>
         </View>
       );
     }
 
     let banned = (
-      <View>
+      <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
         {bannedAt}
         {bannedReason}
       </View>
@@ -177,13 +153,13 @@ class DiscussionBlocked extends Component {
     return banned;
   }
 
-  _renderKicked() {
+  _renderKicked () {
     if (this.props.model.get('blocked') !== 'kicked') {
       return null;
     }
 
     return (
-      <View style={[s.alertError, {marginHorizontal: 0}]}>
+      <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
         <Link onPress={(this.onJoin.bind(this))}
               prepend={i18next.t('local:kicked')}
               append={i18next.t('local:rejoin')}
