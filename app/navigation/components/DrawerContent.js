@@ -9,21 +9,16 @@ var {
   Component,
   TouchableHighlight,
   ScrollView
-  } = React;
-var {
-  Icon
-  } = require('react-native-icons');
+} = React;
+var Icon = require('react-native-icons').Icon;
 
-var _ = require('underscore');
-var app = require('../libs/app');
-var CurrentUserView = require('../components/CurrentUser');
-var NavigationOnesView = require('./../components/NavigationOnes');
-var NavigationRoomsView = require('./../components/NavigationRooms');
-var navigation = require('../libs/navigation');
-var s = require('../styles/style');
-var currentUser = require('../models/current-user');
+var CurrentUserView = require('../../components/CurrentUser');
+var NavigationOnesView = require('./../../components/NavigationOnes');
+var NavigationRoomsView = require('./../../components/NavigationRooms');
+var navigation = require('../../navigation/index');
+var app = require('../../libs/app');
 
-var i18next = require('../libs/i18next');
+var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'discover': 'discover',
   'search': 'search',
@@ -31,46 +26,42 @@ i18next.addResourceBundle('en', 'local', {
   'notifications': 'Notifications'
 });
 
-class NavigationView extends Component {
-  constructor(props) {
+class DrawerContent extends Component {
+  constructor (props) {
     super(props);
     this.state = ({
       unread: 0
     });
   }
-
-  componentDidMount() {
-    currentUser.on('change:unreadNotifications', this.updateUnreadCount.bind(this));
+  componentDidMount () {
+    app.user.on('change:unreadNotifications', this.updateUnreadCount, this);
   }
-
-  componentWillUnmount() {
-    currentUser.off('change');
+  componentWillUnmount () {
+    app.user.off(null, null, this);
   }
-
-  render() {
+  render () {
     return (
       <ScrollView style={styles.main}>
         <CurrentUserView />
         <View style={styles.actions}>
-          {this.renderAction('home', false, () => navigation.switchTo(navigation.getHome()))}
-          {this.renderAction('search', false, () => navigation.switchTo(navigation.getSearch()))}
-          {this.renderAction('plus', false, () => navigation.switchTo(navigation.getRoomCreate()))}
-          {this.renderAction('globe', true, () => navigation.switchTo(navigation.getNotifications()))}
+          {this.renderAction('home', false, () => navigation.navigate('Home'))}
+          {this.renderAction('search', false, () => navigation.navigate('Search'))}
+          {this.renderAction('plus', false, () => navigation.navigate('CreateRoom'))}
+          {this.renderAction('globe', true, () => navigation.navigate('Notifications'))}
         </View>
         <NavigationOnesView />
         <NavigationRoomsView />
       </ScrollView>
     );
   }
-
-  renderAction(icon, count, onPress) {
+  renderAction (icon, count, onPress) {
     var iconName = 'fontawesome|' + icon;
     let _count = null;
     if (count && this.state.unread > 0) {
       _count = (
         <View
-          style={{backgroundColor:'#fd5286', height:18, borderRadius:9, position: 'absolute', top:-5, right:-5, paddingLeft:5, paddingRight:5}}>
-          <Text style={{marginTop:1, fontSize:12, color:'#FFFFFF', fontWeight:'bold'}}>{this.state.unread}</Text>
+          style={{backgroundColor: '#fd5286', height: 18, borderRadius: 9, position: 'absolute', top: -5, right: -5, paddingLeft: 5, paddingRight: 5}}>
+          <Text style={{marginTop: 1, fontSize: 12, color: '#FFFFFF', fontWeight: 'bold'}}>{this.state.unread}</Text>
         </View>
       );
     }
@@ -90,14 +81,12 @@ class NavigationView extends Component {
       </TouchableHighlight>
     );
   }
-
-  updateUnreadCount() {
+  updateUnreadCount () {
     this.setState(
-      {unread: currentUser.getUnreadNotifications()}
+      {unread: app.user.getUnreadNotifications()}
     );
   }
 }
-;
 
 var styles = StyleSheet.create({
   main: {
@@ -121,4 +110,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = NavigationView;
+module.exports = DrawerContent;

@@ -20,7 +20,9 @@ class ListItemInput extends ListItemAbstract {
         {...this.props}
         autoFocus
         style={[s.input]}
-        keyboardType={(this.props.isEmail) ? 'email-address' : 'default'}/>
+        autoCapitalize={(this.props.isEmail) ? 'none' : 'sentences'}
+        keyboardType={(this.props.isEmail) ? 'email-address' : 'default'}
+      />
     );
   }
 }

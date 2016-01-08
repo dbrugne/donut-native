@@ -8,11 +8,10 @@ var {
   Component,
   ScrollView,
   Image
-  } = React;
+} = React;
 
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/mobile');
-var navigation = require('../libs/navigation');
 var ListItem = require('../elements/ListItem');
 var s = require('../styles/style');
 var alert = require('../libs/alert');
@@ -180,7 +179,7 @@ class ProfileView extends Component {
             return alert.show(response.err);
           }
           this.setState({isOp: false});
-          this.props.fc();
+          this.props.parentCallback();
         });
       },
       () => {}
@@ -196,7 +195,7 @@ class ProfileView extends Component {
             return alert.show(response.err);
           }
           this.setState({isOp: true});
-          this.props.fc();
+          this.props.parentCallback();
         });
       },
       () => {}
@@ -212,7 +211,7 @@ class ProfileView extends Component {
             return alert.show(response.err);
           }
           this.setState({isDevoiced: true});
-          this.props.fc();
+          this.props.parentCallback();
         });
       },
       () => {}
@@ -228,7 +227,7 @@ class ProfileView extends Component {
             return alert.show(response.err);
           }
           this.setState({isDevoiced: false});
-          this.props.fc();
+          this.props.parentCallback();
         });
       },
       () => {}
@@ -244,7 +243,7 @@ class ProfileView extends Component {
             return alert.show(response.err);
           }
           this.setState({isBanned: false});
-          this.props.fc();
+          this.props.parentCallback();
         });
       },
       () => {}
@@ -260,7 +259,7 @@ class ProfileView extends Component {
             return alert.show(response.err);
           }
           this.setState({isBanned: true});
-          this.props.fc();
+          this.props.parentCallback();
         });
       },
       () => {}
@@ -276,7 +275,7 @@ class ProfileView extends Component {
             return alert.show(response.err);
           }
           this.props.navigator.pop();
-          this.props.fc();
+          this.props.parentCallback();
         });
       },
       () => {}

@@ -10,11 +10,11 @@ var {
   ListView,
   Image,
   TouchableHighlight
-} = React;
+  } = React;
 
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -32,19 +32,23 @@ class NavigationOnesView extends Component {
       })
     };
   }
+
   componentDidMount () {
     app.on('redrawNavigation', this.refreshData, this);
     app.on('redrawNavigationOnes', this.refreshData, this);
     app.on('viewedEvent', this.refreshData, this);
   }
+
   componentWillUnmount () {
     app.off(null, null, this);
   }
+
   refreshData () {
     this.setState({
       elements: this.state.elements.cloneWithRows(app.ones.toJSON())
     });
   }
+
   render () {
     var title = null;
     if (app.ones.length > 0) {
@@ -62,10 +66,11 @@ class NavigationOnesView extends Component {
           renderRow={this.renderElement.bind(this)}
           style={styles.listView}
           scrollEnabled={false}
-          />
+        />
       </View>
     );
   }
+
   renderElement (e) {
     var model = app.ones.get(e.user_id);
     if (!model) {
@@ -82,9 +87,9 @@ class NavigationOnesView extends Component {
     return (
       <TouchableHighlight
         style={styles.linkBlock}
-        onPress={() => navigation.switchTo(navigation.getDiscussion(model.get('id'), model))}
-        underlayColor= '#414041'
-        >
+        onPress={() => navigation.navigate('Discussion', model)}
+        underlayColor='#414041'
+      >
         <View style={styles.item}>
           {this._renderAvatar(e.avatar)}
           <Text style={styles.itemTitle}>@{e.username}</Text>
@@ -107,7 +112,7 @@ class NavigationOnesView extends Component {
       <Image style={styles.thumbnail} source={{uri: avatarUrl}}/>
     );
   }
-};
+}
 
 var styles = StyleSheet.create({
   title: {
@@ -117,8 +122,7 @@ var styles = StyleSheet.create({
     margin: 10,
     color: '#FFFFFF'
   },
-  listView: {
-  },
+  listView: {},
   item: {
     paddingLeft: 10,
     flexDirection: 'row',
@@ -134,13 +138,13 @@ var styles = StyleSheet.create({
     fontSize: 16,
     color: '#FFFFFF',
     marginLeft: 10,
-    flex:1,
+    flex: 1,
     marginVertical: 15
   },
   unviewed: {
     fontSize: 20,
     color: '#fc2063',
-    marginRight:10
+    marginRight: 10
   },
   linkBlock: {
     borderTopColor: '#373737',

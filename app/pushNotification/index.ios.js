@@ -9,7 +9,7 @@ var {
 
 var DonutParse = require('react-native').NativeModules.DonutParse;
 var utils = require('./utils');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 
 var debug = require('./../libs/debug')('pushNotification');
 
@@ -93,6 +93,6 @@ module.exports = {
     PushNotificationIOS.requestPermissions();
   },
   goToNotificationCenter () {
-    navigation.switchTo(navigation.getNotifications());
+    navigation.navigate('Notifications');
   }
 };

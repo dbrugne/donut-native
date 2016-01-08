@@ -8,16 +8,16 @@ var {
   Component,
   Image,
   ScrollView
-  } = React;
+} = React;
 var {
   Icon
-  } = require('react-native-icons');
+} = require('react-native-icons');
 
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
@@ -52,7 +52,7 @@ class GroupProfileView extends Component {
           {this._renderAvatar()}
           <Text style={styles.identifier}>{this.props.data.identifier}</Text>
           <Link
-            onPress={() => { navigation.switchTo(navigation.getProfile({type: 'user', id: this.props.data.owner_id, identifier: '@' + this.props.data.owner_username})) }}
+            onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.data.owner_id, identifier: '@' + this.props.data.owner_username})}
             prepend={i18next.t('by')}
             text={'@' + this.props.data.owner_username}
             type='bold'
@@ -167,7 +167,7 @@ class GroupProfileView extends Component {
             type='button'
             last
             action
-            onPress={() => this.props.navigator.push(navigation.getGroupRoomsList({id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user}))}
+            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.user})}
             text={i18next.t('group.donut-list')}
             />
         </View>
@@ -180,14 +180,14 @@ class GroupProfileView extends Component {
             type='button'
             first
             action
-            onPress={() => this.props.navigator.push(navigation.getGroupAskMembership(this.props.data.group_id))}
+            onPress={() => navigation.navigate('GroupAsk', this.props.data.group_id)}
             text={i18next.t('group.request-membership')}
             />
           <ListItem
             type='button'
             last
             action
-            onPress={() => this.props.navigator.push(navigation.getGroupRoomsList({id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user}))}
+            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.user})}
             text={i18next.t('group.donut-list')}
             />
         </View>

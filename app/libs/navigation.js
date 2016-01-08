@@ -341,7 +341,7 @@ routes.getRoomCreate = function () {
   return getRoute({
     id: 'create-room',
     getSceneClass: function () {
-      return require('../screens/RoomCreate');
+      return require('../screens/CreateRoom');
     },
     getTitle: function () {
       return i18next.t('navigation.create-donut');
@@ -358,7 +358,7 @@ routes.getGroupCreate = function () {
   return getRoute({
     id: 'create-group',
     getSceneClass: function () {
-      return require('../screens/GroupCreate');
+      return require('../screens/CreateGroup');
     },
     getTitle: function () {
       return i18next.t('navigation.create-group');
@@ -388,7 +388,7 @@ routes.getGroup = function (element) {
   return getRoute({
     id: 'group-home',
     renderScene: function (navigator) {
-      let GroupHome = require('../screens/GroupHome');
+      let GroupHome = require('../screens/Group');
       return <GroupHome navigator={navigator} element={element} />;
     },
     getTitle: function () {
@@ -415,7 +415,7 @@ routes.getGroupAskMembership = function (id) {
   return getRoute({
     id: 'group-ask-membership' + id,
     renderScene: function (navigator) {
-      let GroupAskMembership = require('../views/GroupAskMembership');
+      let GroupAskMembership = require('../views/GroupAsk');
       return <GroupAskMembership navigator={navigator} id={id}/>;
     },
     getTitle: function () {
@@ -427,7 +427,7 @@ routes.getGroupAskMembershipRequest = function (element) {
   return getRoute({
     id: 'group-ask-membership-request' + element.id + '-' + element.isAllowedPending,
     renderScene: function () {
-      let GroupAskMembershipRequest = require('../views/GroupAskMembershipRequest');
+      let GroupAskMembershipRequest = require('../views/GroupAskRequest');
       return <GroupAskMembershipRequest id={element.id} isAllowedPending={element.isAllowedPending} scroll />;
     },
     getTitle: function () {
@@ -439,7 +439,7 @@ routes.getGroupAskMembershipPassword = function (id) {
   return getRoute({
     id: 'group-ask-membership-password' + id,
     renderScene: function (navigator) {
-      let GroupAskMembershipPassword = require('../views/GroupAskMembershipPassword');
+      let GroupAskMembershipPassword = require('../views/GroupAskPassword');
       return <GroupAskMembershipPassword navigator={navigator} id={id} scroll />;
     },
     getTitle: function () {
@@ -451,7 +451,7 @@ routes.getGroupAskMembershipEmail = function (element) {
   return getRoute({
     id: 'group-ask-membership-email' + element.id,
     renderScene: function () {
-      let GroupAskMembershipEmail = require('../views/GroupAskMembershipEmail');
+      let GroupAskMembershipEmail = require('../views/GroupAskEmail');
       return <GroupAskMembershipEmail id={element.id} domains={element.domains} scroll />;
     },
     getTitle: function () {
@@ -565,17 +565,6 @@ routes.getAbout = function () {
     }
   });
 };
-routes.getColorPicker = function () {
-  return getRoute({
-    id: 'color-picker',
-    getSceneClass: function () {
-      return require('../views/ColorPicker');
-    },
-    getTitle: function () {
-      return i18next.t('navigation.color-picker');
-    }
-  });
-};
 routes.getDiscussionSettings = function (id, model) {
   return getRoute({
     id: 'discussion-settings-' + id,
@@ -641,7 +630,7 @@ routes.getUpdateRoomTopic = function (id) {
   return getRoute({
     id: 'room-topic' + id,
     renderScene: function () {
-      let UpdateRoomTopic = require('../views/UpdateRoomTopic');
+      let UpdateRoomTopic = require('../views/RoomTopic');
       return <UpdateRoomTopic id={id} />;
     },
     getTitle: function () {
@@ -665,7 +654,7 @@ routes.getManageUser = function (roomId, user, fc) {
   return getRoute({
     id: 'manage-user-' + user.user_id,
     renderScene: function (navigator) {
-      let RoomUsers = require('../views/ManageUser');
+      let RoomUsers = require('../views/RoomUser');
       return <RoomUsers navigator={navigator} user={user} roomId={roomId} fc={fc}/>;
     },
     getTitle: function () {
@@ -809,7 +798,7 @@ routes.RootNavigator = React.createClass({
     debug.log('unmount RootNavigator');
   },
   render () {
-    var Navigation = require('../navigation/NavigationView');
+    var Navigation = require('../navigation/components/DrawerContent');
     var initialRoute = currentNavigator = routes.getNavigator(routes.getHome());
     return (
       <Drawer

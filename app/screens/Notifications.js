@@ -3,13 +3,12 @@
 var React = require('react-native');
 var _ = require('underscore');
 var app = require('../libs/app');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 var ListItem = require('../elements/ListItem');
 var LoadingView = require('../elements/Loading');
 var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
 var date = require('../libs/date');
-var currentUser = require('../models/current-user');
 var s = require('../styles/style');
 
 var {
@@ -27,7 +26,6 @@ var {
 var i18next = require('../libs/i18next');
 
 class NotificationsView extends Component {
-
   constructor (props) {
     super(props);
     this.timeouts = {
@@ -52,16 +50,16 @@ class NotificationsView extends Component {
   }
 
   componentDidMount () {
-    currentUser.on('change:unreadNotifications', this.fetchData.bind(this));
-    app.on('viewedEvent', this.updateDiscussionsUnviewed.bind(this));
-    app.on('unviewedEvent', this.updateDiscussionsUnviewed.bind(this));
-    app.client.on('notification:done', this.onDoneNotification.bind(this));
+    app.user.on('change:unreadNotifications', this.fetchData, this);
+    app.client.on('notification:done', this.onDoneNotification, this);
+    app.on('viewedEvent', this.updateDiscussionsUnviewed, this);
+    app.on('unviewedEvent', this.updateDiscussionsUnviewed, this);
   }
 
   componentWillUnmount () {
-    currentUser.off('change');
-    app.off('viewedEvent');
-    app.off('unviewedEvent');
+    app.user.off(null, null, this);
+    app.client.off(null, null, this);
+    app.off(null, null, this);
   }
 
   onFocus () {
@@ -81,7 +79,7 @@ class NotificationsView extends Component {
     this.setState({
       loaded: true,
       dataSource: this.notificationsDataSource.append(response.notifications),
-      unread: currentUser.getUnreadNotifications(),
+      unread: app.user.getUnreadNotifications(),
       more: response.more
     });
   }
@@ -212,7 +210,11 @@ class NotificationsView extends Component {
         ? n.data.room._id
         : n.data.room.id;
       n.onPress = _.bind(function () {
-        this.props.navigator.push(navigation.getProfile({type: 'room', id: roomId, identifier: n.name}));
+        navigation.navigate('Profile', {
+          type: 'room',
+          id: roomId,
+          identifier: n.name
+        });
       }, this);
     } else if (n.data.group) {
       n.avatar = common.cloudinary.prepare(n.data.group.avatar, 45);
@@ -222,7 +224,10 @@ class NotificationsView extends Component {
       var groupId = (n.data.group._id)
         ? n.data.group._id
         : n.data.group.id;
-      n.onPress = () => navigation.switchTo(navigation.getGroup({name: n.name, id: groupId}));
+      n.onPress = () => navigation.navigate('Profile', {
+        name: n.name,
+        id: groupId
+      });
     } else if (n.data.by_user) {
       n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 45);
       n.title = n.data.by_user.username;
@@ -243,7 +248,7 @@ class NotificationsView extends Component {
         : ''
     });
 
-    if (['roomjoinrequest', 'groupjoinrequest', 'usermention'].indexOf(n.type) !== -1) {
+    if ([ 'roomjoinrequest', 'groupjoinrequest', 'usermention' ].indexOf(n.type) !== -1) {
       var avatar = (n.data.by_user)
         ? n.data.by_user.avatar
         : n.data.user.avatar;
@@ -381,11 +386,14 @@ class NotificationsView extends Component {
       <View style={[{height: 62, paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderBottomWidth:1, borderBottomColor:'#f1f1f1', borderStyle:'solid'}, !n.viewed && {borderBottomColor:'#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
         <View style={{ flexDirection:'row', justifyContent:'center', flex:1}}>
           {this._renderAvatar(n)}
-          <View style={{ flexDirection:'column', justifyContent:'center', flex:1, marginLeft:10}}>
+          <View
+            style={{ flexDirection:'column', justifyContent:'center', flex:1, marginLeft:10}}>
             <Text>{n.message}</Text>
             <View style={{ flexDirection:'row', alignItems:'center', flex:1}}>
-              <Text style={{ flex:1, fontSize:14 }}>{this._renderByUsername(n)}</Text>
-              <Text style={{ color:'#999999', fontSize:12 }}>{date.dayMonthTime(n.time)}</Text>
+              <Text
+                style={{ flex:1, fontSize:14 }}>{this._renderByUsername(n)}</Text>
+              <Text
+                style={{ color:'#999999', fontSize:12 }}>{date.dayMonthTime(n.time)}</Text>
             </View>
           </View>
         </View>
@@ -413,8 +421,9 @@ class NotificationsView extends Component {
     }
 
     return (
-      <Image style={[{ width: 44, height: 44, borderRadius: 4 }, n.avatarCircle && {borderRadius:22}]}
-             source={{uri: n.avatar}}/>
+      <Image
+        style={[{ width: 44, height: 44, borderRadius: 4 }, n.avatarCircle && {borderRadius:22}]}
+        source={{uri: n.avatar}}/>
     );
   }
 
@@ -424,7 +433,7 @@ class NotificationsView extends Component {
     }
 
     return (
-      <Text>{i18next.t('by-username', {username: n.username}) }</Text>
+      <Text>{i18next.t('by-username', { username: n.username }) }</Text>
     );
   }
 

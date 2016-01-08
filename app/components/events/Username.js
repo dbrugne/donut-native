@@ -4,8 +4,8 @@ var React = require('react-native');
 var {
   Text,
   TouchableHighlight
-  } = React;
-var navigation = require('../../libs/navigation');
+} = React;
+var navigation = require('../../navigation/index');
 var s = require('../../styles/events');
 
 module.exports = React.createClass({
@@ -36,11 +36,10 @@ module.exports = React.createClass({
     );
   },
   onPress () {
-    let route = navigation.getProfile({
+    navigation.navigate('Profile', {
       type: 'user',
       id: this.props.user_id,
       identifier: '@' + this.props.username
     });
-    this.props.navigator.push(route);
   }
 });

@@ -6,7 +6,7 @@ var currentUser = require('../models/current-user');
 var LoadingView = require('../elements/Loading');
 var ListItem = require('../elements/ListItem');
 var app = require('../libs/app');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 var s = require('../styles/style');
 
 var {
@@ -25,7 +25,7 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class EmailsView extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       currentEmail: '',
@@ -34,11 +34,11 @@ class EmailsView extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetchData();
   }
 
-  fetchData() {
+  fetchData () {
     app.client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
       this.setState({
         loaded: true,
@@ -52,7 +52,7 @@ class EmailsView extends Component {
     });
   }
 
-  render() {
+  render () {
     if (!this.state.loaded) {
       return (
         <LoadingView />
@@ -61,7 +61,7 @@ class EmailsView extends Component {
 
     return (
       <ScrollView
-        style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0', paddingTop: 20, flex:1 }}>
+        style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0', paddingTop: 20, flex: 1 }}>
         <View style={s.listGroup}>
 
           {this._renderMainEmail()}
@@ -69,7 +69,7 @@ class EmailsView extends Component {
           {this._renderAdditionalEmails()}
 
           <ListItem
-            onPress={() => this.props.navigator.push(navigation.getMyAccountEmailsAdd(this.fetchData.bind(this)))}
+            onPress={() => navigation.navigate('MyAccountEmailsAdd', this.fetchData.bind(this))}
             text={i18next.t('local:add-email')}
             type='button'
             action='true'
@@ -77,24 +77,24 @@ class EmailsView extends Component {
             />
 
         </View>
-        <View style={s.filler}></View>
+        <View style={s.filler} />
       </ScrollView>
     );
   }
 
-  _renderMainEmail() {
+  _renderMainEmail () {
     if (this.state.currentEmail) {
       return (
         <View>
           <ListItem
-            onPress={() => this.props.navigator.push(navigation.getMyAccountEmail(this.state.currentEmail, this.fetchData.bind(this)))}
+            onPress={() => navigation.navigate('MyAccountEmail', this.state.currentEmail, this.fetchData.bind(this))}
             text={this.state.currentEmail}
             type='button'
             action='true'
             first='true'
             title={i18next.t('local:current-email')}
             />
-          <Text style={s.listGroupItemSpacing}></Text>
+          <Text style={s.listGroupItemSpacing} />
         </View>
       );
     }
@@ -102,12 +102,12 @@ class EmailsView extends Component {
     return (
       <View>
         <Text style={s.listGroupTitle}>{i18next.t('local:missing-email')}</Text>
-        <Text style={s.listGroupItemSpacing}></Text>
+        <Text style={s.listGroupItemSpacing} />
       </View>
     );
   }
 
-  _renderAdditionalEmails() {
+  _renderAdditionalEmails () {
     var listRow = [];
     var numberOfAdditionalEmails = 0;
 
@@ -119,7 +119,7 @@ class EmailsView extends Component {
       listRow.push(
         <ListItem
           key={e.email}
-          onPress={() => this.props.navigator.push(navigation.getMyAccountEmailEdit(e, this.fetchData.bind(this)))}
+          onPress={() => navigation.navigate('MyAccountEmailEdit', e, this.fetchData.bind(this))}
           text={e.email}
           type='button'
           action='true'
@@ -136,7 +136,7 @@ class EmailsView extends Component {
       <View>
         <Text style={s.listGroupTitle}>{i18next.t('local:additional-emails')}</Text>
         {listRow}
-        <Text style={s.listGroupItemSpacing}></Text>
+        <Text style={s.listGroupItemSpacing} />
       </View>
     );
   }

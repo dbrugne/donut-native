@@ -7,6 +7,7 @@ var Link = require('../elements/Link');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
 var DiscussionBlockedJoin = require('./DiscussionBlockedJoin');
+var navigation = require('../navigation/index');
 
 var {
   StyleSheet,
@@ -17,9 +18,7 @@ var {
   Image,
   Text
 } = React;
-var {
-  Icon
-  } = require('react-native-icons');
+var Icon = require('react-native-icons').Icon;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -51,6 +50,7 @@ class DiscussionBlocked extends Component {
       );
     }
 
+    let disclaimer = this._renderDisclaimer();
     let banned = this._renderBanned();
     let kicked = this._renderKicked();
     let join = null;
@@ -65,7 +65,7 @@ class DiscussionBlocked extends Component {
         <View style={styles.container}>
           {this._renderAvatar(this.props.model.get('avatar'))}
           <Text style={styles.identifier}>{this.props.model.get('identifier')}</Text>
-          <TouchableHighlight onPress={() => { this.props.navigator.replace(navigation.getProfile({type: 'user', id: this.props.model.get('owner_id'), identifier: '@' + this.props.model.get('owner_username')})); }}>
+          <TouchableHighlight onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('owner_id'), identifier: '@' + this.props.model.get('owner_username')})}>
             <Text>
               <Text>{i18next.t('local:by')} </Text>
               <Text style={styles.ownerUsername}>@{this.props.model.get('owner_username')}</Text>

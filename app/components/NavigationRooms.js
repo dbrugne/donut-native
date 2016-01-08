@@ -12,7 +12,7 @@ var {
 } = React;
 
 var app = require('../libs/app');
-var navigation = require('../libs/navigation');
+var navigation = require('../navigation/index');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -29,7 +29,7 @@ class NavigationRoomsView extends Component {
         }
       })
     };
-    this.lastGroup =  null;
+    this.lastGroup = null;
   }
 
   componentDidMount () {
@@ -78,7 +78,7 @@ class NavigationRoomsView extends Component {
         <TouchableHighlight
           style={styles.linkBlock}
           underlayColor= '#414041'
-          onPress={() => navigation.switchTo(navigation.getGroup({name: e.group_name, id: e.group_id}))}
+          onPress={() => navigation.navigate('group', {name: e.group_name, id: e.group_id})}
           >
           <View style={styles.item}>
             <Text style={styles.itemTitle}>#{e.group_name}</Text>
@@ -89,7 +89,7 @@ class NavigationRoomsView extends Component {
 
     var model = app.rooms.get(e.room_id);
     if (!model) {
-      return (<View/>);
+      return null;
     }
 
     if (e.blocked) {
@@ -98,7 +98,7 @@ class NavigationRoomsView extends Component {
           {group}
           <TouchableHighlight
             style={styles.linkBlock}
-            onPress={() => navigation.switchTo(navigation.getBlockedDiscussion(model.get('id'), model))}
+            onPress={() => navigation.navigate('Discussion', model)}
             underlayColor= '#414041'
             >
             <View style={(model.get('group_id')) ? styles.itemGroup : styles.item}>
@@ -123,7 +123,7 @@ class NavigationRoomsView extends Component {
         {group}
       <TouchableHighlight
         style={styles.linkBlock}
-        onPress={() => navigation.switchTo(navigation.getDiscussion(model.get('id'), model))}
+        onPress={() => navigation.navigate('Discussion', model)}
         underlayColor= '#414041'
         >
         <View style={(model.get('group_id')) ? styles.itemGroup : styles.item}>
@@ -136,7 +136,7 @@ class NavigationRoomsView extends Component {
       </View>
     );
   }
-};
+}
 
 var styles = StyleSheet.create({
   title: {
@@ -169,13 +169,13 @@ var styles = StyleSheet.create({
     fontSize: 16,
     color: '#ecf0f1',
     marginLeft: 10,
-    flex:1,
+    flex: 1,
     marginVertical: 10
   },
   unviewed: {
     fontSize: 20,
     color: '#fc2063',
-    marginRight:10
+    marginRight: 10
   },
   linkBlock: {
     borderTopColor: '#373737',

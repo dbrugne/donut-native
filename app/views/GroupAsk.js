@@ -12,10 +12,10 @@ var {
 var ListItem = require('../elements/ListItem');
 var s = require('../styles/style');
 var app = require('../libs/app');
-var navigation = require('../libs/navigation');
-var MembershipRequest = require('./GroupAskMembershipRequest');
-var MembershipPassword = require('./GroupAskMembershipPassword');
-var MembershipEmail = require('./GroupAskMembershipEmail');
+var navigation = require('../navigation/index');
+var MembershipRequest = require('./GroupAskRequest');
+var MembershipPassword = require('./GroupAskPassword');
+var MembershipEmail = require('./GroupAskEmail');
 var LoadingView = require('../elements/Loading');
 
 var i18next = require('../libs/i18next');
@@ -110,7 +110,7 @@ class GroupAskMembership extends Component {
       if (this.data.options.request) {
         request = (
           <ListItem
-            onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipRequest({id: this.props.id, isAllowedPending: this.data.options.isAllowedPending}))}
+            onPress={() => navigation.navigate('GroupAskRequest', {id: this.props.id, isAllowedPending: this.data.options.isAllowedPending})}
             text={i18next.t('group.request-title')}
             first
             action
@@ -120,19 +120,20 @@ class GroupAskMembership extends Component {
       }
       if (this.data.options.password) {
         password = (
-          <ListItem onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipPassword(this.props.id))}
-                    text={i18next.t('group.password-title')}
-                    first={(!this.data.options.request)}
-                    last={(!this.data.options.email)}
-                    action
-                    type='button'
+          <ListItem
+            onPress={() => navigation.navigate('GroupAskPassword', this.props.id)}
+            text={i18next.t('group.password-title')}
+            first={(!this.data.options.request)}
+            last={(!this.data.options.email)}
+            action
+            type='button'
             />
         );
       }
       if (this.data.options.allowed_domains) {
         email = (
           <ListItem
-            onPress={() => this.props.navigator.push(navigation.getGroupAskMembershipEmail({id: this.props.id, domains: this.data.options.allowed_domains}))}
+            onPress={() => navigation.navigate('GroupAskEmail', {id: this.props.id, domains: this.data.options.allowed_domains})}
             text={i18next.t('group.email-title')}
             last
             action

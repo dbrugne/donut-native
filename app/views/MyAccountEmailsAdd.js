@@ -39,10 +39,9 @@ class AddEmailView extends Component {
             onChange={(event) => this.setState({email: event.nativeEvent.text})}
             type='input-button'
             title={i18next.t('local:add-email')}
-            first={true}
-            isEmail={true}
-            />
-
+            first
+            isEmail
+          />
         </View>
         <View style={s.filler}></View>
       </View>
@@ -59,7 +58,7 @@ class AddEmailView extends Component {
         Alert.show(response.err);
       } else {
         Alert.show(i18next.t('messages.validation-email-sent'));
-        this.props.func();
+        this.props.refreshParentView();
         this.props.navigator.pop();
       }
     });
