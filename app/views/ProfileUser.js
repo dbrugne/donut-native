@@ -19,7 +19,7 @@ var hyperlink = require('../libs/hyperlink');
 var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'ProfileUser', {
   'registered-on': 'registered on __date__',
   'unlock': 'unblock this user',
   'lock': 'block this user',
@@ -48,7 +48,7 @@ class UserProfileView extends Component {
     var isBannedLink = null;
     if (data.i_am_banned === true) {
       isBannedLink = (
-        <Text style={{marginVertical: 5, marginHorizontal: 5, color: '#ff3838', fontFamily: 'Open Sans', fontSize: 14}}>{i18next.t('local:blocked')}</Text>
+        <Text style={{marginVertical: 5, marginHorizontal: 5, color: '#ff3838', fontFamily: 'Open Sans', fontSize: 14}}>{i18next.t('ProfileUser:blocked')}</Text>
       );
     }
 
@@ -70,7 +70,7 @@ class UserProfileView extends Component {
         type='edit-button'
         onPress={() => hyperlink.open(data.website.href)}
         first={!data.location}
-        action={true}
+        action
         icon='fontawesome|link'
         />
       );
@@ -78,7 +78,7 @@ class UserProfileView extends Component {
 
     var registeredAt = (
     <ListItem
-      text={i18next.t('local:registered-on', {date: date.shortDate(data.registered)})}
+      text={i18next.t('ProfileUser:registered-on', {date: date.shortDate(data.registered)})}
       first={(!data.location && !data.website)}
       icon='fontawesome|clock-o'
       />
@@ -89,9 +89,9 @@ class UserProfileView extends Component {
       // @todo implement ban / deban action
       bannedLink = (
         <ListItem
-          text={i18next.t('local:unlock')}
+          text={i18next.t('ProfileUser:unlock')}
           type='edit-button'
-          action={true}
+          action
           onPress={() => console.log('deban the user')}
           icon='fontawesome|ban'
           />
@@ -100,9 +100,9 @@ class UserProfileView extends Component {
       // @todo implement ban / deban action
       bannedLink = (
         <ListItem
-          text={i18next.t('local:lock')}
+          text={i18next.t('ProfileUser:lock')}
           type='edit-button'
-          action={true}
+          action
           onPress={() => console.log('ban the user')}
           icon='fontawesome|ban'
           iconColor='#ff3838'
@@ -123,10 +123,10 @@ class UserProfileView extends Component {
         <View style={[s.listGroup]}>
           <Text style={s.listGroupItemSpacing} />
           <ListItem
-            text={i18next.t('local:discuss')}
+            text={i18next.t('ProfileUser:discuss')}
             type='edit-button'
-            first={true}
-            action={true}
+            first
+            action
             onPress={() => app.trigger('joinUser', data.user_id)}
             />
 
