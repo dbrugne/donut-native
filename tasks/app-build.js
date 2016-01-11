@@ -1,9 +1,7 @@
 module.exports = function (grunt) {
-  var fs = require('fs');
-
   // set path manually to enable both Windows/MacOSX
   var separator = (process.platform === 'win32') ? '\\' : '/';
-  var PathDebugKeystore = 'android' + separator + 'app' + separator + 'debug.keystore';
+  var PathDebugKeystore = process.env['HOME'] + separator + '.android' + separator + 'debug.keystore';
   var PathReleaseKeystore = 'android' + separator + 'app' + separator + 'donut-release-key.keystore';
   var PathReleaseApk = 'android' + separator + 'app' + separator + 'build' + separator + 'outputs' + separator + 'apk' + separator + 'app-donutReleaseTest.apk';
   var PathDebugApk = 'android' + separator + 'app' + separator + 'build' + separator + 'outputs' + separator + 'apk' + separator + 'app-release.apk';
@@ -13,9 +11,17 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-exec');
   grunt.extendConfig({
     exec: {
+      createReleaseDir: {
+        cmd: function () {
+          if (!grunt.file.exists('releases')) {
+            return 'mkdir releases';
+          }
+          return '';
+        }
+      },
       createTestApk: {
         cmd: function () {
-          if (fs.existsSync(PathDebugKeystore)) {
+          if (grunt.file.exists(PathDebugKeystore)) {
             var cmd = [
               'cd android',
               '.' + separator + 'gradlew assembledonutReleaseTest',
@@ -30,7 +36,7 @@ module.exports = function (grunt) {
       },
       createProductionApk: {
         cmd: function () {
-          if (fs.existsSync(PathReleaseKeystore)) {
+          if (grunt.file.exists(PathReleaseKeystore)) {
             var cmd = [
               'cd android',
               '.' + separator + 'gradlew assembleRelease',
@@ -45,7 +51,7 @@ module.exports = function (grunt) {
       },
       moveTestApk: {
         cmd: function () {
-          if (fs.existsSync(PathReleaseApk)) {
+          if (grunt.file.exists(PathReleaseApk)) {
             return 'mv ' + PathReleaseApk + ' releases/' + today + '-test.apk';
           } else {
             grunt.log.subhead(PathReleaseApk + ' not found');
@@ -55,7 +61,7 @@ module.exports = function (grunt) {
       },
       moveProductionApk: {
         cmd: function () {
-          if (fs.existsSync(PathDebugApk)) {
+          if (grunt.file.exists(PathDebugApk)) {
             return 'mv ' + PathDebugApk + ' releases/' + today + '-production.apk';
           } else {
             grunt.log.subhead(PathDebugApk + ' not found');
@@ -66,8 +72,8 @@ module.exports = function (grunt) {
       push: {
         cmd: function () {
           var cmd = '';
-          var productionApkCreated = fs.existsSync('releases' + separator + today + '-production.apk');
-          var testApkCreated = fs.existsSync('releases' + separator + today + '-test.apk');
+          var productionApkCreated = grunt.file.exists('releases' + separator + today + '-production.apk');
+          var testApkCreated = grunt.file.exists('releases' + separator + today + '-test.apk');
 
           var productionNewApkPath = 'releases' + separator + today + '-production.apk';
           var testNewApkPath = 'releases' + separator + today + '-test.apk';
@@ -102,7 +108,8 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('app-build', 'Create builds', [
+  grunt.registerTask('build-android', 'Create builds', [
+    'exec:createReleaseDir',
     'exec:createProductionApk',
     'exec:createTestApk',
     'exec:moveTestApk',
