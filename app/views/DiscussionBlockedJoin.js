@@ -62,7 +62,9 @@ class DiscussionBlockedJoin extends Component {
 
     return (
       <View>
-        <Text>{i18next.t('local:allowed')}</Text>
+        <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
+          <Text style={[s.alertErrorText, {fontStyle: 'italic', paddingLeft: 5}]}>{i18next.t('local:allowed')}</Text>
+        </View>
         {allowUserRequest}
       </View>
     );
