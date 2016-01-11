@@ -1,12 +1,12 @@
 var React = require('react-native');
 var i18next = require('../../libs/i18next');
 
-module.exports = function (model) {
+module.exports = function (model, fetchDataParent) {
   return {
     id: 'room-topic-' + model.get('id'),
     renderScene: function (navigator) {
       let UpdateRoomTopic = require('../../views/RoomTopic');
-      return <UpdateRoomTopic navigator={navigator} model={model} />;
+      return <UpdateRoomTopic navigator={navigator} model={model} fetchDataParent={fetchDataParent}/>;
     },
     getTitle () {
       return i18next.t('navigation.update-room-topic');

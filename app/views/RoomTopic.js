@@ -17,7 +17,7 @@ class UpdateRoomTopicView extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      topic: ''
+      topic: props.model.get('topic')
     };
   }
   render () {
@@ -27,7 +27,7 @@ class UpdateRoomTopicView extends Component {
           <Input
             placeholder='change topic'
             onChangeText={(text) => this.setState({topic: text})}
-            value={this.props.model.get('topic')}
+            value={this.state.topic}
           />
         </View>
         <Button onPress={this.onSendTopic.bind(this)}
@@ -42,11 +42,18 @@ class UpdateRoomTopicView extends Component {
     }
     app.client.roomTopic(this.props.model.get('id'), this.state.topic, _.bind(function (response) {
       if (response.success) {
-        return alert.show('success');
+        this.props.fetchDataParent();
+        return this.props.navigator.pop();
       }
       return alert.show(i18next.t('messages.unknownerror'));
-    },this));
+    }, this));
   }
 }
+
+UpdateRoomTopicView.propTypes = {
+  model: React.PropTypes.object,
+  fetchDataParent: React.PropTypes.func,
+  navigator: React.PropTypes.object
+};
 
 module.exports = UpdateRoomTopicView;

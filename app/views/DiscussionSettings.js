@@ -39,6 +39,20 @@ class DiscussionSettings extends Component {
     this.isOwner = (currentUser.get('user_id') === props.model.get('owner_id'));
     this.isAdmin = app.user.isAdmin();
     this.isOp = (_.indexOf(props.model.get('op'),currentUser.get('user_id')) !== -1);
+    this.state = {
+      topic: this.props.model.get('topic'),
+      avatar: this.props.model.get('avatar'),
+      identifier: this.props.model.get('identifier'),
+      status: this.props.model.get('status')
+    };
+  }
+  fetchData () {
+    this.setState({
+      topic: this.props.model.get('topic'),
+      avatar: this.props.model.get('avatar'),
+      identifier: this.props.model.get('identifier'),
+      status: this.props.model.get('status')
+    });
   }
   render () {
     // @todo link to room edit page
@@ -48,8 +62,8 @@ class DiscussionSettings extends Component {
     return (
       <ScrollView style={styles.main}>
         <View style={styles.containerTop}>
-          {this._renderAvatar(this.props.model.get('avatar'))}
-          <Text style={{marginTop: 10}}>{this.props.model.get('identifier')}</Text>
+          {this._renderAvatar(this.state.avatar)}
+          <Text style={{marginTop: 10}}>{this.state.identifier}</Text>
         </View>
         {this._renderTopic()}
         {this._renderLinks()}
@@ -62,7 +76,7 @@ class DiscussionSettings extends Component {
       return (
         <View style={s.listGroup}>
           <ListItem
-            onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('id'), identifier: this.props.model.get('identifier')})}
+            onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('id'), identifier: this.state.identifier})}
             text={i18next.t('local:see')}
             icon='fontawesome|eye'
             type='button'
@@ -86,7 +100,7 @@ class DiscussionSettings extends Component {
         itemTopic = (
           <ListItem
             style={{marginBottom: 20}}
-            onPress={() => navigation.navigate('RoomTopic', this.props.model)}
+            onPress={() => navigation.navigate('RoomTopic', this.props.model, () => this.fetchData())}
             text={i18next.t('local:change-topic')}
             icon='fontawesome|edit'
             type='button'
@@ -99,7 +113,7 @@ class DiscussionSettings extends Component {
         <View style={s.listGroup}>
           {itemTopic}
           <ListItem
-            onPress={() => navigation.navigate('Profile', {type: 'room', id: this.props.model.get('id'), identifier: this.props.model.get('identifier')})}
+            onPress={() => navigation.navigate('Profile', {type: 'room', id: this.props.model.get('id'), identifier: this.state.identifier})}
             text={i18next.t('local:see')}
             icon='fontawesome|eye'
             type='button'
@@ -133,7 +147,7 @@ class DiscussionSettings extends Component {
     }
     return (
       <View style={{marginHorizontal: 10, marginBottom:20 , alignSelf: 'center'}}>
-        <Text style={s.topic}>{(this.props.model.get('topic')) ? this.props.model.get('topic') : i18next.t('local:no-topic')}</Text>
+        <Text style={s.topic}>{(this.state.topic) ? this.state.topic : i18next.t('local:no-topic')}</Text>
       </View>
     );
   }
@@ -199,11 +213,13 @@ class DiscussionSettings extends Component {
     return (
       <View style={styles.containerAvatarOne}>
         <Image style={styles.avatarOne} source={{uri: avatarUrl}} />
-        <Text style={[styles.statusText, styles.status, this.props.model.get('status') === 'connecting' && styles.statusConnecting, this.props.model.get('status') === 'offline' && styles.statusOffline, this.props.model.get('status') === 'online' && styles.statusOnline]}>{this.props.model.get('status')}</Text>
+        <Text style={[styles.statusText, styles.status, this.state.status === 'connecting' && styles.statusConnecting, this.state.status === 'offline' && styles.statusOffline, this.state.status === 'online' && styles.statusOnline]}>{this.state.status}</Text>
       </View>
     );
   }
 }
+
+DiscussionSettings.propTypes = {model: React.PropTypes.object};
 
 var styles = StyleSheet.create({
   main: {
