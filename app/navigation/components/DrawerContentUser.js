@@ -16,6 +16,8 @@ var {
 var common = require('@dbrugne/donut-common/mobile');
 var currentUser = require('../../models/current-user');
 var navigation = require('../index');
+var alert = require('../../libs/alert');
+var app = require('../../libs/app');
 
 var i18next = require('../../libs/i18next');
 
@@ -85,7 +87,12 @@ class CurrentUserView extends Component {
           (user.confirmed)
             ? null
             : <View style={{flex: 1, marginRight: 7, marginLeft: 7, backgroundColor: '#FC2063', padding: 5}}>
-                <Text style={{color: '#FFF'}}>{i18next.t('messages.mail-notconfirmed')}</Text>
+                <TouchableHighlight underlayColor= '#FE2265' onPress={() => this.sendValidationEmail()}>
+                  <View>
+                    <Text style={{color: '#FFF'}}>{i18next.t('messages.mail-notconfirmed')}</Text>
+                    <Text style={{color: '#FFF'}} >Press to re-send an email</Text>
+                  </View>
+                </TouchableHighlight>
               </View>
         }
       </View>
@@ -94,6 +101,24 @@ class CurrentUserView extends Component {
   onChange (model, options) {
     this.setState({
       data: model.toJSON()
+    });
+  }
+  sendValidationEmail () {
+    app.client.userRead(currentUser.get('user_id'), {admin: true}, function (data) {
+      if (data.err) {
+        return alert.show(i18next.t('messages.' + data.err));
+      }
+
+      if (!data.account || !data.account.email) {
+        return alert.show('You don\'t have an email yet');
+      }
+      app.client.accountEmail(data.account.email, 'validate', (response) => {
+        if (response.err) {
+          alert.show(i18next.t('messages.' + response.err));
+        } else {
+          alert.show(i18next.t('messages.validation-email-sent'));
+        }
+      });
     });
   }
 }

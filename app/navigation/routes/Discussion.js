@@ -15,9 +15,9 @@ module.exports = function (model) {
     initial: true,
     model: model, // only for discussion routes
     renderScene: function (navigator) {
-      var Discussion = (_.contains(['kicked', 'banned', true], model.get('blocked'))) // @todo dbrugne why kicked or true hrtr ???
-        ? require('../../views/DiscussionBlocked')
-        : require('../../views/Discussion');
+      var Discussion = (model.get('blocked') === false) // do not inverse that condition unless you exactly now what you are doing
+        ? require('../../views/Discussion')
+        : require('../../views/DiscussionBlocked');
 
       return <Discussion navigator={navigator} model={model}/>;
     },
@@ -42,10 +42,6 @@ module.exports = function (model) {
       );
     },
     _onDidFocus: function () {
-      if (model.get('blocked') === true) {
-        return;
-      }
-
       if (this.scene.onFocus) {
         this.scene.onFocus();
       }

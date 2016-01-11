@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react-native');
-var _ = require('underscore');
 var s = require('../styles/style');
 var Link = require('../components/Link');
 var ListItem = require('../components/ListItem');
@@ -10,6 +9,7 @@ var common = require('@dbrugne/donut-common/mobile');
 var DiscussionBlockedJoin = require('./DiscussionBlockedJoin');
 var navigation = require('../navigation/index');
 var app = require('../libs/app');
+var currentUser = require('../models/current-user');
 
 var {
   StyleSheet,
@@ -42,9 +42,27 @@ i18next.addResourceBundle('en', 'local', {
 class DiscussionBlocked extends Component {
   constructor (props) {
     super(props);
+
+    this.state = {
+      userConfirmed: currentUser.get('confirmed')
+    };
+  }
+
+  componentDidMount () {
+    currentUser.on('change:confirmed', () => {
+      this.setState({userConfirmed: currentUser.get('confirmed')});
+    });
+  }
+  componentWillUnmount () {
+    currentUser.off(null, null, this);
+  }
+
+  onFocus () {
+    this.render();
   }
 
   render () {
+    console.log('render');
     let description = null;
     if (this.props.model.get('description')) {
       description = (
@@ -53,12 +71,14 @@ class DiscussionBlocked extends Component {
     }
 
     let banned = this._renderBanned();
-    let kicked = this._renderKicked();
-    let join = null;
-    if (!banned && !kicked) {
+    let kicked, join = null;
+    if (!this.state.userConfirmed) {
       join = (
         <DiscussionBlockedJoin {...this.props} />
       );
+    }
+    if (!banned && !join) {
+      kicked = this._renderKicked();
     }
 
     return (
@@ -152,10 +172,6 @@ class DiscussionBlocked extends Component {
   }
 
   _renderKicked () {
-    if (this.props.model.get('blocked') !== 'kicked') {
-      return null;
-    }
-
     return (
       <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
         <Link onPress={(this.onJoin.bind(this))}
