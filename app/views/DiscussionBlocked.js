@@ -188,7 +188,7 @@ class DiscussionBlocked extends Component {
   }
 
   onJoin () {
-    app.trigger('joinRoom', this.props.model.get('id'));
+    app.trigger('joinRoom', this.props.model.get('id'), true);
   }
 }
 

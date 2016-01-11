@@ -135,13 +135,13 @@ class Index extends Component {
   onRemoveDiscussion (model) {
     navigation.removeDiscussionRoute(model);
   }
-  onJoinRoom (id) {
+  onJoinRoom (id, forceRejoin) {
     if (!id) {
       return;
     }
 
     var model = app.rooms.find((m) => m.get('room_id') === id);
-    if (model) {
+    if (model && !forceRejoin) {
       return navigation.navigate('Discussion', model);
     }
 
