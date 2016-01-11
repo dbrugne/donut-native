@@ -31,6 +31,20 @@ var routeTemplate = {
       </View>
     );
   },
+  renderBackButton (navigator) {
+    return (
+      <TouchableOpacity
+        touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
+        onPress={() => navigator.pop()}
+        style={ExNavigator.Styles.barBackButton} >
+        <Icon name='fontawesome|angle-left'
+              size={18}
+              color='#999998'
+              style={[ExNavigator.Styles.barButtonIcon, {marginLeft: 5, width: 18, height: 18}, Platform.OS === 'android' ? {marginTop: 18} : {marginTop: 12}]} />
+        <Text style={[ExNavigator.Styles.barButtonText, {color: '#999998'}, Platform.OS === 'android' ? {marginTop: 16} : {marginTop: 11}]}> {i18next.t('navigation.back')}</Text>
+      </TouchableOpacity>
+    );
+  },
   onWillFocus () {
     // this.model is null for non discussion views
     app.setFocusedModel(this.model);
@@ -67,20 +81,6 @@ var initialRouteTemplate = {
   },
   renderLeftButton () {
     return (<DrawerIcon navigator={navigator} />);
-  },
-  renderBackButton (navigator) {
-    return (
-      <TouchableOpacity
-        touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
-        onPress={() => navigator.pop()}
-        style={ExNavigator.Styles.barBackButton} >
-        <Icon name='fontawesome|angle-left'
-              size={18}
-              color='#999998'
-              style={[ExNavigator.Styles.barButtonIcon, {marginLeft: 5, width: 18, height: 18}, Platform.OS === 'android' ? {marginTop: 18} : {marginTop: 12}]} />
-        <Text style={[ExNavigator.Styles.barButtonText, {color: '#999998'}, Platform.OS === 'android' ? {marginTop: 16} : {marginTop: 11}]}> {i18next.t('navigation.back')}</Text>
-      </TouchableOpacity>
-    );
   }
 };
 
