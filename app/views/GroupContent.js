@@ -201,7 +201,7 @@ class GroupProfileView extends Component {
       return (
         <ListItem onPress={() => hyperlink.open(this.props.data.website.href)}
                   text={this.props.data.website.title}
-                  first={false}
+                  first
                   action='true'
                   type='button'
                   icon='fontawesome|link'
@@ -213,6 +213,7 @@ class GroupProfileView extends Component {
   renderCreatedAt () {
     return (
       <ListItem
+        type='text'
         text={i18next.t('group.created') + ' ' + date.shortDate(this.props.data.created)}
         last
         icon='fontawesome|clock-o'
