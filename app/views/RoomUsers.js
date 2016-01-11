@@ -6,7 +6,6 @@ var LoadingView = require('../components/Loading');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../navigation/index');
-var ConnectionState = require('../components/ConnectionState');
 
 var {
   Component,
@@ -63,8 +62,7 @@ class RoomUsersView extends Component {
 
     return (
       <View style={{flex: 1}}>
-        <ConnectionState/>
-        <View  style={styles.formInputContainer}>
+        <View style={styles.formInputContainer}>
           <TextInput style={styles.formInputFind}
                      autoCapitalize='none'
                      placeholder={i18next.t('room-users:search')}

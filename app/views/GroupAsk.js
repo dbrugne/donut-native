@@ -17,7 +17,6 @@ var MembershipRequest = require('./GroupAskRequest');
 var MembershipPassword = require('./GroupAskPassword');
 var MembershipEmail = require('./GroupAskEmail');
 var LoadingView = require('../components/Loading');
-var ConnectionState = require('../components/ConnectionState');
 
 var i18next = require('../libs/i18next');
 
@@ -67,20 +66,17 @@ class GroupAskMembership extends Component {
 
     if (!this.state.success) {
       return (
-        <View style={{flex: 1}}>
-          <ConnectionState/>
-          <ScrollView style={styles.main}>
-            <View style={styles.container}>
+        <ScrollView style={styles.main}>
+          <View style={styles.container}>
 
-              <Text style={[s.block]}>{i18next.t('group.message-not-member')}</Text>
+            <Text style={[s.block]}>{i18next.t('group.message-not-member')}</Text>
 
-              {this._renderDisclaimer()}
+            {this._renderDisclaimer()}
 
-              {this.renderListOptions()}
+            {this.renderListOptions()}
 
-            </View>
-          </ScrollView>
-        </View>
+          </View>
+        </ScrollView>
       );
     } else {
       return (

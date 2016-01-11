@@ -15,7 +15,6 @@ var common = require('@dbrugne/donut-common/mobile');
 var ListItem = require('../components/ListItem');
 var s = require('../styles/style');
 var alert = require('../libs/alert');
-var ConnectionState = require('../components/ConnectionState');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
@@ -56,26 +55,23 @@ class ProfileView extends Component {
       role = <Text style={[styles.role]}>{i18next.t('owner')}</Text>
     }
     return (
-      <View style={{flex: 1}}>
-        <ConnectionState/>
-        <ScrollView style={styles.main}>
-          <View style={[styles.container, {position: 'relative'}]}>
-            <Image style={styles.avatar} source={{uri: avatarUrl}} />
-            <Text style={[styles.statusText,
-              styles.status,
-              this.props.user.status === 'connecting' && styles.statusConnecting,
-              this.props.user.status === 'offline' && styles.statusOffline,
-              this.props.user.status === 'online' && styles.statusOnline]}>{this.props.user.status}</Text>
-            <Text style={[styles.username]}>@{this.props.user.username}</Text>
-            {role}
-          </View>
-          <View style={[s.listGroup]}>
-            <Text style={s.listGroupItemSpacing} />
-            {this._renderActions()}
-            <Text style={s.listGroupItemSpacing} />
-          </View>
-        </ScrollView>
-      </View>
+      <ScrollView style={styles.main}>
+        <View style={[styles.container, {position: 'relative'}]}>
+          <Image style={styles.avatar} source={{uri: avatarUrl}} />
+          <Text style={[styles.statusText,
+            styles.status,
+            this.props.user.status === 'connecting' && styles.statusConnecting,
+            this.props.user.status === 'offline' && styles.statusOffline,
+            this.props.user.status === 'online' && styles.statusOnline]}>{this.props.user.status}</Text>
+          <Text style={[styles.username]}>@{this.props.user.username}</Text>
+          {role}
+        </View>
+        <View style={[s.listGroup]}>
+          <Text style={s.listGroupItemSpacing} />
+          {this._renderActions()}
+          <Text style={s.listGroupItemSpacing} />
+        </View>
+      </ScrollView>
     );
   }
 

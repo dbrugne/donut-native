@@ -68,7 +68,11 @@ var styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     flexDirection: 'row',
-    height: 30
+    height: 30,
+    position: 'absolute',
+    top: (Platform.OS === 'android') ? 56 : 64,
+    left: 0,
+    right: 0
   },
   loading: {
     height: 20

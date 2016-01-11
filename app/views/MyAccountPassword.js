@@ -5,7 +5,6 @@ var LoadingView = require('../components/Loading');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var Button = require('../components/Button');
-var ConnectionState = require('../components/ConnectionState');
 
 var s = require('../styles/style');
 
@@ -79,7 +78,6 @@ class ChangePasswordView extends Component {
 
     return (
       <View style={{ flex:1, alignItems: 'stretch'}}>
-        <ConnectionState/>
         <ScrollView
           ref='scrollView'
           contentContainerStyle={{flex:1}}

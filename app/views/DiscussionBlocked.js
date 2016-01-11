@@ -9,7 +9,6 @@ var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
 var DiscussionBlockedJoin = require('./DiscussionBlockedJoin');
 var navigation = require('../navigation/index');
-var ConnectionState = require('../components/ConnectionState');
 var app = require('../libs/app');
 
 var {
@@ -64,7 +63,6 @@ class DiscussionBlocked extends Component {
 
     return (
       <View style={{flex: 1}}>
-        <ConnectionState/>
         <ScrollView style={styles.main}>
           <View style={styles.container}>
             {this._renderAvatar(this.props.model.get('avatar'))}

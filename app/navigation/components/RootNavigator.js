@@ -11,6 +11,7 @@ var BackButton = require('./AndroidBackButton');
 var state = require('../state');
 var app = require('../../libs/app');
 var debug = require('../../libs/debug')('navigation');
+var ConnectionState = require('../../components/ConnectionState');
 
 module.exports = React.createClass({
   componentDidMount () {
@@ -50,6 +51,7 @@ module.exports = React.createClass({
           initialRoute={state.getInitialRoute()}
           style={{ flex: 1 }}
         />
+        <ConnectionState/>
       </Drawer>
     );
   },

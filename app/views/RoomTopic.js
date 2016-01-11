@@ -12,7 +12,6 @@ var Button = require('../components/Button');
 var i18next = require('../libs/i18next');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
-var ConnectionState = require('../components/ConnectionState');
 
 class UpdateRoomTopicView extends Component {
   constructor (props) {
@@ -24,7 +23,6 @@ class UpdateRoomTopicView extends Component {
   render () {
     return (
       <View style={{backgroundColor: '#f0f0f0'}}>
-        <ConnectionState/>
         <View style={{backgroundColor: '#FFF'}}>
           <Input
             placeholder='change topic'

@@ -9,7 +9,6 @@ var currentUser = require('../models/current-user');
 var ListItem = require('../components/ListItem');
 var navigation = require('../navigation/index');
 var imageUpload = require('../libs/imageUpload');
-var ConnectionState = require('../components/ConnectionState');
 
 var {
   Component,
@@ -130,59 +129,56 @@ class MyAccountInformation extends Component {
     }
 
     return (
-      <View style={{flex: 1}}>
-        <ConnectionState/>
-        <ScrollView style={{backgroundColor: '#f0f0f0'}}>
-          <View style={styles.container}>
+      <ScrollView style={{backgroundColor: '#f0f0f0'}}>
+        <View style={styles.container}>
 
-          <View style={styles.containerHorizontal}>
-            {this._renderAvatar(this.state.avatar)}
-            <View style={styles.containerVertical}>
-              {realname}
-              <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
-            </View>
+        <View style={styles.containerHorizontal}>
+          {this._renderAvatar(this.state.avatar)}
+          <View style={styles.containerVertical}>
+            {realname}
+            <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
           </View>
+        </View>
 
-            <ListItem text={i18next.t('local:avatar')}
-                      type='edit-button'
-                      first
-                      action
-                      onPress={() => this._updateAvatar()}
-              />
-            <ListItem text={i18next.t('local:realname')}
-                      type='edit-button'
-                      action
-                      value={this.state.realname}
-                      onPress={() => this.onUserEdit(require('./MyAccountEditRealname'), this.state.realname)}
-              />
+          <ListItem text={i18next.t('local:avatar')}
+                    type='edit-button'
+                    first
+                    action
+                    onPress={() => this._updateAvatar()}
+            />
+          <ListItem text={i18next.t('local:realname')}
+                    type='edit-button'
+                    action
+                    value={this.state.realname}
+                    onPress={() => this.onUserEdit(require('./MyAccountEditRealname'), this.state.realname)}
+            />
 
-            <ListItem text={i18next.t('local:biography')}
-                      type='edit-button'
-                      action
-                      value={this.state.bio}
-                      onPress={() => this.onUserEdit(require('./MyAccountEditBio'), this.state.bio)}
-              />
+          <ListItem text={i18next.t('local:biography')}
+                    type='edit-button'
+                    action
+                    value={this.state.bio}
+                    onPress={() => this.onUserEdit(require('./MyAccountEditBio'), this.state.bio)}
+            />
 
-            <ListItem text={i18next.t('local:location')}
-                      type='edit-button'
-                      action
-                      value={this.state.location}
-                      onPress={() => this.onUserEdit (require('./MyAccountEditLocation'), this.state.location)}
-              />
+          <ListItem text={i18next.t('local:location')}
+                    type='edit-button'
+                    action
+                    value={this.state.location}
+                    onPress={() => this.onUserEdit (require('./MyAccountEditLocation'), this.state.location)}
+            />
 
-            <ListItem text={i18next.t('local:website')}
-                      type='edit-button'
-                      action
-                      last
-                      value={this.state.website}
-                      onPress={() => this.onUserEdit(require('./MyAccountEditWebsite'), this.state.website)}
-              />
+          <ListItem text={i18next.t('local:website')}
+                    type='edit-button'
+                    action
+                    last
+                    value={this.state.website}
+                    onPress={() => this.onUserEdit(require('./MyAccountEditWebsite'), this.state.website)}
+            />
 
-            <Text style={s.filler} />
+          <Text style={s.filler} />
 
-          </View>
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     );
   }
 

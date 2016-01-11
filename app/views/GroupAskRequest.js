@@ -13,7 +13,6 @@ var s = require('../styles/style');
 var alert = require('../libs/alert');
 var app = require('../libs/app');
 var ListItem = require('../components/ListItem');
-var ConnectionState = require('../components/ConnectionState');
 
 var i18next = require('../libs/i18next');
 
@@ -59,14 +58,11 @@ class GroupAskMembershipRequest extends Component {
 
     if (this.props.scroll) {
       return (
-        <View style={{flex: 1}}>
-          <ConnectionState/>
-          <ScrollView style={styles.main}>
-            <View style={styles.container}>
-              {content}
-            </View>
-          </ScrollView>
-        </View>
+        <ScrollView style={styles.main}>
+          <View style={styles.container}>
+            {content}
+          </View>
+        </ScrollView>
       );
     }
 

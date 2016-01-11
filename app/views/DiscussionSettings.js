@@ -7,7 +7,6 @@ var s = require('../styles/style');
 var ListItem = require('../components/ListItem');
 var navigation = require('../navigation/index');
 var common = require('@dbrugne/donut-common/mobile');
-var ConnectionState = require('../components/ConnectionState');
 
 var {
   Component,
@@ -47,17 +46,14 @@ class DiscussionSettings extends Component {
     // @todo link to room allowed users page
 
     return (
-      <View style={{flex: 1}}>
-        <ConnectionState/>
-        <ScrollView style={styles.main}>
-          <View style={styles.containerTop}>
-            {this._renderAvatar(this.props.model.get('avatar'))}
-            <Text style={{marginTop: 10}}>{this.props.model.get('identifier')}</Text>
-          </View>
-          {this._renderTopic()}
-          {this._renderLinks()}
-        </ScrollView>
-      </View>
+      <ScrollView style={styles.main}>
+        <View style={styles.containerTop}>
+          {this._renderAvatar(this.props.model.get('avatar'))}
+          <Text style={{marginTop: 10}}>{this.props.model.get('identifier')}</Text>
+        </View>
+        {this._renderTopic()}
+        {this._renderLinks()}
+      </ScrollView>
     );
   }
 

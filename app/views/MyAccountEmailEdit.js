@@ -2,7 +2,6 @@ var React = require('react-native');
 var app = require('../libs/app');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
-var ConnectionState = require('../components/ConnectionState');
 var ListItem = require('../components/ListItem');
 
 var {
@@ -33,7 +32,6 @@ class EditEmailView extends Component {
     var modalDescription = i18next.t('local:modal-description');
     return (
       <View style={styles.main}>
-        <ConnectionState/>
 
         <View style={s.listGroup}>
 

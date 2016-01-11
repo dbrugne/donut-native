@@ -10,7 +10,6 @@ var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
 var date = require('../libs/date');
 var s = require('../styles/style');
-var ConnectionState = require('../components/ConnectionState');
 
 var {
   View,
@@ -100,7 +99,6 @@ class NotificationsView extends Component {
 
     return (
       <View style={{flex: 1}}>
-        <ConnectionState/>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}

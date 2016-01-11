@@ -4,7 +4,6 @@ var app = require('../libs/app');
 var s = require('../styles/style');
 var alert = require('../libs/alert');
 var Button = require('../components/Button');
-var ConnectionState = require('../components/ConnectionState');
 
 var {
   Component,
@@ -34,7 +33,6 @@ class ChooseUsername extends Component {
   render () {
     return (
       <View style={styles.main}>
-        <ConnectionState/>
         <View style={styles.container}>
 
           <View style={styles.flexible}>

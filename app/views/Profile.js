@@ -10,7 +10,6 @@ var {
 } = React;
 
 var app = require('../libs/app');
-var ConnectionState = require('../components/ConnectionState');
 var RoomProfile = require('./ProfileRoom');
 var UserProfile = require('./ProfileUser');
 

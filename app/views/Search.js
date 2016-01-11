@@ -14,7 +14,6 @@ var Icon = require('react-native-icons').Icon;
 
 var app = require('../libs/app');
 var navigation = require('../navigation/index');
-var ConnectionState = require('../components/ConnectionState');
 var SearchResult = require('./SearchResult');
 
 var i18next = require('../libs/i18next');
@@ -51,7 +50,6 @@ class SearchView extends Component {
   render () {
     return (
       <View style={styles.main}>
-        <ConnectionState/>
         <View>
           <View style={styles.formInputContainer}>
             <TextInput style={styles.formInputFind}

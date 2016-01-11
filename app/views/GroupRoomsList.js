@@ -15,7 +15,6 @@ var app = require('../libs/app');
 var LoadingModal = require('../components/LoadingModal');
 var SearchResult = require('./SearchResult');
 var navigation = require('../navigation/index');
-var ConnectionState = require('../components/ConnectionState');
 
 class GroupRoomsListView extends Component {
   constructor (props) {
@@ -73,18 +72,15 @@ class GroupRoomsListView extends Component {
       );
     }
     return (
-      <View style={{flex: 1}}>
-        <ConnectionState/>
-        <ScrollView style={styles.main}>
-          <View style={styles.container}>
-            <ListView
-              dataSource={this.state.dataSource}
-              renderRow={this.renderElement.bind(this)}
-              style={{alignSelf: 'stretch'}}
-              />
-          </View>
-        </ScrollView>
-      </View>
+      <ScrollView style={styles.main}>
+        <View style={styles.container}>
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={this.renderElement.bind(this)}
+            style={{alignSelf: 'stretch'}}
+            />
+        </View>
+      </ScrollView>
     );
   }
 
