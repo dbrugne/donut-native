@@ -10,7 +10,7 @@ module.exports = function (element) {
       return (<GroupRoomsList navigator={navigator} id={element.id} user={element.user} />);
     },
     getTitle () {
-      return element.name;
+      return element.name || 'rooms';
     },
     onBack () {
       this.scene.props.navigator.pop();
