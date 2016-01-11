@@ -42,13 +42,13 @@ class NavigationRoomsView extends Component {
   }
 
   refreshData () {
-    this.lastGroup = null;
     this.setState({
       elements: this.state.elements.cloneWithRows(app.rooms.toJSON())
     });
   }
 
   render () {
+    this.lastGroup = null;
     var title = null;
     if (app.rooms.length > 0) {
       title = (
