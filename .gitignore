@@ -39,3 +39,4 @@ npm-debug.log
 # certificates
 #
 android/app/donut-release-key.keystore
+android/app/debug.keystore
