@@ -67,10 +67,7 @@ var initialRouteTemplate = {
   },
   renderLeftButton () {
     return (<DrawerIcon navigator={navigator} />);
-  }
-};
-
-var nonInitialRouteTemplate = {
+  },
   renderBackButton (navigator) {
     return (
       <TouchableOpacity
@@ -85,6 +82,9 @@ var nonInitialRouteTemplate = {
       </TouchableOpacity>
     );
   }
+};
+
+var nonInitialRouteTemplate = {
 };
 
 module.exports = {
