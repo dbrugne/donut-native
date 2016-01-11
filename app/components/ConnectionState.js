@@ -11,8 +11,8 @@ var {
 var app = require('../libs/app');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
-  'offline': 'You are disconnected',
-  'reconnecting': 'You are reconnecting...'
+  'offline': 'Connection lost',
+  'reconnecting': 'Connecting...'
 });
 
 class ConnectionState extends Component {
