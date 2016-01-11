@@ -13,8 +13,8 @@ var SearchResult = require('./SearchResult');
 var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
-  'welcome': 'Welcome'
+i18next.addResourceBundle('en', 'discover_featured', {
+  'welcome': 'Join new communities and discussions from this list'
 });
 
 class HomeView extends Component {
@@ -61,7 +61,7 @@ class HomeView extends Component {
   }
 
   renderHeader() {
-    return (<Text style={{marginVertical: 20, marginHorizontal: 10}}>{i18next.t('local:welcome')}</Text>);
+    return (<Text style={{marginVertical: 20, marginHorizontal: 10}}>{i18next.t('discover_featured:welcome')}</Text>);
   }
 
   renderRow (room) {

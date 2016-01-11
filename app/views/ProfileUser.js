@@ -78,7 +78,7 @@ class UserProfileView extends Component {
 
     var registeredAt = (
     <ListItem
-      text={i18next.t('local:registered-on', {date: date.longDate(data.registered)})}
+      text={i18next.t('local:registered-on', {date: date.shortDate(data.registered)})}
       first={(!data.location && !data.website)}
       icon='fontawesome|clock-o'
       />
