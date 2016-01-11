@@ -17,8 +17,8 @@ module.exports = React.createClass({
   componentDidMount () {
     // check for new version
     // @doc: https://github.com/Microsoft/react-native-code-push#codepushsync
+    // @todo : avoid dialog on first launch
     CodePush.sync({ updateDialog: true, installMode: CodePush.InstallMode.IMMEDIATE });
-    // @todo : do it every n times
 
     // listen for currentUser status change
     var currentUser = require('./models/current-user');
