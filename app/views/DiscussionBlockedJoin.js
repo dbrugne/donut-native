@@ -10,7 +10,6 @@ var Button = require('../components/Button');
 var Alert = require('../libs/alert');
 
 var {
-  StyleSheet,
   View,
   Component,
   TextInput,
@@ -63,7 +62,7 @@ class DiscussionBlockedJoin extends Component {
     return (
       <View>
         <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
-          <Text style={[s.alertErrorText, {fontStyle: 'italic', paddingLeft: 5}]}>{i18next.t('local:allowed')}</Text>
+          <Text style={s.alertErrorText}>{i18next.t('local:allowed')}</Text>
         </View>
         {allowUserRequest}
       </View>
@@ -116,52 +115,5 @@ class DiscussionBlockedJoin extends Component {
     });
   }
 }
-
-var styles = StyleSheet.create({
-  main: {
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFF'
-  },
-  container2: {
-    flex: 1,
-    borderTopWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#DDD',
-    paddingTop: 10
-  },
-  avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginTop: 20,
-    marginBottom: 10,
-    borderColor: '#DCDCDC',
-    borderWidth: 2
-  },
-  identifier: {
-    color: '#333333',
-    fontFamily: 'Open Sans',
-    fontSize: 22,
-    fontWeight: 'bold'
-  },
-  ownerUsername: {
-    fontFamily: 'Open Sans',
-    fontWeight: 'bold'
-  },
-  description: {
-    marginVertical: 20,
-    marginHorizontal: 10,
-    color: '#333333',
-    fontFamily: 'Open Sans',
-    fontSize: 16
-  },
-});
 
 module.exports = DiscussionBlockedJoin;

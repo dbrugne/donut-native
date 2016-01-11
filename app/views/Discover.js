@@ -26,7 +26,7 @@ class Discover extends Component {
     });
   }
   componentWillUnmount () {
-    currentUser.off('change:confirmed');
+    currentUser.off(null, null, this);
   }
   render () {
     var version = config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')';
