@@ -10,8 +10,7 @@ var {
   StyleSheet,
   Text,
   ScrollView,
-  Component,
-  View
+  Component
   } = React;
 
 var i18next = require('../libs/i18next');
