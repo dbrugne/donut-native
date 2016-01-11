@@ -62,17 +62,6 @@ comment line 26
 // try { $ = require('jquery'); } catch(e) {}
 ```
 
-Fix debbugger after 0.17.0 upgrade
-
-- /www/donut-native/node_modules/react-native/local-cli/server/util/debuggerWorker.js
-
-```
-      if (typeof __fbBatchedBridge === 'object') {
-//        returnValue = __fbBatchedBridge[object.method].apply(null, object.arguments);
-        returnValue = __fbBatchedBridge[object.moduleMethod].apply(null, object.arguments);
-      }
-```
-
 Fix rightIcon on navigator
 
 https://github.com/facebook/react-native/issues/4559
