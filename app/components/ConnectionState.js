@@ -5,6 +5,9 @@ var {
   Component,
   Text,
   View,
+  ActivityIndicatorIOS,
+  ProgressBarAndroid,
+  Platform,
   StyleSheet
   } = React;
 
@@ -12,8 +15,8 @@ var app = require('../libs/app');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'local', {
   'offline': 'Connection lost',
-  'connecting': 'Connecting...',
-  'reconnecting': 'Connecting...'
+  'connecting': 'Connecting',
+  'reconnecting': 'Connecting'
 });
 
 class ConnectionState extends Component {
@@ -33,9 +36,27 @@ class ConnectionState extends Component {
     if (this.state.status === 'online') {
       return null;
     }
+    if (this.state.status === 'offline') {
+      return (
+        <View style={[styles.container, {backgroundColor: '#F00'}]}>
+          <Text style={{color: '#FFF'}}>{i18next.t('local:' + this.state.status)}</Text>
+        </View>
+      );
+    }
     return (
-      <View style={[styles.container, {backgroundColor: (this.state.status === 'offline') ? '#F00' : '#FA0'}]}>
+      <View style={[styles.container, {backgroundColor: '#FA0'}]}>
         <Text style={{color: '#FFF'}}>{i18next.t('local:' + this.state.status)}</Text>
+        <View style={{width: 10}}/>
+        {
+          (Platform.OS === 'android')
+            ? <ProgressBarAndroid styleAttr='SmallInverse' />
+            : <ActivityIndicatorIOS
+              animating
+              style={styles.loading}
+              size='small'
+              color='#666666'
+            />
+        }
       </View>
     );
   }
@@ -46,7 +67,11 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'stretch',
     justifyContent: 'center',
+    flexDirection: 'row',
     height: 30
+  },
+  loading: {
+    height: 20
   }
 });
 
