@@ -33,11 +33,11 @@ module.exports = React.createClass({
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
         onPress={() => require('../index').toggleDrawer()}
-        style={ExNavigator.Styles.barBackButton} >
+        style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 44}} >
         <Icon name='fontawesome|bars'
-              size={25}
+              size={22}
               color='#999998'
-              style={[{marginLeft: 16, width:22, height:22}, Platform.OS === 'android' ? {marginTop: 14} : {marginTop: 11}]} />
+              style={[{width: 22, height: 22}]} />
         {badge}
       </TouchableOpacity>
     );

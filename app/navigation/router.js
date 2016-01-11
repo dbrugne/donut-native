@@ -24,7 +24,7 @@ var routeTemplate = {
       ? title.substr(0, 18) + '…'
       : title;
     return (
-      <View style={{alignSelf: 'center'}}>
+      <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
         <Text style={{fontFamily: '.HelveticaNeueInterface-MediumP4', fontSize: 16, color: '222', fontWeight: 'bold'}}>
           {title}
         </Text>
@@ -36,12 +36,14 @@ var routeTemplate = {
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
         onPress={() => navigator.pop()}
-        style={ExNavigator.Styles.barBackButton} >
-        <Icon name='fontawesome|angle-left'
-              size={18}
-              color='#999998'
-              style={[ExNavigator.Styles.barButtonIcon, {marginLeft: 5, width: 18, height: 18}, Platform.OS === 'android' ? {marginTop: 18} : {marginTop: 12}]} />
-        <Text style={[ExNavigator.Styles.barButtonText, {color: '#999998'}, Platform.OS === 'android' ? {marginTop: 16} : {marginTop: 11}]}> {i18next.t('navigation.back')}</Text>
+        style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}} >
+        <View style={{flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center'}} >
+          <Icon name='fontawesome|angle-left'
+                size={18}
+                color='#999998'
+                style={[{marginLeft: 5, width: 18, height: 18}]} />
+          <Text style={[{fontSize: 17, color: '#999998'}]}> {i18next.t('navigation.back')}</Text>
+        </View>
       </TouchableOpacity>
     );
   },

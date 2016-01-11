@@ -33,11 +33,11 @@ module.exports = function (model) {
         <TouchableOpacity
           touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
           onPress={() => navigation.navigate('DiscussionSettings', model)}
-          style={ExNavigator.Styles.barRightButton}>
+          style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 44}} >
           <Icon name='fontawesome|cog'
-                size={25}
+                size={22}
                 color='#999998'
-                style={[ExNavigator.Styles.barButtonIcon, {marginRight: 16, width: 22, height: 22}, Platform.OS === 'android' ? {marginTop: 0} : {marginTop: 0}]} />
+                style={[{width: 22, height: 22}]} />
         </TouchableOpacity>
       );
     },
