@@ -62,33 +62,6 @@ comment line 26
 // try { $ = require('jquery'); } catch(e) {}
 ```
 
-- /www/donut-native/node_modules/engine.io-client/lib/transports/index.js
-
-Change path to XMLHttpRequest
-
-```
-// var XMLHttpRequest = require('xmlhttprequest');
-var XMLHttpRequest = require('../xmlhttprequest');
-```
- 
-- /www/donut-native/node_modules/engine.io-client/lib/transports/polling-xhr.js
-
-Change path to XMLHttpRequest
-
-```
-// var XMLHttpRequest = require('xmlhttprequest');
-var XMLHttpRequest = require('../xmlhttprequest');
-```
-
-- /www/donut-native/node_modules/engine.io-client/lib/transports/polling.js
-
-Change path to XMLHttpRequest
-
-```
-// var XMLHttpRequest = require('xmlhttprequest');
-var XMLHttpRequest = require('../xmlhttprequest');
-```
-
 Fix debbugger after 0.17.0 upgrade
 
 - /www/donut-native/node_modules/react-native/local-cli/server/util/debuggerWorker.js
