@@ -41,16 +41,17 @@ class Discover extends Component {
     );
   }
 
-  _renderConfirmed() {
-    if (this.state.userConfirmed) {
-      return null;
+  _renderConfirmed () {
+    // avoid display under connecting process
+    if (this.state.userConfirmed === false) {
+      return (
+        <View style={{marginRight: 7, marginLeft: 7, marginTop: 10, backgroundColor: '#FC2063', padding: 5}}>
+          <Text style={{color: '#FFF'}}>{i18next.t('messages.mail-notconfirmed')}</Text>
+        </View>
+      );
     }
 
-    return (
-      <View style={{marginRight: 7, marginLeft: 7, marginTop: 10, backgroundColor: '#FC2063', padding: 5}}>
-        <Text style={{color: '#FFF'}}>{i18next.t('messages.mail-notconfirmed')}</Text>
-      </View>
-    );
+    return null;
   }
 }
 

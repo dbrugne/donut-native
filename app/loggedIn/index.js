@@ -19,7 +19,6 @@ class Index extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      underFirstConnection: true,
       usernameRequired: false
     };
     this.nextFocus;
@@ -59,11 +58,6 @@ class Index extends Component {
     app.client.disconnect();
   }
   render () {
-    if (this.state.underFirstConnection === true) {
-      return (
-        <Launching text='connexion ...' />
-      );
-    }
     if (this.state.usernameRequired === true) {
       return (
         <ChooseUsername />
@@ -79,14 +73,12 @@ class Index extends Component {
     // require username welcome
     if (data.usernameRequired === true) {
       return this.setState({
-        underFirstConnection: false,
         usernameRequired: true
       });
     }
 
     // normal welcome (async to let RootNavigator render)
     this.setState({
-      underFirstConnection: false,
       featured: data.featured,
       usernameRequired: false // @important
     }, () => {
