@@ -15,31 +15,32 @@ module.exports = StyleSheet.create({
     borderStyle: 'solid',
     borderTopColor: '#EEEEEE',
     borderBottomWidth: 1,
-    borderBottomColor: '#D7D7D7'
+    borderBottomColor: '#D7D7D7',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  thumbnailContainer: {
+    flexDirection: 'column',
+    alignSelf: 'stretch',
+    justifyContent: 'center'
   },
   thumbnail: {
     width: 50,
     height: 50,
-    borderRadius: 25,
-    position: 'absolute',
-    left: 5,
-    top: 25
+    borderRadius: 25
   },
   thumbnailUser: {
     width: 50,
     height: 50,
-    position: 'absolute',
-    left: 5,
-    top: 25
+    borderRadius: 0
   },
   rightContainer: {
     height: 90,
-    marginLeft: 60,
+    marginLeft: 10,
     flexDirection: 'column',
-    alignItems: 'flex-start',
     justifyContent: 'center',
-    flexWrap: 'wrap',
-    overflow: 'hidden'
+    alignSelf: 'stretch',
+    flex: 1
   },
   topContainer: {
     flexDirection: 'row'
@@ -59,12 +60,10 @@ module.exports = StyleSheet.create({
     width: 50,
     paddingLeft: 5,
     paddingRight: 5,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 10,
-    left: 5
+    overflow: 'hidden'
   },
   description: {
+    flexDirection: 'column',
     color: '#999999',
     fontFamily: 'Open Sans',
     fontSize: 12,
@@ -86,10 +85,7 @@ module.exports = StyleSheet.create({
     width: 50,
     paddingLeft: 5,
     paddingRight: 5,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 10,
-    left: 5
+    overflow: 'hidden'
   },
   statusOnline: {backgroundColor: 'rgba(79, 237, 192, 0.8)'},
   statusConnecting: {backgroundColor: 'rgba(255, 218, 62, 0.8)'},

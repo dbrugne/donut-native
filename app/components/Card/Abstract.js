@@ -16,7 +16,7 @@ class AbstractCard extends Component {
     this.maxCars = 100;
   }
 
-  _renderThumbnail (thumbnail) {
+  _renderThumbnail (thumbnail, isUser) {
     if (!thumbnail) {
       return null;
     }
@@ -25,7 +25,7 @@ class AbstractCard extends Component {
       return null;
     }
 
-    return (<Image style={s.thumbnail} source={{uri: thumbnailUrl}}/>);
+    return (<Image style={[s.thumbnail, isUser && s.thumbnailUser]} source={{uri: thumbnailUrl}}/>);
   }
 
   truncate (str, esc) {

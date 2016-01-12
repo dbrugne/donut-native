@@ -19,7 +19,9 @@ class CardGroup extends Abstract {
     return (
       <TouchableHighlight onPress={this.props.onPress}>
         <View style={s.container}>
-          {this._renderThumbnail(this.props.image)}
+          <View style={s.thumbnailContainer}>
+            {this._renderThumbnail(this.props.image, false)}
+          </View>
           <View style={s.rightContainer}>
             <Text style={s.title}>{this.props.identifier}</Text>
             {this._renderDescription()}

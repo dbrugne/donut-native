@@ -19,13 +19,14 @@ class CardUser extends Abstract {
     return (
       <TouchableHighlight onPress={this.props.onPress}>
         <View style={s.container}>
-          {this._renderThumbnail(this.props.image)}
-          {this._renderStatus()}
+          <View style={s.thumbnailContainer}>
+            {this._renderThumbnail(this.props.image, true)}
+            {this._renderStatus()}
+          </View>
           <View style={s.rightContainer}>
             <Text>
               {this._renderRealname()}
-              <Text
-                style={[s.title, this.props.realname && {fontWeight: 'normal', color: '#999999'}]}>{this.props.identifier}</Text>
+              <Text style={[s.title, this.props.realname && {fontWeight: 'normal', color: '#999999'}]}>{this.props.identifier}</Text>
             </Text>
             {this._renderBio()}
           </View>
@@ -66,7 +67,7 @@ module.exports = CardUser;
 CardUser.propTypes = {
   identifier: React.PropTypes.string.isRequired,
   onPress: React.PropTypes.func.isRequired,
-  status: React.PropTypes.string.isRequired,
+  status: React.PropTypes.string,
   realname: React.PropTypes.string,
   image: React.PropTypes.string,
   bio: React.PropTypes.string,

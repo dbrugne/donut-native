@@ -72,6 +72,7 @@ class HomeView extends Component {
         type='room'
         identifier={room.identifier}
         description={room.description}
+        mode={room.mode}
         />
     );
   }

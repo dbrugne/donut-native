@@ -106,6 +106,7 @@ class SearchView extends Component {
           type='room'
           identifier={rowData.identifier}
           description={rowData.description}
+          mode={rowData.mode}
           />
       );
     } else if (this.state.type === 'users') {

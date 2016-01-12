@@ -19,8 +19,10 @@ class CardRoom extends Abstract {
     return (
       <TouchableHighlight onPress={this.props.onPress}>
         <View style={s.container}>
-          {this._renderThumbnail(this.props.image)}
-          {this._renderMode()}
+          <View style={s.thumbnailContainer}>
+            {this._renderThumbnail(this.props.image, false)}
+            {this._renderMode()}
+          </View>
           <View style={s.rightContainer}>
             <View style={s.topContainer}>
               <Text style={s.title}>{this.props.identifier}</Text>
