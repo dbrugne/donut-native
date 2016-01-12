@@ -1,10 +1,12 @@
 'use strict';
 
+var _ = require('underscore');
 var React = require('react-native');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var ListItem = require('../components/ListItem');
 var LoadingModal = require('../components/LoadingModal');
+var navigation = require('../navigation/index');
 
 var {
   StyleSheet,
@@ -73,7 +75,7 @@ class RoomCreateView extends Component {
     }
 
     this.setState({showLoading: true});
-    app.client.groupCreate(this.state.groupName, (response) => {
+    app.client.groupCreate(this.state.groupName, _.bind(function (response) {
       if (!response.success) {
         this.setState({showLoading: false});
         if (response.err === 'group-name-already-exist') {
@@ -85,15 +87,14 @@ class RoomCreateView extends Component {
         return alert.show(i18next.t('messages.unknownerror'));
       }
 
-      app.client.groupId(this.state.groupName, (data) => {
+      app.client.groupId(this.state.groupName, _.bind(function (data) {
         this.setState({showLoading: false, groupName: ''});
         if (data.err) {
           return alert.show(i18next.t('messages.' + data.err));
         }
-        // @todo spariaud finish joinGroup implementation
-        app.trigger('joinGroup', data.group_id);
-      });
-    });
+        navigation.navigate('Group', {name: data.identifier, id: data.group_id});
+      }, this));
+    }, this));
   }
 }
 
