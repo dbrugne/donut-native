@@ -15,7 +15,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'chooseUsername', {
   'choose': 'It\'s time to choose a username!',
   'disclaimer': 'This username will be your identity on DONUT and will be public. You cannot edit it later.',
   'save': 'save',
@@ -39,13 +39,13 @@ class ChooseUsername extends Component {
             <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
           </View>
 
-          <Text style={s.h1}>{i18next.t('local:choose')}</Text>
-          <Text style={[s.h2, s.marginTop10]}>{i18next.t('local:disclaimer')}</Text>
+          <Text style={s.h1}>{i18next.t('chooseUsername:choose')}</Text>
+          <Text style={[s.h2, s.marginTop10]}>{i18next.t('chooseUsername:disclaimer')}</Text>
 
           <View style={[s.inputContainer, s.marginTop10]}>
             <TextInput
               autoCapitalize='none'
-              placeholder={i18next.t('local:username')}
+              placeholder={i18next.t('chooseUsername:username')}
               onChange={(event) => this.setState({username: event.nativeEvent.text})}
               style={s.input}
               value={this.state.username} />
@@ -54,7 +54,7 @@ class ChooseUsername extends Component {
           <Button onPress={(this.onSubmit.bind(this))}
                   style={s.marginTop5}
                   type='pink'
-                  label={i18next.t('local:save')} />
+                  label={i18next.t('chooseUsername:save')} />
         </View>
       </View>
     );

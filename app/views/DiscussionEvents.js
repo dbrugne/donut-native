@@ -34,7 +34,7 @@ var UserBlock = require('./../components/events/UserBlock');
 var Unviewed = require('./../components/events/Unviewed');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'DiscussionEvents', {
   'in': 'You are in',
   'discuss': 'You discuss with',
   'load-more': 'Load more'
@@ -162,8 +162,8 @@ class DiscussionEvents extends Component {
   renderHeader () {
     if (!this.state.more) {
       var prefix = (this.props.model.get('type') === 'room')
-        ? i18next.t('local:in')
-        : i18next.t('local:discuss');
+        ? i18next.t('DiscussionEvents:in')
+        : i18next.t('DiscussionEvents:discuss');
       return (
         <Text style={[s.h1, s.textCenter]}>{prefix} {this.props.title}</Text>
       );
@@ -187,7 +187,7 @@ class DiscussionEvents extends Component {
           {loading}
         </View>
         <Button onPress={() => this.onLoadMore('older')}>
-          {i18next.t('local:load-more')}
+          {i18next.t('DiscussionEvents:load-more')}
         </Button>
       </View>
     );

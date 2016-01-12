@@ -15,7 +15,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'myAccount', {
   'manage': 'MANAGE YOUR PROFILE INFORMATIONS',
   'edit': 'Edit Profile',
   'change-preferences': 'Change preferences',
@@ -38,48 +38,48 @@ class MyAccountView extends Component {
         <View style={s.listGroup}>
           <ListItem
             onPress={() => navigation.navigate('MyAccountInformation')}
-            text={i18next.t('local:edit')}
+            text={i18next.t('myAccount:edit')}
             first
             action
             type='button'
-            title={i18next.t('local:manage')}
+            title={i18next.t('myAccount:manage')}
           />
           <ListItem
             onPress={() => navigation.navigate('MyAccountPreferences')}
-            text={i18next.t('local:change-preferences')}
+            text={i18next.t('myAccount:change-preferences')}
             action
             type='button'
           />
           <Text style={s.listGroupItemSpacing} />
           <ListItem
             onPress={() => navigation.navigate('MyAccountEmails')}
-            text={i18next.t('local:manage-emails')}
+            text={i18next.t('myAccount:manage-emails')}
             action
             type='button'
             first
-            title={i18next.t('local:login')}
+            title={i18next.t('myAccount:login')}
           />
           <ListItem
             onPress={() => navigation.navigate('MyAccountPassword')}
-            text={i18next.t('local:change-password')}
+            text={i18next.t('myAccount:change-password')}
             action
             type='button'
           />
           <Text style={s.listGroupItemSpacing} />
           <ListItem
             onPress={() => navigation.navigate('About')}
-            text={i18next.t('local:about')}
+            text={i18next.t('myAccount:about')}
             action
             first
             type='button'
           />
-          <ListItem text={i18next.t('local:eutc')}
+          <ListItem text={i18next.t('myAccount:eutc')}
                     type='button'
                     onPress={() => navigation.navigate('Eutc')}
           />
           <ListItem
             onPress={() => currentUser.logout()}
-            text={i18next.t('local:logout')}
+            text={i18next.t('myAccount:logout')}
             type='button'
             warning
           />

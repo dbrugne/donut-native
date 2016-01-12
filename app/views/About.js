@@ -17,7 +17,7 @@ var {
   } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'about', {
   'version': 'Version __version__',
   'disconnect': 'Disconnect',
   'connect': 'Connect'
@@ -49,7 +49,7 @@ class AboutView extends Component {
               underlayColor= '#DDD'
               >
               <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
-                <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('local:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}</Text>
+                <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('about:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}</Text>
               </View>
             </TouchableHighlight>
             {this._renderConfig()}
@@ -67,12 +67,12 @@ class AboutView extends Component {
     return (
       <View>
         <ListItem
-          text={i18next.t('local:connect')}
+          text={i18next.t('about:connect')}
           type='button'
           onPress={() => { app.client.connect(); }}
         />
         <ListItem
-          text={i18next.t('local:disconnect')}
+          text={i18next.t('about:disconnect')}
           type='button'
           onPress={() => { app.client.disconnect(); }}
         />

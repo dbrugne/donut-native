@@ -22,7 +22,7 @@ var Link = require('../components/Link');
 var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'profileRoom', {
   'created-on': 'created on __date__',
   'edit': 'edit',
   'manage-users': 'manage users',
@@ -59,7 +59,7 @@ class RoomProfileView extends Component {
 
     var createdAt = (
     <ListItem
-      text={i18next.t('local:created-on', {date: date.shortDate(data.created)})}
+      text={i18next.t('profileRoom:created-on', {date: date.shortDate(data.created)})}
       type='text'
       icon='fontawesome|clock-o'
       />
@@ -111,7 +111,7 @@ class RoomProfileView extends Component {
           {this._renderAvatar(data.avatar)}
           <Text style={styles.identifier}>{data.identifier}</Text>
           <Link onPress={() => navigation.navigate('Profile', {type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})}
-                prepend={i18next.t('local:by')}
+                prepend={i18next.t('profileRoom:by')}
                 text= {'@' + data.owner_username}
                 type='bold'
             />
@@ -121,7 +121,7 @@ class RoomProfileView extends Component {
         <View style={s.listGroup}>
           <Text style={s.listGroupItemSpacing} />
           <ListItem
-            text={i18next.t('local:join') + ' ' + data.users_count}
+            text={i18next.t('profileRoom:join') + ' ' + data.users_count}
             type='edit-button'
             first
             action

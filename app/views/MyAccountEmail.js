@@ -11,7 +11,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'myAccountEmail', {
   'change': 'CHANGE MAIN EMAIL',
   'mail': 'Mail'
 });
@@ -31,11 +31,11 @@ class ChangeEmailView extends Component {
 
           <ListItem
             onPress={(this.onSubmitPressed.bind(this))}
-            placeholder={i18next.t('local:mail')}
+            placeholder={i18next.t('myAccountEmail:mail')}
             value={this.state.email}
             onChange={(event) => this.setState({email: event.nativeEvent.text})}
             type='input-button'
-            title={i18next.t('local:change')}
+            title={i18next.t('myAccountEmail:change')}
             first={true}
             isEmail={true}
             />

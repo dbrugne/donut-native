@@ -17,7 +17,7 @@ var s = require('../styles/style');
 var alert = require('../libs/alert');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'roomUser', {
   'op': 'Make moderator',
   'modal-description-op': 'Are you sure you want to make @__username__ moderator?',
   'deop': 'Remove from moderator',
@@ -84,7 +84,7 @@ class ProfileView extends Component {
       actions.push(
         <ListItem
           key='deop'
-          text={i18next.t('local:deop')}
+          text={i18next.t('roomUser:deop')}
           type='edit-button'
           first={true}
           action={true}
@@ -96,7 +96,7 @@ class ProfileView extends Component {
       actions.push(
         <ListItem
           key='op'
-          text={i18next.t('local:op')}
+          text={i18next.t('roomUser:op')}
           type='edit-button'
           first={true}
           action={true}
@@ -110,7 +110,7 @@ class ProfileView extends Component {
       actions.push(
         <ListItem
           key='voice'
-          text={i18next.t('local:voice')}
+          text={i18next.t('roomUser:voice')}
           type='edit-button'
           action={true}
           icon='fontawesome|microphone'
@@ -121,7 +121,7 @@ class ProfileView extends Component {
       actions.push(
         <ListItem
           key='devoice'
-          text={i18next.t('local:devoice')}
+          text={i18next.t('roomUser:devoice')}
           type='edit-button'
           action={true}
           iconColor='#ff3838'
@@ -134,7 +134,7 @@ class ProfileView extends Component {
       actions.push(
         <ListItem
           key='unban'
-          text={i18next.t('local:unban')}
+          text={i18next.t('roomUser:unban')}
           type='edit-button'
           action={true}
           icon='fontawesome|ban'
@@ -145,7 +145,7 @@ class ProfileView extends Component {
       actions.push(
         <ListItem
           key='ban'
-          text={i18next.t('local:ban')}
+          text={i18next.t('roomUser:ban')}
           type='edit-button'
           action={true}
           iconColor='#ff3838'
@@ -156,7 +156,7 @@ class ProfileView extends Component {
       actions.push(
         <ListItem
           key='kick'
-          text={i18next.t('local:kick')}
+          text={i18next.t('roomUser:kick')}
           type='edit-button'
           action={true}
           icon='fontawesome|times'
@@ -169,8 +169,8 @@ class ProfileView extends Component {
 
   _onDeop () {
     alert.askConfirmation(
-      i18next.t('local:deop'),
-      i18next.t('local:modal-description-deop', {username: this.props.user.username}),
+      i18next.t('roomUser:deop'),
+      i18next.t('roomUser:modal-description-deop', {username: this.props.user.username}),
       () => {
         app.client.roomDeop(this.props.roomId, this.props.user.user_id, (response) => {
           if (response.err) {
@@ -185,8 +185,8 @@ class ProfileView extends Component {
   }
   _onOp () {
     alert.askConfirmation(
-      i18next.t('local:op'),
-      i18next.t('local:modal-description-op', {username: this.props.user.username}),
+      i18next.t('roomUser:op'),
+      i18next.t('roomUser:modal-description-op', {username: this.props.user.username}),
       () => {
         app.client.roomOp(this.props.roomId, this.props.user.user_id, (response) => {
           if (response.err) {
@@ -201,8 +201,8 @@ class ProfileView extends Component {
   }
   _onDevoice () {
     alert.askConfirmation(
-      i18next.t('local:devoice'),
-      i18next.t('local:modal-description-devoice', {username: this.props.user.username}),
+      i18next.t('roomUser:devoice'),
+      i18next.t('roomUser:modal-description-devoice', {username: this.props.user.username}),
       () => {
         app.client.roomDevoice(this.props.roomId, this.props.user.user_id, null,(response) => {
           if (response.err) {
@@ -217,8 +217,8 @@ class ProfileView extends Component {
   }
   _onVoice () {
     alert.askConfirmation(
-      i18next.t('local:voice'),
-      i18next.t('local:modal-description-voice', {username: this.props.user.username}),
+      i18next.t('roomUser:voice'),
+      i18next.t('roomUser:modal-description-voice', {username: this.props.user.username}),
       () => {
         app.client.roomVoice(this.props.roomId, this.props.user.user_id, (response) => {
           if (response.err) {
@@ -233,8 +233,8 @@ class ProfileView extends Component {
   }
   _onUnban() {
     alert.askConfirmation(
-      i18next.t('local:deban'),
-      i18next.t('local:modal-description-deban', {username: this.props.user.username}),
+      i18next.t('roomUser:deban'),
+      i18next.t('roomUser:modal-description-deban', {username: this.props.user.username}),
       () => {
         app.client.roomDeban(this.props.roomId, this.props.user.user_id, (response) => {
           if (response.err) {
@@ -249,8 +249,8 @@ class ProfileView extends Component {
   }
   _onBan () {
     alert.askConfirmation(
-      i18next.t('local:ban'),
-      i18next.t('local:modal-description-ban', {username: this.props.user.username}),
+      i18next.t('roomUser:ban'),
+      i18next.t('roomUser:modal-description-ban', {username: this.props.user.username}),
       () => {
         app.client.roomBan(this.props.roomId, this.props.user.user_id, null, (response) => {
           if (response.err) {
@@ -265,8 +265,8 @@ class ProfileView extends Component {
   }
   _onKick () {
     alert.askConfirmation(
-      i18next.t('local:kick'),
-      i18next.t('local:modal-description-kick', {username: this.props.user.username}),
+      i18next.t('roomUser:kick'),
+      i18next.t('roomUser:modal-description-kick', {username: this.props.user.username}),
       () => {
         app.client.roomKick(this.props.roomId, this.props.user.user_id, null, (response) => {
           if (response.err) {

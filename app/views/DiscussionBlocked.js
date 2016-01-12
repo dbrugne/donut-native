@@ -23,7 +23,7 @@ var {
 var Icon = require('react-native-icons').Icon;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'discussionBlocked', {
   'by': 'by',
   'allowed': 'This donut is private.',
   'request': 'To request access, ',
@@ -90,7 +90,7 @@ class DiscussionBlocked extends Component {
             <TouchableHighlight
               onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('owner_id'), identifier: '@' + this.props.model.get('owner_username')})}>
               <Text>
-                <Text>{i18next.t('local:by')} </Text>
+                <Text>{i18next.t('discussionBlocked:by')} </Text>
                 <Text style={styles.ownerUsername}>@{this.props.model.get('owner_username')}</Text>
               </Text>
             </TouchableHighlight>
@@ -103,7 +103,7 @@ class DiscussionBlocked extends Component {
 
           <ListItem type='button'
                     onPress={() => this.props.model.leaveBlocked()}
-                    text={i18next.t('local:close')}
+                    text={i18next.t('discussionBlocked:close')}
                     ation
                     first
                     last
@@ -138,7 +138,7 @@ class DiscussionBlocked extends Component {
     if (this.props.model.get('banned_at')) {
       bannedAt = (
         <Text style={s.alertErrorText}>
-          {i18next.t('local:' + this.props.model.get('blocked'), {at: date.dateTime(this.props.model.get('banned_at'))})}
+          {i18next.t('discussionBlocked:' + this.props.model.get('blocked'), {at: date.dateTime(this.props.model.get('banned_at'))})}
         </Text>
       );
     }
@@ -175,9 +175,9 @@ class DiscussionBlocked extends Component {
     return (
       <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
         <Link onPress={(this.onJoin.bind(this))}
-              prepend={i18next.t('local:kicked')}
-              append={i18next.t('local:rejoin')}
-              text={i18next.t('local:click')}
+              prepend={i18next.t('discussionBlocked:kicked')}
+              append={i18next.t('discussionBlocked:rejoin')}
+              text={i18next.t('discussionBlocked:click')}
               linkStyle={s.alertErrorText}
               prependStyle={s.alertErrorText}
               appendStyle={s.alertErrorText}

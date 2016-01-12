@@ -14,7 +14,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'myAccountPreferences', {
   'set-preferences': 'Set preferences',
   'notify-me': 'NOTIFY ME',
   'on-email': 'on email (only if you are offline)',
@@ -67,30 +67,30 @@ class UserPreferencesView extends Component {
 
     return (
       <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1, backgroundColor: '#f0f0f0' }}>
-        <Text style={[s.h1, s.textCenter, s.marginTop5]}>{i18next.t('local:set-preferences')}</Text>
+        <Text style={[s.h1, s.textCenter, s.marginTop5]}>{i18next.t('myAccountPreferences:set-preferences')}</Text>
 
-        <Text style={[s.listGroupTitle, s.marginTop20]}>{i18next.t('local:notify-me')}</Text>
+        <Text style={[s.listGroupTitle, s.marginTop20]}>{i18next.t('myAccountPreferences:notify-me')}</Text>
         <View style={s.listGroup}>
 
-          <ListItem text={i18next.t('local:on-email')}
+          <ListItem text={i18next.t('myAccountPreferences:on-email')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:channels:email')}
                          switchValue={this.state.preferences['notif:channels:email']}
             />
 
-          <ListItem text={i18next.t('local:on-mobile')}
+          <ListItem text={i18next.t('myAccountPreferences:on-mobile')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:channels:mobile')}
                          switchValue={this.state.preferences['notif:channels:mobile']}
             />
 
-          <ListItem text={i18next.t('local:private')}
+          <ListItem text={i18next.t('myAccountPreferences:private')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:usermessage')}
                          switchValue={this.state.preferences['notif:usermessage']}
             />
 
-          <ListItem text={i18next.t('local:invite')}
+          <ListItem text={i18next.t('myAccountPreferences:invite')}
                          type='switch'
                          onSwitch={this._changePreferences.bind(this, 'notif:invite')}
                          switchValue={this.state.preferences['notif:invite']}

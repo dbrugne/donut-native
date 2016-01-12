@@ -6,7 +6,7 @@ var UserField = require('../components/UserField');
 var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'myAccountBio', {
   'placeholder': 'Biography'
 });
 
@@ -21,7 +21,7 @@ class UserFieldBio extends UserField {
     <ListItem
       ref='input'
       onPress= {() => this.onPress()}
-      placeholder={i18next.t('local:placeholder')}
+      placeholder={i18next.t('myAccountBio:placeholder')}
       value={this.state.value}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'

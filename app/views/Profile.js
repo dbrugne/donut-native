@@ -14,7 +14,7 @@ var RoomProfile = require('./ProfileRoom');
 var UserProfile = require('./ProfileUser');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'profile', {
   'unable-load': 'Unable to load profile, please try again later',
   'loading-profile': 'Chargement du profil de'
 });
@@ -46,7 +46,7 @@ class ProfileView extends Component {
   onData (response) {
     if (response.err) {
       return this.setState({
-        error: i18next.t('local:unable-load')
+        error: i18next.t('profile:unable-load')
       });
     }
     this.setState({
@@ -59,7 +59,7 @@ class ProfileView extends Component {
       return (
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>
-            <Text>{i18next.t('local:loading-profile')}</Text>
+            <Text>{i18next.t('profile:loading-profile')}</Text>
             <Text>{this.props.element.identifier}</Text>
           </Text>
           <ActivityIndicatorIOS

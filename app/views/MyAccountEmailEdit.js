@@ -12,7 +12,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'myAccountEmailEdit', {
   'modal-title': 'Delete email',
   'modal-description': 'Are you sure you want to delete this email ? This action is irreversible and cannot be undone',
   'delete': 'delete',
@@ -28,8 +28,8 @@ class EditEmailView extends Component {
   }
 
   render() {
-    var modalTitle = i18next.t('local:modal-title');
-    var modalDescription = i18next.t('local:modal-description');
+    var modalTitle = i18next.t('myAccountEmailEdit:modal-title');
+    var modalDescription = i18next.t('myAccountEmailEdit:modal-description');
     return (
       <View style={styles.main}>
 
@@ -42,7 +42,7 @@ class EditEmailView extends Component {
           {this._renderConfirmed()}
 
           <ListItem onPress={() => Alert.askConfirmation(modalTitle, modalDescription, () => this.onDeletePressed(), () => {})}
-                    text={i18next.t('local:delete')}
+                    text={i18next.t('myAccountEmailEdit:delete')}
                     type='button'
                     warning='true'
                     first={true}
@@ -66,12 +66,12 @@ class EditEmailView extends Component {
       return (
         <View>
           <ListItem onPress={(this.onSendEmail.bind(this))}
-                    text={i18next.t('local:send-validation')}
+                    text={i18next.t('myAccountEmailEdit:send-validation')}
                     type='button'
                     action='true'
                     icon='fontawesome|envelope-o'
                     first={true}
-                    title={i18next.t('local:not-validated')}
+                    title={i18next.t('myAccountEmailEdit:not-validated')}
             />
 
           <Text style={s.listGroupItemSpacing} />
@@ -83,12 +83,12 @@ class EditEmailView extends Component {
   _renderMain() {
     if (!this.props.email.main) {
       return (<ListItem onPress={(this.onSetAsMainPressed.bind(this))}
-                        text={i18next.t('local:define')}
+                        text={i18next.t('myAccountEmailEdit:define')}
                         type='button'
                         action='true'
                         icon='fontawesome|anchor'
                         first={true}
-                        title={i18next.t('local:validated')}
+                        title={i18next.t('myAccountEmailEdit:validated')}
         />);
     } else {
       return (<View />);

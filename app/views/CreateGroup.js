@@ -15,7 +15,7 @@ var {
   } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'createGroup', {
   'name': 'name of community',
   'help': 'Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_). Caution the community name cannot be changed',
   'disclaimer2': 'You are on the community creation page. Start by entering a name',
@@ -37,20 +37,20 @@ class RoomCreateView extends Component {
       <View style={{flex: 1}}>
         <ScrollView style={styles.container}>
 
-          <Text style={styles.block}>{i18next.t('local:disclaimer2')}</Text>
+          <Text style={styles.block}>{i18next.t('createGroup:disclaimer2')}</Text>
 
           <ListItem
             type='input'
             first
             last
             autoCapitalize='none'
-            placeholder={i18next.t('local:name')}
+            placeholder={i18next.t('createGroup:name')}
             onChangeText={(text) => this.setState({groupName: text})}
             value={this.state.groupName}
-            help={i18next.t('local:help')}
+            help={i18next.t('createGroup:help')}
             />
 
-          <Text style={[styles.block]}>{i18next.t('local:disclaimer')}</Text>
+          <Text style={[styles.block]}>{i18next.t('createGroup:disclaimer')}</Text>
 
           <ListItem
             type='button'
@@ -58,7 +58,7 @@ class RoomCreateView extends Component {
             last
             action
             onPress={(this.onGroupCreate.bind(this))}
-            text={i18next.t('local:create')}
+            text={i18next.t('createGroup:create')}
             />
 
         </ScrollView>

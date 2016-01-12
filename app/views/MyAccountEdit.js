@@ -20,7 +20,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'myAccountEdit', {
   'avatar': 'Avatar',
   'realname': 'Realname',
   'biography': 'Biography',
@@ -87,7 +87,7 @@ class MyAccountInformation extends Component {
       if (response.err) {
         for (var k in response.err) {
           if (response.err[k] === 'website-url') {
-            Alert.show(i18next.t('local:website-url'));
+            Alert.show(i18next.t('myAccountEdit:website-url'));
           } else {
             Alert.show('unknown');
           }
@@ -140,13 +140,13 @@ class MyAccountInformation extends Component {
           </View>
         </View>
 
-          <ListItem text={i18next.t('local:avatar')}
+          <ListItem text={i18next.t('myAccountEdit:avatar')}
                     type='edit-button'
                     first
                     action
                     onPress={() => this._updateAvatar()}
             />
-          <ListItem text={i18next.t('local:realname')}
+          <ListItem text={i18next.t('myAccountEdit:realname')}
                     type='edit-button'
                     action
                     value={this.state.realname}
@@ -160,14 +160,14 @@ class MyAccountInformation extends Component {
                     onPress={() => this.onUserEdit(require('./MyAccountEditBio'), this.state.bio)}
             />
 
-          <ListItem text={i18next.t('local:location')}
+          <ListItem text={i18next.t('myAccountEdit:location')}
                     type='edit-button'
                     action
                     value={this.state.location}
                     onPress={() => this.onUserEdit (require('./MyAccountEditLocation'), this.state.location)}
             />
 
-          <ListItem text={i18next.t('local:website')}
+          <ListItem text={i18next.t('myAccountEdit:website')}
                     type='edit-button'
                     action
                     last

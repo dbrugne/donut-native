@@ -17,7 +17,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'discussionBlockedJoin', {
   "allowed": "This donut is private.",
   "request": "To request access, ",
   "click": "click here.",
@@ -50,9 +50,9 @@ class DiscussionBlockedJoin extends Component {
     if (this.props.model.get('allow_user_request')) {
       allowUserRequest = (
         <View>
-          <Text>{i18next.t('local:request')}</Text>
+          <Text>{i18next.t('discussionBlockedJoin:request')}</Text>
           <Link onPress={(this.onUserRequest.bind(this))}
-                text={i18next.t('local:click')}
+                text={i18next.t('discussionBlockedJoin:click')}
                 type='underlined'
             />
         </View>
@@ -62,7 +62,7 @@ class DiscussionBlockedJoin extends Component {
     return (
       <View>
         <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
-          <Text style={s.alertErrorText}>{i18next.t('local:allowed')}</Text>
+          <Text style={s.alertErrorText}>{i18next.t('discussionBlockedJoin:allowed')}</Text>
         </View>
         {allowUserRequest}
       </View>
@@ -74,7 +74,7 @@ class DiscussionBlockedJoin extends Component {
       if (response.err) {
         Alert.show(response.err);
       } else {
-        Alert.show(i18next.t('local:request-send'));
+        Alert.show(i18next.t('discussionBlockedJoin:request-send'));
       }
     });
   }
@@ -88,17 +88,17 @@ class DiscussionBlockedJoin extends Component {
     return (
       <View>
         <View style={{marginTop:10}}>
-          <Text>{i18next.t('local:password')}</Text>
+          <Text>{i18next.t('discussionBlockedJoin:password')}</Text>
           <TextInput style={s.input}
                      autoCapitalize='none'
-                     placeholder={i18next.t('local:password-placeholder')}
+                     placeholder={i18next.t('discussionBlockedJoin:password-placeholder')}
                      onChangeText={(text) => this.setState({password: text})}
             />
 
           <Button onPress={(this.onValidatePassword.bind(this))}
                   type='green'
                   style={{marginHorizontal: 10}}
-                  label={i18next.t('local:join')} />
+                  label={i18next.t('discussionBlockedJoin:join')} />
 
         </View>
       </View>

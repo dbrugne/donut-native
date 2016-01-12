@@ -18,7 +18,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'myAccountPassword', {
   'old-password': 'old password',
   'change-password': 'Change password',
   'new-password': 'new password',
@@ -63,7 +63,7 @@ class ChangePasswordView extends Component {
           ref='1'
           autoCapitalize='none'
           autoFocus={true}
-          placeholder={i18next.t('local:old-password')}
+          placeholder={i18next.t('myAccountPassword:old-password')}
           secureTextEntry={true}
           returnKeyType='next'
           style={[styles.input, s.marginTop10]}
@@ -84,7 +84,7 @@ class ChangePasswordView extends Component {
           keyboardDismissMode='on-drag'
           style={{flex: 1, backgroundColor: '#f0f0f0'}}>
           <View>
-            <Text style={[s.h1, s.textCenter, s.marginTop5]}>{i18next.t('local:change-password')}</Text>
+            <Text style={[s.h1, s.textCenter, s.marginTop5]}>{i18next.t('myAccountPassword:change-password')}</Text>
 
             {inputOldPassword}
 
@@ -93,7 +93,7 @@ class ChangePasswordView extends Component {
               <TextInput
                 ref='2'
                 autoCapitalize='none'
-                placeholder={i18next.t('local:new-password')}
+                placeholder={i18next.t('myAccountPassword:new-password')}
                 secureTextEntry={true}
                 returnKeyType='next'
                 style={[styles.input, s.marginTop10]}
@@ -109,7 +109,7 @@ class ChangePasswordView extends Component {
               <TextInput
                 ref='3'
                 autoCapitalize='none'
-                placeholder={i18next.t('local:confirm')}
+                placeholder={i18next.t('myAccountPassword:confirm')}
                 secureTextEntry={true}
                 returnKeyType='done'
                 style={[styles.input, s.marginTop10]}
@@ -124,7 +124,7 @@ class ChangePasswordView extends Component {
           <Button onPress={(this.onSubmitPressed.bind(this))}
                   type='green'
                   style={[s.marginTop10]}
-                  label={i18next.t('local:change')} />
+                  label={i18next.t('myAccountPassword:change')} />
 
         </ScrollView>
       </View>

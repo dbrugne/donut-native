@@ -16,7 +16,7 @@ var {
   } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'createRoom', {
   'name': 'name of donut',
   'help': 'Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_)',
   'disclaimer': 'You are about to create a donut in the global space, if you want to create a donut in a community you are a member of, go to the community page and click on "Create a donut"',
@@ -47,30 +47,30 @@ class RoomCreateView extends Component {
       <View style={{flex: 1}}>
         <ScrollView style={styles.container}>
 
-          <Text style={[styles.block]}>{i18next.t('local:disclaimer2')}</Text>
+          <Text style={[styles.block]}>{i18next.t('createRoom:disclaimer2')}</Text>
 
           <ListItem
             type='input'
             first
             last
             autoCapitalize='none'
-            placeholder={i18next.t('local:name')}
+            placeholder={i18next.t('createRoom:name')}
             onChangeText={(text) => this.setState({roomName: text})}
             value={this.state.roomName}
-            help={i18next.t('local:help')}
+            help={i18next.t('createRoom:help')}
             />
 
-          <Text style={[styles.block]}>{i18next.t('local:disclaimer')}</Text>
+          <Text style={[styles.block]}>{i18next.t('createRoom:disclaimer')}</Text>
 
           <ListItem
             type='switch'
             first
             last
             title={i18next.t('local:who')}
-            text={ this.state.public ? i18next.t('local:public') : i18next.t('local:private')}
+            text={ this.state.public ? i18next.t('createRoom:public') : i18next.t('createRoom:private')}
             onSwitch={this._changeMode.bind(this)}
             switchValue={this.state.public}
-            help={ this.state.public ? i18next.t('local:any') : i18next.t('local:only')}
+            help={ this.state.public ? i18next.t('createRoom:any') : i18next.t('createRoom:only')}
             />
 
           <Text style={styles.listGroupItemSpacing}/>
@@ -80,18 +80,18 @@ class RoomCreateView extends Component {
             last
             action
             onPress={(this.onRoomCreate.bind(this))}
-            text={i18next.t('local:create')}
+            text={i18next.t('createRoom:create')}
             />
 
           <Text style={styles.listGroupItemSpacing}/>
-          <Text style={[styles.block]}>{i18next.t('local:community')}</Text>
+          <Text style={[styles.block]}>{i18next.t('createRoom:community')}</Text>
           <ListItem
             type='button'
             first
             last
             action
             onPress={() => navigation.navigate('CreateGroup')}
-            text={i18next.t('local:create-community')}
+            text={i18next.t('createRoom:create-community')}
             />
 
           <Text style={[styles.block]}/>

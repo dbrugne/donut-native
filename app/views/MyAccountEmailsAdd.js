@@ -12,7 +12,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'myAccountEmailsAdd', {
   'add-email': 'ADD A NEW EMAIL',
   'email': 'Email',
   'save': 'save'
@@ -34,11 +34,11 @@ class AddEmailView extends Component {
 
           <ListItem
             onPress={(this.onSubmitPressed.bind(this))}
-            placeholder={i18next.t('local:email')}
+            placeholder={i18next.t('myAccountEmailsAdd:email')}
             value={this.state.email}
             onChange={(event) => this.setState({email: event.nativeEvent.text})}
             type='input-button'
-            title={i18next.t('local:add-email')}
+            title={i18next.t('myAccountEmailsAdd:add-email')}
             first
             isEmail
           />

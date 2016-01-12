@@ -16,7 +16,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'myAccountEmails', {
   'add-email': 'Add email',
   'current-email': 'CURRENT EMAIL',
   'missing-email': 'You do not have entered a main email for this account.',
@@ -69,7 +69,7 @@ class EmailsView extends Component {
 
           <ListItem
             onPress={() => navigation.navigate('MyAccountEmailsAdd', this.fetchData.bind(this))}
-            text={i18next.t('local:add-email')}
+            text={i18next.t('myAccountEmails:add-email')}
             type='button'
             action='true'
             first='true'
@@ -91,7 +91,7 @@ class EmailsView extends Component {
             type='button'
             action='true'
             first='true'
-            title={i18next.t('local:current-email')}
+            title={i18next.t('myAccountEmails:current-email')}
             />
           <Text style={s.listGroupItemSpacing} />
         </View>
@@ -100,7 +100,7 @@ class EmailsView extends Component {
 
     return (
       <View>
-        <Text style={s.listGroupTitle}>{i18next.t('local:missing-email')}</Text>
+        <Text style={s.listGroupTitle}>{i18next.t('myAccountEmails:missing-email')}</Text>
         <Text style={s.listGroupItemSpacing} />
       </View>
     );
@@ -133,7 +133,7 @@ class EmailsView extends Component {
     }
     return (
       <View>
-        <Text style={s.listGroupTitle}>{i18next.t('local:additional-emails')}</Text>
+        <Text style={s.listGroupTitle}>{i18next.t('myAccountEmails:additional-emails')}</Text>
         {listRow}
         <Text style={s.listGroupItemSpacing} />
       </View>
