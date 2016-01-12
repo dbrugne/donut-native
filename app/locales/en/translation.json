@@ -117,7 +117,8 @@
     "allowed-pending": "Access to this community is by invitation, and you already have a request in progress.",
     "allow-pending": "An access request is already pending",
     "placeholder-request": "Your motivations, background ...",
-    "success-request": "Request sent ! You will be notified when accepted."
+    "success-request": "Request sent ! You will be notified when accepted.",
+    "group-users": "group members"
   },
   "room": {
     "message-membership": "You are not yet a member of this donut. Before you request membership, have a glance at this donut access conditions"

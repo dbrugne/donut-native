@@ -25,11 +25,11 @@ var GroupHomeView = React.createClass({
     if (this.id) {
       app.client.groupRead(this.id, {users: true}, (data) => {
         app.groups.addModel(data);
-        this.onData(data);
         this.setState({model: app.groups.iwhere('group_id', this.id)});
         if (this.state.model) {
           this.state.model.on('redraw', () => this.onRefresh(), this);
         }
+        this.onData(data);
       });
     }
   },
@@ -57,7 +57,7 @@ var GroupHomeView = React.createClass({
       );
     }
     return (
-      <GroupContent data={this.state.data} navigator={this.props.navigator} />
+      <GroupContent data={this.state.data} model={this.state.model} navigator={this.props.navigator} />
     );
   },
   onRefresh: function () {

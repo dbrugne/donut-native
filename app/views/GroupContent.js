@@ -170,6 +170,13 @@ class GroupProfileView extends Component {
             onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user})}
             text={i18next.t('group.donut-list')}
             />
+          <ListItem
+            type='button'
+            last
+            action
+            onPress={() => navigation.navigate('GroupUsers', this.props.model)}
+            text={i18next.t('group.group-users')}
+            />
         </View>
       );
     }
