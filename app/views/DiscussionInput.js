@@ -80,8 +80,8 @@ var InputView = React.createClass({
     });
   },
   _addImage: function () {
-    imageUpload.pickImage((canceled, response) => {
-      if (canceled) {
+    imageUpload.pickImage((response) => {
+      if (response.didCancel) {
         return;
       }
       // set image source for the confirmation modal

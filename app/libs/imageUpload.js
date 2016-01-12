@@ -24,8 +24,8 @@ exports.pickImage = function (callback) {
     maxHeight: 500,
     takePhotoButtonTitle: i18next.t('local:take'),
     chooseFromLibraryButtonTitle: i18next.t('local:choose')
-  }, (cancelled, response) => {
-    return callback(cancelled, response);
+  }, (response) => {
+    return callback(response);
   });
 };
 
@@ -38,7 +38,7 @@ exports.uploadToCloudinary = function (base64File, tags, preset, callback) {
     }
 
     var pathSplit = data.url.split('/');
-    return callback (null, {
+    return callback(null, {
       public_id: data.public_id,
       version: data.version,
       path: data.url.replace('http://res.cloudinary.com/roomly/image/upload/', ''),
@@ -54,8 +54,8 @@ exports.uploadToCloudinary = function (base64File, tags, preset, callback) {
 };
 
 exports.getImageAndUpload = function (tags, preset, callback) {
-  this.pickImage((canceled, response) => {
-    if (canceled) {
+  this.pickImage((response) => {
+    if (response.didCancel) {
       return callback(null, null);
     }
 

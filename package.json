@@ -19,7 +19,7 @@
     "react-native-drawer": "^1.10.2",
     "react-native-facebook-login": "^1.0.0",
     "react-native-icons": "^0.7.0",
-    "react-native-image-picker": "^0.10.0",
+    "react-native-image-picker": "^0.12.4",
     "react-native-invertible-scroll-view": "^0.1.2",
     "react-native-parse-notification-android": "yfuks/react-native-parse-notification-android",
     "react-native-parsed-text": "^0.0.10",
