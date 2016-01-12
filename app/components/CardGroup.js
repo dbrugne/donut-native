@@ -14,7 +14,8 @@ var {
   Image,
 } = React;
 
-class SearchResultRoom extends Component {
+class CardGroup extends Component {
+  maxCars = 100;
   constructor (props) {
     super(props);
   }
@@ -24,23 +25,13 @@ class SearchResultRoom extends Component {
       <TouchableHighlight onPress={this.props.onPress} >
         <View style={s.container}>
           {this._renderThumbnail(this.props.image)}
-          {this._renderMode()}
           <View style={s.rightContainer}>
-            <View style={s.topContainer}>
-              <Text style={s.title}>{this.props.identifier}</Text>
-            </View>
+            <Text style={s.title}>{this.props.identifier}</Text>
             {this._renderDescription()}
           </View>
         </View>
       </TouchableHighlight>
     );
-  }
-
-  _renderMode() {
-    if (!this.props.mode) {
-      return null;
-    }
-    return (<Text style={s.mode}>{this.props.mode}</Text>);
   }
 
   _renderThumbnail (thumbnail) {
@@ -61,6 +52,10 @@ class SearchResultRoom extends Component {
     }
 
     let description = _.unescape(this.props.description.replace(/\n/g,''));
+    description = description.length > this.maxCars
+      ? description.substr(0, this.maxCars).concat('...')
+      : description
+    ;
 
     return (
       <Text style={s.description}>{description}</Text>
@@ -68,4 +63,4 @@ class SearchResultRoom extends Component {
   }
 }
 
-module.exports = SearchResultRoom;
+module.exports = CardGroup;

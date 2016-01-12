@@ -13,7 +13,7 @@ var {
 var _ = require('underscore');
 var app = require('../libs/app');
 var LoadingModal = require('../components/LoadingModal');
-var SearchResult = require('./SearchResult');
+var Card = require('../components/Card');
 var navigation = require('../navigation/index');
 
 class GroupRoomsListView extends Component {
@@ -86,7 +86,7 @@ class GroupRoomsListView extends Component {
 
   renderElement (rowData) {
     return (
-      <SearchResult
+      <Card
         onPress={() => navigation.navigate('Profile', {type: 'room', id: rowData.room_id, identifier: rowData.identifier})}
         image={rowData.avatar}
         type='room'

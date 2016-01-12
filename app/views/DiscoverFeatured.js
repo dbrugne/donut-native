@@ -9,7 +9,7 @@ var {
 
 var app = require('./../libs/app');
 var navigation = require('../navigation/index');
-var SearchResult = require('./SearchResult');
+var Card = require('../components/Card');
 var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
@@ -66,7 +66,7 @@ class HomeView extends Component {
 
   renderRow (room) {
     return (
-      <SearchResult
+      <Card
         onPress={() => navigation.navigate('Profile', {type: 'room', id: room.room_id, identifier: room.identifier})}
         image={room.avatar}
         type='room'

@@ -2,9 +2,9 @@
 
 var React = require('react-native');
 
-var SearchResultUser = require('./SearchResultUser');
-var SearchResultRoom = require('./SearchResultRoom');
-var SearchResultGroup = require('./SearchResultGroup');
+var CardUser = require('./CardUser');
+var CardRoom = require('./CardRoom');
+var CardGroup = require('./CardGroup');
 
 module.exports = React.createClass({
   propTypes: {
@@ -22,11 +22,11 @@ module.exports = React.createClass({
   render () {
     switch (this.props.type) {
       case 'user':
-        return (<SearchResultUser {...this.props} />);
+        return (<CardUser {...this.props} />);
       case 'group':
-        return (<SearchResultGroup {...this.props} />);
+        return (<CardGroup {...this.props} />);
       case 'room':
-        return (<SearchResultRoom {...this.props} />);
+        return (<CardRoom {...this.props} />);
       default:
         return null;
     }

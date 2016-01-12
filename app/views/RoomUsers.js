@@ -19,10 +19,10 @@ var {
   } = React;
 var {
   Icon
-} = require('react-native-icons');
+  } = require('react-native-icons');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'room-users', {
+i18next.addResourceBundle('en', 'RoomUsers', {
   'edit': 'Edit',
   'search': 'search'
 }, true, true);
@@ -45,8 +45,12 @@ class RoomUsersView extends Component {
       _.each(response.users, (u) => {
         users.push(u);
       });
-      users = _.sortBy(users, (u) => {return u.username.toLowerCase()});
-      users = _.sortBy(users, (u) => {return u.status === 'offline';});
+      users = _.sortBy(users, (u) => {
+        return u.username.toLowerCase()
+      });
+      users = _.sortBy(users, (u) => {
+        return u.status === 'offline';
+      });
       this.setState({dataSource: this.state.dataSource.cloneWithRows(users), loaded: true});
     });
   }
@@ -56,7 +60,7 @@ class RoomUsersView extends Component {
   }
 
   render () {
-   if (!this.state.loaded) {
+    if (!this.state.loaded) {
       return (<LoadingView />);
     }
 
@@ -65,7 +69,7 @@ class RoomUsersView extends Component {
         <View style={styles.formInputContainer}>
           <TextInput style={styles.formInputFind}
                      autoCapitalize='none'
-                     placeholder={i18next.t('room-users:search')}
+                     placeholder={i18next.t('RoomUsers:search')}
                      onChangeText={(text) => this.setState({findValue: text})}
                      value={this.state.findValue}
                      onSubmitEditing={(event) => {this._onSearch(event.nativeEvent.text)}}
@@ -88,36 +92,53 @@ class RoomUsersView extends Component {
   }
 
   _renderElement (user) {
-    let avatarUrl = common.cloudinary.prepare(user.avatar, 60);
-    var isAdminOrOp = this.props.model.currentUserIsOwner() || this.props.model.currentUserIsOp() || this.props.model.currentUserIsAdmin();
-
     return (
       <View>
         <View style={{flexDirection: 'row'}}>
-          <TouchableHighlight style={{flex: 1}} onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}>
+          <TouchableHighlight style={{flex: 1}}
+                              onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}>
             <View style={s.container}>
-              <Image
-                source={{uri: avatarUrl}}
-                style={s.thumbnailUser}
-                />
-              <Text style={[s.statusText, s.status, user.status === 'connecting' && s.statusConnecting, user.status === 'offline' && s.statusOffline, user.status === 'online' && s.statusOnline]}>{user.status}</Text>
-              <View style={{flex:1, marginLeft: 60,justifyContent:'center'}}>
+              {this._renderAvatar(user)}
+              <Text
+                style={[s.statusText, s.status, user.status === 'connecting' && s.statusConnecting, user.status === 'offline' && s.statusOffline, user.status === 'online' && s.statusOnline]}>{user.status}</Text>
+              <View style={{flex: 1, marginLeft: 60, justifyContent: 'center'}}>
                 <Text style={s.title}>{'@' + user.username}</Text>
                 {this._renderRoles(user)}
               </View>
-              {user.isDevoiced ? this._renderMuted() : null}
+              {this._renderMuted(user)}
             </View>
           </TouchableHighlight>
-          { isAdminOrOp ?
-            <TouchableHighlight style={{width: 100, height: 100}} onPress={() => navigation.navigate('RoomUser', this.props.model.get('id'), user, () => this.fetchData())}>
-              <View style={[s.container, {justifyContent:'center'}]}>
-                <Text style={{fontSize: 17, alignSelf: 'center'}}>{i18next.t('room-users:edit')}</Text>
-              </View>
-            </TouchableHighlight>
-            : null
-          }
+          {this._renderIsAdminOrOp()}
         </View>
       </View>
+    );
+  }
+
+  _renderAvatar (user) {
+    if (!user.avatar) {
+      return null;
+    }
+
+    let avatarUrl = common.cloudinary.prepare(user.avatar, 60);
+    return (
+      <Image source={{uri: avatarUrl}}
+             style={s.thumbnailUser}
+        />
+    );
+  }
+
+  _renderIsAdminOrOp () {
+    if (!this.props.model.currentUserIsOwner() && !this.props.model.currentUserIsOp() && !this.props.model.currentUserIsAdmin()) {
+      return null;
+    }
+
+    return (
+      <TouchableHighlight style={{width: 100, height: 100}}
+                          onPress={() => navigation.navigate('RoomUser', this.props.model.get('id'), user, () => this.fetchData())}>
+        <View style={[s.container, {justifyContent:'center'}]}>
+          <Text style={{fontSize: 17, alignSelf: 'center'}}>{i18next.t('RoomUsers:edit')}</Text>
+        </View>
+      </TouchableHighlight>
     );
   }
 
@@ -135,7 +156,11 @@ class RoomUsersView extends Component {
     return null;
   }
 
-  _renderMuted () {
+  _renderMuted (user) {
+    if (!user.isDevoiced) {
+      return null;
+    }
+
     return (
       <Icon
         name='fontawesome|microphone-slash'
@@ -152,8 +177,12 @@ class RoomUsersView extends Component {
       _.each(response.users, (u) => {
         users.push(u);
       });
-      users = _.sortBy(users, (u) => {return u.username.toLowerCase()});
-      users = _.sortBy(users, (u) => {return u.status === 'offline';});
+      users = _.sortBy(users, (u) => {
+        return u.username.toLowerCase()
+      });
+      users = _.sortBy(users, (u) => {
+        return u.status === 'offline';
+      });
       this.setState({dataSource: this.state.dataSource.cloneWithRows(users)});
     });
   }
@@ -182,5 +211,9 @@ var styles = StyleSheet.create({
     marginRight: 10
   }
 });
+
+RoomUsersView.propTypes = {
+  model: React.PropTypes.object.isRequired
+};
 
 module.exports = RoomUsersView;

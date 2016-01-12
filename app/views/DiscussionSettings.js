@@ -18,7 +18,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'DiscussionSettings', {
   'settings': '__identifier__ SETTINGS',
   'change-topic': 'Change topic',
   'no-topic': 'No topic',
@@ -77,7 +77,7 @@ class DiscussionSettings extends Component {
         <View style={s.listGroup}>
           <ListItem
             onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('id'), identifier: this.state.identifier})}
-            text={i18next.t('local:see')}
+            text={i18next.t('DiscussionSettings:see')}
             icon='fontawesome|eye'
             type='button'
             first
@@ -87,7 +87,7 @@ class DiscussionSettings extends Component {
           <Text style={s.listGroupItemSpacing} />
           <ListItem
             onPress={() => this.props.model.leave()}
-            text={i18next.t('local:close')}
+            text={i18next.t('DiscussionSettings:close')}
             type='button'
             first
             warning
@@ -101,7 +101,7 @@ class DiscussionSettings extends Component {
           <ListItem
             style={{marginBottom: 20}}
             onPress={() => navigation.navigate('RoomTopic', this.props.model, () => this.fetchData())}
-            text={i18next.t('local:change-topic')}
+            text={i18next.t('DiscussionSettings:change-topic')}
             icon='fontawesome|edit'
             type='button'
             action
@@ -114,7 +114,7 @@ class DiscussionSettings extends Component {
           {itemTopic}
           <ListItem
             onPress={() => navigation.navigate('Profile', {type: 'room', id: this.props.model.get('id'), identifier: this.state.identifier})}
-            text={i18next.t('local:see')}
+            text={i18next.t('DiscussionSettings:see')}
             icon='fontawesome|eye'
             type='button'
             first
@@ -122,7 +122,7 @@ class DiscussionSettings extends Component {
             />
           <ListItem
             onPress={() => navigation.navigate('RoomUsers', this.props.model)}
-            text={i18next.t('local:users')}
+            text={i18next.t('DiscussionSettings:users')}
             icon='fontawesome|users'
             type='button'
             action
@@ -131,7 +131,7 @@ class DiscussionSettings extends Component {
           <Text style={s.listGroupItemSpacing} />
           <ListItem
             onPress={() => this.props.model.leave()}
-            text={i18next.t('local:leave')}
+            text={i18next.t('DiscussionSettings:leave')}
             type='button'
             first
             warning
@@ -147,7 +147,7 @@ class DiscussionSettings extends Component {
     }
     return (
       <View style={{marginHorizontal: 10, marginBottom:20 , alignSelf: 'center'}}>
-        <Text style={s.topic}>{(this.state.topic) ? this.state.topic : i18next.t('local:no-topic')}</Text>
+        <Text style={s.topic}>{(this.state.topic) ? this.state.topic : i18next.t('DiscussionSettings:no-topic')}</Text>
       </View>
     );
   }
@@ -160,7 +160,7 @@ class DiscussionSettings extends Component {
     //  return (
     //    <ListItem
     //      onPress={() => console.log('@todo implement user block action')}
-    //      text={i18next.t('local:block')+' TODO'}
+    //      text={i18next.t('DiscussionSettings:block')+' TODO'}
     //      icon='fontawesome|ban'
     //      iconColor='#e74c3c'
     //      type='button'
@@ -172,7 +172,7 @@ class DiscussionSettings extends Component {
     //  return (
     //    <ListItem
     //      onPress={() => console.log('@todo implement user deblock action')}
-    //      text={i18next.t('local:unblock')+' TODO'}
+    //      text={i18next.t('DiscussionSettings:unblock')+' TODO'}
     //      icon='fontawesome|ban'
     //      type='button'
     //      action
@@ -191,7 +191,7 @@ class DiscussionSettings extends Component {
     //  // @todo open allowed users page
     //  <ListItem
     //    onPress={() => console.log('@todo implement allowed users page')}
-    //    text={i18next.t('local:allowed')+' TODO'}
+    //    text={i18next.t('DiscussionSettings:allowed')+' TODO'}
     //    icon='fontawesome|shield'
     //    type='button'
     //    action={true}

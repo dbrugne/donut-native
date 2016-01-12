@@ -14,7 +14,7 @@ var {
   Image,
   } = React;
 
-class SearchResultUser extends Component {
+class CardUser extends Component {
   maxCars = 100;
   constructor (props) {
     super(props);
@@ -82,4 +82,4 @@ class SearchResultUser extends Component {
   }
 }
 
-module.exports = SearchResultUser;
+module.exports = CardUser;
