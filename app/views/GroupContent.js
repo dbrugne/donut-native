@@ -160,8 +160,8 @@ class GroupProfileView extends Component {
             type='button'
             first
             action
-            onPress={() => console.log('@todo implement create donut')}
-            text={i18next.t('group.create-donut') + ' TODO'}
+            onPress={() => navigation.navigate('CreateRoom', {group_id: this.props.data.group_id, group_identifier: this.props.data.identifier})}
+            text={i18next.t('group.create-donut')}
             />
           <ListItem
             type='button'

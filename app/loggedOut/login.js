@@ -34,10 +34,9 @@ var {
 var currentUser = require('../models/current-user');
 var FacebookLogin = require('../components/FacebookLogin');
 var LoadingModal = require('../components/LoadingModal');
-var t = null;
 
 class LoginView extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -48,13 +47,13 @@ class LoginView extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.setState({
       email: currentUser.getEmail()
     });
   }
 
-  render() {
+  render () {
     if (!currentUser.hasFacebookToken()) {
       var loginForm = (
         <View>
@@ -110,7 +109,7 @@ class LoginView extends Component {
     }
 
     return (
-      <View style={{flex:1, alignItems: 'stretch'}}>
+      <View style={{flex: 1, alignItems: 'stretch'}}>
         <ScrollView
           ref='scrollView'
           contentContainerStyle={{flex:1}}
@@ -121,7 +120,8 @@ class LoginView extends Component {
               <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
             </View>
             <View style={styles.container}>
-              <FacebookLogin showLoadingModal={() => this.setState({showLoadingModal: true})} hideLoadingModal={() => this.setState({showLoadingModal: false})}/>
+              <FacebookLogin showLoadingModal={() => this.setState({showLoadingModal: true})}
+                             hideLoadingModal={() => this.setState({showLoadingModal: false})}/>
               {loginForm}
             </View>
             <View style={styles.linkCtn}>
@@ -159,7 +159,7 @@ class LoginView extends Component {
     }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
   }
 
-  _updateScroll(refName, offset) {
+  _updateScroll (refName, offset) {
     let scrollResponder = this.refs.scrollView.getScrollResponder();
     scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
       React.findNodeHandle(this.refs[refName]),
@@ -168,11 +168,11 @@ class LoginView extends Component {
     );
   }
 
-  _focusNextField(nextField) {
+  _focusNextField (nextField) {
     this.refs[nextField].focus()
   }
 
-  onSubmitPressed() {
+  onSubmitPressed () {
     if (!this.state.email || !this.state.password) {
       return Alert.show(i18next.t('messages.not-complete'));
     }
@@ -186,14 +186,14 @@ class LoginView extends Component {
     });
   }
 
-  onForgotPressed() {
+  onForgotPressed () {
     this.props.navigator.push({
       title: 'Forgot',
       component: ForgotView
     });
   }
 
-  onCreatePressed() {
+  onCreatePressed () {
     this.props.navigator.push({
       title: 'Create',
       component: SignupView
@@ -280,3 +280,8 @@ var styles = StyleSheet.create({
 });
 
 module.exports = LoginView;
+
+LoginView.propTypes = {
+  navigator: React.PropTypes.object.isRequired,
+  style: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number])
+};
