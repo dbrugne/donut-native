@@ -4,6 +4,7 @@ var React = require('react-native');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var ListItem = require('../components/ListItem');
+var LoadingModal = require('../components/LoadingModal');
 
 var {
   StyleSheet,
@@ -26,39 +27,43 @@ class RoomCreateView extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      groupName: ''
+      groupName: '',
+      showLoading: false
     };
   }
 
   render () {
     return (
-      <ScrollView style={styles.container}>
+      <View style={{flex: 1}}>
+        <ScrollView style={styles.container}>
 
-        <Text style={styles.block}>{i18next.t('local:disclaimer2')}</Text>
+          <Text style={styles.block}>{i18next.t('local:disclaimer2')}</Text>
 
-        <ListItem
-          type='input'
-          first
-          last
-          autoCapitalize='none'
-          placeholder={i18next.t('local:name')}
-          onChangeText={(text) => this.setState({groupName: text})}
-          value={this.state.groupName}
-          help={i18next.t('local:help')}
-          />
+          <ListItem
+            type='input'
+            first
+            last
+            autoCapitalize='none'
+            placeholder={i18next.t('local:name')}
+            onChangeText={(text) => this.setState({groupName: text})}
+            value={this.state.groupName}
+            help={i18next.t('local:help')}
+            />
 
-        <Text style={[styles.block]}>{i18next.t('local:disclaimer')}</Text>
+          <Text style={[styles.block]}>{i18next.t('local:disclaimer')}</Text>
 
-        <ListItem
-          type='button'
-          first
-          last
-          action
-          onPress={(this.onGroupCreate.bind(this))}
-          text={i18next.t('local:create')}
-          />
+          <ListItem
+            type='button'
+            first
+            last
+            action
+            onPress={(this.onGroupCreate.bind(this))}
+            text={i18next.t('local:create')}
+            />
 
-      </ScrollView>
+        </ScrollView>
+        {this.state.showLoading ? <LoadingModal/> : null}
+      </View>
     );
   }
 
@@ -67,8 +72,10 @@ class RoomCreateView extends Component {
       return alert.show(i18next.t('messages.not-complete'));
     }
 
+    this.setState({showLoading: true});
     app.client.groupCreate(this.state.groupName, (response) => {
       if (!response.success) {
+        this.setState({showLoading: false});
         if (response.err === 'group-name-already-exist') {
           return alert.show(i18next.t('messages.group-name-already-exist', {name: this.state.groupName}));
         }
@@ -78,14 +85,13 @@ class RoomCreateView extends Component {
         return alert.show(i18next.t('messages.unknownerror'));
       }
 
-      alert.show(i18next.t('local:joining'));
-      app.client.groupId('#' + this.state.groupName, (data) => {
+      app.client.groupId(this.state.groupName, (data) => {
+        this.setState({showLoading: false});
         if (data.err) {
-          alert.show(i18next.t('messages.' + response.err));
-        } else {
-          // @todo spariaud finish joinGroup implementation
-          app.trigger('joinGroup', data.group_id);
+          return alert.show(i18next.t('messages.' + data.err));
         }
+        // @todo spariaud finish joinGroup implementation
+        app.trigger('joinGroup', data.group_id);
       });
     });
   }

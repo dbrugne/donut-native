@@ -5,12 +5,14 @@ var app = require('../libs/app');
 var alert = require('../libs/alert');
 var navigation = require('../navigation/index');
 var ListItem = require('../components/ListItem');
+var LoadingModal = require('../components/LoadingModal');
 
 var {
   StyleSheet,
   Text,
   ScrollView,
-  Component
+  Component,
+  View
   } = React;
 
 var i18next = require('../libs/i18next');
@@ -35,64 +37,67 @@ class RoomCreateView extends Component {
     super(props);
     this.state = {
       roomName: '',
-      public: true
+      public: true,
+      showLoading: false
     };
   }
 
   render () {
     return (
-      <ScrollView style={styles.container}>
+      <View style={{flex: 1}}>
+        <ScrollView style={styles.container}>
 
-        <Text style={[styles.block]}>{i18next.t('local:disclaimer2')}</Text>
+          <Text style={[styles.block]}>{i18next.t('local:disclaimer2')}</Text>
 
-        <ListItem
-          type='input'
-          first
-          last
-          autoCapitalize='none'
-          placeholder={i18next.t('local:name')}
-          onChangeText={(text) => this.setState({roomName: text})}
-          value={this.state.roomName}
-          help={i18next.t('local:help')}
-          />
+          <ListItem
+            type='input'
+            first
+            last
+            autoCapitalize='none'
+            placeholder={i18next.t('local:name')}
+            onChangeText={(text) => this.setState({roomName: text})}
+            value={this.state.roomName}
+            help={i18next.t('local:help')}
+            />
 
-        <Text style={[styles.block]}>{i18next.t('local:disclaimer')}</Text>
+          <Text style={[styles.block]}>{i18next.t('local:disclaimer')}</Text>
 
-        <ListItem
-          type='switch'
-          first
-          last
-          title={i18next.t('local:who')}
-          text={ this.state.public ? i18next.t('local:public') : i18next.t('local:private')}
-          onSwitch={this._changeMode.bind(this)}
-          switchValue={this.state.public}
-          help={ this.state.public ? i18next.t('local:any') : i18next.t('local:only')}
-          />
+          <ListItem
+            type='switch'
+            first
+            last
+            title={i18next.t('local:who')}
+            text={ this.state.public ? i18next.t('local:public') : i18next.t('local:private')}
+            onSwitch={this._changeMode.bind(this)}
+            switchValue={this.state.public}
+            help={ this.state.public ? i18next.t('local:any') : i18next.t('local:only')}
+            />
 
-        <Text style={styles.listGroupItemSpacing}/>
-        <ListItem
-          type='button'
-          first
-          last
-          action
-          onPress={(this.onRoomCreate.bind(this))}
-          text={i18next.t('local:create')}
-          />
+          <Text style={styles.listGroupItemSpacing}/>
+          <ListItem
+            type='button'
+            first
+            last
+            action
+            onPress={(this.onRoomCreate.bind(this))}
+            text={i18next.t('local:create')}
+            />
 
-        <Text style={styles.listGroupItemSpacing}/>
-        <Text style={[styles.block]}>{i18next.t('local:community')}</Text>
-        <ListItem
-          type='button'
-          first
-          last
-          action
-          onPress={() => navigation.navigate('CreateGroup')}
-          text={i18next.t('local:create-community')}
-          />
+          <Text style={styles.listGroupItemSpacing}/>
+          <Text style={[styles.block]}>{i18next.t('local:community')}</Text>
+          <ListItem
+            type='button'
+            first
+            last
+            action
+            onPress={() => navigation.navigate('CreateGroup')}
+            text={i18next.t('local:create-community')}
+            />
 
-        <Text style={[styles.block]}/>
-
-      </ScrollView>
+          <Text style={[styles.block]}/>
+        </ScrollView>
+        {this.state.showLoading ? <LoadingModal/> : null}
+      </View>
     );
   }
 
@@ -108,19 +113,19 @@ class RoomCreateView extends Component {
     }
 
     var mode = (this.state.public) ? 'public' : 'private';
+    this.setState({showLoading: true});
     app.client.roomCreate(this.state.roomName, mode, null, null, (response) => {
       if (response.err) {
-        alert.show(i18next.t('messages.' + response.err));
-      } else {
-        alert.show(i18next.t('local:joining'));
-        app.client.roomId('#' + this.state.roomName, (data) => {
-          if (data.err) {
-            alert.show(response.err);
-          } else {
-            app.trigger('joinRoom', data.room_id);
-          }
-        });
+        this.setState({showLoading: false});
+        return alert.show(i18next.t('messages.' + response.err));
       }
+      app.client.roomId('#' + this.state.roomName, (data) => {
+        this.setState({showLoading: false});
+        if (data.err) {
+          return alert.show(response.err);
+        }
+        app.trigger('joinRoom', data.room_id);
+      });
     });
   }
 }
