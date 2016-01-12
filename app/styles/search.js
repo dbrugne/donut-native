@@ -58,8 +58,6 @@ module.exports = StyleSheet.create({
     fontSize: 10,
     fontFamily: 'Open Sans',
     width: 50,
-    paddingLeft: 5,
-    paddingRight: 5,
     overflow: 'hidden'
   },
   description: {
