@@ -15,14 +15,14 @@ var Icon = require('react-native-icons').Icon;
 var app = require('../libs/app');
 var navigation = require('../navigation/index');
 var Card = require('../components/Card');
+var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'Search', {
   'search': 'Search donut, community or user here',
   'donuts': 'donuts',
   'users': 'users',
   'communities': 'communities',
-  'loading': 'loading',
   'load-more': 'load more',
   'no-results': 'no results'
 });
@@ -54,7 +54,7 @@ class SearchView extends Component {
           <View style={styles.formInputContainer}>
             <TextInput style={styles.formInputFind}
               autoCapitalize='none'
-              placeholder={i18next.t('local:search')}
+              placeholder={i18next.t('Search:search')}
               onChangeText={(text) => this.setState({findValue: text})}
               value={this.state.findValue}
               onChange={this.changeText.bind(this)}
@@ -71,17 +71,17 @@ class SearchView extends Component {
             <TouchableHighlight onPress={this.search.bind(this, 'rooms', null)}
                                 underlayColor= '#DDD'
                                 style={[styles.button, this.state.type === 'rooms' && styles.buttonActive]}>
-              <Text style={styles.textButton}>{i18next.t('local:donuts')}</Text>
+              <Text style={styles.textButton}>{i18next.t('Search:donuts')}</Text>
             </TouchableHighlight>
             <TouchableHighlight onPress={this.search.bind(this, 'users', null)}
                                 underlayColor= '#DDD'
                                 style={[styles.button, this.state.type === 'users' && styles.buttonActive]}>
-              <Text style={styles.textButton}>{i18next.t('local:users')}</Text>
+              <Text style={styles.textButton}>{i18next.t('Search:users')}</Text>
             </TouchableHighlight>
             <TouchableHighlight onPress={this.search.bind(this, 'groups', null)}
                                 underlayColor= '#DDD'
                                 style={[styles.button, this.state.type === 'groups' && styles.buttonActive]}>
-              <Text style={styles.textButton}>{i18next.t('local:communities')}</Text>
+              <Text style={styles.textButton}>{i18next.t('Search:communities')}</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -146,7 +146,7 @@ class SearchView extends Component {
 
   _renderLoadMore () {
     if (this.state.loading) {
-      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('local:loading')}</Text></View>)
+      return (<LoadingView style={styles.loadMore} />);
     }
     else if (this.state.more) {
       return (
@@ -154,7 +154,7 @@ class SearchView extends Component {
                             underlayColor= '#DDD'
           >
           <View style={styles.loadMore}>
-            <Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('local:load-more')}</Text>
+            <Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('Search:load-more')}</Text>
 
           </View>
         </TouchableHighlight>
@@ -162,7 +162,7 @@ class SearchView extends Component {
     } else if (this.resultBlob.length) {
       return (<View></View>);
     } else {
-      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('local:no-results')}</Text></View>);
+      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('Search:no-results')}</Text></View>);
     }
   }
 

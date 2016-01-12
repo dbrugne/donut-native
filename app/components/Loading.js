@@ -8,7 +8,7 @@ var {
   ActivityIndicatorIOS,
   ProgressBarAndroid,
   Platform
-} = React;
+  } = React;
 
 class Loading extends Component {
   constructor (props) {
@@ -17,21 +17,27 @@ class Loading extends Component {
 
   render () {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.style]}>
         <View style={styles.centered}>
-          {
-            (Platform.OS === 'android')
-            ? <ProgressBarAndroid styleAttr="Inverse" />
-            : <ActivityIndicatorIOS
-              animating={true}
-              style={styles.loading}
-              size='small'
-              color='#666666'
-              />
-          }
+          {this._renderLoader()}
         </View>
       </View>
-    )
+    );
+  }
+
+  _renderLoader () {
+    if ((Platform.OS === 'android')) {
+      return (<ProgressBarAndroid styleAttr='Inverse'/>);
+    }
+
+    return (
+      <ActivityIndicatorIOS
+        animating
+        style={styles.loading}
+        size='small'
+        color='#666666'
+        />
+    );
   }
 }
 
@@ -52,3 +58,7 @@ var styles = StyleSheet.create({
 });
 
 module.exports = Loading;
+
+Loading.propTypes = {
+  styles: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number])
+};
