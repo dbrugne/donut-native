@@ -1,38 +1,45 @@
 'use strict';
 
 var React = require('react-native');
-var {
-  View,
-  Text,
-  ActivityIndicatorIOS,
-  Component,
-  StyleSheet
-} = React;
 
 var GroupContent = require('./GroupContent');
 var app = require('../libs/app');
+var LoadingView = require('../components/Loading');
 
-class GroupHomeView extends Component {
-
-  constructor (props) {
-    super(props);
-    this.id = props.element.id;
-    this.state = {
+var GroupHomeView = React.createClass({
+  propTypes: {
+    element: React.PropTypes.object,
+    navigator: React.PropTypes.object
+  },
+  getInitialState: function () {
+    this.id = this.props.element.id;
+    return {
       loading: true,
       data: null,
+      model: null,
       error: null
     };
-  }
-  componentDidMount () {
+  },
+  componentDidMount: function () {
     app.on('refreshGroup', this.onRefresh, this);
     if (this.id) {
-      app.client.groupRead(this.id, {users: true}, this.onData.bind(this));
+      app.client.groupRead(this.id, {users: true}, (data) => {
+        app.groups.addModel(data);
+        this.onData(data);
+        this.setState({model: app.groups.iwhere('group_id', this.id)});
+        if (this.state.model) {
+          this.state.model.on('redraw', () => this.onRefresh(), this);
+        }
+      });
     }
-  }
-  componentWillUnmount () {
+  },
+  componentWillUnmount: function () {
     app.off('refreshGroup', this.onRefresh, this);
-  }
-  onData (response) {
+    if (this.state.model) {
+      this.state.model.off(null, null, this);
+    }
+  },
+  onData: function (response) {
     if (response.err) {
       return this.setState({
         error: 'error'
@@ -42,55 +49,26 @@ class GroupHomeView extends Component {
       loading: false,
       data: response
     });
-  }
-  render () {
+  },
+  render: function () {
     if (this.state.loading) {
       return (
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>
-            <Text>loading</Text>
-            <Text>#{this.props.element.name}</Text>
-          </Text>
-          <ActivityIndicatorIOS
-            animating={this.state.loading}
-            style={styles.loading}
-            size='small'
-            color='#666666'
-            />
-        </View>
+        <LoadingView/>
       );
     }
     return (
       <GroupContent data={this.state.data} navigator={this.props.navigator} />
     );
-  }
-  onRefresh () {
+  },
+  onRefresh: function () {
     this.setState({
       loading: true,
       data: null,
       error: null
     });
     if (this.id) {
-      app.client.groupRead(this.id, {users: true}, this.onData.bind(this));
+      app.client.groupRead(this.id, {users: true}, (data) => this.onData(data));
     }
-  }
-}
-
-var styles = StyleSheet.create({
-  // loading
-  titleContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  titleText: {
-    color: '#424242',
-    fontFamily: 'Open Sans',
-    fontSize: 16,
-    fontWeight: 'bold'
-  },
-  loading: {
-    height: 120
   }
 });
 
