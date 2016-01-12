@@ -17,14 +17,22 @@ i18next.addResourceBundle('en', 'local', {
 });
 
 class ListItemInput extends ListItemAbstract {
+  _renderContent () {
+    return (
+      <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
+        {this._renderElement()}
+        {this._renderRightIcon()}
+      </View>
+    );
+  }
+
   _renderElement () {
     return (
       <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
         <TextInput
           {...this.props}
-          autoFocus
           style={[s.input]}
-          keyboardType={(this.props.isEmail) ? 'email-address' : 'default'}/>
+          />
 
         <TouchableHighlight onPress={this.props.onPress}
                             underlayColor='#41C87A'

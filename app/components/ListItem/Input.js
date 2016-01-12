@@ -18,10 +18,7 @@ class ListItemInput extends ListItemAbstract {
     return (
       <TextInput
         {...this.props}
-        autoFocus
         style={[s.input]}
-        autoCapitalize={(this.props.isEmail) ? 'none' : 'sentences'}
-        keyboardType={(this.props.isEmail) ? 'email-address' : 'default'}
       />
     );
   }

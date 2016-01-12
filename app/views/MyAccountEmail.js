@@ -36,8 +36,9 @@ class ChangeEmailView extends Component {
             onChange={(event) => this.setState({email: event.nativeEvent.text})}
             type='input-button'
             title={i18next.t('myAccountEmail:change')}
-            first={true}
-            isEmail={true}
+            first
+            keyboardType='email-address'
+            autoCapitalize='none'
             />
 
         </View>

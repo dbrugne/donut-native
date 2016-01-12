@@ -13,7 +13,7 @@ var ListItemText = require('./ListItem/Text');
 module.exports = React.createClass({
   propTypes: {
     onPress: React.PropTypes.func, // callback action when component is clicked
-    text: React.PropTypes.string.isRequired, // string to display on element
+    text: React.PropTypes.string, // string to display on element
     type: React.PropTypes.oneOf(['switch', 'button', 'edit-button', 'color-button', 'input-button', 'input', 'text']).isRequired, // type of the ListItem
     onSwitch: React.PropTypes.func, // callback action on switch component if any
     switchValue: React.PropTypes.bool, // boolean, value of switch button if any
@@ -23,12 +23,14 @@ module.exports = React.createClass({
     warning: React.PropTypes.bool, // boolean if the current item has a warning state
     icon: React.PropTypes.string, // fontawesome code name of the icon to display on left
     iconColor: React.PropTypes.string, // color of the icon to display on left, default is #666
+    iconRight: React.PropTypes.string, // fontawesome code name of the icon to display on right
     title: React.PropTypes.string, // title to display above the ListItem
     help: React.PropTypes.string, // help message to display bellow the ListItem
     style: React.PropTypes.object, // custom styles to apply to ListItem
     color: React.PropTypes.string, // color of the ListItemColor
     value: React.PropTypes.string, // value of the ListItemEdit
-    isEmail: React.PropTypes.bool, // whether to display an email keyboard or not for the ListItemInput & ListItemInputButton
+    autoCapitalize: React.PropTypes.string, // value of the ListItemEdit
+    keyboardType: React.PropTypes.string, // value of the ListItemEdit
     loading: React.PropTypes.bool // loading state, used for the ListItemInputButton
   },
   render () {

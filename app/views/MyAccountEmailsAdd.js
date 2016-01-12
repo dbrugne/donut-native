@@ -40,7 +40,8 @@ class AddEmailView extends Component {
             type='input-button'
             title={i18next.t('myAccountEmailsAdd:add-email')}
             first
-            isEmail
+            keyboardType='email-address'
+            autoCapitalize='none'
           />
         </View>
         <View style={s.filler}></View>

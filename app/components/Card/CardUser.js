@@ -56,9 +56,10 @@ class CardUser extends Abstract {
           {this._renderRoles()}
         </View>
         <View style={{alignSelf: 'stretch', width: 50, flexDirection: 'column', justifyContent: 'center'}}>
-          <TouchableHighlight style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}
-                              underlayColor='transparent'
-                              onPress={this.props.onEdit}>
+          <TouchableHighlight
+            style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}
+            underlayColor='transparent'
+            onPress={this.props.onEdit}>
             <Icon
               name='fontawesome|chevron-right'
               size={22}
@@ -100,7 +101,7 @@ class CardUser extends Abstract {
     return null;
   }
 
-  _renderIdentifier() {
+  _renderIdentifier () {
     if (this.props.realname) {
       return (
         <Text>
@@ -112,7 +113,7 @@ class CardUser extends Abstract {
     }
 
     return (
-        <Text style={[s.title]}>{this.props.identifier}</Text>
+      <Text style={[s.title]}>{this.props.identifier}</Text>
     );
   }
 

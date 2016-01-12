@@ -153,7 +153,7 @@ class MyAccountInformation extends Component {
                     onPress={() => this.onUserEdit(require('./MyAccountEditRealname'), this.state.realname)}
             />
 
-          <ListItem text={i18next.t('local:biography')}
+          <ListItem text={i18next.t('myAccountEdit:biography')}
                     type='edit-button'
                     action
                     value={this.state.bio}

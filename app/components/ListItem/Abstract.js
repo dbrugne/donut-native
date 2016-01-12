@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react-native');
-var Platform = require('Platform');
 var s = require('../../styles/elements/listItem');
 
 var {
@@ -77,13 +76,13 @@ class ListItemAbstract extends Component {
    * @private
    */
   _renderRightIcon () {
-    if (!this.props.action) {
+    if (!this.props.action && !this.props.iconRight) {
       return null;
     }
 
     return (
       <Icon
-        name='fontawesome|chevron-right'
+        name={this.props.iconRight ? this.props.iconRight : 'fontawesome|chevron-right'}
         size={14}
         color='#DDD'
         style={s.listGroupItemIconRight}
@@ -112,3 +111,14 @@ class ListItemAbstract extends Component {
 }
 
 module.exports = ListItemAbstract;
+
+ListItemAbstract.propTypes = {
+  action: React.PropTypes.bool, // boolean to display right arrow
+  first: React.PropTypes.bool, // boolean if the current element is the first on list
+  last: React.PropTypes.bool, // boolean if the current element is the last on list
+  icon: React.PropTypes.string, // fontawesome code name of the icon to display on left
+  iconColor: React.PropTypes.string, // color of the icon to display on left, default is #666
+  iconRight: React.PropTypes.string, // fontawesome code name of the icon to display on right
+  title: React.PropTypes.string, // title to display above the ListItem
+  help: React.PropTypes.string // help message to display bellow the ListItem
+};
