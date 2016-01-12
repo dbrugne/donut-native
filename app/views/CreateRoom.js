@@ -120,7 +120,7 @@ class RoomCreateView extends Component {
         return alert.show(i18next.t('messages.' + response.err));
       }
       app.client.roomId('#' + this.state.roomName, (data) => {
-        this.setState({showLoading: false});
+        this.setState({showLoading: false, roomName: ''});
         if (data.err) {
           return alert.show(response.err);
         }

@@ -86,7 +86,7 @@ class RoomCreateView extends Component {
       }
 
       app.client.groupId(this.state.groupName, (data) => {
-        this.setState({showLoading: false});
+        this.setState({showLoading: false, groupName: ''});
         if (data.err) {
           return alert.show(i18next.t('messages.' + data.err));
         }
