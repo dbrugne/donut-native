@@ -9,6 +9,11 @@ var {
   Text,
   TouchableHighlight
   } = React;
+var {
+  Icon
+  } = require('react-native-icons');
+
+var i18next = require('../../libs/i18next');
 
 class CardUser extends Abstract {
   constructor (props) {
@@ -24,23 +29,90 @@ class CardUser extends Abstract {
             {this._renderStatus()}
           </View>
           <View style={s.rightContainer}>
-            <Text>
-              {this._renderRealname()}
-              <Text style={[s.title, this.props.realname && {fontWeight: 'normal', color: '#999999'}]}>{this.props.identifier}</Text>
-            </Text>
-            {this._renderBio()}
+            {this._renderContent()}
           </View>
         </View>
       </TouchableHighlight>
     );
   }
 
-  _renderRealname () {
-    if (!this.props.realname) {
+  _renderContent () {
+    // Not editable user
+    if (!this.props.onEdit) {
+      return (
+        <View>
+          {this._renderIdentifier()}
+          {this._renderBio()}
+          {this._renderMuted()}
+        </View>
+      );
+    }
+
+    // Editable user, render arrow on right
+    return (
+      <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+        <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
+          {this._renderIdentifier()}
+          {this._renderRoles()}
+        </View>
+        <View style={{alignSelf: 'stretch', width: 50, flexDirection: 'column', justifyContent: 'center'}}>
+          <TouchableHighlight style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}
+                              underlayColor='transparent'
+                              onPress={this.props.onEdit}>
+            <Icon
+              name='fontawesome|chevron-right'
+              size={22}
+              color='#DDD'
+              style={{width: 22, height: 22}}
+              />
+          </TouchableHighlight>
+        </View>
+      </View>
+    );
+  }
+
+  _renderMuted () {
+    if (!this.props.devoiced) {
       return null;
     }
+
     return (
-      <Text style={[s.title, {marginLeft: 5}]}>{this.props.realname}</Text>
+      <Icon
+        name='fontawesome|microphone-slash'
+        size={35}
+        color='#ff3838'
+        style={{width: 40, height: 40, position: 'absolute', top: 30, right: 10}}
+        />
+    );
+  }
+
+  _renderRoles () {
+    if (this.props.op) {
+      return (
+        <Text>{i18next.t('op')}</Text>
+      );
+    }
+    if (this.props.owner) {
+      return (
+        <Text>{i18next.t('owner')}</Text>
+      );
+    }
+    return null;
+  }
+
+  _renderIdentifier() {
+    if (this.props.realname) {
+      return (
+        <Text>
+          <Text style={[s.title, {marginLeft: 5}]}>{this.props.realname}</Text>
+          <Text> </Text>
+          <Text style={[s.title, {fontWeight: 'normal', color: '#999999'}]}>{this.props.identifier}</Text>
+        </Text>
+      );
+    }
+
+    return (
+        <Text style={[s.title]}>{this.props.identifier}</Text>
     );
   }
 
@@ -71,5 +143,9 @@ CardUser.propTypes = {
   realname: React.PropTypes.string,
   image: React.PropTypes.string,
   bio: React.PropTypes.string,
-  mode: React.PropTypes.string
+  mode: React.PropTypes.string,
+  onEdit: React.PropTypes.func,
+  op: React.PropTypes.bool,
+  owner: React.PropTypes.bool,
+  devoiced: React.PropTypes.bool
 };
