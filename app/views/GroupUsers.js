@@ -77,6 +77,7 @@ var GroupUsersView = React.createClass({
           realname={user.realname}
           bio={user.bio}
           status={user.status}
+          key={user.user_id}
           />
       );
     }
@@ -90,6 +91,8 @@ var GroupUsersView = React.createClass({
         onEdit={() => navigation.navigate('GroupUser', this.props.model.get('group_id'), user, () => this.fetchData())}
         op={user.is_op}
         owner={user.is_owner}
+        status={user.status}
+        key={user.user_id}
         />
     );
   }
