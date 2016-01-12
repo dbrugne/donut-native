@@ -31,8 +31,10 @@ class NotificationsView extends Component {
     this.timeouts = {
       loadingMore: null,
       loadingTagAsRead: null,
-      loadingTagAsDone: null
+      loadingTagAsDone: null,
+      visibleRows: null
     };
+    this.visibleRowsTimer = 2000; // 2sec
     this.timeoutTimer = 2000; // 2sec
     this.notificationsDataSource = require('../libs/notificationsDataSource')();
     this.state = {
@@ -52,6 +54,7 @@ class NotificationsView extends Component {
   componentDidMount () {
     app.user.on('change:unreadNotifications', this.fetchData, this);
     app.client.on('notification:done', this.onDoneNotification, this);
+    app.client.on('notification:viewed', this.onViewedNotification, this);
     app.on('viewedEvent', this.updateDiscussionsUnviewed, this);
     app.on('unviewedEvent', this.updateDiscussionsUnviewed, this);
   }
@@ -104,6 +107,7 @@ class NotificationsView extends Component {
           renderRow={this.renderRow.bind(this)}
           renderHeader={this.renderHeader.bind(this)}
           renderFooter={this.renderFooter.bind(this)}
+          onChangeVisibleRows={this.onChangeVisibleRows.bind(this)}
           style={{flex: 1, backgroundColor: '#f0f0f0'}}
           scrollEnabled
           />
@@ -301,6 +305,34 @@ class NotificationsView extends Component {
     }
   }
 
+  onChangeVisibleRows(visibleRows, changedRows) {
+    var idxs = [];
+    _.each(visibleRows.s1, (e, idx) => {idxs.push(idx)});
+
+    clearTimeout(this.timeouts.visibleRows);
+    this.timeouts.visibleRows = setTimeout(() => {
+      let unviewed = this.notificationsDataSource.findWhere('viewed', false);
+      // nothing to process
+      if (unviewed.length === 0) {
+        return;
+      }
+
+      let unviewedIds = _.map(unviewed, (e) => { return e.id });
+      let visible = this.notificationsDataSource.findIdsFromIndex(idxs);
+      let unviewedVisibleIds = _.intersection(unviewedIds, visible);
+      // nothing to process
+      if (unviewedVisibleIds.length === 0) {
+        return;
+      }
+
+      app.client.notificationViewed(unviewedVisibleIds, false, (data) => {
+        if (data.err) {
+          alert.show(i18next.t('messages.' + data.err));
+        }
+      });
+    }, this.visibleRowsTimer);
+  }
+
   onLongPress (elt) {
     var id = elt.id;
     if (!id) {
@@ -381,6 +413,21 @@ class NotificationsView extends Component {
     }
 
     this.setState(state);
+  }
+
+  onViewedNotification(data) {
+    if (!data.notifications) {
+      return;
+    }
+
+    var ids = [];
+    _.each(data.notifications, (notification) => {
+      ids.push(notification.id);
+    });
+
+    this.setState({
+      dataSource: this.notificationsDataSource.tagAsRead(ids)
+    });
   }
 
   _renderContent (n) {
@@ -472,8 +519,7 @@ class NotificationsView extends Component {
       clearTimeout(this.timeouts.loadingTagAsRead);
       this.setState({
         loadingTagAsRead: false,
-        unread: 0,
-        dataSource: this.notificationsDataSource.tagAsRead()
+        unread: 0
       });
     });
   }

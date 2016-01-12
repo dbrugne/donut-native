@@ -49,11 +49,23 @@ module.exports = function () {
 
       return this.dataSource.cloneWithRows(this.blob);
     },
-    tagAsRead () {
-      _.each(this.blob, (e, idx) => {
-        _.extend(e, {viewed: true});
-        this.blob[idx] = e;
-      });
+    tagAsRead (ids) {
+      // tag all as read
+      if (ids.length === 0) {
+        _.each(this.blob, (e, idx) => {
+          _.extend(e, {viewed: true});
+          this.blob[idx] = e;
+        });
+      } else {
+        _.each(ids, (id) => {
+          _.each(this.blob, (e, idx) => {
+            if (id === e.id) {
+              _.extend(e, {viewed: true});
+              this.blob[idx] = e;
+            }
+          });
+        });
+      }
 
       return this.dataSource.cloneWithRows(this.blob);
     },
@@ -93,6 +105,14 @@ module.exports = function () {
         }
       });
       return find;
+    },
+    findIdsFromIndex (idxs) {
+      var ids = [];
+      _.each(idxs, (idx) => {
+        let e = this.blob[idx];
+        ids.push(e.id);
+      });
+      return ids;
     }
   };
 
