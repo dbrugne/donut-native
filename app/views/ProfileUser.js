@@ -57,6 +57,7 @@ class UserProfileView extends Component {
       location = (
       <ListItem
         text={data.location}
+        type='text'
         icon='fontawesome|map-marker'
         />
       );
@@ -78,6 +79,7 @@ class UserProfileView extends Component {
 
     var registeredAt = (
     <ListItem
+      type='text'
       text={i18next.t('ProfileUser:registered-on', {date: date.shortDate(data.registered)})}
       first={(!data.location && !data.website)}
       icon='fontawesome|clock-o'
