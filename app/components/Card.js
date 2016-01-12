@@ -2,9 +2,9 @@
 
 var React = require('react-native');
 
-var CardUser = require('./CardUser');
-var CardRoom = require('./CardRoom');
-var CardGroup = require('./CardGroup');
+var CardUser = require('./Card/CardUser');
+var CardRoom = require('./Card/CardRoom');
+var CardGroup = require('./Card/CardGroup');
 
 module.exports = React.createClass({
   propTypes: {
