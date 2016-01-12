@@ -25,7 +25,7 @@ module.exports = React.createClass({
     iconColor: React.PropTypes.string, // color of the icon to display on left, default is #666
     title: React.PropTypes.string, // title to display above the ListItem
     help: React.PropTypes.string, // help message to display bellow the ListItem
-    style: React.PropTypes.string, // custom styles to apply to ListItem
+    style: React.PropTypes.object, // custom styles to apply to ListItem
     color: React.PropTypes.string, // color of the ListItemColor
     value: React.PropTypes.string, // value of the ListItemEdit
     isEmail: React.PropTypes.bool, // whether to display an email keyboard or not for the ListItemInput & ListItemInputButton
