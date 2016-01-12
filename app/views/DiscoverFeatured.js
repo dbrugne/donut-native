@@ -5,9 +5,10 @@ var {
   ListView,
   Text,
   Component
-} = React;
+  } = React;
 
 var app = require('./../libs/app');
+var s = require('../styles/style');
 var navigation = require('../navigation/index');
 var Card = require('../components/Card');
 var LoadingView = require('../components/Loading');
@@ -29,19 +30,23 @@ class HomeView extends Component {
       })
     };
   }
+
   componentDidMount () {
     app.on('readyToRoute', this.onWelcome, this);
     // @todo : refresh on next focus every 5 minutes
   }
+
   componentWillUnmount () {
     app.off(null, null, this);
   }
+
   onWelcome (data) {
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(data.featured),
       loaded: true
     });
   }
+
   render () {
     if (!this.state.loaded) {
       return (
@@ -56,12 +61,12 @@ class HomeView extends Component {
         renderRow={this.renderRow.bind(this)}
         style={{flex: 1}}
         scrollEnabled
-      />
+        />
     );
   }
 
-  renderHeader() {
-    return (<Text style={{marginVertical: 20, marginHorizontal: 10}}>{i18next.t('discover_featured:welcome')}</Text>);
+  renderHeader () {
+    return (<Text style={[s.p, {marginTop: 20}]}>{i18next.t('discover_featured:welcome')}</Text>);
   }
 
   renderRow (room) {
@@ -73,6 +78,7 @@ class HomeView extends Component {
         identifier={room.identifier}
         description={room.description}
         mode={room.mode}
+        key={room.room_id}
         />
     );
   }
