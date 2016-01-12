@@ -72,7 +72,7 @@ class DiscussionBlocked extends Component {
 
     let banned = this._renderBanned();
     let kicked, join = null;
-    if (!this.state.userConfirmed) {
+    if (!this.state.userConfirmed || this.props.model.get('blocked') === true) {
       join = (
         <DiscussionBlockedJoin {...this.props} />
       );
