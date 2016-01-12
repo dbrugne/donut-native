@@ -4,7 +4,6 @@ var React = require('react-native');
 var {
   StyleSheet,
   View,
-  Component,
   TextInput
 } = React;
 var {
@@ -15,18 +14,22 @@ var Button = require('react-native-button');
 var imageUpload = require('../libs/imageUpload');
 var currentUser = require('../models/current-user');
 var i18next = require('../libs/i18next');
+var alert = require('../libs/alert');
 
-class InputView extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
+var InputView = React.createClass({
+  propTypes: {
+    model: React.PropTypes.object,
+    setImageSource: React.PropTypes.func,
+    showConfirmationModal: React.PropTypes.func
+  },
+  getInitialState: function () {
+    this.model = this.props.model;
+    return {
       text: '',
-      userConfirmed: currentUser.get('confirmed') || (props.model.get('type') === 'room' && props.model.get('mode') === 'public')
+      userConfirmed: currentUser.get('confirmed') || (this.props.model.get('type') === 'room' && this.props.model.get('mode') === 'public')
     };
-
-    this.model = props.model;
-  }
-  render () {
+  },
+  render: function () {
     var inputPlaceholder;
     if (this.state.userConfirmed) {
       inputPlaceholder = 'Message ' + ((this.model.get('type') === 'room')
@@ -64,15 +67,19 @@ class InputView extends Component {
         </Button>
       </View>
     );
-  }
-  onSubmit () {
-    this.model.sendMessage(this.state.text);
-    this.setState({
-      text: ''
+  },
+  onSubmit: function () {
+    this.model.sendMessage(this.state.text, null, (response) => {
+      if (response === 'not-connected') {
+        return alert.show(i18next.t('messages.not-connected'));
+      }
+      this.setState({
+        text: ''
+      });
+      this.refs.input.focus(); // @todo : not working due to blurOnSubmit https://github.com/facebook/react-native/pull/2149
     });
-    this.refs.input.focus(); // @todo : not working due to blurOnSubmit https://github.com/facebook/react-native/pull/2149
-  }
-  _addImage () {
+  },
+  _addImage: function () {
     imageUpload.pickImage((canceled, response) => {
       if (canceled) {
         return;
@@ -83,7 +90,7 @@ class InputView extends Component {
       this.props.showConfirmationModal();
     });
   }
-}
+});
 
 var styles = StyleSheet.create({
   inputContainer: {
