@@ -37,6 +37,7 @@ class RoomProfileView extends Component {
     super(props);
 
     this.data = props.data;
+    this.model = app.rooms.addModel(props.data);
   }
 
   render() {
@@ -65,13 +66,12 @@ class RoomProfileView extends Component {
       />
     );
 
-    // var links = null;
-    // if (currentUser.get('user_id') === data.owner_id || currentUser.isAdmin()) {
+    var links = null;
+    if (currentUser.get('user_id') === data.owner_id || currentUser.isAdmin()) {
     //   // @todo implement onpress goto room edit
-    //   // @todo implement onpress goto room users
     //   // @todo implement onpress goto room access
     //   // @todo implement onpress goto room delete
-    //   links = (
+      links = (
     //     <View>
     //       <ListItem
     //         text={i18next.t('local:edit')}
@@ -80,12 +80,14 @@ class RoomProfileView extends Component {
     //         icon='fontawesome|pencil'
     //         />
     //
-    //       <ListItem
-    //         text={i18next.t('local:manage-users')}
-    //         type='edit-button'
-    //         action
-    //         icon='fontawesome|users'
-    //         />
+           <ListItem
+             text={i18next.t('profileRoom:manage-users')}
+             type='edit-button'
+             action
+             first
+             onPress={() => navigation.navigate('RoomUsers', this.model)}
+             icon='fontawesome|users'
+             />
     //
     //       <ListItem
     //         text={i18next.t('local:access')}
@@ -102,8 +104,8 @@ class RoomProfileView extends Component {
     //         />
     //
     //     </View>
-    //   );
-    // }
+       );
+    }
 
     return (
       <ScrollView style={styles.main}>
@@ -132,6 +134,7 @@ class RoomProfileView extends Component {
             />
           <Text style={s.listGroupItemSpacing} />
           {website}
+          {links}
           {createdAt}
         </View>
       </ScrollView>
