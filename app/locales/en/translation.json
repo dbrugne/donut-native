@@ -81,7 +81,10 @@
     "ask-membership-email": "I have an authorized e-mail",
     "notifications": "Notifications",
     "update-room-topic": "Change topic",
-    "eutc": "EUTC"
+    "eutc": "EUTC",
+    "room-edit": "Edit donut",
+    "room-edit-website": "Edit donut website",
+    "room-edit-description": "Edit donut description"
   },
   "group": {
     "created": "created on",

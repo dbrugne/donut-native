@@ -68,43 +68,41 @@ class RoomProfileView extends Component {
 
     var links = null;
     if (currentUser.get('user_id') === data.owner_id || currentUser.isAdmin()) {
-    //   // @todo implement onpress goto room edit
     //   // @todo implement onpress goto room access
     //   // @todo implement onpress goto room delete
       links = (
-    //     <View>
-    //       <ListItem
-    //         text={i18next.t('local:edit')}
-    //         type='edit-button'
-    //         action
-    //         icon='fontawesome|pencil'
-    //         />
-    //
+         <View>
+           <ListItem
+             text={i18next.t('profileRoom:edit')}
+             type='edit-button'
+             action
+             onPress={() => navigation.navigate('RoomEdit', this.model)}
+             icon='fontawesome|pencil'
+             />
+
            <ListItem
              text={i18next.t('profileRoom:manage-users')}
              type='edit-button'
              action
-             first
              onPress={() => navigation.navigate('RoomUsers', this.model)}
              icon='fontawesome|users'
              />
-    //
-    //       <ListItem
-    //         text={i18next.t('local:access')}
-    //         type='edit-button'
-    //         action
-    //         icon='fontawesome|key'
-    //         />
-    //
-    //       <ListItem
-    //         text={i18next.t('local:delete')}
-    //         type='edit-button'
-    //         action
-    //         icon='fontawesome|trash-o'
-    //         />
-    //
-    //     </View>
+          </View>
        );
+      //       <ListItem
+      //         text={i18next.t('local:access')}
+      //         type='edit-button'
+      //         action
+      //         icon='fontawesome|key'
+      //         />
+      //
+      //       <ListItem
+      //         text={i18next.t('local:delete')}
+      //         type='edit-button'
+      //         action
+      //         icon='fontawesome|trash-o'
+      //         />
+      //
     }
 
     return (

@@ -98,15 +98,23 @@ class DiscussionSettings extends Component {
       let itemTopic = null;
       if (this.isOp || this.isOwner || this.isAdmin) {
         itemTopic = (
-          <ListItem
-            style={{marginBottom: 20}}
-            onPress={() => navigation.navigate('RoomTopic', this.props.model, () => this.fetchData())}
-            text={i18next.t('DiscussionSettings:change-topic')}
-            icon='fontawesome|edit'
-            type='button'
-            action
-            first
-            />
+          <View style={{marginBottom: 20}}>
+            <ListItem
+              onPress={() => navigation.navigate('RoomTopic', this.props.model, () => this.fetchData())}
+              text={i18next.t('DiscussionSettings:change-topic')}
+              icon='fontawesome|edit'
+              type='button'
+              action
+              first
+              />
+            <ListItem
+              text={i18next.t('DiscussionSettings:edit')}
+              type='edit-button'
+              action
+              onPress={() => navigation.navigate('RoomEdit', this.props.model)}
+              icon='fontawesome|pencil'
+              />
+          </View>
         );
       }
       return (
