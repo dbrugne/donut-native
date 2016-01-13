@@ -1,101 +1,105 @@
 'use strict';
 
 var React = require('react-native');
-var ButtonBlue = require('./Button/Blue');
-var ButtonGray = require('./Button/Gray');
-var ButtonGreen = require('./Button/Green');
-var ButtonPink = require('./Button/Pink');
-var ButtonRed = require('./Button/Red');
-var ButtonWhite = require('./Button/White');
 var s = require('./../styles/button');
+var LoadingView = require('./Loading');
 
 var {
-  Component,
   View,
-  Text
+  Text,
+  TouchableHighlight
   } = React;
-var {
-  Icon
-  } = require('react-native-icons');
+var { Icon } = require('react-native-icons');
 
-class Button extends Component {
-  /**
-   * @param props = {
-   *  onPress: callback action when button is pressed
-   *  onLongPress: callback action when button is long pressed
-   *  loading: true / [false]
-   *  disabled : true / [false]
-   *  type: gray|default / blue / green / red / pink|primary / white : style to apply to the button
-   *  help: help message bellow if any
-   *  icon: fontawesome code name of the icon to append of the button text
-   *  iconColor: color of the icon, default is #ffda3e
-   * }
-   */
-  constructor(props) {
-    super(props);
-
-    this.icon = null;
-    if (this.props.icon) {
-      let iconColor = (this.props.iconColor ? this.props.iconColor : '#ffda3e');
-      this.icon = (
-        <Icon
-          name={this.props.icon}
-          size={20}
-          color={iconColor}
-          style={s.buttonIcon}
-          />
-      );
-    }
-  }
-
-  render() {
+var Button = React.createClass({
+  propTypes: {
+    type: React.PropTypes.string.isRequired,
+    label: React.PropTypes.string.isRequired,
+    onPress: React.PropTypes.func,
+    onLongPress: React.PropTypes.func,
+    loading: React.PropTypes.bool,
+    disabled: React.PropTypes.bool,
+    help: React.PropTypes.string,
+    icon: React.PropTypes.string,
+    iconColor: React.PropTypes.string,
+    style: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number])
+  },
+  render () {
     return (
       <View style={this.props.style}>
         {this._renderButton()}
         {this._renderHelp()}
       </View>
-    )
-  }
-
-  _renderHelp() {
+    );
+  },
+  _renderHelp () {
     if (this.props.help) {
       return (
         <Text style={s.help}>{this.props.help}</Text>
       );
     }
     return null;
-  }
-
-  _renderButton() {
-    let Element = ButtonGray;
-    switch (this.props.type) {
-      case 'blue':
-        Element = ButtonBlue;
-        break;
-      case 'green':
-        Element = ButtonGreen;
-        break;
-      case 'primary':
-      case 'pink':
-        Element = ButtonPink;
-        break;
-      case 'red':
-        Element = ButtonRed;
-        break;
-      case 'white':
-        Element = ButtonWhite;
-        break;
-      case 'default':
-      case 'gray':
-      default:
-        Element = ButtonGray;
-        break;
+  },
+  _renderIcon () {
+    if (!this.props.icon) {
+      return null;
     }
 
     return (
-      <Element {...this.props} icon={this.icon} />
+      <Icon
+        name={this.props.icon}
+        size={20}
+        color={this.props.iconColor ? this.props.iconColor : '#ffda3e'}
+        style={s.buttonIcon}
+        />
+    );
+  },
+  _renderButton () {
+    return (
+      <TouchableHighlight {...this.props}
+        underlayColor='#FFFFFF'
+        style={[
+          s.button,
+          this.props.type === 'white' && s.buttonWhite,
+          this.props.type === 'blue' && s.buttonBlue,
+          this.props.type === 'green' && s.buttonGreen,
+          this.props.type === 'pink' && s.buttonPink,
+          this.props.type === 'red' && s.buttonRed,
+          this.props.type === 'gray' && s.buttonGray,
+          this.props.loading && s.buttonLoading,
+          this.props.disabled && s.buttonDisabled
+        ]}>
+        <View style={s.textCtn}>
+          {this._renderText()}
+        </View>
+      </TouchableHighlight>
+    );
+  },
+  _renderText () {
+    if (this.props.loading) {
+      return <LoadingView />;
+    }
+
+    return (
+      <View>
+        <Text
+          style={[
+            s.label,
+            this.props.type === 'white' && s.labelWhite,
+            this.props.type === 'blue' && s.labelBlue,
+            this.props.type === 'green' && s.labelGreen,
+            this.props.type === 'pink' && s.labelPink,
+            this.props.type === 'red' && s.labelRed,
+            this.props.type === 'gray' && s.labelGray,
+            this.props.loading && s.labelLoading,
+            this.props.disabled && s.labelDisabled
+          ]}>
+          {this.props.label}
+        </Text>
+        {this._renderIcon()}
+      </View>
     );
   }
-}
+});
 
 module.exports = Button;
