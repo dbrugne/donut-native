@@ -11,23 +11,26 @@ var app = require('./../libs/app');
 var s = require('../styles/style');
 var navigation = require('../navigation/index');
 var Card = require('../components/Card');
+var Button = require('../components/Button');
 var LoadingView = require('../components/Loading');
+var alert = require('../libs/alert');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'discover_featured', {
-  'welcome': 'Join new communities and discussions from this list'
+i18next.addResourceBundle('en', 'DiscoverFeatured', {
+  'welcome': 'Join new communities and discussions from this list',
+  'load-more': 'Load more'
 });
 
 class HomeView extends Component {
   constructor (props) {
     super(props);
+    this.discoverDataSource = require('../libs/discoverDataSource')();
+    this.loadMoreTimeoutTime = 2000; // 2sec
+    this.loadMoreTimeout = null;
     this.state = {
       loaded: false,
-      dataSource: new ListView.DataSource({
-        rowHasChanged: function (row1, row2) {
-          return (row1 !== row2);
-        }
-      })
+      loadMore: false,
+      dataSource: this.discoverDataSource.dataSource
     };
   }
 
@@ -42,7 +45,7 @@ class HomeView extends Component {
 
   onWelcome (data) {
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(data.featured),
+      dataSource: this.discoverDataSource.append(data.featured),
       loaded: true
     });
   }
@@ -59,6 +62,7 @@ class HomeView extends Component {
         dataSource={this.state.dataSource}
         renderHeader={this.renderHeader}
         renderRow={this.renderRow.bind(this)}
+        renderFooter={this.renderFooter.bind(this)}
         style={{flex: 1}}
         scrollEnabled
         />
@@ -66,7 +70,7 @@ class HomeView extends Component {
   }
 
   renderHeader () {
-    return (<Text style={[s.p, {marginTop: 20}]}>{i18next.t('discover_featured:welcome')}</Text>);
+    return (<Text style={[s.p, {marginTop: 20}]}>{i18next.t('DiscoverFeatured:welcome')}</Text>);
   }
 
   renderRow (room) {
@@ -81,6 +85,30 @@ class HomeView extends Component {
         key={room.room_id}
         />
     );
+  }
+
+  renderFooter () {
+    return (
+      <Button type='white'
+              onPress={this.loadMore.bind(this)}
+              label={i18next.t('DiscoverFeatured:load-more')}
+              loading={this.state.loadMore}
+        />
+    );
+  }
+
+  loadMore () {
+    clearTimeout(this.loadMoreTimeout);
+    this.setState({
+      loadMore: true
+    });
+
+    this.loadMoreTimeout = setTimeout(() => {
+      alert.show(i18next.t('messages.error-try-again'));
+      this.setState({
+        loadMore: false
+      });
+    }, this.loadMoreTimeoutTime);
   }
 }
 
