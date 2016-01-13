@@ -15,7 +15,7 @@ module.exports = function (model) {
     initial: true,
     model: model, // only for discussion routes
     renderScene: function (navigator) {
-      var Discussion = (model.get('blocked') === false) // do not inverse that condition unless you exactly now what you are doing
+      var Discussion = (model.get('blocked') === false || model.get('type') === 'onetoone') // do not inverse that condition unless you exactly now what you are doing
         ? require('../../views/Discussion')
         : require('../../views/DiscussionBlocked');
 
