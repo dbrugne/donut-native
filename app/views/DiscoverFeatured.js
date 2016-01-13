@@ -109,6 +109,13 @@ class HomeView extends Component {
         loadMore: false
       });
     }, this.loadMoreTimeoutTime);
+
+    this.fetchData();
+  }
+
+  fetchData () {
+    // do app.client.featured to get next ones
+    return null;
   }
 }
 
