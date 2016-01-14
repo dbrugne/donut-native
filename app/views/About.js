@@ -20,7 +20,8 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'about', {
   'version': 'Version __version__',
   'disconnect': 'Disconnect',
-  'connect': 'Connect'
+  'connect': 'Connect',
+  'disconnect-reconnect': 'Disconnect 15 sec'
 });
 
 class AboutView extends Component {
@@ -76,6 +77,11 @@ class AboutView extends Component {
           type='button'
           onPress={() => { app.client.disconnect(); }}
         />
+        <ListItem
+          text={i18next.t('about:disconnect-reconnect')}
+          type='button'
+          onPress={() => { app.client.disconnect(); setTimeout(() => app.client.connect(), 15000); }}
+          />
         <ListView
           style={{margin: 10, backgroundColor: '#FFF'}}
           dataSource={this.state.ds}

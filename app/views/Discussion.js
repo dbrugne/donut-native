@@ -17,6 +17,7 @@ var animation = require('../libs/animations').keyboard;
 var LoadingModal = require('../components/LoadingModal');
 var ConfirmationModal = require('../components/ConfirmationModal');
 var imageUpload = require('../libs/imageUpload');
+var app = require('../libs/app');
 var Alert = require('../libs/alert');
 
 class Discussion extends Component {
@@ -31,6 +32,7 @@ class Discussion extends Component {
   }
   componentDidMount () {
     debug.log(this.props.model.get('identifier') + ' mounted');
+    app.on('readyToRoute', () => this.onReconnect(), this);
     this.subscription = [
       DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
         LayoutAnimation.configureNext(animation);
@@ -49,6 +51,12 @@ class Discussion extends Component {
   onFocus () {
     // load history
     this.refs.events.onFocus();
+  }
+  onReconnect () {
+    // load history
+    if (this.props.model.get('focused')) {
+      this.refs.events.fetchHistory('later');
+    }
   }
   showConfirmationModal () {
     this.setState({showConfirmationModal: true});
