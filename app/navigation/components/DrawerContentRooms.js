@@ -75,9 +75,10 @@ class NavigationRoomsView extends Component {
     var group = null;
     if (e.group_id && e.group_name && e.group_id !== this.lastGroup) {
       this.lastGroup = e.group_id;
+      var groupModel = app.groups.iwhere('group_id', e.group_id);
       group = (
         <TouchableHighlight
-          style={styles.linkBlock}
+          style={[styles.linkBlock, {backgroundColor: (groupModel && groupModel.get('focused')) ? '#666' : '#222'}]}
           underlayColor= '#414041'
           onPress={() => navigation.navigate('Group', {name: e.group_name, id: e.group_id})}
           >

@@ -85,6 +85,7 @@ class Index extends Component {
       currentUser.onWelcome(data);
       app.ones.onWelcome(data);
       app.rooms.onWelcome(data);
+      app.groups.onWelcome(data);
       this.computeUnviewed();
       debug.log('trigger readyToRoute');
       app.trigger('readyToRoute', data);
