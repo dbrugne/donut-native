@@ -72,6 +72,8 @@ var InputView = React.createClass({
     this.model.sendMessage(this.state.text, null, (response) => {
       if (response === 'not-connected') {
         return alert.show(i18next.t('messages.not-connected'));
+      } else if (response.err) {
+        return alert.show(i18next.t('messages.' + response.err));
       }
       this.setState({
         text: ''
