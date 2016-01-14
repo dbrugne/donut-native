@@ -23,13 +23,18 @@ var GroupHomeView = React.createClass({
   componentDidMount: function () {
     app.on('refreshGroup', this.onRefresh, this);
     if (this.id) {
-      app.client.groupRead(this.id, {users: true}, (data) => {
-        app.groups.addModel(data);
-        this.setState({model: app.groups.iwhere('group_id', this.id)});
-        if (this.state.model) {
-          this.state.model.on('redraw', () => this.onRefresh(), this);
+      app.client.groupJoin(this.id, (response) => {
+        if (response.err) {
+          return;
         }
-        this.onData(data);
+        app.client.groupRead(this.id, {users: true}, (data) => {
+          app.groups.addModel(data);
+          this.setState({model: app.groups.iwhere('group_id', this.id)});
+          if (this.state.model) {
+            this.state.model.on('redraw', () => this.onRefresh(), this);
+          }
+          this.onData(data);
+        });
       });
     }
   },
