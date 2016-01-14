@@ -80,15 +80,18 @@ public class ParsePushNotificationListener extends ParsePushBroadcastReceiver {
     }
     
     public static JSONObject getInitialNotification () {
+        JSONObject response = null;
         if (initial == true) {
             if (initialNotification == null) {
                 Log.d("1 2 3 4 5 6 7", "initial notif is null :'(");
             } else {
+                response = new JSONObject();
+                response = initialNotification;
+                initialNotification = null;
                 initial = false;
             }
-            return initialNotification;
         }
-        return null;
+        return response;
     }
     
     private static void setInitialNotification (final JSONObject obj) {
