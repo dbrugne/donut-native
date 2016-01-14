@@ -87,7 +87,6 @@ class DiscussionEvents extends Component {
           renderRow={this.renderRow.bind(this)}
           renderHeader={this.renderFooter.bind(this)}
           renderFooter={this.renderHeader.bind(this)}
-          onChangeVisibleRows={this.onChangeVisibleRows.bind(this)}
           pageSize={4}
           />
       </View>
@@ -232,11 +231,11 @@ class DiscussionEvents extends Component {
       }
 
       this.setState(state);
+
+      if (this.props.model.get('focused') === true) {
+        this.markAsViewedAfterDelay();
+      }
     });
-  }
-  onChangeVisibleRows (visibleRows, changedRows) {
-    // @todo : maybe not the best event to mark as read?
-    this.markAsViewedAfterDelay();
   }
   addFreshEvent (type, data) {
     if (this.props.model.get('focused') !== true) {
@@ -248,6 +247,7 @@ class DiscussionEvents extends Component {
     this.setState({
       dataSource: this.eventsDataSource.append([{type: type, data: data}], this.props.model.get('first_unviewed'))
     });
+    this.markAsViewedAfterDelay();
   }
   onMarkedAsSpam (data) {
     var id = data.event;
@@ -293,8 +293,6 @@ class DiscussionEvents extends Component {
       // on refocus load history from last blur
       this.fetchHistory('later');
     }
-
-    this.markAsViewedAfterDelay();
   }
   markAsViewedAfterDelay () {
     this._timeoutCleanup();
@@ -305,7 +303,10 @@ class DiscussionEvents extends Component {
     }
 
     this.markAsViewedTimeout = setTimeout(() => {
-      this.props.model.markAsViewed();
+      // if model still focused after 2 sec
+      if (this.props.model.get('focused') === true) {
+        this.props.model.markAsViewed();
+      }
     }, 2000); // 2s
   }
 }
