@@ -36,6 +36,7 @@ class NavigationRoomsView extends Component {
     app.on('redrawNavigation', this.refreshData, this);
     app.on('redrawNavigationRooms', this.refreshData, this);
     app.on('viewedEvent', this.refreshData, this);
+    app.on('focusModelChanged', this.refreshData, this);
   }
   componentWillUnmount () {
     app.off(null, null, this);
@@ -97,7 +98,7 @@ class NavigationRoomsView extends Component {
         <View>
           {group}
           <TouchableHighlight
-            style={styles.linkBlock}
+            style={[styles.linkBlock, {backgroundColor: (model.get('focused')) ? '#666' : '#222'}]}
             onPress={() => navigation.navigate('Discussion', model)}
             underlayColor= '#414041'
             >
@@ -122,7 +123,7 @@ class NavigationRoomsView extends Component {
       <View>
         {group}
       <TouchableHighlight
-        style={styles.linkBlock}
+        style={[styles.linkBlock, {backgroundColor: (model.get('focused')) ? '#666' : '#222'}]}
         onPress={() => navigation.navigate('Discussion', model)}
         underlayColor= '#414041'
         >

@@ -37,6 +37,7 @@ class NavigationOnesView extends Component {
     app.on('redrawNavigation', this.refreshData, this);
     app.on('redrawNavigationOnes', this.refreshData, this);
     app.on('viewedEvent', this.refreshData, this);
+    app.on('focusModelChanged', this.refreshData, this);
   }
 
   componentWillUnmount () {
@@ -86,7 +87,7 @@ class NavigationOnesView extends Component {
 
     return (
       <TouchableHighlight
-        style={styles.linkBlock}
+        style={[styles.linkBlock, {backgroundColor: (model.get('focused')) ? '#666' : '#222'}]}
         onPress={() => navigation.navigate('Discussion', model)}
         underlayColor='#414041'
       >
