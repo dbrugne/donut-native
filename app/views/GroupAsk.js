@@ -34,7 +34,7 @@ class GroupAskMembership extends Component {
 
   componentDidMount () {
     if (this.props.id) {
-      app.client.groupJoin(this.props.id, null, this.onData.bind(this));
+      app.client.groupBecomeMember(this.props.id, null, this.onData.bind(this));
     }
   }
 
