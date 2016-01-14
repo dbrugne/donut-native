@@ -291,7 +291,7 @@ class GroupProfileView extends Component {
 
   onGroupQuit () {
     if (this.state.user.isMember) {
-      app.client.groupLeave(this.props.data.group_id, function (response) {
+      app.client.groupQuitMembership(this.props.data.group_id, function (response) {
         if (response.err) {
           return alert.show(i18next.t('group.unknownerror'));
         }
