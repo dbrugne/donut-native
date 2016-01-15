@@ -303,10 +303,7 @@ class DiscussionEvents extends Component {
     }
 
     this.markAsViewedTimeout = setTimeout(() => {
-      // if model still focused after 2 sec
-      if (this.props.model.get('focused') === true) {
-        this.props.model.markAsViewed();
-      }
+      this.props.model.markAsViewed();
     }, 2000); // 2s
   }
 }
