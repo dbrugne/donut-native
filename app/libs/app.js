@@ -7,7 +7,7 @@ var config = require('./config')();
 var AppFactory = require('@dbrugne/donut-client');
 
 module.exports = AppFactory({
-  device: 'native',
+  device: 'mobile',
   host: config.ws,
   debug: function () {
     debug.log.apply(debug.log, arguments);
