@@ -1,15 +1,11 @@
 'use strict';
 
 var React = require('react-native');
-var {
-  Platform
-} = React;
 
 var Drawer = require('react-native-drawer');
 import ExNavigator from '@exponent/react-native-navigator'; // @important: should be 'import'
 var BackButton = require('./AndroidBackButton');
 var state = require('../state');
-var app = require('../../libs/app');
 var debug = require('../../libs/debug')('navigation');
 var ConnectionState = require('../../components/ConnectionState');
 
