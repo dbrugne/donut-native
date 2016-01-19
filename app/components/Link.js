@@ -4,14 +4,14 @@ var React = require('react-native');
 var LinkUnderlined = require('./Link/Underlined');
 var LinkBold = require('./Link/Bold');
 
-module.exports = React.createClass({
+var Link = React.createClass({
   propTypes: {
     onPress: React.PropTypes.func.isRequired,
     text: React.PropTypes.string.isRequired,
     type: React.PropTypes.oneOf(['underlined', 'bold']).isRequired,
     prepend: React.PropTypes.string,
     append: React.PropTypes.string,
-    style: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number]),
+    style: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number, React.PropTypes.array]),
     linkStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number]),
     prependStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number]),
     apendStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number])
@@ -27,3 +27,5 @@ module.exports = React.createClass({
     }
   }
 });
+
+module.exports = Link;
