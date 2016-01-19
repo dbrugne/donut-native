@@ -32,7 +32,7 @@ class Discussion extends Component {
   }
   componentDidMount () {
     debug.log(this.props.model.get('identifier') + ' mounted');
-    app.on('readyToRoute', () => this.onReconnect(), this);
+    app.on('ready', () => this.onReconnect(), this);
     this.subscription = [
       DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
         LayoutAnimation.configureNext(animation);

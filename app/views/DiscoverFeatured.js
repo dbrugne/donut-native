@@ -5,7 +5,7 @@ var {
   ListView,
   Text,
   Component
-  } = React;
+} = React;
 
 var app = require('./../libs/app');
 var s = require('../styles/style');
@@ -13,43 +13,40 @@ var navigation = require('../navigation/index');
 var Card = require('../components/Card');
 var Button = require('../components/Button');
 var LoadingView = require('../components/Loading');
-var alert = require('../libs/alert');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'DiscoverFeatured', {
   'welcome': 'Join new communities and discussions from this list',
-  'load-more': 'Load more'
+  'view-more': 'View more'
 });
 
-class HomeView extends Component {
+class Featured extends Component {
   constructor (props) {
     super(props);
     this.discoverDataSource = require('../libs/discoverDataSource')();
-    this.loadMoreTimeoutTime = 2000; // 2sec
-    this.loadMoreTimeout = null;
     this.state = {
       loaded: false,
-      loadMore: false,
       dataSource: this.discoverDataSource.dataSource
     };
   }
-
   componentDidMount () {
-    app.on('readyToRoute', this.onWelcome, this);
     // @todo : refresh on next focus every 5 minutes
+    app.on('ready', this.onReady, this);
   }
-
   componentWillUnmount () {
     app.off(null, null, this);
   }
-
-  onWelcome (data) {
-    this.setState({
-      dataSource: this.discoverDataSource.append(data.featured),
-      loaded: true
+  onReady () {
+    app.client.home((response) => {
+      if (response && response.rooms) {
+        console.log(response)
+        this.setState({
+          loaded: true,
+          dataSource: this.discoverDataSource.append(response.rooms.list)
+        });
+      }
     });
   }
-
   render () {
     if (!this.state.loaded) {
       return (
@@ -68,11 +65,9 @@ class HomeView extends Component {
         />
     );
   }
-
   renderHeader () {
     return (<Text style={[s.p, {marginTop: 20}]}>{i18next.t('DiscoverFeatured:welcome')}</Text>);
   }
-
   renderRow (room) {
     return (
       <Card
@@ -86,37 +81,15 @@ class HomeView extends Component {
         />
     );
   }
-
   renderFooter () {
     return (
-      <Button type='white'
-              onPress={this.loadMore.bind(this)}
-              label={i18next.t('DiscoverFeatured:load-more')}
-              loading={this.state.loadMore}
-        />
+      <Button
+        type='white'
+        onPress={() => navigation.navigate('Search')}
+        label={i18next.t('DiscoverFeatured:view-more')}
+      />
     );
-  }
-
-  loadMore () {
-    clearTimeout(this.loadMoreTimeout);
-    this.setState({
-      loadMore: true
-    });
-
-    this.loadMoreTimeout = setTimeout(() => {
-      alert.show(i18next.t('messages.error-try-again'));
-      this.setState({
-        loadMore: false
-      });
-    }, this.loadMoreTimeoutTime);
-
-    this.fetchData();
-  }
-
-  fetchData () {
-    // do app.client.featured to get next ones
-    return null;
   }
 }
 
-module.exports = HomeView;
+module.exports = Featured;

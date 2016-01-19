@@ -24,6 +24,8 @@ class Index extends Component {
     this.nextFocus;
   }
   componentDidMount () {
+    app.on('usernameRequired', () => this.setState({usernameRequired: true}), this);
+    app.on('ready', this.onReady, this);
     app.on('newEvent', this.onNewEvent, this);
     app.on('viewedEvent', this.computeUnviewed, this);
     app.on('joinRoom', this.onJoinRoom, this);
@@ -32,7 +34,6 @@ class Index extends Component {
     app.rooms.on('remove', this.onRemoveDiscussion, this);
     app.ones.on('add', this.onAddDiscussion, this);
     app.rooms.on('add', this.onAddDiscussion, this);
-    app.client.on('welcome', this.onWelcome, this);
 
     // push notifications
     PushNotifications.componentDidMount();
@@ -44,8 +45,8 @@ class Index extends Component {
     app.off(null, null, this);
     app.ones.off(null, null, this);
     app.rooms.off(null, null, this);
-    app.client.off(null, null, this);
 
+    // @todo : factorize this app.reset() function (and add event unmounting)
     // empty stores (@logout)
     app.ones.reset();
     app.rooms.reset();
@@ -66,29 +67,15 @@ class Index extends Component {
 
     var RootNavigator = require('../navigation/components/RootNavigator');
     return (
-      <RootNavigator featured={this.state.featured} />
+      <RootNavigator />
     );
   }
-  onWelcome (data) {
-    // require username welcome
-    if (data.usernameRequired === true) {
-      return this.setState({
-        usernameRequired: true
-      });
-    }
-
+  onReady (data) {
     // normal welcome (async to let RootNavigator render)
     this.setState({
-      featured: data.featured,
       usernameRequired: false // @important
     }, () => {
-      currentUser.onWelcome(data);
-      app.ones.onWelcome(data);
-      app.rooms.onWelcome(data);
-      app.groups.onWelcome(data);
       this.computeUnviewed();
-      debug.log('trigger readyToRoute');
-      app.trigger('readyToRoute', data);
 
       // handle cold launch from notification
       PushNotifications.handleInitialNotification();

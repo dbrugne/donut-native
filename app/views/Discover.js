@@ -9,7 +9,7 @@ var {
 } = React;
 
 var config = require('../libs/config')();
-var HomeFeatured = require('./DiscoverFeatured');
+var Featured = require('./DiscoverFeatured');
 var currentUser = require('../models/current-user');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
@@ -36,7 +36,7 @@ class Discover extends Component {
     return (
       <View style={{flex: 1, backgroundColor: '#f0f0f0'}}>
         {this._renderConfirmed()}
-        <HomeFeatured {...this.props} />
+        <Featured {...this.props} />
         <Text>DONUT {version}</Text>
       </View>
     );
