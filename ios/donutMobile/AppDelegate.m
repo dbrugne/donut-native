@@ -127,12 +127,19 @@
                                                      annotation:annotation];
 }
 
+// Required for push notifications
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+  // @PushNotificationsIOS
+  [RCTPushNotificationManager didRegisterUserNotificationSettings:notificationSettings];
+}
+
 // Required for push notifications (run on every app launch)
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
   // @PushNotificationsIOS
   // PushNotificationsIOS 'register' event will be triggered
-  [RCTPushNotificationManager application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+  [RCTPushNotificationManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
   
   // @Parse
   // Store the deviceToken in the current installation and save it to Parse
@@ -157,7 +164,7 @@
   [UIApplication sharedApplication].applicationIconBadgeNumber = [[[notification objectForKey:@"aps"] objectForKey: @"badge"] intValue];
   
   // @PushNotificationsIOS
-  [RCTPushNotificationManager application:application didReceiveRemoteNotification:notification];
+  [RCTPushNotificationManager didReceiveRemoteNotification:notification];
 }
 
 @end

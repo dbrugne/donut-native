@@ -54,19 +54,16 @@ For each scenario launch Xcode project select a scheme (listed bellow), select a
 
 ## Workaround react-native bugs
 
-- /www/donut-native/node_modules/backbone/backbone.js (will be fixed in 0.16 https://github.com/facebook/react-native/commit/8db35d492b846f51a758e8ee7e5e402c6bad3785)
+**Added jQuery to deps to solve packager issue**
+ 
+https://github.com/facebook/react-native/commit/8db35d492b846f51a758e8ee7e5e402c6bad3785
 
-comment line 26
-
-```
-// try { $ = require('jquery'); } catch(e) {}
-```
-
-Fix rightIcon on navigator
+**Fix rightIcon on navigator**
 
 https://github.com/facebook/react-native/issues/4559
-- /www/donative/node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorNavigationBar.js:193
+
 ```javascript
+ # node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorNavigationBar.js
  rendered = (
       <View
         ref={(ref) => {
