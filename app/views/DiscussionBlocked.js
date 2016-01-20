@@ -4,7 +4,6 @@ var React = require('react-native');
 var s = require('../styles/style');
 var Link = require('../components/Link');
 var ListItem = require('../components/ListItem');
-var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
 var DiscussionBlockedJoin = require('./DiscussionBlockedJoin');
 var navigation = require('../navigation/index');
@@ -14,13 +13,11 @@ var currentUser = require('../models/current-user');
 var {
   StyleSheet,
   View,
-  Component,
   ScrollView,
   TouchableHighlight,
   Image,
   Text
   } = React;
-var Icon = require('react-native-icons').Icon;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'discussionBlocked', {
@@ -31,37 +28,38 @@ i18next.addResourceBundle('en', 'discussionBlocked', {
   'password': 'direct access',
   'password-placeholder': 'password',
   'join': 'join',
-  'banned': 'You were banned from this donut on __at__',
-  'groupbanned': 'You were banned from this community on __at__',
-  'reason': 'for the following reason: ',
+  'ban': 'You were banned from this donut',
+  'groupban': 'You were banned from this community',
   'kicked': 'You have been kicked out from this donut.',
   'rejoin': ' to get back in.',
   'close': 'Close this donut'
 });
 
-class DiscussionBlocked extends Component {
-  constructor (props) {
-    super(props);
-
-    this.state = {
+var DiscussionBlocked = React.createClass({
+  propTypes: {
+    model: React.PropTypes.object,
+    navigator: React.PropTypes.object
+  },
+  getInitialState: function () {
+    return {
       userConfirmed: currentUser.get('confirmed')
     };
-  }
+  },
 
-  componentDidMount () {
+  componentDidMount: function () {
     currentUser.on('change:confirmed', () => {
       this.setState({userConfirmed: currentUser.get('confirmed')});
     });
-  }
-  componentWillUnmount () {
+  },
+  componentWillUnmount: function () {
     currentUser.off(null, null, this);
-  }
+  },
 
-  onFocus () {
+  onFocus: function () {
     this.render();
-  }
+  },
 
-  render () {
+  render: function () {
     console.log('render');
     let description = null;
     if (this.props.model.get('description')) {
@@ -71,8 +69,9 @@ class DiscussionBlocked extends Component {
     }
 
     let banned = this._renderBanned();
-    let kicked, join = null;
-    if (!this.state.userConfirmed || this.props.model.get('blocked') === true) {
+    let kicked = null;
+    let join = null;
+    if (!this.state.userConfirmed || this.props.model.get('blocked_why') === 'disallow' || this.props.model.get('blocked_why') === 'other') {
       join = (
         <DiscussionBlockedJoin {...this.props} />
       );
@@ -113,9 +112,9 @@ class DiscussionBlocked extends Component {
         </ScrollView>
       </View>
     );
-  }
+  },
 
-  _renderAvatar (avatar) {
+  _renderAvatar: function (avatar) {
     if (!avatar) {
       return null;
     }
@@ -127,54 +126,28 @@ class DiscussionBlocked extends Component {
     return (
       <Image style={styles.avatar} source={{uri: avatarUrl}}/>
     );
-  }
+  },
 
-  _renderBanned () {
-    if (this.props.model.get('blocked') !== 'banned' && this.props.model.get('blocked') !== 'groupbanned') {
+  _renderBanned: function () {
+    if (this.props.model.get('blocked_why') !== 'ban' && this.props.model.get('blocked_why') !== 'groupban') {
       return null;
-    }
-
-    let bannedAt = null;
-    if (this.props.model.get('banned_at')) {
-      bannedAt = (
-        <Text style={s.alertErrorText}>
-          {i18next.t('discussionBlocked:' + this.props.model.get('blocked'), {at: date.dateTime(this.props.model.get('banned_at'))})}
-        </Text>
-      );
-    }
-
-    let bannedReason = null;
-    if (this.props.model.get('reason')) {
-      bannedReason = (
-        <View style={{marginTop: 10, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center'}}>
-          <Icon
-            name='fontawesome|quote-right'
-            size={14}
-            color='#a94442'
-            style={{width: 14, height: 14, marginTop: 2}}
-            />
-          <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
-            <Text
-              style={[s.alertErrorText, {fontStyle: 'italic', paddingLeft: 5}]}>{this.props.model.get('reason')}</Text>
-          </View>
-        </View>
-      );
     }
 
     let banned = (
       <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
-        {bannedAt}
-        {bannedReason}
+        <Text style={s.alertErrorText}>
+          {i18next.t('discussionBlocked:' + this.props.model.get('blocked_why'))}
+        </Text>
       </View>
     );
 
     return banned;
-  }
+  },
 
-  _renderKicked () {
+  _renderKicked: function () {
     return (
       <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
-        <Link onPress={(this.onJoin.bind(this))}
+        <Link onPress={(() => this.onJoin())}
               prepend={i18next.t('discussionBlocked:kicked')}
               append={i18next.t('discussionBlocked:rejoin')}
               text={i18next.t('discussionBlocked:click')}
@@ -185,12 +158,17 @@ class DiscussionBlocked extends Component {
           />
       </View>
     );
-  }
+  },
 
-  onJoin () {
-    app.trigger('joinRoom', this.props.model.get('id'), true);
+  onJoin: function () {
+    app.client.roomJoin(this.props.model.get('id'), null, (response) => {
+      if (response.err) {
+        // @todo handle errors
+        return;
+      }
+    });
   }
-}
+});
 
 var styles = StyleSheet.create({
   main: {
