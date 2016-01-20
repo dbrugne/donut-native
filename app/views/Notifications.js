@@ -215,13 +215,19 @@ class NotificationsView extends Component {
       var roomId = (n.data.room._id)
         ? n.data.room._id
         : n.data.room.id;
-      n.onPress = _.bind(function () {
-        navigation.navigate('Profile', {
-          type: 'room',
-          id: roomId,
-          identifier: n.name
-        });
-      }, this);
+      if (['roommessage', 'usermention', 'roomallowed'].indexOf(n.type) !== -1) {
+        n.onPress = () => {
+          app.trigger('joinRoom', (n.data.room._id) ? n.data.room._id : n.data.room.id);
+        };
+      } else {
+        n.onPress = () => {
+          navigation.navigate('Profile', {
+            type: 'room',
+            id: roomId,
+            identifier: n.name
+          });
+        };
+      }
     } else if (n.data.group) {
       n.avatar = common.cloudinary.prepare(n.data.group.avatar, 45);
       n.avatarCircle = true;
@@ -286,7 +292,7 @@ class NotificationsView extends Component {
         <TouchableHighlight
           style={{backgroundColor: '#ffffff'}}
           underlayColor='#f0f0f0'
-          onPress={this.state.selecting ? this.onLongPress.bind(this, n) : n.onPress}
+          onPress={this.state.selecting ? this.onLongPress.bind(this, n) : () => n.onPress()}
           onLongPress={this.onLongPress.bind(this, n)}
           >
           {this._renderContent(n)}
