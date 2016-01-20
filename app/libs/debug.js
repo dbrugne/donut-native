@@ -8,7 +8,8 @@ var namespaces = [
 //  'storage',
 //  'events',
 //  'pushNotification',
-//  'cloudinary'
+//  'cloudinary',
+//  'keyboard'
 ];
 
 module.exports = function (namespace) {
