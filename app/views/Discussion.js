@@ -3,117 +3,58 @@
 var React = require('react-native');
 var {
   StyleSheet,
-  View,
-  Component,
-  LayoutAnimation,
-  DeviceEventEmitter
+  View
 } = React;
 
-var _ = require('underscore');
 var debug = require('../libs/debug')('navigation');
-var EventsView = require('./DiscussionEvents');
-var InputView = require('./DiscussionInput');
-var animation = require('../libs/animations').keyboard;
-var LoadingModal = require('../components/LoadingModal');
-var ConfirmationModal = require('../components/ConfirmationModal');
-var imageUpload = require('../libs/imageUpload');
-var app = require('../libs/app');
-var Alert = require('../libs/alert');
 
-class Discussion extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      keyboardSpace: 0,
-      showLoadingModal: false,
-      showConfirmationModal: false,
-      imageSource: null // for modal confirmation
+var Discussion = React.createClass({
+  propTypes: {
+    navigator: React.PropTypes.object,
+    model: React.PropTypes.object.isRequired
+  },
+  getInitialState () {
+    return {
+      blocked: (this.props.model.get('type') === 'room' && this.props.model.get('blocked') === true)
     };
-  }
+  },
   componentDidMount () {
     debug.log(this.props.model.get('identifier') + ' mounted');
-    app.on('ready', () => this.onReconnect(), this);
-    this.subscription = [
-      DeviceEventEmitter.addListener('keyboardWillShow', (frames) => {
-        LayoutAnimation.configureNext(animation);
-        this.setState({keyboardSpace: frames.endCoordinates.height});
-      }),
-      DeviceEventEmitter.addListener('keyboardWillHide', () => {
-        LayoutAnimation.configureNext(animation);
-        this.setState({keyboardSpace: 0});
-      })
-    ];
-  }
+
+    this.props.model.on('change:blocked', this.onBlockedChange, this);
+  },
   componentWillUnmount () {
     debug.log(this.props.model.get('identifier') + ' unmounted');
-    _.each(this.subscription, (s) => s.remove());
-  }
+
+    this.props.model.off(null, null, this);
+  },
   onFocus () {
-    // load history
-    this.refs.events.onFocus();
-  }
-  onReconnect () {
-    // load history
-    if (this.props.model.get('focused')) {
-      this.refs.events.fetchHistory('later');
+    if (this.refs.discussion) {
+      this.refs.discussion.onFocus();
     }
-  }
-  showConfirmationModal () {
-    this.setState({showConfirmationModal: true});
-  }
-  closeConfirmationModal () {
-    this.setState({showConfirmationModal: false});
-  }
-  setImageSource (imageSource) {
-    this.setState({imageSource: imageSource});
-  }
-  render() {
+  },
+  render () {
+    let Comp = (this.state.blocked)
+      ? require('./DiscussionBlocked')
+      : require('./DiscussionUnblocked');
+
     return (
       <View style={styles.main}>
-        <EventsView ref='events' title={this.props.model.get('identifier')} model={this.props.model} {...this.props} />
-        <InputView ref='input'
-                   model={this.props.model}
-                   showConfirmationModal={() => this.showConfirmationModal()}
-                   closeConfirmationModal={() => this.closeConfirmationModal()}
-                   setImageSource={(src) => this.setImageSource(src)}
-          />
-        <View style={{height: this.state.keyboardSpace}}></View>
-        {this.state.showLoadingModal ? <LoadingModal /> : null}
-        {this.state.showConfirmationModal
-          ? <ConfirmationModal type='image'
-                               imageSource={this.state.imageSource}
-                               onCancel={() => this.setState({showConfirmationModal: false})}
-                               onConfirm={() => this._addImage()}
-            />
-          : null}
+        <Comp ref='discussion' navigator={this.props.navigator} model={this.props.model} />
       </View>
     );
-  }
-  _addImage () {
-    if (this.state.imageSource === null) {
-      return;
-    }
-    // render spinner
-    this.setState({showLoadingModal: true});
-    imageUpload.uploadToCloudinary(this.state.imageSource, null, 'discussion', (err, data) => {
-      this.setState({showLoadingModal: false});
-      if (err) {
-        return Alert.show(err);
-      }
-      this.props.model.sendMessage(null, [data]);
+  },
+  onBlockedChange: function () {
+    this.setState({
+      blocked: (this.props.model.get('type') === 'room' && this.props.model.get('blocked') === true)
     });
   }
-}
+});
 
-// @source: http://stackoverflow.com/questions/29313244/how-to-auto-slide-the-window-out-from-behind-keyboard-when-textinput-has-focus
-// @source: http://stackoverflow.com/questions/29541971/absolute-and-flexbox-in-react-native
 var styles = StyleSheet.create({
   main: {
     flex: 1,
     flexDirection: 'column'
-  },
-  events: {
-    flex: 1
   }
 });
 

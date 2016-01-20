@@ -18,13 +18,13 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'discussionBlockedJoin', {
-  "allowed": "This donut is private.",
-  "request": "To request access, ",
-  "click": "click here.",
-  "password": "direct access",
-  "password-placeholder": "password",
-  "join": "join",
-  "request-send" : "Request send"
+  'allowed': 'This donut is private.',
+  'request': 'To request access, ',
+  'click': 'click here.',
+  'password': 'direct access',
+  'password-placeholder': 'password',
+  'join': 'join',
+  'request-send': 'Request send'
 });
 
 class DiscussionBlockedJoin extends Component {
@@ -32,7 +32,7 @@ class DiscussionBlockedJoin extends Component {
     super(props);
   }
 
-  render() {
+  render () {
     let allowUserRequest = this._renderAllowUserRequest();
     let password = this._renderPassword();
 

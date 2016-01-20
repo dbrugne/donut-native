@@ -1,9 +1,7 @@
-var _ = require('underscore');
 var React = require('react-native');
 var {
   TouchableOpacity,
-  Platform
-  } = React;
+} = React;
 var Icon = require('react-native-icons').Icon;
 import ExNavigator from '@exponent/react-native-navigator';
 var navigation = require('../index');
@@ -15,11 +13,8 @@ module.exports = function (model) {
     initial: true,
     model: model, // only for discussion routes
     renderScene: function (navigator) {
-      var Discussion = (model.get('blocked') === false || model.get('type') === 'onetoone') // do not inverse that condition unless you exactly now what you are doing
-        ? require('../../views/Discussion')
-        : require('../../views/DiscussionBlocked');
-
-      return <Discussion navigator={navigator} model={model}/>;
+      let Discussion = require('../../views/Discussion');
+      return <Discussion navigator={navigator} model={model} />;
     },
     getTitle () {
       return model.get('identifier');
