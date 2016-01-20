@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var _ = require('underscore');
 
 var {
   StyleSheet,
@@ -43,8 +44,15 @@ class NavigationRoomsView extends Component {
   }
 
   refreshData () {
+    var rooms = [];
+    _.each(app.rooms.toJSON(), (room) => {
+      // only add room with no group
+      if (!room.group_id) {
+        rooms.push(room);
+      }
+    });
     this.setState({
-      elements: this.state.elements.cloneWithRows(app.rooms.toJSON())
+      elements: this.state.elements.cloneWithRows(rooms)
     });
   }
 
@@ -63,7 +71,7 @@ class NavigationRoomsView extends Component {
         {title}
         <ListView
           dataSource={this.state.elements}
-          renderRow={this.renderElement.bind(this)}
+          renderRow={(e) => this.renderElement(e)}
           style={styles.listView}
           scrollEnabled={false}
         />
@@ -72,23 +80,6 @@ class NavigationRoomsView extends Component {
   }
 
   renderElement (e) {
-    var group = null;
-    if (e.group_id && e.group_name && e.group_id !== this.lastGroup) {
-      this.lastGroup = e.group_id;
-      var groupModel = app.groups.iwhere('group_id', e.group_id);
-      group = (
-        <TouchableHighlight
-          style={[styles.linkBlock, {backgroundColor: (groupModel && groupModel.get('focused')) ? '#666' : '#222'}]}
-          underlayColor= '#414041'
-          onPress={() => navigation.navigate('Group', {name: e.group_name, id: e.group_id})}
-          >
-          <View style={styles.item}>
-            <Text style={styles.itemTitle}>#{e.group_name}</Text>
-          </View>
-        </TouchableHighlight>
-      );
-    }
-
     var model = app.rooms.get(e.room_id);
     if (!model) {
       return null;
@@ -97,15 +88,14 @@ class NavigationRoomsView extends Component {
     if (e.blocked) {
       return (
         <View>
-          {group}
           <TouchableHighlight
             style={[styles.linkBlock, {backgroundColor: (model.get('focused')) ? '#666' : '#222'}]}
             onPress={() => navigation.navigate('Discussion', model)}
             underlayColor= '#414041'
             >
-            <View style={(model.get('group_id')) ? styles.itemGroup : styles.item}>
+            <View style={styles.item}>
               <Text style={[styles.itemTitle, {textDecorationLine: 'line-through'}]}>
-                {(model.get('group_id')) ? '/' + model.get('name') : '#' + model.get('name')}
+                {('#' + model.get('name'))}
               </Text>
             </View>
           </TouchableHighlight>
@@ -122,15 +112,14 @@ class NavigationRoomsView extends Component {
 
     return (
       <View>
-        {group}
       <TouchableHighlight
         style={[styles.linkBlock, {backgroundColor: (model.get('focused')) ? '#666' : '#222'}]}
         onPress={() => navigation.navigate('Discussion', model)}
         underlayColor= '#414041'
         >
-        <View style={(model.get('group_id')) ? styles.itemGroup : styles.item}>
+        <View style={styles.item}>
           <Text style={styles.itemTitle}>
-            {(model.get('group_id')) ? '/' + model.get('name') : '#' + model.get('name')}
+            {('#' + model.get('name'))}
           </Text>
           {badge}
         </View>
@@ -154,12 +143,6 @@ var styles = StyleSheet.create({
     marginVertical: 2,
     flexDirection: 'row',
     alignItems: 'center'
-  },
-  itemGroup: {
-    marginVertical: 5,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 20
   },
   thumbnail: {
     width: 30,
