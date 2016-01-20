@@ -73,6 +73,7 @@ android {
         }
         def host = InetAddress.getLocalHost().getHostAddress()
         buildConfigField "String", "LOCAL_IP", '\"' + host + '\"'
+        buildConfigField "String", "DONUT_VERSION", '\"' + computeVersionName() + '\"'
     }
     signingConfigs {
         release {
