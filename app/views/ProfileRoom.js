@@ -37,7 +37,6 @@ class RoomProfileView extends Component {
     super(props);
 
     this.data = props.data;
-    this.model = app.rooms.addModel(props.data);
   }
 
   render() {

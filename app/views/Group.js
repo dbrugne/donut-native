@@ -28,7 +28,6 @@ var GroupHomeView = React.createClass({
           return;
         }
         app.client.groupRead(this.id, {users: true}, (data) => {
-          app.groups.addModel(data);
           this.setState({model: app.groups.iwhere('group_id', this.id)});
           if (this.state.model) {
             this.state.model.on('redraw', () => this.onRefresh(), this);
