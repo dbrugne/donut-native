@@ -11,7 +11,7 @@ var currentUser = require('../models/current-user');
 var navigation = require('../navigation/index');
 var ChooseUsername = require('../views/ChooseUsername');
 var Keyboard = require('../components/Keyboard');
-var PushNotifications = require('../pushNotification/index');
+var PushNotification = require('../pushNotification/index');
 
 var LoggedIn = React.createClass({
   nextFocus: null,
@@ -32,9 +32,6 @@ var LoggedIn = React.createClass({
     app.on('joinRoom', this.onJoinRoom, this);
     app.on('joinUser', this.onJoinUser, this);
 
-    // push notifications
-    PushNotifications.componentDidMount();
-
     // client (disconnect automatically by react-native after 50s in background)
     app.client.connect();
   },
@@ -42,9 +39,6 @@ var LoggedIn = React.createClass({
     // cleanup donut-client state
     app.off(null, null, this);
     app.reset();
-
-    // push notifications
-    PushNotifications.componentWillUnmount();
 
     // client
     app.client.disconnect();
@@ -59,6 +53,7 @@ var LoggedIn = React.createClass({
     var RootNavigator = require('../navigation/components/RootNavigator');
     return (
       <View style={{flex: 1}}>
+        <PushNotification ref='pushNotification' />
         <Keyboard />
         <RootNavigator />
       </View>
@@ -73,7 +68,7 @@ var LoggedIn = React.createClass({
       this.computeUnviewed();
 
       // handle cold launch from notification
-      PushNotifications.handleInitialNotification();
+      this.refs.pushNotification.handleInitialNotification();
     });
   },
   onDiscussionAdded: function (model) {

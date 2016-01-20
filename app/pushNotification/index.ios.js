@@ -7,41 +7,42 @@ var {
   Alert
 } = React;
 
-var DonutParse = require('react-native').NativeModules.DonutParse;
-var utils = require('./utils');
+var DonutParse = require('NativeModules').DonutParse;
 var navigation = require('../navigation/index');
-
+var utils = require('./utils');
 var debug = require('./../libs/debug')('pushNotification');
 
-module.exports = {
-  appState: 'active', // @todo : refactor to component
-  nextAppFocus: null,
+var PushNotification = React.createClass({
+  getInitialState () {
+    return {
+      appState: 'active',
+      nextAppFocus: null
+    };
+  },
   componentDidMount () {
-    AppStateIOS.addEventListener('change', this.onAppStateChange.bind(this));
-    PushNotificationIOS.addEventListener('register', this.onRegister.bind(this));
-    PushNotificationIOS.addEventListener('notification', this.onNotification.bind(this));
+    AppStateIOS.addEventListener('change', this.onAppStateChange);
+    PushNotificationIOS.addEventListener('register', this.onRegister);
+    PushNotificationIOS.addEventListener('notification', this.onNotification);
 
-    this.checkPermissions(); // @debug
-    this.requestPermissions();
+    this._checkPermissions(); // @debug
+    this._requestPermissions();
   },
   componentWillUnmount () {
-    AppStateIOS.removeEventListener('change', this.onAppStateChange.bind(this));
-    PushNotificationIOS.removeEventListener('register', this.onRegister.bind(this));
-    PushNotificationIOS.removeEventListener('notification', this.onNotification.bind(this));
+    AppStateIOS.removeEventListener('change', this.onAppStateChange);
+    PushNotificationIOS.removeEventListener('register', this.onRegister);
+    PushNotificationIOS.removeEventListener('notification', this.onNotification);
+  },
+  render () {
+    return null;
   },
   onAppStateChange (currentAppState) {
-    this.appState = currentAppState;
+    this.setState({
+      appState: currentAppState
+    });
     if (this.nextAppFocus) {
       // run scheduled notification on app focus
       this.nextAppFocus();
       this.nextAppFocus = null;
-    }
-  },
-  handleInitialNotification () {
-    var n = PushNotificationIOS.popInitialNotification();
-    if (n) {
-      debug.log('handleInitialNotification');
-      this.goToNotificationCenter();
     }
   },
   onRegister (deviceToken) {
@@ -56,6 +57,13 @@ module.exports = {
   onNotification (n) {
     debug.log('onNotification');
     this._handleNotification(n);
+  },
+  handleInitialNotification () {
+    var n = PushNotificationIOS.popInitialNotification();
+    if (n) {
+      debug.log('handleInitialNotification');
+      this._goToNotificationCenter();
+    }
   },
   _handleNotification (pushNotification) {
     debug.log('_handleNotification', pushNotification);
@@ -77,20 +85,22 @@ module.exports = {
 
     debug.log('handleNotification', data);
     Alert.alert(pushNotification.getAlert(), data.title, [
-      {text: 'Go To Notifications', onPress: () => this.goToNotificationCenter()},
+      {text: 'Go To Notifications', onPress: () => this._goToNotificationCenter()},
       {text: 'Cancel', onPress: () => {}, style: 'cancel'}
     ]);
   },
-  checkPermissions () {
+  _checkPermissions () {
     PushNotificationIOS.checkPermissions((permissions) => {
       debug.log('checkPermissions', permissions);
     });
   },
-  requestPermissions () {
+  _requestPermissions () {
     debug.log('requestPermissions');
     PushNotificationIOS.requestPermissions();
   },
-  goToNotificationCenter () {
+  _goToNotificationCenter () {
     navigation.navigate('Notifications');
   }
-};
+});
+
+module.exports = PushNotification;

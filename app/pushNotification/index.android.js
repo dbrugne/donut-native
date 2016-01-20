@@ -1,30 +1,33 @@
 'use strict';
 
+var React = require('react-native');
+var {
+  DeviceEventEmitter
+} = React;
+
 var ParseManagerAndroid = require('NativeModules').NotificationAndroidManager;
 var ParsePushNotification = require('NativeModules').ParsePushNotification;
-var {
-    DeviceEventEmitter
-  } = require('react-native');
 var navigation = require('../navigation/index');
-
-var app = require('./../libs/app');
-var debug = require('./../libs/debug')('notifications');
 var utils = require('./utils');
+var debug = require('./../libs/debug')('pushNotification');
 
-module.exports = {
+var PushNotification = React.createClass({
   componentDidMount () {
-    this.registerDevice();
-    DeviceEventEmitter.addListener('remoteNotificationOpen', (e: Event) => {
-      this.goToNotificationCenter(e);
+    this._registerDevice();
+    DeviceEventEmitter.addListener('remoteNotificationOpen', (e) => {
+      this._goToNotificationCenter(e);
     });
   },
   componentWillUnmount () {
     DeviceEventEmitter.removeAllListeners('remoteNotificationOpen');
   },
-  registerDevice() {
+  render () {
+    return null;
+  },
+  _registerDevice () {
     ParseManagerAndroid.getParseInstallationObjectId((parseObjectId) => {
       if (!parseObjectId) {
-        return debug.warn('registerDevice, no objectId found');
+        return debug.warn('_registerDevice, no objectId found');
       }
       utils.registerDeviceOnDonut(parseObjectId);
     });
@@ -35,12 +38,13 @@ module.exports = {
         return debug.warn('Android popInitialNotification error =>', err);
       }
       if (notification) {
-        this.goToNotificationCenter(notification);
+        this._goToNotificationCenter(notification);
       }
     });
   },
-  goToNotificationCenter (e: Event) {
-    debug.log('Android notification opened =>', e);
+  _goToNotificationCenter () {
     navigation.navigate('Notifications');
   }
-};
+});
+
+module.exports = PushNotification;
