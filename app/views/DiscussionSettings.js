@@ -111,7 +111,7 @@ class DiscussionSettings extends Component {
               text={i18next.t('DiscussionSettings:edit')}
               type='edit-button'
               action
-              onPress={() => navigation.navigate('RoomEdit', this.props.model)}
+              onPress={() => navigation.navigate('RoomEdit', this.props.model.attributes)}
               icon='fontawesome|pencil'
               />
           </View>

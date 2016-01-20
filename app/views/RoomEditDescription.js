@@ -14,13 +14,13 @@ i18next.addResourceBundle('en', 'RoomEditDescription', {
 
 var RoomEditDescriptionView = React.createClass({
   propTypes: {
-    model: React.PropTypes.object,
+    description: React.PropTypes.string,
     navigator: React.PropTypes.object,
     saveRoomData: React.PropTypes.func
   },
   getInitialState: function () {
     return {
-      description: this.props.model.get('description')
+      description: this.props.description
     };
   },
   render: function () {

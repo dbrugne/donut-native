@@ -1,14 +1,16 @@
 'use strict';
 var React = require('react-native');
 var cloudinary = require('./cloudinary');
-var _ = require('underscore');
 
 var {
-  NativeModules
+  NativeModules,
+  Platform,
+  Alert
   } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'imageUpload', {
+  'description': 'Upload image',
   'take': 'Take a picture',
   'choose': 'Choose from gallery',
   'uploading': 'uploading ...'
@@ -19,14 +21,37 @@ let { UIImagePickerManager: ImagePickerManager } = NativeModules;
 var exports = module.exports = {};
 
 exports.pickImage = function (callback) {
-  ImagePickerManager.showImagePicker({
+  var options = {
     maxWidth: 500,
     maxHeight: 500,
-    takePhotoButtonTitle: i18next.t('local:take'),
-    chooseFromLibraryButtonTitle: i18next.t('local:choose')
-  }, (response) => {
-    return callback(response);
-  });
+    takePhotoButtonTitle: i18next.t('imageUpload:take'),
+    chooseFromLibraryButtonTitle: i18next.t('imageUpload:choose')
+  };
+
+  if (Platform.OS !== 'android') {
+    ImagePickerManager.showImagePicker(options, (response) => {
+      return callback(response);
+    });
+  } else {
+    Alert.alert(
+      null,
+      i18next.t('imageUpload:description'),
+      [
+        {
+          text: i18next.t('imageUpload:take'),
+          onPress: () => ImagePickerManager.launchCamera(options, (response) => {
+            return callback(response);
+          })
+        },
+        {
+          text: i18next.t('imageUpload:choose'),
+          onPress: () => ImagePickerManager.launchImageLibrary(options, (response) => {
+            return callback(response);
+          })
+        }
+      ]
+    );
+  }
 };
 
 exports.uploadToCloudinary = function (base64File, tags, preset, callback) {

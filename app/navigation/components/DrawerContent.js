@@ -15,6 +15,7 @@ var Icon = require('react-native-icons').Icon;
 var CurrentUserView = require('./DrawerContentUser');
 var NavigationOnesView = require('./DrawerContentOnes');
 var NavigationRoomsView = require('./DrawerContentRooms');
+var NavigationGroupsView = require('./DrawerContentGroups');
 var navigation = require('../../navigation/index');
 var app = require('../../libs/app');
 
@@ -51,6 +52,7 @@ class DrawerContent extends Component {
         </View>
         <NavigationOnesView />
         <NavigationRoomsView />
+        <NavigationGroupsView />
       </ScrollView>
     );
   }

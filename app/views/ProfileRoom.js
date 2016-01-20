@@ -75,7 +75,7 @@ class RoomProfileView extends Component {
              text={i18next.t('profileRoom:edit')}
              type='edit-button'
              action
-             onPress={() => navigation.navigate('RoomEdit', this.model)}
+             onPress={() => navigation.navigate('RoomEdit', this.data)}
              icon='fontawesome|pencil'
              />
 
@@ -83,7 +83,7 @@ class RoomProfileView extends Component {
              text={i18next.t('profileRoom:manage-users')}
              type='edit-button'
              action
-             onPress={() => navigation.navigate('RoomUsers', this.model)}
+             onPress={() => navigation.navigate('RoomUsers', this.data)}
              icon='fontawesome|users'
              />
           </View>

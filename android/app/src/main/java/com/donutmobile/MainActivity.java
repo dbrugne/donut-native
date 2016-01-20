@@ -64,11 +64,12 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         String env = "none";
         Object buildType = getBuildConfigValue("BUILD_TYPE");
         Object ServerIp = getBuildConfigValue("LOCAL_IP");
+        Object Version = getBuildConfigValue("DONUT_VERSION");
         Bundle b = new Bundle();
         if (buildType == null) {
-            b.putString("BUILD_TYPE", "null");
+            b.putString("DONUT_BUILD", "null");
         } else {
-            b.putString("BUILD_TYPE", buildType.toString());
+            b.putString("DONUT_BUILD", buildType.toString());
         }
         if (buildType != null && buildType.toString() == "release") {
             b.putString("DONUT_ENVIRONMENT", "production");
@@ -76,6 +77,11 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         } else {
             b.putString("DONUT_ENVIRONMENT", "test");
             env = "test";
+        }
+        if (Version == null) {
+            b.putString("DONUT_VERSION", "null");
+        } else {
+            b.putString("DONUT_VERSION", Version.toString());
         }
         if (ServerIp == null) {
             b.putString("REACT_SERVER_ADDRESS", "null");
