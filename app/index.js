@@ -4,7 +4,7 @@ var React = require('react-native');
 
 import CodePush from 'react-native-code-push';
 
-module.exports = React.createClass({
+var Index = React.createClass({
   getInitialState () {
     // init configuration from initialProps from native
     require('./libs/config')(this.props);
@@ -61,3 +61,5 @@ module.exports = React.createClass({
     }
   }
 });
+
+module.exports = Index;
