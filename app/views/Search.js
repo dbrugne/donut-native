@@ -58,6 +58,7 @@ class SearchView extends Component {
               onChangeText={(text) => this.setState({findValue: text})}
               value={this.state.findValue}
               onChange={this.changeText.bind(this)}
+              autoFocus
               />
             <Icon
             name='fontawesome|search'
