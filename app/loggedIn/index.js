@@ -2,57 +2,53 @@
 
 var React = require('react-native');
 var {
-  Component
+  View
 } = React;
-var Launching = require('../views/Launching');
-var ChooseUsername = require('../views/ChooseUsername');
 
 var _ = require('underscore');
-var debug = require('../libs/debug')('navigation');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var navigation = require('../navigation/index');
-
+var ChooseUsername = require('../views/ChooseUsername');
+var Keyboard = require('../components/Keyboard');
 var PushNotifications = require('../pushNotification/index');
 
-class Index extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
+var LoggedIn = React.createClass({
+  nextFocus: null,
+  getInitialState () {
+    return {
       usernameRequired: false
     };
-    this.nextFocus;
-  }
+  },
   componentDidMount () {
-    app.on('usernameRequired', () => this.setState({usernameRequired: true}), this);
+    app.on('usernameRequired', this.onUsernameRequired, this);
     app.on('ready', this.onReady, this);
+
+    app.on('discussionAdded', this.onDiscussionAdded);
+    app.on('discussionRemoved', this.onDiscussionRemoved);
+
     app.on('newEvent', this.onNewEvent, this);
     app.on('viewedEvent', this.computeUnviewed, this);
     app.on('joinRoom', this.onJoinRoom, this);
     app.on('joinUser', this.onJoinUser, this);
-    app.ones.on('remove', this.onRemoveDiscussion, this);
-    app.rooms.on('remove', this.onRemoveDiscussion, this);
-    app.ones.on('add', this.onAddDiscussion, this);
-    app.rooms.on('add', this.onAddDiscussion, this);
 
     // push notifications
     PushNotifications.componentDidMount();
 
-    // client
-    app.client.connect(); // closed automatically (react-native) after 50s when app is backgrounded
-  }
+    // client (disconnect automatically by react-native after 50s in background)
+    app.client.connect();
+  },
   componentWillUnmount () {
+    // cleanup donut-client state
     app.off(null, null, this);
-    app.ones.off(null, null, this);
-    app.rooms.off(null, null, this);
-    app.reset(); // @important
+    app.reset();
 
     // push notifications
     PushNotifications.componentWillUnmount();
 
     // client
     app.client.disconnect();
-  }
+  },
   render () {
     if (this.state.usernameRequired === true) {
       return (
@@ -62,25 +58,73 @@ class Index extends Component {
 
     var RootNavigator = require('../navigation/components/RootNavigator');
     return (
-      <RootNavigator />
+      <View style={{flex: 1}}>
+        <Keyboard />
+        <RootNavigator />
+      </View>
     );
-  }
-  onReady (data) {
-    // normal welcome (async to let RootNavigator render)
-    this.setState({
-      usernameRequired: false // @important
-    }, () => {
+  },
+  onUsernameRequired () {
+    this.setState({usernameRequired: true});
+  },
+  onReady () {
+    // @important: async to let RootNavigator render
+    this.setState({ usernameRequired: false }, () => {
       this.computeUnviewed();
 
       // handle cold launch from notification
       PushNotifications.handleInitialNotification();
     });
-  }
-  computeUnviewed () {
-    var list = app.ones.models.concat(app.rooms.models);
-    var found = _.find(list, (m) => (m.get('unviewed') === true));
-    currentUser.set('unviewed', !!found);
-  }
+  },
+  onDiscussionAdded: function (model) {
+    if (this.nextFocus === model.get('id')) {
+      navigation.navigate('Discussion', model);
+    }
+  },
+  onDiscussionRemoved: function (model) {
+    navigation.removeDiscussionRoute(model);
+  },
+  onJoinRoom (id) {
+    console.log(id);
+    // @todo : factorize in navigation.navigate()
+    if (!id) {
+      return;
+    }
+
+    // already joined
+    var model = app.rooms.get(id);
+    if (model) {
+      return navigation.navigate('Discussion', model);
+    }
+
+    this.nextFocus = id;
+    app.client.roomJoin(id, null, (response) => {
+      if (response.err) {
+        // @todo handle errors
+        return;
+      }
+    });
+  },
+  onJoinUser (id) {
+    // @todo : factorize in navigation.navigate()
+    if (!id) {
+      return;
+    }
+
+    // already joined
+    var model = app.ones.get(id);
+    if (model) {
+      return navigation.navigate('Discussion', model);
+    }
+
+    this.nextFocus = id;
+    app.client.userJoin(id, function (response) {
+      if (response.err) {
+        // @todo handle errors
+        return;
+      }
+    });
+  },
   onNewEvent (type, data, model) {
     if (!data) {
       return;
@@ -109,55 +153,13 @@ class Index extends Component {
     } else {
       app.trigger('redrawNavigationOnes');
     }
+  },
+  computeUnviewed () {
+    // @todo : factorize in donut-client
+    var list = app.ones.models.concat(app.rooms.models);
+    var found = _.find(list, (m) => (m.get('unviewed') === true));
+    currentUser.set('unviewed', !!found);
   }
-  onAddDiscussion (model) {
-    if (this.nextFocus === model.get('id')) {
-      navigation.navigate('Discussion', model);
-    }
-  }
-  onRemoveDiscussion (model) {
-    navigation.removeDiscussionRoute(model);
-  }
-  onJoinRoom (id, forceRejoin) {
-    if (!id) {
-      return;
-    }
+});
 
-    var model = app.rooms.find((m) => m.get('room_id') === id);
-    if (model && !forceRejoin) {
-      return navigation.navigate('Discussion', model);
-    }
-
-    this.nextFocus = id;
-    app.client.roomJoin(id, null, (response) => {
-      if (response.code === 403) {
-        app.rooms.addModel(response.room, response.err);
-      }
-      // @todo handle errors
-      // response.err === 'group-members-only'
-      // response.code === 404
-      // response.code === 403 => blocked model handling
-      // response.code === 500
-    });
-  }
-  onJoinUser (id) {
-    if (!id) {
-      return;
-    }
-
-    console.log(id);
-    var model = app.ones.find((m) => m.get('user_id') === id);
-    if (model) {
-      return navigation.navigate('Discussion', model);
-    }
-
-    this.nextFocus = id;
-    app.client.userJoin(id, function (response) {
-      // @todo handle errors
-      // response.code !== 500 usernotexist
-      // response.code === 500
-    });
-  }
-}
-
-module.exports = Index;
+module.exports = LoggedIn;
