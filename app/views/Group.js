@@ -32,6 +32,7 @@ var GroupHomeView = React.createClass({
           this.setState({model: app.groups.iwhere('group_id', this.id)});
           if (this.state.model) {
             this.state.model.on('redraw', () => this.onRefresh(), this);
+            this.state.model.on('change', () => this.setState({model: app.groups.iwhere('group_id', this.id)}), this);
           }
           this.onData(data);
         });
