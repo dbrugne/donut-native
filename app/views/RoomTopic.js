@@ -51,10 +51,4 @@ var UpdateRoomTopicView = React.createClass({
   }
 });
 
-UpdateRoomTopicView.propTypes = {
-  model: React.PropTypes.object,
-  fetchDataParent: React.PropTypes.func,
-  navigator: React.PropTypes.object
-};
-
 module.exports = UpdateRoomTopicView;
