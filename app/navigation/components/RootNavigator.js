@@ -45,7 +45,7 @@ module.exports = React.createClass({
           ref='rootNavigator'
           showNavigationBar={false}
           initialRoute={state.getInitialRoute()}
-          style={{ flex: 1 }}
+          style={{flex: 1}}
         />
         <ConnectionState/>
       </Drawer>
