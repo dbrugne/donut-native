@@ -5,6 +5,7 @@ var Card = require('../components/Card');
 var LoadingView = require('../components/Loading');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
+var currentUser = require('../models/current-user');
 
 var {
   ListView,
@@ -67,7 +68,7 @@ var GroupUsersView = React.createClass({
   },
 
   _renderElement: function (user) {
-    if (!this.props.model.currentUserIsOwner() && !this.props.model.currentUserIsOp() && !this.props.model.currentUserIsAdmin()) {
+    if (!this.props.model.get('is_op') && !this.props.model.get('is_owner') && !currentUser.isAdmin()) {
       return (
         <Card
           onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
