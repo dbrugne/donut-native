@@ -45,12 +45,7 @@ class Index extends Component {
     app.off(null, null, this);
     app.ones.off(null, null, this);
     app.rooms.off(null, null, this);
-
-    // @todo : factorize this app.reset() function (and add event unmounting)
-    // empty stores (@logout)
-    app.ones.reset();
-    app.rooms.reset();
-    currentUser.clear();
+    app.reset(); // @important
 
     // push notifications
     PushNotifications.componentWillUnmount();
