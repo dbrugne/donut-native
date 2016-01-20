@@ -1,11 +1,11 @@
 var React = require('react-native');
 var i18next = require('../../libs/i18next');
 
-module.exports = function (model, saveRoomData) {
+module.exports = function (website, saveRoomData) {
   return {
     renderScene: function (navigator) {
       let RoomEditWebsite = require('../../views/RoomEditWebsite');
-      return <RoomEditWebsite navigator={navigator} model={model} saveRoomData={saveRoomData}/>;
+      return <RoomEditWebsite navigator={navigator} website={website} saveRoomData={saveRoomData}/>;
     },
     getTitle () {
       return i18next.t('navigation.room-edit-website');

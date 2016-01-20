@@ -28,29 +28,20 @@ i18next.addResourceBundle('en', 'RoomEdit', {
 
 var RoomEditView = React.createClass({
   propTypes: {
-    model: React.PropTypes.object,
+    data: React.PropTypes.object,
     navigator: React.PropTypes.object
   },
   getInitialState: function () {
-    console.log(this.props.model);
     return {
-      description: this.props.model.get('description'),
-      website: this.props.model.get('website'),
-      avatar: this.props.model.get('avatar'),
-      identifier: this.props.model.get('identifier')
+      description: this.props.data.description,
+      website: this.props.data.website,
+      avatar: this.props.data.avatar,
+      identifier: this.props.data.identifier
     };
   },
-  componentDidMount: function () {
-    this.props.model.on('change:description', () => this.setState({description: this.props.model.get('description')}), this);
-    this.props.model.on('change:website', () => this.setState({website: this.props.model.get('website')}), this);
-    this.props.model.on('change:avatar', () => this.setState({avatar: this.props.model.get('avatar')}), this);
-  },
-  componentWillUnmount: function () {
-    this.props.model.off(this, null, null);
-  },
   render: function () {
-    var owner_username = this.props.model.get('owner_username');
-    var owner_id = this.props.model.get('owner_id');
+    var owner_username = this.props.data.owner_username;
+    var owner_id = this.props.data.owner_id;
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
@@ -71,14 +62,14 @@ var RoomEditView = React.createClass({
           first
           />
         <ListItem
-          onPress={() => navigation.navigate('RoomEditDescription', this.props.model, (key, value) => this.saveRoomData(key, value))}
+          onPress={() => navigation.navigate('RoomEditDescription', this.state.description, (key, value) => this.saveRoomData(key, value))}
           text={i18next.t('RoomEdit:description')}
           type='edit-button'
           action
           value={this.state.description}
           />
         <ListItem
-          onPress={() => navigation.navigate('RoomEditWebsite', this.props.model, (key, value) => this.saveRoomData(key, value))}
+          onPress={() => navigation.navigate('RoomEditWebsite', this.state.website, (key, value) => this.saveRoomData(key, value))}
           text={i18next.t('RoomEdit:website')}
           type='edit-button'
           action
@@ -117,7 +108,7 @@ var RoomEditView = React.createClass({
     var updateData = {};
     updateData[key] = value;
 
-    app.client.roomUpdate(this.props.model.get('id'), updateData, (response) => {
+    app.client.roomUpdate(this.props.data.id, updateData, (response) => {
       if (response.err) {
         for (var k in response.err) {
           if (response.err[k] === 'website-url') {
@@ -129,7 +120,9 @@ var RoomEditView = React.createClass({
         return;
       }
 
-      this.props.model.set(key, value);
+      var object = {};
+      object[key] = value;
+      this.setState(object);
       if (callback) {
         callback();
       }

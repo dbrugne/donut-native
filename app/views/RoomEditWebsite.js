@@ -14,13 +14,13 @@ i18next.addResourceBundle('en', 'RoomEditWebsite', {
 
 var RoomEditWebsiteView = React.createClass({
   propTypes: {
-    model: React.PropTypes.object,
+    website: React.PropTypes.string,
     navigator: React.PropTypes.object,
     saveRoomData: React.PropTypes.func
   },
   getInitialState: function () {
     return {
-      website: this.props.model.get('website')
+      website: this.props.website
     };
   },
   render: function () {

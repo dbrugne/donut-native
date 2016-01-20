@@ -1,7 +1,6 @@
 'use strict';
 var React = require('react-native');
 var _ = require('underscore');
-var s = require('../styles/search');
 var LoadingView = require('../components/Loading');
 var Card = require('../components/Card');
 var ListItem = require('../components/ListItem');
@@ -12,12 +11,8 @@ var {
   Component,
   ListView,
   View,
-  TextInput,
   StyleSheet
   } = React;
-var {
-  Icon
-  } = require('react-native-icons');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'RoomUsers', {
@@ -39,7 +34,7 @@ class RoomUsersView extends Component {
   fetchData () {
     this.setState({loaded: false});
     var users = [];
-    app.client.roomUsers(this.props.model.get('id'), {type: 'users'}, (response) => {
+    app.client.roomUsers(this.props.data.id, {type: 'users'}, (response) => {
       _.each(response.users, (u) => {
         users.push(u);
       });
@@ -89,7 +84,7 @@ class RoomUsersView extends Component {
 
   _renderElement (user) {
     // No specific actions possible on this user
-    if (!this.props.model.currentUserIsOwner() && !this.props.model.currentUserIsOp() && !this.props.model.currentUserIsAdmin()) {
+    //if (!this.props.model.currentUserIsOwner() && !this.props.model.currentUserIsOp()) {
       return (
         <Card
           onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
@@ -101,7 +96,7 @@ class RoomUsersView extends Component {
           status={user.status}
           />
       );
-    }
+    //}
 
     return (
       <Card
@@ -112,7 +107,7 @@ class RoomUsersView extends Component {
         realname={user.realname}
         bio={user.bio}
         status={user.status}
-        onEdit={() => navigation.navigate('RoomUser', this.props.model.get('id'), user, () => this.fetchData())}
+        onEdit={() => navigation.navigate('RoomUser', this.props.data.id, user, () => this.fetchData())}
         op={user.isOp}
         owner={user.isOwner}
         devoiced={user.isDevoiced}
@@ -122,7 +117,7 @@ class RoomUsersView extends Component {
 
   _onSearch (text) {
     var users = [];
-    app.client.roomUsers(this.props.model.get('id'), {type: 'users', searchString: text}, (response) => {
+    app.client.roomUsers(this.props.data.id, {type: 'users', searchString: text}, (response) => {
       _.each(response.users, (u) => {
         users.push(u);
       });
@@ -146,7 +141,7 @@ var styles = StyleSheet.create({
 });
 
 RoomUsersView.propTypes = {
-  model: React.PropTypes.object.isRequired
+  data: React.PropTypes.object.isRequired
 };
 
 module.exports = RoomUsersView;
