@@ -39,7 +39,6 @@ class Featured extends Component {
   onReady () {
     app.client.home((response) => {
       if (response && response.rooms) {
-        console.log(response)
         this.setState({
           loaded: true,
           dataSource: this.discoverDataSource.append(response.rooms.list)
