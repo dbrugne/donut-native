@@ -19,7 +19,7 @@ module.exports = AppFactory({
   },
   invalidToken: (callback) => {
     // try to obtain new token
-    currentUser.renewToken(callback);
+    require('../models/current-user').renewToken(callback);
   },
   sio: {
     transports: ['websocket']
