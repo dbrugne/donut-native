@@ -7,7 +7,7 @@ var {
 } = React;
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', __filename, {
+i18next.addResourceBundle('en', 'COMPONENT_NAME', {
   // ...
 });
 
