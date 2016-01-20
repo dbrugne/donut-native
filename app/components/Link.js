@@ -12,9 +12,9 @@ var Link = React.createClass({
     prepend: React.PropTypes.string,
     append: React.PropTypes.string,
     style: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number, React.PropTypes.array]),
-    linkStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number]),
-    prependStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number]),
-    apendStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number])
+    linkStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number, React.PropTypes.array]),
+    prependStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number, React.PropTypes.array]),
+    appendStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number, React.PropTypes.array])
   },
   render () {
     switch (this.props.type) {
