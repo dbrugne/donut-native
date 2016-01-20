@@ -20,7 +20,7 @@ i18next.addResourceBundle('en', 'GroupUsers', {
 
 var GroupUsersView = React.createClass({
   propTypes: {
-    model: React.PropTypes.object
+    data: React.PropTypes.object
   },
 
   getInitialState: function () {
@@ -28,27 +28,23 @@ var GroupUsersView = React.createClass({
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
-      loading: false
+      loading: true
     };
   },
 
   componentDidMount: function () {
-    this.setState({dataSource: this.state.dataSource.cloneWithRows(this.props.model.get('members'))});
+    this.fetchData();
   },
 
   fetchData: function () {
     this.setState({loading: true});
-    app.client.groupRead(this.props.model.get('group_id'), {users: true}, (response) => {
+    app.client.groupRead(this.props.data.group_id, {users: true}, (response) => {
       this.setState({loading: false});
       if (response.err) {
         return alert.show(i18next.t('messages.' + response.err));
       }
       this.setState({dataSource: this.state.dataSource.cloneWithRows(response.members)});
     });
-  },
-
-  componentWillUnmount: function () {
-    this.props.model.off(null, null, this);
   },
 
   render: function () {
@@ -68,7 +64,7 @@ var GroupUsersView = React.createClass({
   },
 
   _renderElement: function (user) {
-    if (!this.props.model.get('is_op') && !this.props.model.get('is_owner') && !currentUser.isAdmin()) {
+    if (!this.props.data.is_op && !this.props.data.is_owner && !currentUser.isAdmin()) {
       return (
         <Card
           onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
@@ -89,7 +85,7 @@ var GroupUsersView = React.createClass({
         image={user.avatar}
         type='user'
         identifier={'@' + user.username}
-        onEdit={() => navigation.navigate('GroupUser', this.props.model.get('group_id'), user, () => this.fetchData())}
+        onEdit={() => navigation.navigate('GroupUser', this.props.data.group_id, user, () => this.fetchData())}
         op={user.is_op}
         owner={user.is_owner}
         status={user.status}

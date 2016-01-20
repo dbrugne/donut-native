@@ -141,7 +141,7 @@ var NavigationGroupsView = React.createClass({
     var badge = null;
     if (model.get('unviewed')) {
       badge = (
-        <Text style={styles.unviewed}>?</Text>
+        <Text style={styles.unviewed}>●</Text>
       );
     }
 

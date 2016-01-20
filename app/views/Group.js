@@ -62,7 +62,7 @@ var GroupHomeView = React.createClass({
       );
     }
     return (
-      <GroupContent data={this.state.data} model={this.state.model} navigator={this.props.navigator} />
+      <GroupContent data={this.state.data} navigator={this.props.navigator} />
     );
   },
   onRefresh: function () {

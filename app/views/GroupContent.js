@@ -174,7 +174,7 @@ class GroupProfileView extends Component {
             type='button'
             last
             action
-            onPress={() => navigation.navigate('GroupUsers', this.props.model)}
+            onPress={() => navigation.navigate('GroupUsers', this.props.data)}
             text={i18next.t('group.group-users')}
             />
         </View>
