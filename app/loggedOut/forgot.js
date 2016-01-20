@@ -5,6 +5,7 @@ var Alert = require('../libs/alert');
 var Link = require('../components/Link');
 var Button = require('../components/Button');
 var LoadingModal = require('../components/LoadingModal');
+var currentUser = require('../models/current-user');
 
 var {
   Component,
