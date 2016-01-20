@@ -63,17 +63,17 @@ https://github.com/facebook/react-native/commit/8db35d492b846f51a758e8ee7e5e402c
 https://github.com/facebook/react-native/issues/4559
 
 ```javascript
- # node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorNavigationBar.js
- rendered = (
-      <View
-        ref={(ref) => {
-          this._components[componentName] = this._components[componentName].set(route, ref);
-        }}
-        pointerEvents={
-          route === this.props.navigator.navigationContext.currentRoute ? 'box-none' : 'none'
-        }
-        style={[initialStage[componentName], {marginLeft: 0, flexDirection: 'column', justifyContent:'center'}]}>
-        {content}
-      </View>
-    );
+  # node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorNavigationBar.js
+  rendered = (
+    <View
+      ref={(ref) => {
+        this._components[componentName] = this._components[componentName].set(route, ref);
+      }}
+//        pointerEvents="box-none"
+      pointerEvents={route === this.props.navigator.navigationContext.currentRoute ? 'box-none' : 'none'}
+//        style={initialStage[componentName]}>
+      style={[initialStage[componentName], {marginLeft: 0, flexDirection: 'column', justifyContent:'center'}]}>
+      {content}
+    </View>
+  );
 ```
