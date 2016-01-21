@@ -5,7 +5,6 @@ var s = require('../styles/style');
 var Link = require('../components/Link');
 var ListItem = require('../components/ListItem');
 var common = require('@dbrugne/donut-common/mobile');
-var DiscussionBlockedJoin = require('./DiscussionBlockedJoin');
 var navigation = require('../navigation/index');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
@@ -23,14 +22,16 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'discussionBlocked', {
   'by': 'by',
   'allowed': 'This donut is private.',
-  'request': 'To request access, ',
+  'disallow': 'This donut is private.',
+  'request': 'To join,',
   'click': 'click here.',
   'password': 'direct access',
   'password-placeholder': 'password',
   'join': 'join',
+  'not-confirmed': 'Not confirmed user can\'t join private discussions',
   'ban': 'You were banned from this donut',
   'groupban': 'You were banned from this community',
-  'kicked': 'You have been kicked out from this donut.',
+  'kick': 'You have been kicked out from this donut.',
   'rejoin': ' to get back in.',
   'close': 'Close this donut'
 });
@@ -68,18 +69,6 @@ var DiscussionBlocked = React.createClass({
       );
     }
 
-    let banned = this._renderBanned();
-    let kicked = null;
-    let join = null;
-    if (!this.state.userConfirmed || this.props.model.get('blocked_why') === 'disallow' || this.props.model.get('blocked_why') === 'other') {
-      join = (
-        <DiscussionBlockedJoin {...this.props} />
-      );
-    }
-    if (!banned && !join) {
-      kicked = this._renderKicked();
-    }
-
     return (
       <View style={{flex: 1}}>
         <ScrollView style={styles.main}>
@@ -89,16 +78,14 @@ var DiscussionBlocked = React.createClass({
             <TouchableHighlight
               onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('owner_id'), identifier: '@' + this.props.model.get('owner_username')})}>
               <Text>
-                <Text>{i18next.t('discussionBlocked:by')} </Text>
+                <Text>{i18next.t('discussionBlocked:by')}</Text>
                 <Text style={styles.ownerUsername}>@{this.props.model.get('owner_username')}</Text>
               </Text>
             </TouchableHighlight>
             {description}
           </View>
 
-          {banned}
-          {kicked}
-          {join}
+          {this._renderActions()}
 
           <ListItem type='button'
                     onPress={() => this.props.model.leaveBlocked()}
@@ -128,43 +115,42 @@ var DiscussionBlocked = React.createClass({
     );
   },
 
-  _renderBanned: function () {
-    if (this.props.model.get('blocked_why') !== 'ban' && this.props.model.get('blocked_why') !== 'groupban') {
-      return null;
-    }
-
-    let banned = (
-      <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
-        <Text style={s.alertErrorText}>
-          {i18next.t('discussionBlocked:' + this.props.model.get('blocked_why'))}
-        </Text>
-      </View>
-    );
-
-    return banned;
-  },
-
-  _renderKicked: function () {
-    return (
-      <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
-        <Link onPress={(() => this.onJoin())}
-              prepend={i18next.t('discussionBlocked:kicked')}
-              append={i18next.t('discussionBlocked:rejoin')}
+  _renderActions: function () {
+    var why = (!this.state.userConfirmed)
+      ? 'not-confirmed'
+      : this.props.model.get('blocked_why');
+    var rejoinButton = (why !== 'ban' && why !== 'groupban' && why !== 'not-confirmed')
+      ? <Link onPress={() => this.onJoin()}
+              prepend={i18next.t('discussionBlocked:request')}
               text={i18next.t('discussionBlocked:click')}
               linkStyle={s.alertErrorText}
               prependStyle={s.alertErrorText}
               appendStyle={s.alertErrorText}
               type='underlined'
-          />
+        />
+      : null;
+    return (
+      <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
+        <Text style={s.alertErrorText}>
+          {i18next.t('discussionBlocked:' + why)}
+        </Text>
+        {rejoinButton}
       </View>
     );
   },
 
   onJoin: function () {
-    app.client.roomJoin(this.props.model.get('id'), null, (response) => {
-      if (response.err) {
-        // @todo handle errors
+    app.client.roomBecomeMember(this.props.model.get('id'), (data) => {
+      if (data.err) {
         return;
+      }
+      if (data && data.infos) {
+        return navigation.navigate('DiscussionBlockJoin', data.infos);
+      } else if (data.success) {
+        app.client.roomJoin(this.props.model.get('id'), null, function (response) {
+          // @todo handle errors
+          return;
+        });
       }
     });
   }

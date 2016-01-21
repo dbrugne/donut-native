@@ -3,117 +3,227 @@
 var React = require('react-native');
 var s = require('../styles/style');
 var app = require('../libs/app');
-var Link = require('../components/Link');
-var date = require('../libs/date');
-var common = require('@dbrugne/donut-common/mobile');
-var Button = require('../components/Button');
 var Alert = require('../libs/alert');
+var ListItem = require('../components/ListItem');
+var LoadingModal = require('../components/LoadingModal');
 
 var {
   View,
-  Component,
-  TextInput,
-  Text
+  Text,
+  TouchableHighlight,
+  StyleSheet
 } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'discussionBlockedJoin', {
-  'allowed': 'This donut is private.',
-  'request': 'To request access, ',
-  'click': 'click here.',
-  'password': 'direct access',
+  'request': 'Request',
+  'request-placeholder': 'Your motivations ...',
+  'request-disclaimer': 'Your contact details and your following message (optional) will be sent to the moderators of this donut.',
+  'password': 'Password',
+  'password-disclaimer': 'Enter the discussion password',
   'password-placeholder': 'password',
   'join': 'join',
-  'request-send': 'Request send'
+  'request-send': 'Request send',
+  'infos': 'Members can participate to the conversation and receive notifications from it.',
+  'invite-only': 'This discussion is only accessible from a moderator invitation.',
+  'allowed-pending': 'You already have a membership request pending.',
+  'wrong-password': 'Incorrect password',
+  'spam-password': 'You need to wait before trying again'
 });
 
-class DiscussionBlockedJoin extends Component {
-  constructor (props) {
-    super(props);
-  }
+var DiscussionBlockedJoin = React.createClass({
+  propTypes: {
+    data: React.PropTypes.object,
+    navigator: React.PropTypes.object
+  },
 
-  render () {
-    let allowUserRequest = this._renderAllowUserRequest();
-    let password = this._renderPassword();
+  getInitialState: function () {
+    return {
+      type: 'request', // type request focused by default
+      request: null,
+      password: null,
+      showLoading: false
+    };
+  },
 
+  render: function () {
     return (
       <View style={{flex: 1}}>
-        {allowUserRequest}
-        {password}
+        <View style={{marginVertical: 10, marginHorizontal: 5, borderRadius: 0}}>
+          <View style={{flexDirection: 'column', flex: 1}}>
+            <Text style={[s.h1, {fontStyle: 'italic'}]}>{i18next.t('discussionBlockedJoin:infos')}</Text>
+          </View>
+        </View>
+        {this._renderDisclaimer()}
+        {this._renderActions()}
+        {
+          (this.state.showLoading)
+            ? <LoadingModal/>
+            : null
+        }
       </View>
     );
-  }
+  },
 
-  _renderAllowUserRequest() {
-    let allowUserRequest = null;
+  _renderActions: function () {
+    if (!this.props.data.allow_user_request && !this.props.data.hasPassword) {
+      return (
+        <View><Text style={[s.h1, {fontStyle: 'italic'}]}>{i18next.t('discussionBlockedJoin:invite-only')}</Text></View>
+      );
+    }
 
-    if (this.props.model.get('allow_user_request')) {
-      allowUserRequest = (
+    if (!this.props.data.allow_user_request && this.props.data.hasPassword) {
+      return this._renderPassword();
+    } else if (this.props.data.allow_user_request && !this.props.data.hasPassword) {
+      return this._renderAllowUserRequest();
+    }
+
+    var focused = (this.state.type === 'request')
+      ? this._renderAllowUserRequest()
+      : this._renderPassword();
+
+    return (
+      <View>
+        <View style={styles.buttonContainer}>
+          <TouchableHighlight onPress={() => this.setState({type: 'request'})}
+                              underlayColor= '#DDD'
+                              style={[styles.button, this.state.type === 'request' && styles.buttonActive]}>
+            <Text style={styles.textButton}>{i18next.t('discussionBlockedJoin:request')}</Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={() => this.setState({type: 'password'})}
+                              underlayColor= '#DDD'
+                              style={[styles.button, this.state.type === 'password' && styles.buttonActive]}>
+            <Text style={styles.textButton}>{i18next.t('discussionBlockedJoin:password')}</Text>
+          </TouchableHighlight>
+        </View>
+        {focused}
+      </View>
+    );
+  },
+
+  _renderDisclaimer: function () {
+    if (!this.props.data.disclaimer) {
+      return null;
+    }
+
+    return (
+      <View style={[s.alertWarning, {marginVertical: 0, marginHorizontal: 0, borderRadius: 0}]}>
+        <View style={{flexDirection: 'column', flex: 1}}>
+          <Text
+            style={[s.alertWarningText, {fontStyle: 'italic'}]}>{this.props.data.disclaimer}</Text>
+        </View>
+      </View>
+    );
+  },
+
+  _renderAllowUserRequest: function () {
+    if (this.props.data.isAllowedPending) {
+      return (
         <View>
-          <Text>{i18next.t('discussionBlockedJoin:request')}</Text>
-          <Link onPress={(this.onUserRequest.bind(this))}
-                text={i18next.t('discussionBlockedJoin:click')}
-                type='underlined'
-            />
+            <Text>{i18next.t('discussionBlockedJoin:allowed-pending')}</Text>
         </View>
       );
     }
 
     return (
       <View>
-        <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
-          <Text style={s.alertErrorText}>{i18next.t('discussionBlockedJoin:allowed')}</Text>
+        <View>
+          <View style={{marginVertical: 10, marginHorizontal: 10}}>
+            <Text>{i18next.t('discussionBlockedJoin:request-disclaimer')}</Text>
+          </View>
+          <ListItem
+            ref='input'
+            onPress= {() => this.onUserRequest()}
+            placeholder={i18next.t('discussionBlockedJoin:request-placeholder')}
+            value={this.state.request}
+            onChange={(event) => this.setState({request: event.nativeEvent.text})}
+            type='input-button'
+            maxLength={200}
+            multiline
+            first
+            />
         </View>
-        {allowUserRequest}
       </View>
     );
-  }
+  },
 
-  onUserRequest() {
-    app.client.roomJoinRequest(this.props.model.get('id'), null, (response) => {
+  onUserRequest: function () {
+    this.setState({showLoading: true});
+    app.client.roomJoinRequest(this.props.data.room_id, this.state.request, (response) => {
+      this.setState({showLoading: false});
       if (response.err) {
         Alert.show(response.err);
       } else {
         Alert.show(i18next.t('discussionBlockedJoin:request-send'));
+        this.props.navigator.pop();
       }
     });
-  }
+  },
 
-  // @todo implement join request with password
-  _renderPassword() {
-    if (!this.props.model.get('hasPassword')) {
+  _renderPassword: function () {
+    if (!this.props.data.hasPassword) {
       return null;
     }
 
     return (
       <View>
-        <View style={{marginTop:10}}>
-          <Text>{i18next.t('discussionBlockedJoin:password')}</Text>
-          <TextInput style={s.input}
-                     autoCapitalize='none'
-                     placeholder={i18next.t('discussionBlockedJoin:password-placeholder')}
-                     onChangeText={(text) => this.setState({password: text})}
+        <View style={{marginTop: 10}}>
+          <View style={{marginBottom: 10, marginHorizontal: 10}}>
+            <Text>{i18next.t('discussionBlockedJoin:password-disclaimer')}</Text>
+          </View>
+          <ListItem
+            ref='input'
+            onPress= {() => this.onValidatePassword()}
+            placeholder={i18next.t('discussionBlockedJoin:password-placeholder')}
+            onChange={(event) => this.setState({password: event.nativeEvent.text})}
+            type='input-button'
+            autoCapitalize='none'
+            first
+            secureTextEntry
             />
-
-          <Button onPress={(this.onValidatePassword.bind(this))}
-                  type='green'
-                  style={{marginHorizontal: 10}}
-                  label={i18next.t('discussionBlockedJoin:join')} />
-
         </View>
       </View>
     );
-  }
+  },
 
-  onValidatePassword() {
-    app.client.roomJoin(this.props.model.get('id'), this.state.password, (repsonse) => {
-      if (repsonse.err) {
-        Alert.show(repsonse.err);
+  onValidatePassword: function () {
+    this.setState({showLoading: true});
+    app.client.roomJoin(this.props.data.room_id, this.state.password, (response) => {
+      this.setState({showLoading: false});
+      if (response.err) {
+        Alert.show(i18next.t('discussionBlockedJoin:' + response.err));
       } else {
-        app.trigger('joinRoom', this.props.model.get('id'));
+        app.trigger('joinRoom', this.props.data.room_id);
+        this.props.navigator.pop();
       }
     });
   }
-}
+});
+var styles = StyleSheet.create({
+  buttonContainer: {
+    borderTopWidth: 3,
+    borderStyle: 'solid',
+    borderColor: '#DDD',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  textButton: {
+    padding: 10,
+    textAlign: 'center',
+    color: '#333'
+  },
+  button: {
+    height: 40,
+    flex: 1,
+    borderBottomWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#3498db'
+  },
+  buttonActive: {
+    borderBottomWidth: 3,
+    borderStyle: 'solid',
+    borderColor: '#3498db'
+  }
+});
 
 module.exports = DiscussionBlockedJoin;

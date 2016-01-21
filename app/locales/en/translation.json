@@ -84,7 +84,8 @@
     "eutc": "EUTC",
     "room-edit": "Edit donut",
     "room-edit-website": "Edit donut website",
-    "room-edit-description": "Edit donut description"
+    "room-edit-description": "Edit donut description",
+    "discussion-blocked-join": "Join discussion"
   },
   "group": {
     "created": "created on",
