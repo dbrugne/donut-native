@@ -32,6 +32,9 @@ class UserProfileView extends Component {
     super(props);
 
     this.data = props.data;
+    this.state = {
+      banned: this.data.banned
+    };
   }
   render () {
     var data = this.data;
@@ -87,25 +90,23 @@ class UserProfileView extends Component {
     );
 
     var bannedLink = null;
-    if (data.banned === true) {
-      // @todo implement ban / deban action
+    if (this.state.banned === true) {
       bannedLink = (
         <ListItem
           text={i18next.t('ProfileUser:unlock')}
           type='edit-button'
           action
-          onPress={() => console.log('deban the user')}
+          onPress={() => this._unbanUser()}
           icon='fontawesome|ban'
           />
       );
     } else {
-      // @todo implement ban / deban action
       bannedLink = (
         <ListItem
           text={i18next.t('ProfileUser:lock')}
           type='edit-button'
           action
-          onPress={() => console.log('ban the user')}
+          onPress={() => this._banUser()}
           icon='fontawesome|ban'
           iconColor='#ff3838'
           />
@@ -154,6 +155,24 @@ class UserProfileView extends Component {
     return (
       <Image style={styles.avatar} source={{uri: avatarUrl}}/>
     );
+  }
+
+  _banUser () {
+    app.client.userBan(this.data.user_id, (response) => {
+      if (response.err) {
+        return;
+      }
+      this.setState({banned: true});
+    });
+  }
+
+  _unbanUser () {
+    app.client.userDeban(this.data.user_id, (response) => {
+      if (response.err) {
+        return;
+      }
+      this.setState({banned: false});
+    });
   }
 }
 
