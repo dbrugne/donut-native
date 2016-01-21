@@ -129,7 +129,7 @@ class DiscussionSettings extends Component {
             action
             />
           <ListItem
-            onPress={() => navigation.navigate('RoomUsers', this.props.model)}
+            onPress={() => navigation.navigate('RoomUsers', this.props.model.get('id'))}
             text={i18next.t('DiscussionSettings:users')}
             icon='fontawesome|users'
             type='button'
