@@ -78,13 +78,11 @@ class RoomCreateView extends Component {
     app.client.groupCreate(this.state.groupName, _.bind(function (response) {
       if (!response.success) {
         this.setState({showLoading: false});
-        if (response.err === 'group-name-already-exist') {
-          return alert.show(i18next.t('messages.group-name-already-exist', {name: this.state.groupName}));
+        if (response.err === 'room-already-exist' || response.err === 'group-name-already-exist') {
+          return alert.show(i18next.t('messages.' + response.err, {name: this.state.groupName}));
+        } else if (response.err) {
+          return alert.show(i18next.t('messages.' + response.err));
         }
-        if (response.err === 'not-confirmed') {
-          return alert.show(i18next.t('messages.not-confirmed'));
-        }
-        return alert.show(i18next.t('messages.unknownerror'));
       }
 
       app.client.groupId(this.state.groupName, _.bind(function (data) {

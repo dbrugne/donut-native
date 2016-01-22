@@ -52,7 +52,10 @@
     "mail-notconfirmed": "Verify your account ! Check your mailbox.",
     "not-confirmed": "Action authorized to verified accounts only.",
     "error-try-again": "Impossible to achieve this request, please try again later",
-    "not-connected": "Looks like there is some connection issues, please retry later"
+    "not-connected": "Looks like there is some connection issues, please retry later",
+    "wrong": "Incorrect e-mail or password",
+    "unknown": "Incorrect e-mail format",
+    "name-wrong-format": "Invalid name"
   },
   "navigation": {
     "discover": "Discover",
