@@ -155,7 +155,32 @@ class GroupProfileView extends Component {
   }
 
   renderAction () {
-    // @todo implement onPress goto create donut
+    var opActions = null;
+    if ((this.state.user.isOwner || this.state.user.isAdmin || this.state.user.isOp) && !this.state.user.isBanned) {
+      opActions = (
+        <View>
+          <ListItem
+            type='button'
+            action
+            onPress={() => navigation.navigate('AvailableSoon')}
+            text={i18next.t('group.edit')}
+            />
+          <ListItem
+            type='button'
+            action
+            onPress={() => navigation.navigate('AvailableSoon')}
+            text={i18next.t('group.access')}
+            />
+          <ListItem
+            type='button'
+            last
+            action
+            onPress={() => navigation.navigate('AvailableSoon')}
+            text={i18next.t('group.allowed-users')}
+            />
+        </View>
+      );
+    }
     if ((this.state.user.isMember || this.state.user.isOwner) && !this.state.user.isBanned) {
       return (
         <View>
@@ -173,6 +198,7 @@ class GroupProfileView extends Component {
             onPress={() => navigation.navigate('GroupUsers', this.props.data)}
             text={i18next.t('group.group-users')}
             />
+          {opActions}
         </View>
       );
     }

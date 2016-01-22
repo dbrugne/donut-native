@@ -193,6 +193,8 @@ module.exports = {
         return require('./routes/RoomEditDescription');
       case 'RoomEditWebsite':
         return require('./routes/RoomEditWebsite');
+      case 'AvailableSoon':
+        return require('./routes/AvailableSoon');
     }
   }
 };

@@ -43,7 +43,8 @@ class DiscussionSettings extends Component {
       topic: this.props.model.get('topic'),
       avatar: this.props.model.get('avatar'),
       identifier: this.props.model.get('identifier'),
-      status: this.props.model.get('status')
+      status: this.props.model.get('status'),
+      banned: this.props.model.get('banned')
     };
   }
   fetchData () {
@@ -114,6 +115,14 @@ class DiscussionSettings extends Component {
               onPress={() => navigation.navigate('RoomEdit', this.props.model.attributes)}
               icon='fontawesome|pencil'
               />
+            <ListItem
+              onPress={() => navigation.navigate('AvailableSoon')}
+              text={i18next.t('DiscussionSettings:access')}
+              icon='fontawesome|users'
+              type='button'
+              action
+              />
+            {this._renderAllowedUsers()}
           </View>
         );
       }
@@ -135,7 +144,6 @@ class DiscussionSettings extends Component {
             type='button'
             action
             />
-          {this._renderAllowedUsers()}
           <Text style={s.listGroupItemSpacing} />
           <ListItem
             onPress={() => this.props.model.leave()}
@@ -160,51 +168,60 @@ class DiscussionSettings extends Component {
     );
   }
 
-  _renderBlock() {
-    return null;
-    // @todo implement user block action
-    // @todo implement user block action
-    //if (this.props.model.get('banned') === false) {
-    //  return (
-    //    <ListItem
-    //      onPress={() => console.log('@todo implement user block action')}
-    //      text={i18next.t('DiscussionSettings:block')+' TODO'}
-    //      icon='fontawesome|ban'
-    //      iconColor='#e74c3c'
-    //      type='button'
-    //      action
-    //      warning
-    //      />
-    //  );
-    //} else {
-    //  return (
-    //    <ListItem
-    //      onPress={() => console.log('@todo implement user deblock action')}
-    //      text={i18next.t('DiscussionSettings:unblock')+' TODO'}
-    //      icon='fontawesome|ban'
-    //      type='button'
-    //      action
-    //      />
-    //  );
-    //}
+  _renderBlock () {
+    if (this.state.banned === false) {
+      return (
+        <ListItem
+          onPress={() => this._banUser()}
+          text={i18next.t('DiscussionSettings:block')}
+          icon='fontawesome|ban'
+          iconColor='#e74c3c'
+          type='button'
+          action
+          warning
+          />
+      );
+    } else {
+      return (
+        <ListItem
+          onPress={() => this._unbanUser()}
+          text={i18next.t('DiscussionSettings:unblock')}
+          icon='fontawesome|ban'
+          type='button'
+          action
+          />
+      );
+    }
   }
 
-  _renderAllowedUsers() {
-    return null;
-    //if (this.props.model.get('mode') !== 'public') {
-    //  return null;
-    //}
-    //
-    //return (
-    //  // @todo open allowed users page
-    //  <ListItem
-    //    onPress={() => console.log('@todo implement allowed users page')}
-    //    text={i18next.t('DiscussionSettings:allowed')+' TODO'}
-    //    icon='fontawesome|shield'
-    //    type='button'
-    //    action={true}
-    //    />
-    //);
+  _banUser () {
+    app.client.userBan(this.props.model.get('id'), (response) => {
+      if (response.err) {
+        return;
+      }
+      this.setState({banned: true});
+    });
+  }
+
+  _unbanUser () {
+    app.client.userDeban(this.props.model.get('id'), (response) => {
+      if (response.err) {
+        return;
+      }
+      this.setState({banned: false});
+    });
+  }
+
+  _renderAllowedUsers () {
+    return (
+      <ListItem
+          onPress={() => navigation.navigate('AvailableSoon')}
+          text={i18next.t('DiscussionSettings:allowed')}
+          icon='fontawesome|shield'
+          type='button'
+          action
+        />
+    );
   }
 
   _renderAvatar (avatar) {

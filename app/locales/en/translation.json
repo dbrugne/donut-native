@@ -88,7 +88,8 @@
     "room-edit": "Edit donut",
     "room-edit-website": "Edit donut website",
     "room-edit-description": "Edit donut description",
-    "discussion-blocked-join": "Join discussion"
+    "discussion-blocked-join": "Join discussion",
+    "available-soon": "Available soon"
   },
   "group": {
     "created": "created on",
