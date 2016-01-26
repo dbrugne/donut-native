@@ -77,3 +77,12 @@ https://github.com/facebook/react-native/issues/4559
     </View>
   );
 ```
+
+**Set android navigation height to one line**
+
+#### node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorNavigationBarStylesAndroid.js
+
+```javascrip
+//var NAV_BAR_HEIGHT = 56;
+var NAV_BAR_HEIGHT = 46;
+```
