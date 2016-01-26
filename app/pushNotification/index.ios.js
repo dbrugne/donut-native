@@ -25,7 +25,7 @@ var PushNotification = React.createClass({
     PushNotificationIOS.addEventListener('register', this.onRegister);
     PushNotificationIOS.addEventListener('notification', this.onNotification);
 
-    app.user.on('change:badge', this.onBadgeChange);
+    app.user.on('change:badge', this.onBadgeChange, this);
 
     this._checkPermissions(); // @debug
     this._requestPermissions();
@@ -34,6 +34,8 @@ var PushNotification = React.createClass({
     AppStateIOS.removeEventListener('change', this.onAppStateChange);
     PushNotificationIOS.removeEventListener('register', this.onRegister);
     PushNotificationIOS.removeEventListener('notification', this.onNotification);
+
+    app.user.off(null, null, this);
   },
   render () {
     return null;
@@ -62,7 +64,7 @@ var PushNotification = React.createClass({
     this._handleNotification(n);
   },
   onBadgeChange (model, value) {
-    PushNotificationIOS.setApplicationIconBadgeNumber(value);
+    PushNotificationIOS.setApplicationIconBadgeNumber(value || 0);
   },
   handleInitialNotification () {
     var n = PushNotificationIOS.popInitialNotification();
