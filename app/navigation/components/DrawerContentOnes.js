@@ -34,17 +34,18 @@ class NavigationOnesView extends Component {
   }
 
   componentDidMount () {
-    app.on('redrawNavigation', this.refreshData, this);
-    app.on('redrawNavigationOnes', this.refreshData, this);
-    app.on('viewedEvent', this.refreshData, this);
-    app.on('focusModelChanged', this.refreshData, this);
+    app.on('redrawNavigation', this.refresh, this);
+    app.on('redrawNavigationOnes', this.refresh, this);
+    app.on('focusedModelChanged', this.refresh, this);
+    app.ones.on('change:unviewed', this.refresh, this);
   }
 
   componentWillUnmount () {
     app.off(null, null, this);
+    app.ones.off(null, null, this);
   }
 
-  refreshData () {
+  refresh () {
     this.setState({
       elements: this.state.elements.cloneWithRows(app.ones.toJSON())
     });

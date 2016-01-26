@@ -59,11 +59,12 @@ class DiscussionEvents extends Component {
     app.on('room:join', this.onJoin, this);
   }
   componentDidMount () {
-    app.on('viewedEvent', this.refreshData.bind(this), this);
-    this.props.model.on('freshEvent', this.addFreshEvent.bind(this), this);
-    this.props.model.on('messageSpam', this.onMarkedAsSpam.bind(this), this);
-    this.props.model.on('messageUnspam', this.onMarkedAsUnspam.bind(this), this);
-    this.props.model.on('messageEdit', this.onEdited.bind(this), this);
+    this.props.model.on('freshEvent', this.addFreshEvent, this);
+    this.props.model.on('messageSpam', this.onMarkedAsSpam, this);
+    this.props.model.on('messageUnspam', this.onMarkedAsUnspam, this);
+    this.props.model.on('messageEdit', this.onEdited, this);
+
+    this.props.model.on('change:unviewed', this.onUnviewedChange, this);
   }
   componentWillUnmount () {
     this.props.model.off(null, null, this);
@@ -269,10 +270,12 @@ class DiscussionEvents extends Component {
       dataSource: this.eventsDataSource.updateEvent(id, {spammed: false})
     });
   }
-  refreshData() {
-    this.setState({
-      dataSource: this.eventsDataSource.removeUnviewedBlock()
-    });
+  onUnviewedChange (model, nowIsUnviewed) {
+    if (!nowIsUnviewed) {
+      this.setState({
+        dataSource: this.eventsDataSource.removeUnviewedBlock()
+      });
+    }
   }
   onEdited (data) {
     var id = data.event;

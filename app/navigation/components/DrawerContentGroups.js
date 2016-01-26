@@ -33,15 +33,17 @@ var NavigationGroupsView = React.createClass({
   },
 
   componentDidMount: function () {
-    app.on('redrawNavigation', this.refreshData, this);
-    app.on('redrawNavigationGroups', this.refreshData, this);
-    app.on('focusModelChanged', this.refreshData, this);
+    app.on('redrawNavigation', this.refresh, this);
+    app.on('redrawNavigationGroups', this.refresh, this);
+    app.on('focusedModelChanged', this.refresh, this);
+
+    // @todo : listen for app.rooms.on('change:unviewed', this.refresh, this);
   },
   componentWillUnmount: function () {
     app.off(null, null, this);
   },
 
-  refreshData: function () {
+  refresh: function () {
     var roomsAndGroups = [];
     _.each(app.rooms.toJSON(), (room) => {
       if (room.group_id) {

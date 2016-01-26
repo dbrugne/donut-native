@@ -8,6 +8,7 @@ var {
 } = React;
 
 var DonutParse = require('NativeModules').DonutParse;
+var app = require('../libs/app');
 var navigation = require('../navigation/index');
 var utils = require('./utils');
 var debug = require('./../libs/debug')('pushNotification');
@@ -23,6 +24,8 @@ var PushNotification = React.createClass({
     AppStateIOS.addEventListener('change', this.onAppStateChange);
     PushNotificationIOS.addEventListener('register', this.onRegister);
     PushNotificationIOS.addEventListener('notification', this.onNotification);
+
+    app.user.on('change:badge', this.onBadgeChange);
 
     this._checkPermissions(); // @debug
     this._requestPermissions();
@@ -57,6 +60,9 @@ var PushNotification = React.createClass({
   onNotification (n) {
     debug.log('onNotification');
     this._handleNotification(n);
+  },
+  onBadgeChange (model, value) {
+    PushNotificationIOS.setApplicationIconBadgeNumber(value);
   },
   handleInitialNotification () {
     var n = PushNotificationIOS.popInitialNotification();

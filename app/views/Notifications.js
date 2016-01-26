@@ -52,15 +52,13 @@ class NotificationsView extends Component {
   }
 
   componentDidMount () {
-    app.user.on('change:unreadNotifications', this.fetchData, this);
+    app.client.on('notification:new', this.newIncomingNotification, this);
     app.client.on('notification:done', this.onDoneNotification, this);
     app.client.on('notification:viewed', this.onViewedNotification, this);
-    app.on('viewedEvent', this.updateDiscussionsUnviewed, this);
-    app.on('unviewedEvent', this.updateDiscussionsUnviewed, this);
+    app.user.on('change:unviewedDiscussion', this.updateDiscussionsUnviewed, this);
   }
 
   componentWillUnmount () {
-    app.user.off(null, null, this);
     app.client.off(null, null, this);
     app.off(null, null, this);
   }
@@ -73,6 +71,10 @@ class NotificationsView extends Component {
     return app.client.notificationRead(null, null, 10, this.onData.bind(this));
   }
 
+  newIncomingNotification (data) {
+    // @todo : detect if focus, if yes push on top on listview
+  }
+
   onData (response) {
     if (response.err) {
       return this.setState({
@@ -82,7 +84,7 @@ class NotificationsView extends Component {
     this.setState({
       loaded: true,
       dataSource: this.notificationsDataSource.append(response.notifications),
-      unread: app.user.getUnreadNotifications(),
+      unread: app.user.get('unviewedNotification'),
       more: response.more
     });
   }
@@ -132,31 +134,29 @@ class NotificationsView extends Component {
       );
     }
 
-    let unreadNotifications = null;
-    if (this.state.unread === 0) {
-      unreadNotifications = (
+    let unread = (this.state.unread === 0)
+      ? (
         <View style={{marginHorizontal: 10, marginBottom: 30}}>
           <Text>{i18next.t('notifications.no-unread-notification')}</Text>
         </View>
+      )
+      : (
+        <ListItem
+          type='button'
+          onPress={this.tagAllAsRead.bind(this)}
+          loading={this.state.loadingTagAsRead}
+          first
+          last
+          action
+          title={i18next.t('notifications.notification-count', {count: this.state.unread})}
+          text={i18next.t('notifications.mark-as-read')}
+        />
       );
-    } else {
-      unreadNotifications = (
-        <ListItem type='button'
-                  onPress={this.tagAllAsRead.bind(this)}
-                  loading={this.state.loadingTagAsRead}
-                  first
-                  last
-                  action
-                  title={i18next.t('notifications.notification-count', {count: this.state.unread})}
-                  text={i18next.t('notifications.mark-as-read')}
-          />
-      );
-    }
 
     return (
       <View style={{marginTop: 30}}>
         {unviewedDiscussions}
-        {unreadNotifications}
+        {unread}
       </View>
     );
   }
@@ -311,7 +311,7 @@ class NotificationsView extends Component {
     }
   }
 
-  onChangeVisibleRows(visibleRows, changedRows) {
+  onChangeVisibleRows (visibleRows, changedRows) {
     var idxs = [];
     _.each(visibleRows.s1, (e, idx) => {idxs.push(idx)});
 
@@ -331,11 +331,7 @@ class NotificationsView extends Component {
         return;
       }
 
-      app.client.notificationViewed(unviewedVisibleIds, false, (data) => {
-        if (data.err) {
-          alert.show(i18next.t('messages.' + data.err));
-        }
-      });
+      app.client.notificationViewed(unviewedVisibleIds, false);
     }, this.visibleRowsTimer);
   }
 
@@ -396,11 +392,7 @@ class NotificationsView extends Component {
     }, this.timeoutTimer);
 
     // call client to tag selected notifications as done and display error message if required
-    app.client.notificationDone(selectedIds, false, (err, data) => {
-      if (err && err.err) {
-        alert.show(i18next.t('messages.' + err.err));
-      }
-    });
+    app.client.notificationDone(selectedIds, false);
   }
 
   /**
@@ -421,7 +413,7 @@ class NotificationsView extends Component {
     this.setState(state);
   }
 
-  onViewedNotification(data) {
+  onViewedNotification (data) {
     if (!data.notifications) {
       return;
     }
@@ -438,15 +430,15 @@ class NotificationsView extends Component {
 
   _renderContent (n) {
     return (
-      <View style={[{height: 62, paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderBottomWidth:1, borderBottomColor:'#f1f1f1', borderStyle:'solid'}, !n.viewed && {borderBottomColor:'#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
-        <View style={{ flexDirection:'row', justifyContent:'center', flex:1}}>
+      <View style={[{height: 62, paddingTop: 5, paddingBottom: 5, paddingLeft: 5, paddingRight: 5, borderBottomWidth: 1, borderBottomColor: '#f1f1f1', borderStyle: 'solid'}, !n.viewed && {borderBottomColor:'#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', flex:1}}>
           {this._renderAvatar(n)}
           <View
-            style={{ flexDirection:'column', justifyContent:'center', flex:1, marginLeft:10}}>
+            style={{ flexDirection: 'column', justifyContent: 'center', flex:1, marginLeft:10}}>
             <Text>{n.message}</Text>
-            <View style={{ flexDirection:'row', alignItems:'center', flex:1}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', flex:1}}>
               <Text
-                style={{ flex:1, fontSize:14 }}>{this._renderByUsername(n)}</Text>
+                style={{ flex: 1, fontSize: 14 }}>{this._renderByUsername(n)}</Text>
               <Text
                 style={{ color:'#999999', fontSize:12 }}>{date.dayMonthTime(n.time)}</Text>
             </View>
@@ -524,16 +516,15 @@ class NotificationsView extends Component {
     app.client.notificationViewed([], true, () => {
       clearTimeout(this.timeouts.loadingTagAsRead);
       this.setState({
-        loadingTagAsRead: false,
-        unread: 0
+        loadingTagAsRead: false
       });
     });
   }
 
   updateDiscussionsUnviewed () {
-    this.setState(
-      {discussionsUnviewed: app.getUnviewed()}
-    );
+    this.setState({
+      discussionsUnviewed: app.getUnviewed()
+    });
   }
 }
 

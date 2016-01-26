@@ -35,7 +35,7 @@ class DrawerContent extends Component {
     });
   }
   componentDidMount () {
-    app.user.on('change:unreadNotifications', this.updateUnreadCount, this);
+    app.user.on('change:unviewedNotification', this.updateBadge, this);
   }
   componentWillUnmount () {
     app.user.off(null, null, this);
@@ -83,9 +83,9 @@ class DrawerContent extends Component {
       </TouchableHighlight>
     );
   }
-  updateUnreadCount () {
+  updateBadge () {
     this.setState(
-      {unread: app.user.getUnreadNotifications()}
+      {unread: app.user.get('unviewedNotification')}
     );
   }
 }

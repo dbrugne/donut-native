@@ -34,16 +34,17 @@ class NavigationRoomsView extends Component {
   }
 
   componentDidMount () {
-    app.on('redrawNavigation', this.refreshData, this);
-    app.on('redrawNavigationRooms', this.refreshData, this);
-    app.on('viewedEvent', this.refreshData, this);
-    app.on('focusModelChanged', this.refreshData, this);
+    app.on('redrawNavigation', this.refresh, this);
+    app.on('redrawNavigationRooms', this.refresh, this);
+    app.on('focusedModelChanged', this.refresh, this);
+    app.rooms.on('change:unviewed', this.refresh, this);
   }
   componentWillUnmount () {
     app.off(null, null, this);
+    app.rooms.off(null, null, this);
   }
 
-  refreshData () {
+  refresh () {
     var rooms = [];
     _.each(app.rooms.toJSON(), (room) => {
       // only add room with no group

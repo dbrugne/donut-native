@@ -27,8 +27,6 @@ var LoggedIn = React.createClass({
     app.on('discussionAdded', this.onDiscussionAdded);
     app.on('discussionRemoved', this.onDiscussionRemoved);
 
-    app.on('newEvent', this.onNewEvent, this);
-    app.on('viewedEvent', this.computeUnviewed, this);
     app.on('joinRoom', this.onJoinRoom, this);
     app.on('joinUser', this.onJoinUser, this);
 
@@ -65,8 +63,6 @@ var LoggedIn = React.createClass({
   onReady () {
     // @important: async to let RootNavigator render
     this.setState({ usernameRequired: false }, () => {
-      this.computeUnviewed();
-
       // handle cold launch from notification
       this.refs.pushNotification.handleInitialNotification();
     });
@@ -80,7 +76,6 @@ var LoggedIn = React.createClass({
     navigation.removeDiscussionRoute(model);
   },
   onJoinRoom (id) {
-    console.log(id);
     // @todo : factorize in navigation.navigate()
     if (!id) {
       return;
@@ -119,41 +114,6 @@ var LoggedIn = React.createClass({
         return;
       }
     });
-  },
-  onNewEvent (type, data, model) {
-    if (!data) {
-      return;
-    }
-
-    // last event time
-    model.set('last', Date.now());
-
-    var collection = (model.get('type') === 'room')
-      ? app.rooms
-      : app.ones;
-
-    var uid = data.from_user_id || data.user_id;
-
-    // badge (even if focused), only if user sending the message is not currentUser
-    if (model.get('unviewed') !== true && currentUser.get('user_id') !== uid) {
-      model.set('unviewed', true);
-      model.set('first_unviewed', data.id);
-      currentUser.set('unviewed', true);
-    }
-
-    // update navigation
-    collection.sort();
-    if (model.get('type') === 'room') {
-      app.trigger('redrawNavigationRooms');
-    } else {
-      app.trigger('redrawNavigationOnes');
-    }
-  },
-  computeUnviewed () {
-    // @todo : factorize in donut-client
-    var list = app.ones.models.concat(app.rooms.models);
-    var found = _.find(list, (m) => (m.get('unviewed') === true));
-    currentUser.set('unviewed', !!found);
   }
 });
 

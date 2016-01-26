@@ -2,8 +2,7 @@
 
 var React = require('react-native');
 var {
-  TouchableOpacity,
-  Platform
+  TouchableOpacity
 } = React;
 
 var Icon = require('react-native-icons').Icon;
@@ -13,12 +12,12 @@ var app = require('../../libs/app');
 module.exports = React.createClass({
   getInitialState () {
     return {
-      unviewed: app.user.get('unviewed')
+      unviewed: !!app.user.get('unviewedDiscussion')
     };
   },
   componentDidMount () {
-    app.user.on('change:unviewed', (model, value) => this.setState({
-      unviewed: value
+    app.user.on('change:unviewedDiscussion', (model, value) => this.setState({
+      unviewed: !!value
     }), this);
   },
   componentWillUnmount () {
