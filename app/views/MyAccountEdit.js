@@ -1,6 +1,5 @@
 var React = require('react-native');
 var app = require('../libs/app');
-var Platform = require('Platform');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
 var LoadingView = require('../components/Loading');
@@ -46,26 +45,21 @@ class MyAccountInformation extends Component {
     };
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     currentUser.off('change:avatar');
     currentUser.off('change:color');
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetchData();
     currentUser.on('change:avatar', (model) => {
       this.setState({
         avatar: common.cloudinary.prepare(model.get('avatar'), 120)
       });
     });
-    currentUser.on('change:color', (model) => {
-      this.setState({
-        color: model.get('color')
-      });
-    });
   }
 
-  fetchData() {
+  fetchData () {
     app.client.userRead(currentUser.get('user_id'), {more: true, admin: true}, (response) => {
       this.setState({
         realname: response.realname,
@@ -79,7 +73,7 @@ class MyAccountInformation extends Component {
     });
   }
 
-  saveUserData(key, value, callback) {
+  saveUserData (key, value, callback) {
     var updateData = {};
     updateData[key] = value;
 
@@ -114,7 +108,7 @@ class MyAccountInformation extends Component {
     });
   }
 
-  render() {
+  render () {
     if (!this.state.loaded) {
       return (
         <LoadingView />
@@ -164,7 +158,7 @@ class MyAccountInformation extends Component {
                     type='edit-button'
                     action
                     value={this.state.location}
-                    onPress={() => this.onUserEdit (require('./MyAccountEditLocation'), this.state.location)}
+                    onPress={() => this.onUserEdit(require('./MyAccountEditLocation'), this.state.location)}
             />
 
           <ListItem text={i18next.t('myAccountEdit:website')}
@@ -183,7 +177,7 @@ class MyAccountInformation extends Component {
   }
 
   _renderAvatar (avatar) {
-      if (!avatar) {
+    if (!avatar) {
       return null;
     }
 
