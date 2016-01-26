@@ -26,7 +26,7 @@ class Discover extends Component {
   componentDidMount () {
     currentUser.on('change:confirmed', () => {
       this.setState({userConfirmed: currentUser.get('confirmed')});
-    });
+    }, this);
   }
   componentWillUnmount () {
     currentUser.off(null, null, this);
