@@ -7,14 +7,13 @@ var ListItemSwitch = require('./ListItem/Switch');
 var ListItemInput = require('./ListItem/Input');
 var ListItemInputButton = require('./ListItem/InputButton');
 var ListItemEdit = require('./ListItem/Edit');
-var ListItemColor = require('./ListItem/Color');
 var ListItemText = require('./ListItem/Text');
 
 module.exports = React.createClass({
   propTypes: {
     onPress: React.PropTypes.func, // callback action when component is clicked
     text: React.PropTypes.string, // string to display on element
-    type: React.PropTypes.oneOf(['switch', 'button', 'edit-button', 'color-button', 'input-button', 'input', 'text']).isRequired, // type of the ListItem
+    type: React.PropTypes.oneOf(['switch', 'button', 'edit-button', 'input-button', 'input', 'text']).isRequired, // type of the ListItem
     onSwitch: React.PropTypes.func, // callback action on switch component if any
     switchValue: React.PropTypes.bool, // boolean, value of switch button if any
     action: React.PropTypes.bool, // boolean to display right arrow
@@ -27,7 +26,6 @@ module.exports = React.createClass({
     title: React.PropTypes.string, // title to display above the ListItem
     help: React.PropTypes.string, // help message to display bellow the ListItem
     style: React.PropTypes.object, // custom styles to apply to ListItem
-    color: React.PropTypes.string, // color of the ListItemColor
     value: React.PropTypes.string, // value of the ListItemEdit
     autoCapitalize: React.PropTypes.string, // value of the ListItemEdit
     keyboardType: React.PropTypes.string, // value of the ListItemEdit
@@ -41,8 +39,6 @@ module.exports = React.createClass({
         return (<ListItemButton {...this.props} />);
       case 'edit-button':
         return (<ListItemEdit {...this.props} />);
-      case 'color-button':
-        return (<ListItemColor {...this.props} />);
       case 'input-button':
         return (<ListItemInputButton {...this.props} />);
       case 'input':
