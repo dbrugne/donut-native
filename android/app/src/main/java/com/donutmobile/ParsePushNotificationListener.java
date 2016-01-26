@@ -131,7 +131,7 @@ public class ParsePushNotificationListener extends ParsePushBroadcastReceiver {
     @Override
     protected int getSmallIconId(Context context, Intent intent) {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
-        return useWhiteIcon ? R.mipmap.ic_silhouette : R.mipmap.ic_launcher;
+        return useWhiteIcon ? R.drawable.ic_silhouette : R.mipmap.ic_launcher;
     }
 
     @Override

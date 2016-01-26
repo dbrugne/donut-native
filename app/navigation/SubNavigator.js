@@ -14,7 +14,7 @@ module.exports = function (state, id, initialRoute) {
     focused: false,
     renderScene: function (rootNavigator) {
       var navigationBarHeight = (Platform.OS === 'android')
-        ? 56
+        ? 46
         : 64;
 
       return (

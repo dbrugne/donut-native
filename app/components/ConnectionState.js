@@ -70,7 +70,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     height: 30,
     position: 'absolute',
-    top: (Platform.OS === 'android') ? 56 : 64,
+    top: (Platform.OS === 'android') ? 46 : 64,
     left: 0,
     right: 0
   },
