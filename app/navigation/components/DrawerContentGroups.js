@@ -40,7 +40,8 @@ var NavigationGroupsView = React.createClass({
     app.on('redrawNavigationGroups', this.refresh, this);
     app.on('focusedModelChanged', this.refresh, this);
 
-    // @todo : listen for app.rooms.on('change:unviewed', this.refresh, this);
+    app.rooms.on('change:unviewed', this.refresh, this);
+    app.rooms.off(null, null, this);
   },
   componentWillUnmount: function () {
     app.off(null, null, this);
