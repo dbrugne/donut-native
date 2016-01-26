@@ -99,7 +99,7 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
         CodePush codePush = new CodePush(codePushKey, this);
 
         // @FacebookLogin
-        mFacebookLoginPackage = new FacebookLoginPackage(this);
+        mFacebookLoginPackage = new FacebookLoginPackage();
 
         // @ImagePicker
         mImagePicker = new ImagePickerPackage(this);
@@ -191,9 +191,6 @@ public class MainActivity extends FragmentActivity implements DefaultHardwareBac
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // @FacebookLogin
-        mFacebookLoginPackage.handleActivityResult(requestCode, resultCode, data);
 
         // @ImagePicker
         mImagePicker.handleActivityResult(requestCode, resultCode, data);

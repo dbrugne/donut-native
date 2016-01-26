@@ -25,7 +25,8 @@ exports.pickImage = function (callback) {
     maxWidth: 500,
     maxHeight: 500,
     takePhotoButtonTitle: i18next.t('imageUpload:take'),
-    chooseFromLibraryButtonTitle: i18next.t('imageUpload:choose')
+    chooseFromLibraryButtonTitle: i18next.t('imageUpload:choose'),
+    angle: 0
   };
 
   if (Platform.OS !== 'android') {
