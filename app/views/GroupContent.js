@@ -7,7 +7,8 @@ var {
   Text,
   Component,
   Image,
-  ScrollView
+  ScrollView,
+  ListView
 } = React;
 var {
   Icon
@@ -24,16 +25,17 @@ var hyperlink = require('../libs/hyperlink');
 var Link = require('../components/Link');
 var ListItem = require('../components/ListItem');
 var alert = require('../libs/alert');
+var Card = require('../components/Card');
 
 var i18next = require('../libs/i18next');
 
 class GroupProfileView extends Component {
   constructor (props) {
     super(props);
-
-    this.members_count = (props.data.members && props.data.members.length) ? props.data.members.length : 0,
-
+    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.members_count = (props.data.members && props.data.members.length) ? props.data.members.length : 0;
     this.state = {
+      dataRooms: ds.cloneWithRows(props.data.rooms),
       user: {
         isMember: this.isCurrentUserIsMember(),
         isOwner: currentUser.get('user_id') === props.data.owner_id,
@@ -73,6 +75,7 @@ class GroupProfileView extends Component {
 
         <Text style={styles.listGroupItemSpacing}/>
         {this.renderLinks()}
+        {this.renderRooms()}
 
       </ScrollView>
     );
@@ -152,7 +155,32 @@ class GroupProfileView extends Component {
   }
 
   renderAction () {
-    // @todo implement onPress goto create donut
+    var opActions = null;
+    if ((this.state.user.isOwner || this.state.user.isAdmin || this.state.user.isOp) && !this.state.user.isBanned) {
+      opActions = (
+        <View>
+          <ListItem
+            type='button'
+            action
+            onPress={() => navigation.navigate('AvailableSoon')}
+            text={i18next.t('group.edit')}
+            />
+          <ListItem
+            type='button'
+            action
+            onPress={() => navigation.navigate('AvailableSoon')}
+            text={i18next.t('group.access')}
+            />
+          <ListItem
+            type='button'
+            last
+            action
+            onPress={() => navigation.navigate('AvailableSoon')}
+            text={i18next.t('group.allowed-users')}
+            />
+        </View>
+      );
+    }
     if ((this.state.user.isMember || this.state.user.isOwner) && !this.state.user.isBanned) {
       return (
         <View>
@@ -167,16 +195,10 @@ class GroupProfileView extends Component {
             type='button'
             last
             action
-            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user})}
-            text={i18next.t('group.donut-list')}
-            />
-          <ListItem
-            type='button'
-            last
-            action
             onPress={() => navigation.navigate('GroupUsers', this.props.data)}
             text={i18next.t('group.group-users')}
             />
+          {opActions}
         </View>
       );
     }
@@ -189,13 +211,7 @@ class GroupProfileView extends Component {
             action
             onPress={() => navigation.navigate('GroupAsk', this.props.data.group_id)}
             text={i18next.t('group.request-membership')}
-            />
-          <ListItem
-            type='button'
             last
-            action
-            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user})}
-            text={i18next.t('group.donut-list')}
             />
         </View>
       );
@@ -228,45 +244,41 @@ class GroupProfileView extends Component {
     );
   }
 
+  renderRooms () {
+    return (
+      <ListView
+        dataSource={this.state.dataRooms}
+        renderRow={(e) => this.renderElement(e)}
+        style={{alignSelf: 'stretch', marginTop: 10}}
+        renderFooter={() => {
+          return (
+            <ListItem
+            type='button'
+            last
+            action
+            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user})}
+            text={i18next.t('group.see-all')}
+            />
+            ); }
+        }
+        />
+    );
+  }
+
+  renderElement (room) {
+    return (
+      <Card
+        onPress={() => navigation.navigate('Profile', {type: 'room', id: room.room_id, identifier: room.identifier})}
+        image={room.avatar}
+        type='room'
+        identifier={room.identifier}
+        description={room.description}
+        mode={(!room.mode || room.mode === 'public') ? 'public' : (room.allow_group_member) ? 'member' : 'private'}
+        />
+    );
+  }
+
   renderLinks () {
-    // var list = null;
-    // if (this.state.user.isOwner || this.state.user.isAdmin || this.state.user.isOp) {
-    //   // @todo implement onpress goto group edit
-    //   // @todo implement onpress goto group users
-    //   // @todo implement onpress goto group access
-    //   // @todo implement onpress goto group users-list
-    //   // @todo implement onpress goto group user-allowed
-    //   // @todo implement onpress goto group exit
-    //   list = (
-    //     <View>
-    //       <ListItem onPress={() => console.log('@todo implement group edit')}
-    //                 text={i18next.t('group.edit') + ' TODO'}
-    //                 first={true}
-    //                 action='true'
-    //                 type='button'
-    //                 icon='fontawesome|pencil'
-    //         />
-    //       <ListItem onPress={() => console.log('@todo implement group access')}
-    //                 text={i18next.t('group.access') + ' TODO'}
-    //                 action='true'
-    //                 type='button'
-    //                 icon='fontawesome|key'
-    //         />
-    //       <ListItem onPress={() => console.log('@todo implement group user-list')}
-    //                 text={i18next.t('group.user-list') + ' TODO'}
-    //                 action='true'
-    //                 type='button'
-    //                 icon='fontawesome|users'
-    //         />
-    //       <ListItem onPress={() => console.log('@todo implement group allowed-users')}
-    //                 text={i18next.t('group.allowed-users') + ' TODO'}
-    //                 action='true'
-    //                 type='button'
-    //                 icon='fontawesome|check-circle'
-    //         />
-    //     </View>
-    //   );
-    // }
     var quit = null;
     if (!this.state.user.isOwner && this.state.user.isMember) {
       quit = (

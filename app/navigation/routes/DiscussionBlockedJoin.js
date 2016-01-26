@@ -1,15 +1,14 @@
 var React = require('react-native');
 var i18next = require('../../libs/i18next');
 
-module.exports = function (id) {
+module.exports = function (data) {
   return {
-    id: 'room-users-' + id,
     renderScene: function (navigator) {
-      let RoomUsers = require('../../views/RoomUsers');
-      return <RoomUsers navigator={navigator} id={id} />;
+      let RoomEdit = require('../../views/DiscussionBlockedJoin');
+      return <RoomEdit navigator={navigator} data={data}/>;
     },
     getTitle () {
-      return i18next.t('navigation.room-users');
+      return i18next.t('navigation.discussion-blocked-join');
     },
     onBack () {
       this.scene.props.navigator.pop();

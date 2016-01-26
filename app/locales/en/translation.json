@@ -52,7 +52,10 @@
     "mail-notconfirmed": "Verify your account ! Check your mailbox.",
     "not-confirmed": "Action authorized to verified accounts only.",
     "error-try-again": "Impossible to achieve this request, please try again later",
-    "not-connected": "Looks like there is some connection issues, please retry later"
+    "not-connected": "Looks like there is some connection issues, please retry later",
+    "wrong": "Incorrect e-mail or password",
+    "unknown": "Incorrect e-mail format",
+    "name-wrong-format": "Invalid name"
   },
   "navigation": {
     "discover": "Discover",
@@ -84,7 +87,9 @@
     "eutc": "EUTC",
     "room-edit": "Edit donut",
     "room-edit-website": "Edit donut website",
-    "room-edit-description": "Edit donut description"
+    "room-edit-description": "Edit donut description",
+    "discussion-blocked-join": "Join discussion",
+    "available-soon": "Available soon"
   },
   "group": {
     "created": "created on",
@@ -97,7 +102,7 @@
     "request-membership": "request membership",
     "create-donut": "create a donut",
     "manage-members": "manage memebers",
-    "donut-list": "donut list",
+    "see-all": "see all donuts",
     "message-membership": "You are not yet a member of this community. You can join public donuts or request access to a private donut. Members have special privileges such as direct access to certain private donuts and to other members of this community.Before you request membership, have a glance at this community access conditions",
     "message-member": "You are a member of this community",
     "message-ban": "You were banned from this community",

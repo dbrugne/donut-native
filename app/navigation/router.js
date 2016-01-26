@@ -157,6 +157,8 @@ module.exports = {
         return require('./routes/Discussion');
       case 'DiscussionSettings':
         return require('./routes/DiscussionSettings');
+      case 'DiscussionBlockJoin':
+        return require('./routes/DiscussionBlockedJoin');
       case 'MyAccount':
         return require('./routes/MyAccount');
       case 'MyAccountEmail':
@@ -191,6 +193,8 @@ module.exports = {
         return require('./routes/RoomEditDescription');
       case 'RoomEditWebsite':
         return require('./routes/RoomEditWebsite');
+      case 'AvailableSoon':
+        return require('./routes/AvailableSoon');
     }
   }
 };

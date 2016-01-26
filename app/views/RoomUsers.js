@@ -6,9 +6,9 @@ var Card = require('../components/Card');
 var ListItem = require('../components/ListItem');
 var app = require('../libs/app');
 var navigation = require('../navigation/index');
+var currentUser = require('../models/current-user');
 
 var {
-  Component,
   ListView,
   View,
   StyleSheet
@@ -20,39 +20,48 @@ i18next.addResourceBundle('en', 'RoomUsers', {
   'search': 'search'
 }, true, true);
 
-class RoomUsersView extends Component {
-  constructor (props) {
-    super(props);
+var RoomUsersView = React.createClass({
+  propTypes: {
+    navigator: React.PropTypes.object,
+    id: React.PropTypes.string.isRequired
+  },
+  getInitialState: function () {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.username !== r2.username});
-    this.state = {
+    return {
       loaded: false,
       dataSource: ds.cloneWithRows([]),
       findValue: ''
     };
-  }
+  },
 
-  fetchData () {
+  fetchData: function () {
     this.setState({loaded: false});
     var users = [];
-    app.client.roomUsers(this.props.data.id, {type: 'users'}, (response) => {
+    app.client.roomUsers(this.props.id, {type: 'users'}, (response) => {
+      this.isOwner = _.find(response.users, (u) => {
+        return (u.isOwner && u.user_id === currentUser.getId());
+      });
+      this.isOp = _.find(response.users, (u) => {
+        return (u.isOp && u.user_id === currentUser.getId());
+      });
       _.each(response.users, (u) => {
         users.push(u);
       });
       users = _.sortBy(users, (u) => {
-        return u.username.toLowerCase()
+        return u.username.toLowerCase();
       });
       users = _.sortBy(users, (u) => {
         return u.status === 'offline';
       });
       this.setState({dataSource: this.state.dataSource.cloneWithRows(users), loaded: true});
     });
-  }
+  },
 
-  componentDidMount () {
+  componentDidMount: function () {
     this.fetchData();
-  }
+  },
 
-  render () {
+  render: function () {
     if (!this.state.loaded) {
       return (<LoadingView />);
     }
@@ -67,7 +76,7 @@ class RoomUsersView extends Component {
                     placeholder={i18next.t('RoomUsers:search')}
                     onChangeText={(text) => this.setState({findValue: text})}
                     value={this.state.findValue}
-                    onSubmitEditing={(event) => {this._onSearch(event.nativeEvent.text)}}
+                    onSubmitEditing={(event) => this._onSearch(event.nativeEvent.text)}
                     iconRight='fontawesome|search'
             />
         </View>
@@ -75,16 +84,16 @@ class RoomUsersView extends Component {
         <ListView
           ref='listViewUsers'
           dataSource={this.state.dataSource}
-          renderRow={this._renderElement.bind(this)}
+          renderRow={(e) => this._renderElement(e)}
           style={{flex: 1}}
           />
       </View>
     );
-  }
+  },
 
-  _renderElement (user) {
+  _renderElement: function (user) {
     // No specific actions possible on this user
-    //if (!this.props.model.currentUserIsOwner() && !this.props.model.currentUserIsOp()) {
+    if (!this.isOwner && !this.isOp && !currentUser.isAdmin()) {
       return (
         <Card
           onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
@@ -96,7 +105,7 @@ class RoomUsersView extends Component {
           status={user.status}
           />
       );
-    //}
+    }
 
     return (
       <Card
@@ -107,22 +116,22 @@ class RoomUsersView extends Component {
         realname={user.realname}
         bio={user.bio}
         status={user.status}
-        onEdit={() => navigation.navigate('RoomUser', this.props.data.id, user, () => this.fetchData())}
+        onEdit={() => navigation.navigate('RoomUser', this.props.id, user, () => this.fetchData())}
         op={user.isOp}
         owner={user.isOwner}
         devoiced={user.isDevoiced}
         />
     );
-  }
+  },
 
-  _onSearch (text) {
+  _onSearch: function (text) {
     var users = [];
-    app.client.roomUsers(this.props.data.id, {type: 'users', searchString: text}, (response) => {
+    app.client.roomUsers(this.props.id, {type: 'users', searchString: text}, (response) => {
       _.each(response.users, (u) => {
         users.push(u);
       });
       users = _.sortBy(users, (u) => {
-        return u.username.toLowerCase()
+        return u.username.toLowerCase();
       });
       users = _.sortBy(users, (u) => {
         return u.status === 'offline';
@@ -130,7 +139,7 @@ class RoomUsersView extends Component {
       this.setState({dataSource: this.state.dataSource.cloneWithRows(users)});
     });
   }
-}
+});
 
 var styles = StyleSheet.create({
   container: {
@@ -139,9 +148,5 @@ var styles = StyleSheet.create({
     backgroundColor: '#f0f0f0'
   }
 });
-
-RoomUsersView.propTypes = {
-  data: React.PropTypes.object.isRequired
-};
 
 module.exports = RoomUsersView;

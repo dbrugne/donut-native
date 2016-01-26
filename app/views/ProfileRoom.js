@@ -67,8 +67,6 @@ class RoomProfileView extends Component {
 
     var links = null;
     if (currentUser.get('user_id') === data.owner_id || currentUser.isAdmin()) {
-    //   // @todo implement onpress goto room access
-    //   // @todo implement onpress goto room delete
       links = (
          <View>
            <ListItem
@@ -78,30 +76,8 @@ class RoomProfileView extends Component {
              onPress={() => navigation.navigate('RoomEdit', this.data)}
              icon='fontawesome|pencil'
              />
-
-           <ListItem
-             text={i18next.t('profileRoom:manage-users')}
-             type='edit-button'
-             action
-             onPress={() => navigation.navigate('RoomUsers', this.data)}
-             icon='fontawesome|users'
-             />
           </View>
        );
-      //       <ListItem
-      //         text={i18next.t('local:access')}
-      //         type='edit-button'
-      //         action
-      //         icon='fontawesome|key'
-      //         />
-      //
-      //       <ListItem
-      //         text={i18next.t('local:delete')}
-      //         type='edit-button'
-      //         action
-      //         icon='fontawesome|trash-o'
-      //         />
-      //
     }
 
     return (
