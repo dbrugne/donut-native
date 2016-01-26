@@ -21,7 +21,7 @@ var {
   } = React;
 var {
   Icon
-} = require('react-native-icons');
+  } = require('react-native-icons');
 
 var i18next = require('../libs/i18next');
 
@@ -112,7 +112,7 @@ class NotificationsView extends Component {
           onChangeVisibleRows={this.onChangeVisibleRows.bind(this)}
           style={{flex: 1, backgroundColor: '#f0f0f0'}}
           scrollEnabled
-          />
+        />
       </View>
     );
   }
@@ -128,7 +128,7 @@ class NotificationsView extends Component {
                     last
                     action
                     text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
-            />
+          />
           <Text style={s.listGroupItemSpacing}/>
         </View>
       );
@@ -136,22 +136,22 @@ class NotificationsView extends Component {
 
     let unread = (this.state.unread === 0)
       ? (
-        <View style={{marginHorizontal: 10, marginBottom: 30}}>
-          <Text>{i18next.t('notifications.no-unread-notification')}</Text>
-        </View>
-      )
+      <View style={{marginHorizontal: 10, marginBottom: 30}}>
+        <Text>{i18next.t('notifications.no-unread-notification')}</Text>
+      </View>
+    )
       : (
-        <ListItem
-          type='button'
-          onPress={this.tagAllAsRead.bind(this)}
-          loading={this.state.loadingTagAsRead}
-          first
-          last
-          action
-          title={i18next.t('notifications.notification-count', {count: this.state.unread})}
-          text={i18next.t('notifications.mark-as-read')}
-        />
-      );
+      <ListItem
+        type='button'
+        onPress={this.tagAllAsRead.bind(this)}
+        loading={this.state.loadingTagAsRead}
+        first
+        last
+        action
+        title={i18next.t('notifications.notification-count', {count: this.state.unread})}
+        text={i18next.t('notifications.mark-as-read')}
+      />
+    );
 
     return (
       <View style={{marginTop: 30}}>
@@ -172,11 +172,11 @@ class NotificationsView extends Component {
                     text={i18next.t('notifications.delete-selected')}
                     first
                     warning
-            />
+          />
           <ListItem type='button'
                     onPress={this.cancelSelecting.bind(this)}
                     text={i18next.t('cancel')}
-            />
+          />
         </View>
       );
     }
@@ -197,8 +197,9 @@ class NotificationsView extends Component {
         underlayColor='#f0f0f0'
         onPress={this.onLoadMore.bind(this)}
         style={{height: 50, justifyContent: 'center', alignItems: 'center'}}
-        >
-        <Text style={{textAlign: 'center'}}>{i18next.t('notifications.load-more')}</Text>
+      >
+        <Text
+          style={{textAlign: 'center'}}>{i18next.t('notifications.load-more')}</Text>
       </TouchableHighlight>
     );
   }
@@ -215,9 +216,11 @@ class NotificationsView extends Component {
       var roomId = (n.data.room._id)
         ? n.data.room._id
         : n.data.room.id;
-      if (['roommessage', 'usermention', 'roomallowed'].indexOf(n.type) !== -1) {
+      if ([ 'roommessage', 'usermention', 'roomallowed' ].indexOf(n.type) !== -1) {
         n.onPress = () => {
-          app.trigger('joinRoom', (n.data.room._id) ? n.data.room._id : n.data.room.id);
+          app.trigger('joinRoom', (n.data.room._id)
+            ? n.data.room._id
+            : n.data.room.id);
         };
       } else {
         n.onPress = () => {
@@ -294,7 +297,7 @@ class NotificationsView extends Component {
           underlayColor='#f0f0f0'
           onPress={this.state.selecting ? this.onLongPress.bind(this, n) : () => n.onPress()}
           onLongPress={this.onLongPress.bind(this, n)}
-          >
+        >
           {this._renderContent(n)}
         </TouchableHighlight>
       );
@@ -304,16 +307,18 @@ class NotificationsView extends Component {
           style={{backgroundColor: '#ffffff'}}
           underlayColor='#f0f0f0'
           onLongPress={this.onLongPress.bind(this, n)}
-          >
+        >
           {this._renderContent(n)}
         </TouchableHighlight>
       );
     }
   }
 
-  onChangeVisibleRows (visibleRows, changedRows) {
+  onChangeVisibleRows (visibleRows) {
     var idxs = [];
-    _.each(visibleRows.s1, (e, idx) => {idxs.push(idx)});
+    _.each(visibleRows.s1, (e, idx) => {
+      idxs.push(idx);
+    });
 
     clearTimeout(this.timeouts.visibleRows);
     this.timeouts.visibleRows = setTimeout(() => {
@@ -323,7 +328,7 @@ class NotificationsView extends Component {
         return;
       }
 
-      let unviewedIds = _.map(unviewed, (e) => { return e.id });
+      let unviewedIds = _.map(unviewed, 'id');
       let visible = this.notificationsDataSource.findIdsFromIndex(idxs);
       let unviewedVisibleIds = _.intersection(unviewedIds, visible);
       // nothing to process
@@ -349,7 +354,11 @@ class NotificationsView extends Component {
 
     this.setState({
       selecting: selecting,
-      dataSource: this.notificationsDataSource.update(id, {selected: _.has(elt, 'selected') ? !elt.selected : true})
+      dataSource: this.notificationsDataSource.update(id, {
+        selected: _.has(elt, 'selected')
+          ? !elt.selected
+          : true
+      })
     });
   }
 
@@ -383,15 +392,16 @@ class NotificationsView extends Component {
     });
 
     // set button state as loading
-    this.setState({loadingTagAsDone: true});
+    this.setState({ loadingTagAsDone: true });
 
     // Add timeout to prevent loading too long & display error message
     this.timeouts.loadingTagAsDone = setTimeout(() => {
       alert.show(i18next.t('messages.error-try-again'));
-      this.setState({loadingTagAsDone: false});
+      this.setState({ loadingTagAsDone: false });
     }, this.timeoutTimer);
 
-    // call client to tag selected notifications as done and display error message if required
+    // call client to tag selected notifications as done and display error
+    // message if required
     app.client.notificationDone(selectedIds, false);
   }
 
@@ -402,9 +412,10 @@ class NotificationsView extends Component {
   onDoneNotification (data) {
     clearTimeout(this.timeouts.loadingTagAsDone);
 
-    let state = {loadingTagAsDone: false};
+    let state = { loadingTagAsDone: false };
 
-    // remove notifications from blob & close selecting buttons (delete & cancel)
+    // remove notifications from blob & close selecting buttons (delete &
+    // cancel)
     if (data.notifications && data.notifications.length > 0) {
       state.dataSource = this.notificationsDataSource.markAsDone(data.notifications);
       state.selecting = false;
@@ -430,17 +441,20 @@ class NotificationsView extends Component {
 
   _renderContent (n) {
     return (
-      <View style={[{height: 62, paddingTop: 5, paddingBottom: 5, paddingLeft: 5, paddingRight: 5, borderBottomWidth: 1, borderBottomColor: '#f1f1f1', borderStyle: 'solid'}, !n.viewed && {borderBottomColor:'#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', flex:1}}>
+      <View
+        style={[{height: 62, paddingTop: 5, paddingBottom: 5, paddingLeft: 5, paddingRight: 5, borderBottomWidth: 1, borderBottomColor: '#f1f1f1', borderStyle: 'solid'}, !n.viewed && {borderBottomColor: '#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
+        <View
+          style={{flexDirection: 'row', justifyContent: 'center', flex: 1}}>
           {this._renderAvatar(n)}
           <View
-            style={{ flexDirection: 'column', justifyContent: 'center', flex:1, marginLeft:10}}>
+            style={{flexDirection: 'column', justifyContent: 'center', flex: 1, marginLeft: 10}}>
             <Text>{n.message}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', flex:1}}>
+            <View
+              style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
               <Text
-                style={{ flex: 1, fontSize: 14 }}>{this._renderByUsername(n)}</Text>
+                style={{flex: 1, fontSize: 14}}>{this._renderByUsername(n)}</Text>
               <Text
-                style={{ color:'#999999', fontSize:12 }}>{date.dayMonthTime(n.time)}</Text>
+                style={{color: '#999999', fontSize: 12}}>{date.dayMonthTime(n.time)}</Text>
             </View>
           </View>
         </View>
@@ -452,13 +466,13 @@ class NotificationsView extends Component {
     if (n.selected) {
       return (
         <View
-          style={[{ width: 44, height: 44, borderRadius: 4, backgroundColor: '#3498db', flexDirection: 'row' }, n.avatarCircle && {borderRadius:22}]}>
+          style={[{ width: 44, height: 44, borderRadius: 4, backgroundColor: '#3498db', flexDirection: 'row' }, n.avatarCircle && {borderRadius: 22}]}>
           <Icon
             name='fontawesome|check'
             size={30}
             color='#ecf0f1'
-            style={{width: 30, height: 30, alignSelf:'center', marginLeft:6}}
-            />
+            style={{width: 30, height: 30, alignSelf: 'center', marginLeft: 6}}
+          />
         </View>
       );
     }
@@ -469,8 +483,9 @@ class NotificationsView extends Component {
 
     return (
       <Image
-        style={[{ width: 44, height: 44, borderRadius: 4 }, n.avatarCircle && {borderRadius:22}]}
-        source={{uri: n.avatar}}/>
+        style={[{ width: 44, height: 44, borderRadius: 4 }, n.avatarCircle && {borderRadius: 22}]}
+        source={{uri: n.avatar}}
+      />
     );
   }
 
@@ -485,12 +500,12 @@ class NotificationsView extends Component {
   }
 
   onLoadMore () {
-    this.setState({loadingMore: true});
+    this.setState({ loadingMore: true });
 
     // Add timeout to prevent loading too long & display error message
     this.timeouts.loadingMore = setTimeout(() => {
       alert.show(i18next.t('messages.error-try-again'));
-      this.setState({loadingMore: false});
+      this.setState({ loadingMore: false });
     }, this.timeoutTimer);
 
     app.client.notificationRead(null, this.notificationsDataSource.getBottomItemTime(), 10, (data) => {
@@ -505,12 +520,12 @@ class NotificationsView extends Component {
   }
 
   tagAllAsRead () {
-    this.setState({loadingTagAsRead: true});
+    this.setState({ loadingTagAsRead: true });
 
     // Add timeout to prevent loading too long & display error message
     this.timeouts.loadingTagAsRead = setTimeout(() => {
       alert.show(i18next.t('messages.error-try-again'));
-      this.setState({loadingTagAsRead: false});
+      this.setState({ loadingTagAsRead: false });
     }, this.timeoutTimer);
 
     app.client.notificationViewed([], true, () => {
