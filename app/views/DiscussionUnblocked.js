@@ -21,7 +21,8 @@ var debug = require('../libs/debug')('navigation');
 var DiscussionAbstract = React.createClass({
   propTypes: {
     navigator: React.PropTypes.object,
-    model: React.PropTypes.object.isRequired
+    model: React.PropTypes.object.isRequired,
+    wasBlocked: React.PropTypes.bool
   },
   getInitialState () {
     return {
@@ -39,6 +40,11 @@ var DiscussionAbstract = React.createClass({
 
     // load history portion since last blur/disconnect
     app.on('ready', this.onFocus, this);
+
+    // if discussion was blocked we need to fetch history manually
+    if (this.props.wasBlocked) {
+      this.onFocus();
+    }
   },
   componentWillUnmount () {
     debug.log(this.props.model.get('identifier') + ' abstract unmounted');

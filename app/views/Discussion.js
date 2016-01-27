@@ -15,7 +15,9 @@ var Discussion = React.createClass({
   },
   getInitialState () {
     return {
-      blocked: (this.props.model.get('type') === 'room' && this.props.model.get('blocked') === true)
+      blocked: (this.props.model.get('type') === 'room' && this.props.model.get('blocked') === true),
+      // wasBlocked is there to check if discussion change from block to unblock
+      wasBlocked: (this.props.model.get('type') === 'room' && this.props.model.get('blocked') === true)
     };
   },
   componentDidMount () {
@@ -40,13 +42,15 @@ var Discussion = React.createClass({
 
     return (
       <View style={styles.main}>
-        <Comp ref='discussion' navigator={this.props.navigator} model={this.props.model} />
+        <Comp ref='discussion' navigator={this.props.navigator} model={this.props.model} wasBlocked={this.state.wasBlocked}/>
       </View>
     );
   },
   onBlockedChange: function () {
     this.setState({
-      blocked: (this.props.model.get('type') === 'room' && this.props.model.get('blocked') === true)
+      blocked: (this.props.model.get('type') === 'room' && this.props.model.get('blocked') === true),
+      // wasBlocked is there to check if discussion change from block to unblock
+      wasBlocked: (this.props.model.get('type') === 'room' && this.props.model.get('blocked') !== true)
     });
   }
 });
