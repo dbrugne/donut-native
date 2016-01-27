@@ -75,6 +75,8 @@ var GroupUsersView = React.createClass({
           bio={user.bio}
           status={user.status}
           key={user.user_id}
+          op={user.is_op}
+          owner={user.is_owner}
           />
       );
     }
