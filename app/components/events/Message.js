@@ -16,7 +16,7 @@ var app = require('../../libs/app');
 var FileComponent = require('../File');
 
 var i18next = require('../../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'message', {
   'spammed' : 'Message indésirable d\'après le modérateur',
   'placeholder' : 'PLACEHOLDER FOR DOCUMENTS',
   'edited' : ' (edited)'
@@ -29,14 +29,14 @@ module.exports = React.createClass({
       if (this.props.data.spammed) {
         message = (
           <View>
-            <Text style={s.spammed}>{i18next.t('local:spammed')}</Text>
+            <Text style={s.spammed}>{i18next.t('message:spammed')}</Text>
           </View>
         );
       } else {
         var edited = null;
         if (this.props.data.edited) {
           edited = (
-            <Text style={s.edited}>{i18next.t('local:edited')}</Text>
+            <Text style={s.edited}>{i18next.t('message:edited')}</Text>
           );
         }
         message = (

@@ -10,7 +10,7 @@ var s = require('../../styles/events');
 var UserBlock = require('./UserBlock');
 
 var i18next = require('../../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'promote', {
   'room-op': 'is now a moderator as requested by ',
   'room-deop': 'is no longer a moderator as requested by ',
   'room-kick': 'was kicked out by ',
@@ -34,37 +34,37 @@ module.exports = React.createClass({
     let message;
     switch (this.props.type) {
       case 'room:op':
-        message = i18next.t('local:room-op');
+        message = i18next.t('promote:room-op');
         break;
       case 'room:deop':
-        message = i18next.t('local:room-deop');
+        message = i18next.t('promote:room-deop');
         break;
       case 'room:kick':
-        message = i18next.t('local:room-kick');
+        message = i18next.t('promote:room-kick');
         break;
       case 'room:ban':
-        message = i18next.t('local:room-ban');
+        message = i18next.t('promote:room-ban');
         break;
       case 'room:deban':
-        message = i18next.t('local:room-deban');
+        message = i18next.t('promote:room-deban');
         break;
       case 'room:voice':
-        message = i18next.t('local:room-voice');
+        message = i18next.t('promote:room-voice');
         break;
       case 'room:devoice':
-        message = i18next.t('local:room-devoice');
+        message = i18next.t('promote:room-devoice');
         break;
       case 'room:groupban':
-        message = i18next.t('local:room-groupban');
+        message = i18next.t('promote:room-groupban');
         break;
       case 'room:groupdisallow':
-        message = i18next.t('local:room-groupdisallow');
+        message = i18next.t('promote:room-groupdisallow');
         break;
       case 'user:ban':
-        message = i18next.t('local:user-ban');
+        message = i18next.t('promote:user-ban');
         break;
       case 'user:deban':
-        message = i18next.t('local:user-deban');
+        message = i18next.t('promote:user-deban');
         break;
     }
 

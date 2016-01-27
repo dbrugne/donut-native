@@ -21,7 +21,7 @@ var {
 } = require('react-native-icons');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'forgot', {
   'forgot': 'Forgot Password',
   'what': 'What email address do you use to sign into Donut ?',
   'reset': 'Reset',
@@ -52,14 +52,14 @@ class ForgotView extends Component {
             </View>
 
             <View style={styles.container}>
-              <Text style={[s.h1, s.textCenter]}>{i18next.t('local:forgot')}</Text>
-              <Text style={[s.spacer, s.p, s.textCenter]}>{i18next.t('local:what')}</Text>
+              <Text style={[s.h1, s.textCenter]}>{i18next.t('forgot:forgot')}</Text>
+              <Text style={[s.spacer, s.p, s.textCenter]}>{i18next.t('forgot:what')}</Text>
 
               <View ref='email'
                     style={[s.inputContainer, s.marginTop5]}>
                 <TextInput
                   autoCapitalize='none'
-                  placeholder={i18next.t('local:email')}
+                  placeholder={i18next.t('forgot:email')}
                   onChange={(event) => this.setState({email: event.nativeEvent.text})}
                   onFocus={this.inputFocused.bind(this, 'email')}
                   onBlur={this.inputBlured.bind(this, 'email')}
@@ -72,7 +72,7 @@ class ForgotView extends Component {
               <Button onPress={(this.onResetPressed.bind(this))}
                       style={s.marginTop5}
                       type='pink'
-                      label={i18next.t('local:reset')} />
+                      label={i18next.t('forgot:reset')} />
 
             </View>
 
@@ -85,7 +85,7 @@ class ForgotView extends Component {
                 />
 
               <Link onPress={(this.onBack.bind(this))}
-                    text={i18next.t('local:back')}
+                    text={i18next.t('forgot:back')}
                     linkStyle={[s.link, styles.textGray]}
                     type='bold'
                 />

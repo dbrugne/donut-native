@@ -12,7 +12,7 @@ var {
 } = React;
 
 var i18next = require('../../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'inputButton', {
   'save': 'Save'
 });
 
@@ -37,7 +37,7 @@ class ListItemInput extends ListItemAbstract {
         <TouchableHighlight onPress={this.props.onPress}
                             underlayColor='#41C87A'
                             style={[s.button, s.buttonGreen, {borderWidth: 0, padding: 7}, this.props.loading && s.buttonLoading]}>
-          <Text style={[s.label, s.labelGreen, this.props.loading && s.labelLoading]}>{i18next.t('local:save')}</Text>
+          <Text style={[s.label, s.labelGreen, this.props.loading && s.labelLoading]}>{i18next.t('inputButton:save')}</Text>
         </TouchableHighlight>
       </View>
     );

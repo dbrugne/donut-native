@@ -9,7 +9,7 @@ var {
 } = React;
 
 var i18next = require('../../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'input', {
   'save': 'Save'
 });
 

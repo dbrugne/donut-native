@@ -13,7 +13,7 @@ var {
 
 var app = require('../libs/app');
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'connectionState', {
   'offline': 'Connection lost',
   'connecting': 'Connecting',
   'reconnecting': 'Connecting'
@@ -39,13 +39,13 @@ class ConnectionState extends Component {
     if (this.state.status === 'offline') {
       return (
         <View style={[styles.container, {backgroundColor: '#F00'}]}>
-          <Text style={{color: '#FFF'}}>{i18next.t('local:' + this.state.status)}</Text>
+          <Text style={{color: '#FFF'}}>{i18next.t('connectionState:' + this.state.status)}</Text>
         </View>
       );
     }
     return (
       <View style={[styles.container, {backgroundColor: '#FA0'}]}>
-        <Text style={{color: '#FFF'}}>{i18next.t('local:' + this.state.status)}</Text>
+        <Text style={{color: '#FFF'}}>{i18next.t('connectionState:' + this.state.status)}</Text>
         <View style={{width: 10}}/>
         {
           (Platform.OS === 'android')

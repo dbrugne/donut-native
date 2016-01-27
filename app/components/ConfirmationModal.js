@@ -16,7 +16,7 @@ var {
   } = Dimensions.get('window');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'confirmModal', {
   'ok': 'Ok',
   'cancel': 'Cancel'
 });
@@ -63,12 +63,12 @@ class ConfirmationModal extends Component {
           <View style={styles.actions}>
             <View style={{borderTopWidth: 0.5, borderTopColor: '#333'}}>
               <TouchableOpacity style={styles.button} onPress={() => this.onCancel()}>
-                <Text style={styles.buttonText} >{i18next.t('local:cancel')}</Text>
+                <Text style={styles.buttonText} >{i18next.t('confirmModal:cancel')}</Text>
               </TouchableOpacity>
             </View>
             <View style={{borderLeftWidth: 0.5, borderTopWidth: 0.5, borderTopColor: '#333', borderLeftColor: '#333'}}>
               <TouchableOpacity style={styles.button} onPress={() => this.onConfirm()}>
-                <Text style={[styles.buttonText, {fontWeight: 'bold'}]}>{i18next.t('local:ok')}</Text>
+                <Text style={[styles.buttonText, {fontWeight: 'bold'}]}>{i18next.t('confirmModal:ok')}</Text>
               </TouchableOpacity>
             </View>
           </View>

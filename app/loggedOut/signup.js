@@ -22,7 +22,7 @@ var Link = require('../components/Link');
 var LoadingModal = require('../components/LoadingModal');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'signup', {
   'back': 'Back',
   'signup': 'Sign up',
   'username': 'Username',
@@ -59,7 +59,7 @@ class Signup extends Component {
                     style={[s.inputContainer, s.marginTop10]}>
                 <TextInput
                   autoCapitalize='none'
-                  placeholder={i18next.t('local:mail')}
+                  placeholder={i18next.t('signup:mail')}
                   onChange={(event) => this.setState({email: event.nativeEvent.text})}
                   style={s.input}
                   onSubmitEditing={() => this._focusNextField('1')}
@@ -76,7 +76,7 @@ class Signup extends Component {
                 <TextInput
                   ref='1'
                   autoCapitalize='none'
-                  placeholder={i18next.t('local:password')}
+                  placeholder={i18next.t('signup:password')}
                   secureTextEntry={true}
                   onChange={(event) => this.setState({password: event.nativeEvent.text})}
                   style={s.input}
@@ -93,7 +93,7 @@ class Signup extends Component {
                 <TextInput
                   ref='2'
                   autoCapitalize='none'
-                  placeholder={i18next.t('local:username')}
+                  placeholder={i18next.t('signup:username')}
                   onChange={(event) => this.setState({username: event.nativeEvent.text})}
                   style={s.input}
                   returnKeyType='done'
@@ -106,7 +106,7 @@ class Signup extends Component {
               <Button onPress={(this.onSubmitPressed.bind(this))}
                       style={s.marginTop10}
                       type='pink'
-                      label={i18next.t('local:signup')}/>
+                      label={i18next.t('signup:signup')}/>
 
             </View>
 
@@ -118,7 +118,7 @@ class Signup extends Component {
                 style={{width: 14, height: 14, marginTop:2, marginRight:2}}
                 />
               <Link onPress={(this.onBack.bind(this))}
-                    text={i18next.t('local:back')}
+                    text={i18next.t('signup:back')}
                     linkStyle={[s.link, styles.textGray]}
                     type='bold'
                 />

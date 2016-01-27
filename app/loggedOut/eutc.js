@@ -14,7 +14,7 @@ var {
 
 var i18next = require('../libs/i18next');
 var Button = require('react-native-button');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'eutc', {
   'back': 'Back'
 });
 
@@ -39,7 +39,7 @@ class EutcView extends Component {
                 style={{width: 17, height: 17, marginTop: 7, marginRight: 2}}
                 />
               <Text
-                style={{fontFamily: 'Open Sans', fontSize: 22, fontWeight: '600', color: '#333'}}>{i18next.t('local:back')}</Text>
+                style={{fontFamily: 'Open Sans', fontSize: 22, fontWeight: '600', color: '#333'}}>{i18next.t('eutc:back')}</Text>
             </View>
           </Button>
         }

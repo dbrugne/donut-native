@@ -10,7 +10,7 @@ var {
 var Platform = require('Platform');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'hyperlink', {
   'error': 'Can\'t open URL: __url__'
 });
 
@@ -24,7 +24,7 @@ module.exports = {
         if (supported) {
           IntentAndroid.openURL(url);
         } else {
-          ToastAndroid.show(i18next.t('local:error', {url}), ToastAndroid.SHORT);
+          ToastAndroid.show(i18next.t('hyperlink:error', {url}), ToastAndroid.SHORT);
         }
       });
     } else {
@@ -32,7 +32,7 @@ module.exports = {
         if (supported) {
           LinkingIOS.openURL(url);
         } else {
-          AlertIOS.alert(i18next.t('local:error', {url}));
+          AlertIOS.alert(i18next.t('hyperlink:error', {url}));
         }
       });
     }

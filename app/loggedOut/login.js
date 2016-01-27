@@ -10,7 +10,7 @@ var Button = require('../components/Button');
 var Link = require('../components/Link');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'login', {
   'forgot': 'Forgot your password ?',
   'or': 'or',
   'account': 'Don\'t have an account ? ',
@@ -58,7 +58,7 @@ class LoginView extends Component {
       var loginForm = (
         <View>
           <View style={styles.orContainer}>
-            <Text style={styles.title}> {i18next.t('local:or')} </Text>
+            <Text style={styles.title}> {i18next.t('login:or')} </Text>
           </View>
           <View
             ref='email'
@@ -66,7 +66,7 @@ class LoginView extends Component {
             <TextInput
               ref='1'
               autoCapitalize='none'
-              placeholder={i18next.t('local:mail')}
+              placeholder={i18next.t('login:mail')}
               onChange={(event) => this.setState({email: event.nativeEvent.text})}
               style={s.input}
               keyboardType='email-address'
@@ -82,7 +82,7 @@ class LoginView extends Component {
             <TextInput
               ref='2'
               autoCapitalize='none'
-              placeholder={i18next.t('local:password')}
+              placeholder={i18next.t('login:password')}
               secureTextEntry={true}
               onChange={(event) => this.setState({password: event.nativeEvent.text})}
               style={[s.input, s.marginTop5]}
@@ -95,10 +95,10 @@ class LoginView extends Component {
           <Button onPress={(this.onSubmitPressed.bind(this))}
                   style={s.marginTop10}
                   type='pink'
-                  label={i18next.t('local:signin')}/>
+                  label={i18next.t('login:signin')}/>
 
           <Link onPress={(this.onForgotPressed.bind(this))}
-                text={i18next.t('local:forgot')}
+                text={i18next.t('login:forgot')}
                 style={[s.marginTop10, styles.centered]}
                 linkStyle={s.link}
                 type='bold'
@@ -126,16 +126,16 @@ class LoginView extends Component {
             </View>
             <View style={styles.linkCtn}>
               <Link onPress={(this.onCreatePressed.bind(this))}
-                    text={i18next.t('local:signup')}
+                    text={i18next.t('login:signup')}
                     style={[s.marginTop10, styles.centered]}
                     linkStyle={s.link}
-                    prepend={i18next.t('local:account')}
+                    prepend={i18next.t('login:account')}
                     prependStyle={styles.textGray}
                     type='bold'
                 />
             </View>
             <Link onPress={(this.onEutcPressed.bind(this))}
-                  text={i18next.t('local:eutc')}
+                  text={i18next.t('login:eutc')}
                   style={styles.centered}
                   linkStyle={s.link}
                   type='bold'

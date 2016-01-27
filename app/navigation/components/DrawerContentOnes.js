@@ -17,7 +17,7 @@ var app = require('../../libs/app');
 var navigation = require('../index');
 
 var i18next = require('../../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'drawerContentOnes', {
   'ones': 'ONE TO ONES'
 });
 
@@ -56,7 +56,7 @@ class NavigationOnesView extends Component {
     if (app.ones.length > 0) {
       title = (
         <View style={{backgroundColor: '#1D1D1D'}}>
-          <Text style={styles.title}>{i18next.t('local:ones')}</Text>
+          <Text style={styles.title}>{i18next.t('drawerContentOnes:ones')}</Text>
         </View>
       );
     }

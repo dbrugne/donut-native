@@ -20,7 +20,7 @@ var navigation = require('../../navigation/index');
 var app = require('../../libs/app');
 
 var i18next = require('../../libs/i18next');
-i18next.addResourceBundle('en', 'local', {
+i18next.addResourceBundle('en', 'drawerContent', {
   'discover': 'discover',
   'search': 'search',
   'create': 'create',
