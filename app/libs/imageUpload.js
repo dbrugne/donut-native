@@ -10,9 +10,9 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'imageUpload', {
-  'description': 'Upload image',
-  'take': 'Take a picture',
-  'choose': 'Choose from gallery',
+  'description': 'Upload image from',
+  'take': 'Camera',
+  'choose': 'Gallery',
   'uploading': 'uploading ...'
 });
 
@@ -25,8 +25,7 @@ exports.pickImage = function (callback) {
     maxWidth: 500,
     maxHeight: 500,
     takePhotoButtonTitle: i18next.t('imageUpload:take'),
-    chooseFromLibraryButtonTitle: i18next.t('imageUpload:choose'),
-    angle: 0
+    chooseFromLibraryButtonTitle: i18next.t('imageUpload:choose')
   };
 
   if (Platform.OS !== 'android') {
