@@ -16,23 +16,18 @@ var GroupHomeView = React.createClass({
     return {
       loading: true,
       data: null,
-      model: null,
       error: null
     };
   },
   componentDidMount: function () {
     app.on('refreshGroup', this.onRefresh, this);
+    app.client.on('group:refresh', this.onRefresh, this);
     if (this.id) {
       app.client.groupJoin(this.id, (response) => {
         if (response.err) {
           return;
         }
         app.client.groupRead(this.id, {users: true, rooms: true}, (data) => {
-          this.setState({model: app.groups.iwhere('group_id', this.id)});
-          if (this.state.model) {
-            this.state.model.on('redraw', () => this.onRefresh(), this);
-            this.state.model.on('change', () => this.setState({model: app.groups.iwhere('group_id', this.id)}), this);
-          }
           this.onData(data);
         });
       });
@@ -40,9 +35,7 @@ var GroupHomeView = React.createClass({
   },
   componentWillUnmount: function () {
     app.off('refreshGroup', this.onRefresh, this);
-    if (this.state.model) {
-      this.state.model.off(null, null, this);
-    }
+    app.client.off('group:refresh', this.onRefresh, this);
   },
   onData: function (response) {
     if (response.err) {
