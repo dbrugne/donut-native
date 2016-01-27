@@ -103,6 +103,9 @@ var RoomUsersView = React.createClass({
           realname={user.realname}
           bio={user.bio}
           status={user.status}
+          op={user.isOp}
+          owner={user.isOwner}
+          devoiced={user.isDevoiced}
           />
       );
     }
