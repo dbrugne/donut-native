@@ -167,4 +167,7 @@ dependencies {
     // @Parse
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
+
+    // @VectorIcons
+    compile project(':react-native-vector-icons')
 }
