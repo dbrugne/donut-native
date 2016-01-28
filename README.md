@@ -57,32 +57,3 @@ For each scenario launch Xcode project select a scheme (listed bellow), select a
 **Added jQuery to deps to solve packager issue**
  
 https://github.com/facebook/react-native/commit/8db35d492b846f51a758e8ee7e5e402c6bad3785
-
-**Fix rightIcon on navigator**
-
-https://github.com/facebook/react-native/issues/4559
-
-```javascript
-  # node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorNavigationBar.js
-  rendered = (
-    <View
-      ref={(ref) => {
-        this._components[componentName] = this._components[componentName].set(route, ref);
-      }}
-//        pointerEvents="box-none"
-      pointerEvents={route === this.props.navigator.navigationContext.currentRoute ? 'box-none' : 'none'}
-//        style={initialStage[componentName]}>
-      style={[initialStage[componentName], {marginLeft: 0, flexDirection: 'column', justifyContent:'center'}]}>
-      {content}
-    </View>
-  );
-```
-
-**Set android navigation height to one line**
-
-```javascript
-// node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorNavigationBarStylesAndroid.js:33
-
-//var NAV_BAR_HEIGHT = 56;
-var NAV_BAR_HEIGHT = 46;
-```

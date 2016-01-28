@@ -7,22 +7,44 @@ var {
 
 import ExNavigator from '@exponent/react-native-navigator'; // @important: should be 'import'
 
+// @hack https://github.com/dbrugne/donut-native/issues/156
+React.Navigator.NavigationBar.StylesAndroid.General.NavBarHeight =
+  React.Navigator.NavigationBar.StylesAndroid.General.TotalNavHeight =
+    46;
+
+// @hack style correctly navigationBar
+var add = {marginLeft: 0, flexDirection: 'column', justifyContent: 'center'};
+var _Stages = React.Navigator.NavigationBar.Styles.Stages;
+React.Navigator.NavigationBar.Styles.Stages = {
+  Left: {
+    Title: [_Stages.Left.Title, add],
+    LeftButton: [_Stages.Left.LeftButton, add],
+    RightButton: [_Stages.Left.RightButton, add]
+  },
+  Center: {
+    Title: [_Stages.Center.Title, add],
+    LeftButton: [_Stages.Center.LeftButton, add],
+    RightButton: [_Stages.Center.RightButton, add]
+  },
+  Right: {
+    Title: [_Stages.Right.Title, add],
+    LeftButton: [_Stages.Right.LeftButton, add],
+    RightButton: [_Stages.Right.RightButton, add]
+  }
+};
+
 module.exports = function (state, id, initialRoute) {
   return {
     id: id,
     alreadyFocused: false,
     focused: false,
     renderScene: function (rootNavigator) {
-      var navigationBarHeight = (Platform.OS === 'android')
-        ? 46
-        : 64;
-
       return (
         <ExNavigator
           rootNavigator={rootNavigator}
           initialRoute={initialRoute}
           style={{flex: 1}}
-          sceneStyle={{ paddingTop: navigationBarHeight }}
+          sceneStyle={{ paddingTop: React.Navigator.NavigationBar.Styles.General.TotalNavHeight }}
         />
       );
     },
