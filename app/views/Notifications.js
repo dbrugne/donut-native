@@ -268,13 +268,9 @@ class NotificationsView extends Component {
       n.avatarCircle = false;
     }
     if (n.type === 'roomjoinrequest') {
-      n.onPress = null;
       n.css += 'open-room-users-allowed';
-      n.username = null;
     } else if (n.type === 'groupjoinrequest') {
-      n.onPress = null;
       n.css += 'open-group-users-allowed';
-      n.username = null;
     } else if (n.type === 'roomdelete') {
       n.onPress = null;
     }
