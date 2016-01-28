@@ -216,7 +216,7 @@ class DiscussionEvents extends Component {
 
       if (direction === 'older') {
         state.loading = false;
-        state.more = (response.more || (response.history && response.history.length));
+        state.more = response.more;
       } else {
         if (response.more) {
           // handle too many new events on refocus
