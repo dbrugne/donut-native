@@ -38,7 +38,7 @@ class DiscussionSettings extends Component {
     super(props);
     this.isOwner = (currentUser.get('user_id') === props.model.get('owner_id'));
     this.isAdmin = app.user.isAdmin();
-    this.isOp = (_.indexOf(props.model.get('op'),currentUser.get('user_id')) !== -1);
+    this.isOp = (_.indexOf(props.model.get('op'), currentUser.get('user_id')) !== -1);
     this.state = {
       topic: this.props.model.get('topic'),
       avatar: this.props.model.get('avatar'),
@@ -68,7 +68,7 @@ class DiscussionSettings extends Component {
     );
   }
 
-  _renderLinks() {
+  _renderLinks () {
     if (this.props.model.get('type') === 'onetoone') {
       return (
         <View style={s.listGroup}>
@@ -158,7 +158,7 @@ class DiscussionSettings extends Component {
       return null;
     }
     return (
-      <View style={{marginHorizontal: 10, marginBottom:20 , alignSelf: 'center'}}>
+      <View style={{marginHorizontal: 10, marginBottom: 20, alignSelf: 'center'}}>
         <Text style={s.topic}>{(this.state.topic) ? common.markup.toText(this.state.topic) : i18next.t('DiscussionSettings:no-topic')}</Text>
       </View>
     );
@@ -271,13 +271,13 @@ var styles = StyleSheet.create({
     marginBottom: 8,
     alignSelf: 'center',
     textAlign: 'center',
-    flex:1,
+    flex: 1,
     fontWeight: '400',
     fontSize: 12,
     fontFamily: 'Open Sans',
     width: 50,
-    paddingLeft:5,
-    paddingRight:5,
+    paddingLeft: 5,
+    paddingRight: 5,
     overflow: 'hidden'
   },
   statusOnline: { backgroundColor: 'rgba(79, 237, 192, 0.8)' },
