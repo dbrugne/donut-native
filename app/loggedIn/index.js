@@ -29,6 +29,7 @@ var LoggedIn = React.createClass({
 
     app.on('joinRoom', this.onJoinRoom, this);
     app.on('joinUser', this.onJoinUser, this);
+    app.on('joinGroup', this.onJoinGroup, this);
 
     // client (disconnect automatically by react-native after 50s in background)
     app.client.connect();
@@ -69,6 +70,9 @@ var LoggedIn = React.createClass({
   },
   onDiscussionAdded: function (model) {
     if (this.nextFocus === model.get('id')) {
+      if (model.get('type') === 'group') {
+        return navigation.navigate('Group', {id: model.get('id'), name: model.get('name')});
+      }
       navigation.navigate('Discussion', model);
     }
   },
@@ -109,6 +113,26 @@ var LoggedIn = React.createClass({
 
     this.nextFocus = id;
     app.client.userJoin(id, function (response) {
+      if (response.err) {
+        // @todo handle errors
+        return;
+      }
+    });
+  },
+  onJoinGroup (id) {
+    // @todo : factorize in navigation.navigate()
+    if (!id) {
+      return;
+    }
+
+    // already joined
+    var model = app.groups.get(id);
+    if (model) {
+      return navigation.navigate('Group', {id: model.get('id'), name: model.get('name')});
+    }
+
+    this.nextFocus = id;
+    app.client.groupJoin(id, function (response) {
       if (response.err) {
         // @todo handle errors
         return;

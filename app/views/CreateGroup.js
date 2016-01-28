@@ -90,7 +90,7 @@ class RoomCreateView extends Component {
         if (data.err) {
           return alert.show(i18next.t('messages.' + data.err));
         }
-        navigation.navigate('Group', {name: data.identifier, id: data.group_id});
+        app.trigger('joinGroup', data.group_id);
       }, this));
     }, this));
   }
