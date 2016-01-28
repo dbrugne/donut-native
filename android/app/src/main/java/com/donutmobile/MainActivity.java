@@ -30,6 +30,9 @@ import com.notificationandroid.NotificationAndroidPackage;
 import com.parse.ParseInstallation;
 import com.parsepushnotification.ParsePushNotificationPackage;
 
+// @VectorIcons
+import com.oblador.vectoricons.VectorIconsPackage;
+
 public class MainActivity extends ReactActivity {
 
     // @ImagePicker
@@ -142,7 +145,8 @@ public class MainActivity extends ReactActivity {
         new FacebookLoginPackage(),
         new NotificationAndroidPackage(this),
         new ParsePushNotificationPackage(this),
-        mImagePicker
+        mImagePicker,
+        new VectorIconsPackage()
       );
     }
 
