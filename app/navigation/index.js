@@ -46,9 +46,15 @@ module.exports = {
     this.closeDrawer();
 
     if (route.initial === true) {
+      // determine if we need to .popToTop() current stack
+      var previousNavigator = state.currentNavigator.scene.__navigator;
+      if (previousNavigator.state.routeStack.length > 1 && state.currentRoute.initial !== true) {
+        previousNavigator.popToTop();
+      }
+
+      // navigate to
       var navigator = state.getNavigator(route);
       this._switchTo(navigator);
-      return;
     } else {
       if (!state.currentNavigator) {
         return debug.warn('no current navigator');
