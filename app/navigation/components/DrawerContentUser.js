@@ -73,11 +73,10 @@ class CurrentUserView extends Component {
             </View>
             <View style={styles.iconCtn}>
               <Icon
-                name='fontawesome|gear'
+                name='gear'
                 size={18}
                 color='#999998'
-                style={styles.icon}
-                />
+              />
             </View>
           </View>
         </TouchableHighlight>
@@ -184,10 +183,6 @@ var styles = StyleSheet.create({
   iconCtn: {
     marginVertical: 8,
     marginHorizontal: 10
-  },
-  icon: {
-    width: 18,
-    height: 18
   }
 });
 

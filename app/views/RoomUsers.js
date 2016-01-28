@@ -77,7 +77,7 @@ var RoomUsersView = React.createClass({
                     onChangeText={(text) => this.setState({findValue: text})}
                     value={this.state.findValue}
                     onSubmitEditing={(event) => this._onSearch(event.nativeEvent.text)}
-                    iconRight='fontawesome|search'
+                    iconRight='search'
             />
         </View>
 

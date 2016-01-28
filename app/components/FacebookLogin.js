@@ -47,11 +47,11 @@ module.exports = React.createClass({
               <View style={[s.buttonLabel, styles.buttonLabelFacebook]}>
                 <View style={styles.iconContainer}>
                   <Icon
-                    name='fontawesome|facebook'
+                    name='facebook'
                     size={28}
                     color='#FFF'
-                    style={[styles.icon, styles.iconFacebook]}
-                    />
+                    style={styles.iconFacebook}
+                  />
                 </View>
                 <Text style={[s.buttonText, styles.buttonTextFacebook]}>{i18next.t('facebookLogin:use')}</Text>
               </View>
@@ -163,9 +163,5 @@ var styles = StyleSheet.create({
     paddingRight: 5,
     marginRight: 5,
     alignSelf: 'flex-end'
-  },
-  icon: {
-    width: 28,
-    height: 28
   }
 });

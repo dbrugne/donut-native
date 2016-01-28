@@ -35,18 +35,14 @@ var style = {
 
   },
   listGroupItemIconRight: {
-    width: 14,
-    height: 14,
     alignSelf: 'center',
     justifyContent: 'flex-end',
-    marginLeft:5
+    marginLeft: 5
   },
   listGroupItemIconLeft: {
-    width: 14,
-    height: 14,
     alignSelf: 'center',
     justifyContent: 'flex-start',
-    marginRight:5
+    marginRight: 5
   },
   listGroupItemText: {
     color: '#333333',

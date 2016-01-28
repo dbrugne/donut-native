@@ -36,11 +36,13 @@ var routeTemplate = {
         onPress={() => navigator.pop()}
         style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}} >
         <View style={{flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center'}} >
-          <Icon name='fontawesome|angle-left'
-                size={18}
-                color='#999998'
-                style={[{marginLeft: 5, width: 18, height: 18}]} />
-          <Text style={[{fontSize: 17, color: '#999998'}]}> {i18next.t('navigation.back')}</Text>
+          <Icon
+            name='angle-left'
+            size={18}
+            color='#999998'
+            style={{marginLeft: 5}}
+          />
+          <Text style={{fontSize: 17, color: '#999998'}}> {i18next.t('navigation.back')}</Text>
         </View>
       </TouchableOpacity>
     );

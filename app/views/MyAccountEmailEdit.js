@@ -69,7 +69,7 @@ class EditEmailView extends Component {
                     text={i18next.t('myAccountEmailEdit:send-validation')}
                     type='button'
                     action='true'
-                    icon='fontawesome|envelope-o'
+                    icon='envelope-o'
                     first={true}
                     title={i18next.t('myAccountEmailEdit:not-validated')}
             />
@@ -86,7 +86,7 @@ class EditEmailView extends Component {
                         text={i18next.t('myAccountEmailEdit:define')}
                         type='button'
                         action='true'
-                        icon='fontawesome|anchor'
+                        icon='anchor'
                         first={true}
                         title={i18next.t('myAccountEmailEdit:validated')}
         />);

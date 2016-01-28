@@ -122,7 +122,7 @@ class EmailsView extends Component {
           text={e.email}
           type='button'
           action='true'
-          icon={(e.confirmed) ? 'fontawesome|check' : 'fontawesome|times'}
+          icon={(e.confirmed) ? 'check' : 'times'}
           first={(i === 0 || (i === 1 && this.state.emails[0].main))}
           />
       );

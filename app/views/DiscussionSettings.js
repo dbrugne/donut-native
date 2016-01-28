@@ -75,7 +75,7 @@ class DiscussionSettings extends Component {
           <ListItem
             onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('id'), identifier: this.state.identifier})}
             text={i18next.t('DiscussionSettings:see')}
-            icon='fontawesome|eye'
+            icon='eye'
             type='button'
             first
             action
@@ -99,7 +99,7 @@ class DiscussionSettings extends Component {
             <ListItem
               onPress={() => navigation.navigate('RoomTopic', this.props.model, () => this.fetchData())}
               text={i18next.t('DiscussionSettings:change-topic')}
-              icon='fontawesome|edit'
+              icon='edit'
               type='button'
               action
               first
@@ -109,12 +109,12 @@ class DiscussionSettings extends Component {
               type='edit-button'
               action
               onPress={() => navigation.navigate('RoomEdit', this.props.model.attributes)}
-              icon='fontawesome|pencil'
+              icon='pencil'
               />
             <ListItem
               onPress={() => navigation.navigate('AvailableSoon')}
               text={i18next.t('DiscussionSettings:access')}
-              icon='fontawesome|users'
+              icon='users'
               type='button'
               action
               />
@@ -128,7 +128,7 @@ class DiscussionSettings extends Component {
           <ListItem
             onPress={() => navigation.navigate('Profile', {type: 'room', id: this.props.model.get('id'), identifier: this.state.identifier})}
             text={i18next.t('DiscussionSettings:see')}
-            icon='fontawesome|eye'
+            icon='eye'
             type='button'
             first
             action
@@ -136,7 +136,7 @@ class DiscussionSettings extends Component {
           <ListItem
             onPress={() => navigation.navigate('RoomUsers', this.props.model.get('id'))}
             text={i18next.t('DiscussionSettings:users')}
-            icon='fontawesome|users'
+            icon='users'
             type='button'
             action
             />
@@ -170,7 +170,7 @@ class DiscussionSettings extends Component {
         <ListItem
           onPress={() => this._banUser()}
           text={i18next.t('DiscussionSettings:block')}
-          icon='fontawesome|ban'
+          icon='ban'
           iconColor='#e74c3c'
           type='button'
           action
@@ -182,7 +182,7 @@ class DiscussionSettings extends Component {
         <ListItem
           onPress={() => this._unbanUser()}
           text={i18next.t('DiscussionSettings:unblock')}
-          icon='fontawesome|ban'
+          icon='ban'
           type='button'
           action
           />
@@ -213,7 +213,7 @@ class DiscussionSettings extends Component {
       <ListItem
           onPress={() => navigation.navigate('AvailableSoon')}
           text={i18next.t('DiscussionSettings:allowed')}
-          icon='fontawesome|shield'
+          icon='shield'
           type='button'
           action
         />

@@ -31,11 +31,11 @@ class EutcView extends Component {
           : <Button onPress={() => this.onBack()}>
             <View style={{flexDirection: 'row', marginVertical: 5}}>
               <Icon
-                name='fontawesome|chevron-left'
+                name='chevron-left'
                 size={14}
                 color='#808080'
-                style={{width: 17, height: 17, marginTop: 7, marginRight: 2}}
-                />
+                style={{marginTop: 7, marginRight: 2}}
+              />
               <Text
                 style={{fontFamily: 'Open Sans', fontSize: 22, fontWeight: '600', color: '#333'}}>{i18next.t('eutc:back')}</Text>
             </View>

@@ -41,17 +41,17 @@ class ForgotView extends Component {
       <View style={{flex:1, alignItems: 'stretch'}}>
         <View style={styles.linkCtn} >
           <Icon
-            name='fontawesome|chevron-left'
+            name='chevron-left'
             size={14}
             color='#808080'
-            style={{width: 14, height: 14, marginTop:2, marginRight:2}}
-            />
-
-          <Link onPress={(this.onBack.bind(this))}
-                text={i18next.t('forgot:back')}
-                linkStyle={[s.link, styles.textGray]}
-                type='bold'
-            />
+            style={{marginTop: 2, marginRight: 2}}
+          />
+          <Link
+            onPress={(this.onBack.bind(this))}
+            text={i18next.t('forgot:back')}
+            linkStyle={[s.link, styles.textGray]}
+            type='bold'
+          />
         </View>
         <ScrollView
           ref='scrollView'

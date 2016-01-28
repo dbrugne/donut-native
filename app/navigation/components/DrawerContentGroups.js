@@ -102,12 +102,13 @@ var NavigationGroupsView = React.createClass({
             style={[styles.leaveGroupButton, {backgroundColor: (groupModel && groupModel.get('focused')) ? '#666' : '#222'}]}
             underlayColor= '#414041'
             onPress={() => app.client.groupLeave(e.group_id)}
-            ><Icon
-            name='fontawesome|close'
-            size={18}
-            color='#DDD'
-            style={{width: 18, height: 18}}
-            /></TouchableHighlight>
+          >
+            <Icon
+              name='close'
+              size={18}
+              color='#DDD'
+            />
+          </TouchableHighlight>
         </View>
       </TouchableHighlight>
       );

@@ -88,7 +88,7 @@ class ProfileView extends Component {
           type='edit-button'
           first={true}
           action={true}
-          icon='fontawesome|shield'
+          icon='shield'
           onPress={() => {this._onDeop()}}
           />
       );
@@ -101,7 +101,7 @@ class ProfileView extends Component {
           first={true}
           action={true}
           iconColor='#4fedc0'
-          icon='fontawesome|shield'
+          icon='shield'
           onPress={() => {this._onOp()}}
           />
       );
@@ -113,7 +113,7 @@ class ProfileView extends Component {
           text={i18next.t('roomUser:voice')}
           type='edit-button'
           action={true}
-          icon='fontawesome|microphone'
+          icon='microphone'
           onPress={() => {this._onVoice()}}
           />
       );
@@ -125,7 +125,7 @@ class ProfileView extends Component {
           type='edit-button'
           action={true}
           iconColor='#ff3838'
-          icon='fontawesome|microphone-slash'
+          icon='microphone-slash'
           onPress={() => {this._onDevoice()}}
           />
       );
@@ -137,7 +137,7 @@ class ProfileView extends Component {
           text={i18next.t('roomUser:unban')}
           type='edit-button'
           action={true}
-          icon='fontawesome|ban'
+          icon='ban'
           onPress={() => {this._onUnban()}}
           />
       );
@@ -149,7 +149,7 @@ class ProfileView extends Component {
           type='edit-button'
           action={true}
           iconColor='#ff3838'
-          icon='fontawesome|ban'
+          icon='ban'
           onPress={() => {this._onBan()}}
           />
       );
@@ -159,7 +159,7 @@ class ProfileView extends Component {
           text={i18next.t('roomUser:kick')}
           type='edit-button'
           action={true}
-          icon='fontawesome|times'
+          icon='times'
           onPress={() => {this._onKick()}}
           />
       );

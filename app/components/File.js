@@ -38,8 +38,7 @@ class File extends Component {
             name={icon}
             size={44}
             color='#666'
-            style={{width: 44, height: 44}}
-            />
+          />
           <View style={styles.fileNameView}>
             <Text style={styles.fileName}>{this.props.fileName + '.' + this.extension}</Text>
           </View>
@@ -53,19 +52,19 @@ class File extends Component {
 
   _selectApproriateIcon() {
     if (pdf.indexOf(this.extension) !== -1) {
-      return 'fontawesome|file-pdf-o';
+      return 'file-pdf-o';
     } else if (text.indexOf(this.extension) !== -1) {
-      return 'fontawesome|file-text-o';
+      return 'file-text-o';
     } else if (image.indexOf(this.extension) !== -1) {
-      return 'fontawesome|file-image-o';
+      return 'file-image-o';
     } else if (audio.indexOf(this.extension) !== -1) {
-      return 'fontawesome|file-audio-o';
+      return 'file-audio-o';
     } else if (video.indexOf(this.extension) !== -1) {
-      return 'fontawesome|file-video-o';
+      return 'file-video-o';
     } else if (code.indexOf(this.extension) !== -1) {
-      return 'fontawesome|file-code-o';
+      return 'file-code-o';
     }
-    return 'fontawesome|file-o';
+    return 'file-o';
   }
 }
 

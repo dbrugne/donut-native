@@ -59,11 +59,10 @@ class CardUser extends Abstract {
             underlayColor='transparent'
             onPress={this.props.onEdit}>
             <Icon
-              name='fontawesome|chevron-right'
+              name='chevron-right'
               size={22}
               color='#DDD'
-              style={{width: 22, height: 22}}
-              />
+            />
           </TouchableHighlight>
         </View>
       </View>
@@ -77,11 +76,11 @@ class CardUser extends Abstract {
 
     return (
       <Icon
-        name='fontawesome|microphone-slash'
+        name='microphone-slash'
         size={35}
         color='#ff3838'
-        style={{width: 40, height: 40, position: 'absolute', top: 30, right: 10}}
-        />
+        style={{position: 'absolute', top: 30, right: 10}}
+      />
     );
   }
 

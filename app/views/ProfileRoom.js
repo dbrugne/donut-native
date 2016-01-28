@@ -52,7 +52,7 @@ class RoomProfileView extends Component {
           first
           action
           onPress={() => hyperlink.open(data.website.href)}
-          icon='fontawesome|link'
+          icon='link'
         />
       );
     }
@@ -61,7 +61,7 @@ class RoomProfileView extends Component {
     <ListItem
       text={i18next.t('profileRoom:created-on', {date: date.shortDate(data.created)})}
       type='text'
-      icon='fontawesome|clock-o'
+      icon='clock-o'
       />
     );
 
@@ -74,7 +74,7 @@ class RoomProfileView extends Component {
              type='edit-button'
              action
              onPress={() => navigation.navigate('RoomEdit', this.data)}
-             icon='fontawesome|pencil'
+             icon='pencil'
              />
           </View>
        );
@@ -102,7 +102,7 @@ class RoomProfileView extends Component {
             action
             last
             onPress={() => app.trigger('joinRoom', data.room_id)}
-            icon='fontawesome|user'
+            icon='user'
             iconColor='#f1c40f'
             />
           <Text style={s.listGroupItemSpacing} />

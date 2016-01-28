@@ -29,10 +29,11 @@ module.exports = function (model) {
           touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
           onPress={() => navigation.navigate('DiscussionSettings', model)}
           style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 44}} >
-          <Icon name='fontawesome|cog'
-                size={22}
-                color='#999998'
-                style={[{width: 22, height: 22}]} />
+          <Icon
+            name='cog'
+            size={22}
+            color='#999998'
+          />
         </TouchableOpacity>
       );
     },

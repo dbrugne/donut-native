@@ -51,7 +51,7 @@ var Button = React.createClass({
         size={20}
         color={this.props.iconColor ? this.props.iconColor : '#ffda3e'}
         style={s.buttonIcon}
-        />
+      />
     );
   },
   _renderButton () {

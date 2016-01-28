@@ -79,7 +79,7 @@ var GroupUserView = React.createClass({
           type='edit-button'
           first
           action
-          icon='fontawesome|shield'
+          icon='shield'
           onPress={() => this._onDeop()}
           />
       );
@@ -92,7 +92,7 @@ var GroupUserView = React.createClass({
           first
           action
           iconColor='#4fedc0'
-          icon='fontawesome|shield'
+          icon='shield'
           onPress={() => this._onOp()}
           />
       );
@@ -104,7 +104,7 @@ var GroupUserView = React.createClass({
           text={i18next.t('groupUser:unban')}
           type='edit-button'
           action
-          icon='fontawesome|ban'
+          icon='ban'
           onPress={() => this._onUnban()}
           />
       );
@@ -116,7 +116,7 @@ var GroupUserView = React.createClass({
           type='edit-button'
           actio
           iconColor='#ff3838'
-          icon='fontawesome|ban'
+          icon='ban'
           onPress={() => this._onBan()}
           />
       );

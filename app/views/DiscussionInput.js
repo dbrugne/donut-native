@@ -40,11 +40,11 @@ var InputView = React.createClass({
       <View style={styles.inputContainer}>
         <Button style={styles.button} onPress={() => this._addImage()} disabled={!this.state.userConfirmed}>
           <Icon
-            name='fontawesome|camera'
+            name='camera'
             size={28}
             color='#999998'
             style={styles.icon}
-            />
+          />
         </Button>
         <TextInput style={styles.input}
                    ref='input'
@@ -57,11 +57,11 @@ var InputView = React.createClass({
           />
         <Button style={styles.button} onPress={() => this.onSubmit()} disabled={!this.state.userConfirmed}>
           <Icon
-            name='fontawesome|paper-plane'
+            name='paper-plane'
             size={28}
             color='#999998'
             style={styles.icon}
-            />
+          />
         </Button>
       </View>
     );
@@ -115,8 +115,6 @@ var styles = StyleSheet.create({
     fontSize: 14
   },
   icon: {
-    width: 28,
-    height: 28,
     marginHorizontal: 5,
     marginTop: 5
   },

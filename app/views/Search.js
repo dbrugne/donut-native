@@ -61,10 +61,9 @@ class SearchView extends Component {
               autoFocus
               />
             <Icon
-            name='fontawesome|search'
-            size={18}
-            color='#DDD'
-            style={styles.formInputFindIcon}
+              name='search'
+              size={18}
+              color='#DDD'
             />
           </View>
 
@@ -243,13 +242,6 @@ var styles = StyleSheet.create({
     color: '#48BBEC',
     flex: 1
   },
-  formInputFindIcon: {
-    width: 18,
-    height: 18,
-    alignSelf: 'center',
-    marginRight: 10
-  },
-
   buttonContainer: {
     borderTopWidth: 3,
     borderStyle: 'solid',

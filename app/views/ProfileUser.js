@@ -61,7 +61,7 @@ class UserProfileView extends Component {
       <ListItem
         text={data.location}
         type='text'
-        icon='fontawesome|map-marker'
+        icon='map-marker'
         />
       );
     }
@@ -75,7 +75,7 @@ class UserProfileView extends Component {
         onPress={() => hyperlink.open(data.website.href)}
         first={!data.location}
         action
-        icon='fontawesome|link'
+        icon='link'
         />
       );
     }
@@ -85,7 +85,7 @@ class UserProfileView extends Component {
       type='text'
       text={i18next.t('ProfileUser:registered-on', {date: date.shortDate(data.registered)})}
       first={(!data.location && !data.website)}
-      icon='fontawesome|clock-o'
+      icon='clock-o'
       />
     );
 
@@ -97,7 +97,7 @@ class UserProfileView extends Component {
           type='edit-button'
           action
           onPress={() => this._unbanUser()}
-          icon='fontawesome|ban'
+          icon='ban'
           />
       );
     } else {
@@ -107,7 +107,7 @@ class UserProfileView extends Component {
           type='edit-button'
           action
           onPress={() => this._banUser()}
-          icon='fontawesome|ban'
+          icon='ban'
           iconColor='#ff3838'
           />
       );

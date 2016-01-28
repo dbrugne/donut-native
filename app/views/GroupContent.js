@@ -140,11 +140,11 @@ class GroupProfileView extends Component {
     return (
       <View style={{marginTop: 10, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center'}}>
         <Icon
-          name='fontawesome|quote-right'
+          name='quote-right'
           size={14}
           color='#8a6d3b'
-          style={{width: 14, height: 14, marginTop: 2}}
-          />
+          style={{marginTop: 2}}
+        />
         <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
           <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{disclaimer}</Text>
         </View>
@@ -225,7 +225,7 @@ class GroupProfileView extends Component {
                   first
                   action='true'
                   type='button'
-                  icon='fontawesome|link'
+                  icon='link'
           />
       );
     }
@@ -237,7 +237,7 @@ class GroupProfileView extends Component {
         type='text'
         text={i18next.t('group.created') + ' ' + date.shortDate(this.props.data.created)}
         last
-        icon='fontawesome|clock-o'
+        icon='clock-o'
         />
     );
   }

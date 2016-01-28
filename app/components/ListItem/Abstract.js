@@ -52,7 +52,7 @@ class ListItemAbstract extends Component {
         size={14}
         color={iconColor}
         style={s.listGroupItemIconLeft}
-        />
+      />
     );
   }
 
@@ -79,11 +79,11 @@ class ListItemAbstract extends Component {
 
     return (
       <Icon
-        name={this.props.iconRight ? this.props.iconRight : 'fontawesome|chevron-right'}
+        name={this.props.iconRight ? this.props.iconRight : 'chevron-right'}
         size={14}
         color='#DDD'
         style={s.listGroupItemIconRight}
-        />
+      />
     );
   }
 

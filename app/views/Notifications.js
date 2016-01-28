@@ -459,10 +459,10 @@ class NotificationsView extends Component {
         <View
           style={[{ width: 44, height: 44, borderRadius: 4, backgroundColor: '#3498db', flexDirection: 'row' }, n.avatarCircle && {borderRadius: 22}]}>
           <Icon
-            name='fontawesome|check'
+            name='check'
             size={30}
             color='#ecf0f1'
-            style={{width: 30, height: 30, alignSelf: 'center', marginLeft: 6}}
+            style={{alignSelf: 'center', marginLeft: 6}}
           />
         </View>
       );

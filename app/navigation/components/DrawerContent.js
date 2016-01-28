@@ -57,7 +57,7 @@ class DrawerContent extends Component {
     );
   }
   renderAction (icon, count, onPress) {
-    var iconName = 'fontawesome|' + icon;
+    var iconName = '' + icon;
     let _count = null;
     if (count && this.state.unread > 0) {
       _count = (
@@ -76,8 +76,7 @@ class DrawerContent extends Component {
             name={iconName}
             size={26}
             color='#ecf0f1'
-            style={styles.actionIcon}
-            />
+          />
           {_count}
         </View>
       </TouchableHighlight>
@@ -105,10 +104,6 @@ var styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     alignItems: 'center'
-  },
-  actionIcon: {
-    width: 26,
-    height: 26
   }
 });
 
