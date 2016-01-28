@@ -31,7 +31,8 @@ var NavigationGroupsView = React.createClass({
         rowHasChanged: function (row1, row2) {
           return (row1 !== row2);
         }
-      })
+      }),
+      atLeastOne: false
     };
   },
 
@@ -60,14 +61,15 @@ var NavigationGroupsView = React.createClass({
       }
     });
     this.setState({
-      elements: this.state.elements.cloneWithRows(roomsAndGroups)
+      elements: this.state.elements.cloneWithRows(roomsAndGroups),
+      atLeastOne: (roomsAndGroups.length > 0)
     });
   },
 
   render: function () {
     this.lastGroup = null;
     var title = null;
-    if (app.groups.length > 0 || app.rooms.length > 0) {
+    if (this.state.atLeastOne) {
       title = (
         <View style={{backgroundColor: '#1D1D1D'}}>
           <Text style={styles.title}>{i18next.t('drawer_content_groups:groups')}</Text>
@@ -95,7 +97,7 @@ var NavigationGroupsView = React.createClass({
         <TouchableHighlight
         style={[styles.linkBlock, {backgroundColor: (groupModel && groupModel.get('focused')) ? '#666' : '#222'}]}
         underlayColor= '#414041'
-        onPress={() => navigation.navigate('Group', {name: e.name, id: e.group_id})}
+        onPress={() => app.trigger('joinGroup', e.group_id)}
         >
         <View style={styles.item}>
           <Text style={styles.itemTitle}>#{e.name}</Text>
@@ -121,7 +123,7 @@ var NavigationGroupsView = React.createClass({
         <TouchableHighlight
           style={[styles.linkBlock, {backgroundColor: (groupModel && groupModel.get('focused')) ? '#666' : '#222'}]}
           underlayColor= '#414041'
-          onPress={() => navigation.navigate('Group', {name: e.group_name, id: e.group_id})}
+          onPress={() => app.trigger('joinGroup', e.group_id)}
           >
           <View style={styles.item}>
             <Text style={styles.itemTitle}>#{e.group_name}</Text>

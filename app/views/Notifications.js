@@ -239,10 +239,7 @@ class NotificationsView extends Component {
       var groupId = (n.data.group._id)
         ? n.data.group._id
         : n.data.group.id;
-      n.onPress = () => navigation.navigate('Group', {
-        name: n.name,
-        id: groupId
-      });
+      n.onPress = () => app.trigger('joinGroup', groupId);
     } else if (n.data.by_user) {
       n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 45);
       n.title = n.data.by_user.username;

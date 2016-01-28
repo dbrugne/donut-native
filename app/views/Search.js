@@ -125,7 +125,7 @@ class SearchView extends Component {
     } else if (this.state.type === 'groups') {
       return (
         <Card
-          onPress={() => navigation.navigate('Group', {id: rowData.group_id, name: rowData.name})}
+          onPress={() => app.trigger('joinGroup', rowData.group_id)}
           image={rowData.avatar}
           type='group'
           identifier={'#' + rowData.name}
