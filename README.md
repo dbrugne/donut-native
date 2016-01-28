@@ -57,3 +57,8 @@ For each scenario launch Xcode project select a scheme (listed bellow), select a
 **Added jQuery to deps to solve packager issue**
  
 https://github.com/facebook/react-native/commit/8db35d492b846f51a758e8ee7e5e402c6bad3785
+
+**Temporary bug with Code Push iOS build and react-native@0.19.0-rc**
+
+https://github.com/Microsoft/react-native-code-push/issues/161
+workaround: https://github.com/jedlau/react-native-code-push/commit/3067c7c3f350957f245023430a0e8e5504e92377
