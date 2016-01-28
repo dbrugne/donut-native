@@ -12,9 +12,7 @@ var {
   Text,
   Image
 } = React;
-var {
-  Icon
-} = require('react-native-icons');
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 var currentUser = require('../models/current-user');
 

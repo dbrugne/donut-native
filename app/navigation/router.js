@@ -4,11 +4,9 @@ var React = require('react-native');
 var {
   TouchableOpacity,
   View,
-  Text,
-  Platform
+  Text
 } = React;
-
-var Icon = require('react-native-icons').Icon;
+var Icon = require('react-native-vector-icons/FontAwesome');
 import ExNavigator from '@exponent/react-native-navigator';
 var _ = require('underscore');
 var app = require('../libs/app');

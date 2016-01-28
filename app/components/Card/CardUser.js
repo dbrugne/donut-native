@@ -8,10 +8,8 @@ var {
   View,
   Text,
   TouchableHighlight
-  } = React;
-var {
-  Icon
-  } = require('react-native-icons');
+} = React;
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 var i18next = require('../../libs/i18next');
 

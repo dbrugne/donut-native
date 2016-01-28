@@ -6,9 +6,7 @@ var {
   View,
   TextInput
 } = React;
-var {
-  Icon
-  } = require('react-native-icons');
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 var Button = require('react-native-button');
 var imageUpload = require('../libs/imageUpload');

@@ -8,8 +8,8 @@ var {
   View,
   Text,
   TouchableHighlight
-  } = React;
-var { Icon } = require('react-native-icons');
+} = React;
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 var Button = React.createClass({
   propTypes: {

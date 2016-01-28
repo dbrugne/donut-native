@@ -15,9 +15,6 @@ import com.microsoft.codepush.react.CodePush;
 // to retrieve config
 import java.lang.reflect.Field;
 
-// @Icons
-import com.smixx.reactnativeicons.ReactNativeIcons;
-
 // @FacebookLogin
 import com.magus.fblogin.FacebookLoginPackage;
 
@@ -145,7 +142,6 @@ public class MainActivity extends ReactActivity {
         new FacebookLoginPackage(),
         new NotificationAndroidPackage(this),
         new ParsePushNotificationPackage(this),
-        new ReactNativeIcons(),
         mImagePicker
       );
     }

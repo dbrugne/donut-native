@@ -9,9 +9,7 @@ var {
   Text,
   StyleSheet
   } = React;
-var {
-  Icon
-  } = require('react-native-icons');
+var Icon = require('react-native-vector-icons/FontAwesome');
 var hyperlink = require('../libs/hyperlink');
 
 class File extends Component {

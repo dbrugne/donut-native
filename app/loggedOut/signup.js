@@ -9,11 +9,8 @@ var {
   View,
   Image,
 } = React;
-var {
-  Icon
-} = require('react-native-icons');
+var Icon = require('react-native-vector-icons/FontAwesome');
 
-var Platform = require('Platform');
 var currentUser = require('../models/current-user');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');

@@ -10,7 +10,7 @@ var {
   ListView,
   Component,
 } = React;
-var Icon = require('react-native-icons').Icon;
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 var app = require('../libs/app');
 var navigation = require('../navigation/index');

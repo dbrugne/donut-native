@@ -16,9 +16,7 @@ var {
   TextInput,
   Image
 } = React;
-var {
-  Icon
-} = require('react-native-icons');
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'forgot', {

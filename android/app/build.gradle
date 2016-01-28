@@ -158,9 +158,6 @@ dependencies {
     // @CodePush
     compile project(':react-native-code-push')
 
-    // @Icons
-    compile project(':react-native-icons')
-
     // @FacebookLogin
     compile project(':react-native-facebook-login')
 

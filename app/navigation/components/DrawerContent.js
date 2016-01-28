@@ -10,7 +10,7 @@ var {
   TouchableHighlight,
   ScrollView
 } = React;
-var Icon = require('react-native-icons').Icon;
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 var CurrentUserView = require('./DrawerContentUser');
 var NavigationOnesView = require('./DrawerContentOnes');

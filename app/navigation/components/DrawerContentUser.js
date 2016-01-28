@@ -9,9 +9,7 @@ var {
   View,
   Component
 } = React;
-var {
-  Icon
-} = require('react-native-icons');
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 var common = require('@dbrugne/donut-common/mobile');
 var currentUser = require('../../models/current-user');

@@ -7,10 +7,8 @@ var {
   View,
   StyleSheet,
   ScrollView
-  } = React;
-var {
-  Icon
-  } = require('react-native-icons');
+} = React;
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 var i18next = require('../libs/i18next');
 var Button = require('react-native-button');

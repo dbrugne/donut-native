@@ -7,11 +7,8 @@ var {
   Component,
   View,
   Text
-  } = React;
-
-var {
-  Icon
-  } = require('react-native-icons');
+} = React;
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 class ListItemAbstract extends Component {
   constructor (props) {
