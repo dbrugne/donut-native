@@ -163,7 +163,7 @@ class DiscussionSettings extends Component {
     }
     return (
       <View style={{marginHorizontal: 10, marginBottom:20 , alignSelf: 'center'}}>
-        <Text style={s.topic}>{(this.state.topic) ? this.state.topic : i18next.t('DiscussionSettings:no-topic')}</Text>
+        <Text style={s.topic}>{(this.state.topic) ? common.markup.toText(this.state.topic) : i18next.t('DiscussionSettings:no-topic')}</Text>
       </View>
     );
   }
