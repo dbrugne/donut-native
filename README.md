@@ -57,7 +57,3 @@ For each scenario launch Xcode project select a scheme (listed bellow), select a
 **Added jQuery to deps to solve packager issue**
  
 https://github.com/facebook/react-native/commit/8db35d492b846f51a758e8ee7e5e402c6bad3785
-
-**Add getLaunchOptions() in Android to set initial props (waiting 0.19.0)**
-
-https://github.com/facebook/react-native/commit/8638f6a735a8842486a44f9f5527faa14d2c2dec
