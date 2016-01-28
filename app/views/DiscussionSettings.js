@@ -56,10 +56,6 @@ class DiscussionSettings extends Component {
     });
   }
   render () {
-    // @todo link to room edit page
-    // @todo link to room access page
-    // @todo link to room allowed users page
-
     return (
       <ScrollView style={styles.main}>
         <View style={styles.containerTop}>
