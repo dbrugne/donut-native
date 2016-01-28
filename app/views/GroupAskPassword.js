@@ -68,7 +68,7 @@ class GroupAskMembershipPassword extends Component {
     }
     app.client.groupBecomeMember(this.props.id, this.state.password, (response) => {
       if (response.success) {
-        this.props.navigator.popToTop();
+        this.props.navigator.popToTop();  // @todo handle in navigation.popToTop() wrapper
         app.trigger('refreshGroup');
       } else {
         if (response.err === 'wrong-password') {

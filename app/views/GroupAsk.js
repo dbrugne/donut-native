@@ -176,7 +176,7 @@ class GroupAskMembership extends Component {
     this.setState({
       success: true
     });
-    this.props.navigator.popToTop();
+    this.props.navigator.popToTop(); // @todo handle in navigation.popToTop() wrapper
     app.trigger('refreshGroup');
   }
 }
