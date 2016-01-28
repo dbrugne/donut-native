@@ -33,8 +33,6 @@ var DiscussionAbstract = React.createClass({
     };
   },
   componentDidMount () {
-    debug.log(this.props.model.get('identifier') + ' abstract mounted');
-
     app.on('keyboardWillShow', this.onKeyboardWillShow, this);
     app.on('keyboardWillHide', this.onKeyboardWillHide, this);
 
