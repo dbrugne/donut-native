@@ -55,20 +55,16 @@ class DiscussionEvents extends Component {
 
     this.wasFocusedAtLeastOneTime = false;
     this.numberOfEventsToRetrieve = 40;
-
-    app.on('room:join', this.onJoin, this);
   }
   componentDidMount () {
     this.props.model.on('freshEvent', this.addFreshEvent, this);
     this.props.model.on('messageSpam', this.onMarkedAsSpam, this);
     this.props.model.on('messageUnspam', this.onMarkedAsUnspam, this);
     this.props.model.on('messageEdit', this.onEdited, this);
-
     this.props.model.on('change:unviewed', this.onUnviewedChange, this);
   }
   componentWillUnmount () {
     this.props.model.off(null, null, this);
-
     this._timeoutCleanup();
   }
   _timeoutCleanup () {
