@@ -61,7 +61,6 @@ var DiscussionBlocked = React.createClass({
   },
 
   render: function () {
-    console.log('render');
     let description = null;
     if (this.props.model.get('description')) {
       description = (
