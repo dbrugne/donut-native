@@ -30,9 +30,9 @@ class UserFieldWebsite extends UserField {
   }
 
   renderField () {
-    var value = (this.state.value && this.state.value.href)
-      ? this.state.value.href
-      : '';
+    var value = (this.state.value && this.state.value.title)
+      ? this.state.value.title
+      : this.state.value;
     return (
     <ListItem
       ref='input'
