@@ -16,10 +16,10 @@ var {
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountPreferences', {
   'notify-me': 'NOTIFY ME',
-  'on-email': 'on email (only if you are offline)',
-  'on-mobile': 'on mobile',
-  'private': 'when a user sends me a private message',
-  'invite': 'when a user invites me'
+  'on-email': 'On email (only if you are offline)',
+  'on-mobile': 'On mobile',
+  'private': 'When a user sends me a private message',
+  'invite': 'When a user invites me'
 });
 
 class UserPreferencesView extends Component {
