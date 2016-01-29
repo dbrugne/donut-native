@@ -169,8 +169,6 @@ module.exports = {
         return require('./routes/MyAccountEmails');
       case 'MyAccountEmailsAdd':
         return require('./routes/MyAccountEmailsAdd');
-      case 'MyAccountInformation':
-        return require('./routes/MyAccountInformation');
       case 'MyAccountPassword':
         return require('./routes/MyAccountPassword');
       case 'MyAccountPreferences':
