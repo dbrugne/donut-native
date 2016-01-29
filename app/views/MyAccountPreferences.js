@@ -15,7 +15,6 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountPreferences', {
-  'set-preferences': 'Set preferences',
   'notify-me': 'NOTIFY ME',
   'on-email': 'on email (only if you are offline)',
   'on-mobile': 'on mobile',
@@ -67,8 +66,6 @@ class UserPreferencesView extends Component {
 
     return (
       <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1, backgroundColor: '#f0f0f0' }}>
-        <Text style={[s.h1, s.textCenter, s.marginTop5]}>{i18next.t('myAccountPreferences:set-preferences')}</Text>
-
         <Text style={[s.listGroupTitle, s.marginTop20]}>{i18next.t('myAccountPreferences:notify-me')}</Text>
         <View style={s.listGroup}>
 
