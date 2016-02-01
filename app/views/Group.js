@@ -21,7 +21,10 @@ var GroupHomeView = React.createClass({
   },
   componentDidMount: function () {
     app.on('refreshGroup', this.onRefresh, this);
-    app.client.on('group:refresh', this.onRefresh, this);
+    this.model = app.groups.iwhere('group_id', this.id);
+    if (this.model) {
+      this.model.on('redraw', this.onRefresh, this);
+    }
     if (this.id) {
       app.client.groupJoin(this.id, (response) => {
         if (response.err) {
@@ -35,7 +38,9 @@ var GroupHomeView = React.createClass({
   },
   componentWillUnmount: function () {
     app.off('refreshGroup', this.onRefresh, this);
-    app.client.off('group:refresh', this.onRefresh, this);
+    if (this.model) {
+      this.model.off('redraw', this.onRefresh, this);
+    }
   },
   onData: function (response) {
     if (response.err) {
