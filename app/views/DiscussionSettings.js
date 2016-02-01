@@ -9,6 +9,7 @@ var navigation = require('../navigation/index');
 var common = require('@dbrugne/donut-common/mobile');
 var Alert = require('../libs/alert');
 var imageUploader = require('../libs/imageUpload');
+var emojione = require('emojione');
 
 var {
   Component,
@@ -156,9 +157,16 @@ class DiscussionSettings extends Component {
     if (this.props.model.get('type') === 'onetoone') {
       return null;
     }
-    var topic = (this.state.topic)
-      ? common.markup.toText(this.state.topic)
-      : i18next.t('DiscussionSettings:no-topic');
+
+    var topic;
+    if (this.state.topic) {
+      topic = common.markup.toText(this.state.topic);
+      topic = emojione.shortnameToUnicode(topic);
+    }
+    if (!topic) {
+      topic = i18next.t('DiscussionSettings:no-topic');
+    }
+
     if (!this.isOp && !this.isOwner && !this.isAdmin) {
       return (
         <View style={s.listGroup}>

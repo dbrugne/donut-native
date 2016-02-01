@@ -2,6 +2,7 @@
 
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common');
+var emojione = require('emojione');
 
 module.exports = function (type, data) {
   if (!type) {
@@ -26,9 +27,11 @@ module.exports = function (type, data) {
   }
   if (data.message) {
     data.message = _.unescape(data.message);
+    data.message = emojione.shortnameToUnicode(data.message);
   }
   if (data.topic) {
     data.topic = _.unescape(data.topic);
+    data.topic = emojione.shortnameToUnicode(data.topic);
   }
 
   // files

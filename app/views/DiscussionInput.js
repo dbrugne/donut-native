@@ -13,6 +13,7 @@ var imageUpload = require('../libs/imageUpload');
 var currentUser = require('../models/current-user');
 var i18next = require('../libs/i18next');
 var alert = require('../libs/alert');
+var emojione = require('emojione');
 
 var InputView = React.createClass({
   propTypes: {
@@ -71,7 +72,8 @@ var InputView = React.createClass({
       return;
     }
 
-    this.model.sendMessage(this.state.text, null, (response) => {
+    var message = emojione.toShort(this.state.text);
+    this.model.sendMessage(message, null, (response) => {
       if (response === 'not-connected') {
         return alert.show(i18next.t('messages.not-connected'));
       } else if (response.err) {
@@ -80,7 +82,7 @@ var InputView = React.createClass({
       this.setState({
         text: ''
       });
-      this.refs.input.focus(); // @todo : not working due to blurOnSubmit https://github.com/facebook/react-native/pull/2149
+      this.refs.input.focus(); // @bug: not working on Android (https://github.com/facebook/react-native/pull/2149)
     });
   },
   _addImage: function () {
