@@ -11,6 +11,7 @@ var app = require('../libs/app');
 var alert = require('../libs/alert');
 var ListItem = require('../components/ListItem');
 var common = require('@dbrugne/donut-common/mobile');
+var emojione = require('emojione');
 
 var UpdateRoomTopicView = React.createClass({
   propTypes: {
@@ -19,8 +20,13 @@ var UpdateRoomTopicView = React.createClass({
     fetchDataParent: React.PropTypes.func
   },
   getInitialState: function () {
+    var topic = this.props.model.get('topic');
+    if (topic) {
+      topic = common.markup.toText(topic);
+      topic = emojione.shortnameToUnicode(topic);
+    }
     return {
-      topic: (this.props.model.get('topic')) ? common.markup.toText(this.props.model.get('topic')) : ''
+      topic: topic
     };
   },
   render: function () {
@@ -42,7 +48,12 @@ var UpdateRoomTopicView = React.createClass({
     if (!this.props.model) {
       return;
     }
-    app.client.roomTopic(this.props.model.get('id'), this.state.topic, _.bind(function (response) {
+
+    var topic = this.state.topic;
+    if (topic) {
+      topic = emojione.toShort(topic);
+    }
+    app.client.roomTopic(this.props.model.get('id'), topic, _.bind(function (response) {
       if (response.success) {
         this.props.fetchDataParent();
         return this.props.navigator.pop();
