@@ -39,7 +39,7 @@ class RoomProfileView extends Component {
     this.data = props.data;
   }
 
-  render() {
+  render () {
     var data = this.data;
     var description = _.unescape(data.description);
 
@@ -64,21 +64,6 @@ class RoomProfileView extends Component {
       icon='clock-o'
       />
     );
-
-    var links = null;
-    if (currentUser.get('user_id') === data.owner_id || currentUser.isAdmin()) {
-      links = (
-         <View>
-           <ListItem
-             text={i18next.t('profileRoom:edit')}
-             type='edit-button'
-             action
-             onPress={() => navigation.navigate('RoomEdit', this.data)}
-             icon='pencil'
-             />
-          </View>
-       );
-    }
 
     return (
       <ScrollView style={styles.main}>
@@ -107,7 +92,6 @@ class RoomProfileView extends Component {
             />
           <Text style={s.listGroupItemSpacing} />
           {website}
-          {links}
           {createdAt}
         </View>
       </ScrollView>
