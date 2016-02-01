@@ -62,3 +62,7 @@ https://github.com/facebook/react-native/commit/8db35d492b846f51a758e8ee7e5e402c
 
 https://github.com/Microsoft/react-native-code-push/issues/161
 workaround: https://github.com/jedlau/react-native-code-push/commit/3067c7c3f350957f245023430a0e8e5504e92377
+
+**Temporary bug in react-native navigation bar https://github.com/facebook/react-native/issues/4559
+in: node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorNavigationBar.js
+change ```pointerEvents="box-none"``` by ```pointerEvents={route === this.props.navigator.navigationContext.currentRoute ? 'box-none' : 'none'}```
