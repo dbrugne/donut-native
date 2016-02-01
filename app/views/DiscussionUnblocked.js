@@ -88,6 +88,7 @@ var DiscussionAbstract = React.createClass({
     this.setState({ imageSource: imageSource });
   },
   _addImage () {
+    this.closeConfirmationModal();
     if (this.state.imageSource === null) {
       return;
     }
