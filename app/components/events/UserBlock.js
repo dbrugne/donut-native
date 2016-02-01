@@ -21,7 +21,7 @@ module.exports = React.createClass({
   },
   render () {
     return (
-      <View style={{flexDirection: 'row', flex:1, alignItems: 'center'}}>
+      <View style={{flexDirection: 'row', flex:1, alignItems: 'flex-start'}}>
         {this._renderAvatar()}
         <View style={{flexDirection: 'column', flex:1}}>
           <View style={{flexDirection: 'row', flex:1, alignItems: 'center'}}>
