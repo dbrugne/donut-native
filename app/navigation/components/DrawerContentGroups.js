@@ -97,7 +97,7 @@ var NavigationGroupsView = React.createClass({
         onPress={() => app.trigger('joinGroup', e.group_id)}
         >
         <View style={styles.item}>
-          <Text style={styles.itemTitle}>#{e.name}</Text>
+          <Text style={[styles.itemTitle, e.blocked && {textDecorationLine: 'line-through'}]}>#{e.name}</Text>
           <TouchableHighlight
             style={[styles.leaveGroupButton, {backgroundColor: (groupModel && groupModel.get('focused')) ? '#666' : '#222'}]}
             underlayColor= '#414041'

@@ -32,7 +32,7 @@ i18next.addResourceBundle('en', 'DiscussionSettings', {
   'edit': 'Edit',
   'access': 'Access',
   'allowed': 'Manage invitations',
-  'leave': 'Leave this donut',
+  'leave': 'Leave this discussion',
   'close': 'Close this discussion',
   'users': 'Users list',
   'users-title': 'Users',
@@ -60,7 +60,9 @@ class DiscussionSettings extends Component {
       avatar: this.props.model.get('avatar'),
       identifier: this.props.model.get('identifier'),
       status: this.props.model.get('status'),
-      banned: this.props.model.get('banned')
+      banned: this.props.model.get('banned'),
+      userListLoaded: false,
+      nbUsers: '...'
     };
   }
   fetchData () {
@@ -71,6 +73,16 @@ class DiscussionSettings extends Component {
       status: this.props.model.get('status'),
       banned: this.props.model.get('banned')
     });
+  }
+  componentDidMount () {
+    if (this.props.model.get('type') === 'room') {
+      app.client.roomUsers(this.props.model.get('id'), {type: 'users', selector: {start: 0, length: 8}}, (data) => {
+        if (data.err) {
+          return;
+        }
+        this.setState({nbUsers: data.count.toString(), users: data.users, userListLoaded: true});
+      });
+    }
   }
   render () {
     var setRoomNotificationLink = null;
@@ -136,6 +148,21 @@ class DiscussionSettings extends Component {
           </View>
         );
       }
+      let itemUserList = null;
+      if (this.state.userListLoaded) {
+        itemUserList = (
+          <View style={{flexDirection: 'row', flex: 1, height: 50, alignItems: 'center', flexWrap: 'wrap'}} >
+            {_.map(this.state.users, (u) => {
+              let avatarUrl = common.cloudinary.prepare(u.avatar, 40);
+              return (
+                <TouchableHighlight key={u.user_id} onPress={() => navigation.navigate('Profile', {type: 'user', id: u.user_id, identifier: '@' + u.username})}>
+                  <Image style={{width: 40, height: 40, marginHorizontal: 2}} source={{uri: avatarUrl}} />
+                </TouchableHighlight>
+              );
+            })}
+          </View>
+        );
+      }
       return (
         <View style={s.listGroup}>
           {itemTopic}
@@ -143,11 +170,13 @@ class DiscussionSettings extends Component {
             onPress={() => navigation.navigate('RoomUsers', this.props.model.get('id'))}
             text={i18next.t('DiscussionSettings:users')}
             icon='users'
-            type='button'
+            type='edit-button'
             action
+            value={this.state.nbUsers}
             title={(!itemTopic) ? i18next.t('DiscussionSettings:users-title') : null}
             first={!(itemTopic)}
             />
+          {itemUserList}
         </View>
       );
     }
