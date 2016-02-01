@@ -39,7 +39,7 @@ var GroupHomeView = React.createClass({
   componentWillUnmount: function () {
     app.off('refreshGroup', this.onRefresh, this);
     if (this.model) {
-      this.model.off('redraw', this.onRefresh, this);
+      this.model.off(null, null, this);
     }
   },
   onData: function (response) {
