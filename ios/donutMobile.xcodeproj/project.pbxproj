@@ -232,7 +232,6 @@
 		6DCC57E81C0C6817008F42F0 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		6DED13BF1C4EA25400480302 /* UIImagePickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIImagePickerManager.h; path = "../node_modules/react-native-image-picker/ios/UIImagePickerManager.h"; sourceTree = "<group>"; };
 		6DED13C01C4EA25400480302 /* UIImagePickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIImagePickerManager.m; path = "../node_modules/react-native-image-picker/ios/UIImagePickerManager.m"; sourceTree = "<group>"; };
-		6DF067401C0F66F20096C874 /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.otf; path = Fonts/FontAwesome.otf; sourceTree = "<group>"; };
 		6DF067411C0F66F20096C874 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Bold.ttf"; path = "Fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		6DF067421C0F66F20096C874 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-BoldItalic.ttf"; path = "Fonts/OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		6DF067431C0F66F20096C874 /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-ExtraBold.ttf"; path = "Fonts/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
@@ -406,7 +405,6 @@
 				6DB978291C5A7E3500612E6F /* MaterialIcons.ttf */,
 				6DB9782A1C5A7E3500612E6F /* Octicons.ttf */,
 				6DB9782B1C5A7E3500612E6F /* Zocial.ttf */,
-				6DF067401C0F66F20096C874 /* FontAwesome.otf */,
 				6DF067411C0F66F20096C874 /* OpenSans-Bold.ttf */,
 				6DF067421C0F66F20096C874 /* OpenSans-BoldItalic.ttf */,
 				6DF067431C0F66F20096C874 /* OpenSans-ExtraBold.ttf */,
