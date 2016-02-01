@@ -38,7 +38,7 @@ i18next.addResourceBundle('en', 'DiscussionSettings', {
   'users-title': 'Users',
   'topic': 'Current topic',
   'description': 'Description',
-  'avatar': 'Avatar',
+  'avatar': 'Profile picture',
   'website': 'Website',
   'end': 'End',
   'details': 'Profile details',
@@ -77,7 +77,7 @@ class DiscussionSettings extends Component {
   componentDidMount () {
     if (this.props.model.get('type') === 'room') {
       app.client.roomUsers(this.props.model.get('id'), {type: 'users', selector: {start: 0, length: 8}}, (data) => {
-        if (data.err) {
+        if (data.err || data === 'not-connected') {
           return;
         }
         this.setState({nbUsers: data.count.toString(), users: data.users, userListLoaded: true});

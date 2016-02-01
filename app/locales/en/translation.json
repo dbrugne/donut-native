@@ -55,7 +55,8 @@
     "not-connected": "Looks like there is some connection issues, please retry later",
     "wrong": "Incorrect e-mail or password",
     "unknown": "Incorrect e-mail format",
-    "name-wrong-format": "Invalid name"
+    "name-wrong-format": "Invalid name",
+    "not-in": "User is not in the discussion"
   },
   "navigation": {
     "discover": "Discover",

@@ -1,6 +1,6 @@
 var React = require('react-native');
 var {
-  TouchableOpacity,
+  TouchableOpacity
 } = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
 import ExNavigator from '@exponent/react-native-navigator';

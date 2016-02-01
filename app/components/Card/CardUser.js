@@ -42,6 +42,7 @@ class CardUser extends Abstract {
           {this._renderIdentifier()}
           {this._renderBio()}
           {this._renderMuted()}
+          {this._renderBanned()}
         </View>
       );
     }
@@ -52,6 +53,8 @@ class CardUser extends Abstract {
         <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
           {this._renderIdentifier()}
           {this._renderRoles()}
+          {this._renderMuted()}
+          {this._renderBanned()}
         </View>
         <View style={{alignSelf: 'stretch', width: 50, flexDirection: 'column', justifyContent: 'center'}}>
           <TouchableHighlight
@@ -81,6 +84,21 @@ class CardUser extends Abstract {
         color='#ff3838'
         style={{position: 'absolute', top: 30, right: 10}}
       />
+    );
+  }
+
+  _renderBanned () {
+    if (!this.props.banned) {
+      return null;
+    }
+
+    return (
+      <Icon
+        name='ban'
+        size={35}
+        color='#ff3838'
+        style={{position: 'absolute', top: 30, right: 10}}
+        />
     );
   }
 
