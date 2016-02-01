@@ -2,8 +2,10 @@
 
 var React = require('react-native');
 var {
-  View
-} = React;
+  StyleSheet,
+  View,
+  ScrollView
+  } = React;
 
 var _ = require('underscore');
 var i18next = require('../libs/i18next');
@@ -12,6 +14,10 @@ var alert = require('../libs/alert');
 var ListItem = require('../components/ListItem');
 var common = require('@dbrugne/donut-common/mobile');
 var emojione = require('emojione');
+
+i18next.addResourceBundle('en', 'RoomTopic', {
+  'help': 'Maximum 512 characters'
+});
 
 var UpdateRoomTopicView = React.createClass({
   propTypes: {
@@ -31,16 +37,19 @@ var UpdateRoomTopicView = React.createClass({
   },
   render: function () {
     return (
-      <View style={{backgroundColor: '#f0f0f0'}}>
-        <ListItem
-          ref='input'
-          onPress= {() => this.onSendTopic()}
-          placeholder='change topic'
-          value={this.state.topic}
-          onChange={(event) => this.setState({topic: event.nativeEvent.text})}
-          type='input-button'
-          autoFocus
-          />
+      <View style={{flex: 1}}>
+        <ScrollView style={styles.container}>
+          <ListItem
+            ref='input'
+            onPress= {() => this.onSendTopic()}
+            placeholder='change topic'
+            value={this.state.topic}
+            onChange={(event) => this.setState({topic: event.nativeEvent.text})}
+            type='input-button'
+            autoFocus
+            help={i18next.t('RoomTopic:help')}
+            />
+        </ScrollView>
       </View>
     );
   },
@@ -60,6 +69,14 @@ var UpdateRoomTopicView = React.createClass({
       }
       return alert.show(i18next.t('messages.unknownerror'));
     }, this));
+  }
+});
+
+var styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    flex: 1,
+    backgroundColor: '#f0f0f0'
   }
 });
 

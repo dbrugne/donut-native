@@ -2,16 +2,18 @@
 
 var React = require('react-native');
 var {
+  StyleSheet,
+  View,
   ScrollView
   } = React;
-
 var ListItem = require('../components/ListItem');
 var app = require('../libs/app');
 var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'RoomEditWebsite', {
-  'placeholder': 'Website'
+  'placeholder': 'Website',
+  'help': 'Require valid url and 255 characters max'
 }, true, true);
 
 var RoomEditWebsiteView = React.createClass({
@@ -42,7 +44,8 @@ var RoomEditWebsiteView = React.createClass({
       return (<LoadingView/>);
     }
     return (
-      <ScrollView style={{flex: 1}}>
+      <View style={{flex: 1}}>
+        <ScrollView style={styles.container}>
         <ListItem
           ref='input'
           onPress= {() => {
@@ -53,9 +56,19 @@ var RoomEditWebsiteView = React.createClass({
           value={this.state.website}
           onChange={(event) => this.setState({website: event.nativeEvent.text})}
           type='input-button'
+          help={i18next.t('RoomEditWebsite:help')}
           />
-      </ScrollView>
+        </ScrollView>
+      </View>
     );
+  }
+});
+
+var styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    flex: 1,
+    backgroundColor: '#f0f0f0'
   }
 });
 

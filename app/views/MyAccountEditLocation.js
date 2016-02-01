@@ -1,13 +1,13 @@
 'use strict';
 
-var React = require('react-native');
 var s = require('../styles/style');
 var UserField = require('../components/UserField');
 var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountLocation', {
-  'placeholder': 'City, country where you are'
+  'placeholder': 'City, country where you are',
+  'help': 'Maximum 70 characters'
 });
 
 class UserFieldLocation extends UserField {
@@ -26,6 +26,7 @@ class UserFieldLocation extends UserField {
       value={this.state.value}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
+      help={i18next.t('myAccountLocation:help')}
       />
     );
   }

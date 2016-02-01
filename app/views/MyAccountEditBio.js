@@ -1,13 +1,13 @@
 'use strict';
 
-var React = require('react-native');
 var s = require('../styles/style');
 var UserField = require('../components/UserField');
 var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountBio', {
-  'placeholder': 'Biography'
+  'placeholder': 'Biography',
+  'help': 'Maximum 255 characters'
 });
 
 class UserFieldBio extends UserField {
@@ -26,6 +26,7 @@ class UserFieldBio extends UserField {
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       multi={true}
+      help={i18next.t('myAccountBio:help')}
       />
     );
   }

@@ -1,13 +1,13 @@
 'use strict';
 
-var React = require('react-native');
 var s = require('../styles/style');
 var UserField = require('../components/UserField');
 var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountWebsite', {
-  'placeholder': 'URL of a website'
+  'placeholder': 'URL of a website',
+  'help': 'Require valid url and 255 characters max'
 });
 
 // @todo : avoid uppercase in Input field only for this user attribute
@@ -42,6 +42,7 @@ class UserFieldWebsite extends UserField {
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       multi={false}
+      help={i18next.t('myAccountWebsite:help')}
       />
     );
   }

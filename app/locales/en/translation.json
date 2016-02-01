@@ -31,7 +31,7 @@
     "name-wrong-format": "Invalid name",
     "group-name-wrong-format": "Invalid name",
     "mode-wrong-format": "You must select a mode for this room",
-    "invalid-password": "The password must be 4 and 255 characters",
+    "invalid-password": "The password must be between 4 and 255 characters",
     "room-already-exist": "Donut __name__ already exists",
     "group-name-already-exist": "Group __name__ already exists",
     "not-admin-owner-groupowner": "Unauthorized action.",
@@ -45,18 +45,18 @@
     "notification-not-found": "Notification not found",
     "user-not-found": "No user found",
     "invalid-email": "Email is invalid",
-    "invalid-password": "Password is not valid",
     "invalid-username": "Username isn't valid",
     "existing-user": "This email address is already used",
     "not-available": "This username is not available",
     "mail-notconfirmed": "Verify your account ! Check your mailbox.",
-    "not-confirmed": "Action authorized to verified accounts only.",
     "error-try-again": "Impossible to achieve this request, please try again later",
     "not-connected": "Looks like there is some connection issues, please retry later",
     "wrong": "Incorrect e-mail or password",
     "unknown": "Incorrect e-mail format",
-    "name-wrong-format": "Invalid name",
     "not-in": "User is not in the discussion"
+  },
+  "help": {
+
   },
   "navigation": {
     "discover": "Discover",

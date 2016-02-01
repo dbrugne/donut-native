@@ -3,6 +3,8 @@
 var React = require('react-native');
 var app = require('../libs/app');
 var {
+  StyleSheet,
+  View,
   ScrollView
   } = React;
 
@@ -11,8 +13,9 @@ var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'RoomEditDescription', {
-  'placeholder': 'Description'
-}, true, true);
+  'placeholder': 'Description',
+  'help': 'Maximum 200 characters'
+});
 
 var RoomEditDescriptionView = React.createClass({
   propTypes: {
@@ -39,21 +42,32 @@ var RoomEditDescriptionView = React.createClass({
       return (<LoadingView/>);
     }
     return (
-      <ScrollView style={{flex: 1}}>
-        <ListItem
-          ref='input'
-          onPress= {() => {
-            this.props.saveRoomData('description', this.state.description);
-            this.props.navigator.pop();
-          }}
-          placeholder={i18next.t('RoomEditDescription:placeholder')}
-          value={this.state.description}
-          onChange={(event) => this.setState({description: event.nativeEvent.text})}
-          type='input-button'
-          multi
-          />
-      </ScrollView>
+      <View style={{flex: 1}}>
+        <ScrollView style={styles.container}>
+          <ListItem
+            ref='input'
+            onPress= {() => {
+              this.props.saveRoomData('description', this.state.description);
+              this.props.navigator.pop();
+            }}
+            placeholder={i18next.t('RoomEditDescription:placeholder')}
+            value={this.state.description}
+            onChange={(event) => this.setState({description: event.nativeEvent.text})}
+            type='input-button'
+            multi
+            help={i18next.t('RoomEditDescription:help')}
+            />
+        </ScrollView>
+      </View>
     );
+  }
+});
+
+var styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    flex: 1,
+    backgroundColor: '#f0f0f0'
   }
 });
 

@@ -1,13 +1,13 @@
 'use strict';
 
-var React = require('react-native');
 var s = require('../styles/style');
 var UserField = require('../components/UserField');
 var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountRealname', {
-  'placeholder': 'name and first name'
+  'placeholder': 'name and first name',
+  'help': 'Between 2 and 20 characters, letters with or without accents, numbers, dashes (-) and spaces.'
 });
 
 class UserFieldRealname extends UserField {
@@ -26,6 +26,7 @@ class UserFieldRealname extends UserField {
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       multi={false}
+      help={i18next.t('myAccountRealname:help')}
       />
     );
   }
