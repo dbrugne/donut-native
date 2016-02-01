@@ -14,22 +14,26 @@ React.Navigator.NavigationBar.StylesAndroid.General.NavBarHeight =
 
 // @hack style correctly navigationBar
 var add = {marginLeft: 0, flexDirection: 'column', justifyContent: 'center'};
+var platformTitle = (Platform.OS === 'android') ? {paddingTop:10} : {};
+var platformLeftButton = (Platform.OS === 'android') ? {marginTop:-5} : {};
+var platformRightButton = (Platform.OS === 'android') ? {marginTop:-5} : {};
+
 var _Stages = React.Navigator.NavigationBar.Styles.Stages;
 React.Navigator.NavigationBar.Styles.Stages = {
   Left: {
-    Title: [_Stages.Left.Title, add],
-    LeftButton: [_Stages.Left.LeftButton, add],
-    RightButton: [_Stages.Left.RightButton, add]
+    Title: [_Stages.Left.Title, add, platformTitle],
+    LeftButton: [_Stages.Left.LeftButton, add, platformLeftButton],
+    RightButton: [_Stages.Left.RightButton, add, platformRightButton]
   },
   Center: {
-    Title: [_Stages.Center.Title, add],
-    LeftButton: [_Stages.Center.LeftButton, add],
-    RightButton: [_Stages.Center.RightButton, add]
+    Title: [_Stages.Center.Title, add, platformTitle],
+    LeftButton: [_Stages.Center.LeftButton, add, platformLeftButton],
+    RightButton: [_Stages.Center.RightButton, add, platformRightButton]
   },
   Right: {
-    Title: [_Stages.Right.Title, add],
-    LeftButton: [_Stages.Right.LeftButton, add],
-    RightButton: [_Stages.Right.RightButton, add]
+    Title: [_Stages.Right.Title, add, platformTitle],
+    LeftButton: [_Stages.Right.LeftButton, add, platformLeftButton],
+    RightButton: [_Stages.Right.RightButton, add, platformRightButton]
   }
 };
 
@@ -79,7 +83,7 @@ module.exports = function (state, id, initialRoute) {
     onWillBlur: function (event) {
       this.focused = false;
       // find currently focused route
-      var nav = state.existingNavigators[id].scene.__navigator; // @todo crash when i'm banned from this room
+      var nav = state.existingNavigators[id].scene.__navigator;
       var route = nav.state.routeStack[nav.state.presentedIndex];
       route.onWillBlur();
     },

@@ -32,7 +32,7 @@ module.exports = React.createClass({
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
         onPress={() => require('../index').toggleDrawer()}
-        style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 44}} >
+        style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 44, height:44}} >
         <Icon
           name='bars'
           size={22}
