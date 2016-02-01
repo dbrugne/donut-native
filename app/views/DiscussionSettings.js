@@ -31,7 +31,7 @@ i18next.addResourceBundle('en', 'DiscussionSettings', {
   'edit': 'Edit',
   'access': 'Access',
   'allowed': 'Manage invitations',
-  'leave': 'Leave this donut',
+  'leave': 'Leave this discussion',
   'close': 'Close this discussion',
   'users': 'Users list',
   'users-title': 'Users',
