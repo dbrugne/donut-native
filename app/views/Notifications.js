@@ -214,20 +214,15 @@ class NotificationsView extends Component {
       var roomId = (n.data.room._id)
         ? n.data.room._id
         : n.data.room.id;
-      if ([ 'roommessage', 'usermention', 'roomallowed' ].indexOf(n.type) !== -1) {
-        n.onPress = () => {
-          app.trigger('joinRoom', (n.data.room._id)
-            ? n.data.room._id
-            : n.data.room.id);
-        };
+      if (app.rooms.iwhere('id', roomId)) {
+        // if room in drawer navigation focus discussion
+        n.onPress = () => app.trigger('joinRoom', roomId);
       } else {
-        n.onPress = () => {
-          navigation.navigate('Profile', {
-            type: 'room',
-            id: roomId,
-            identifier: n.name
-          });
-        };
+        n.onPress = () => navigation.navigate('Profile', {
+          type: 'room',
+          id: roomId,
+          identifier: n.name
+        });
       }
     } else if (n.data.group) {
       n.avatar = common.cloudinary.prepare(n.data.group.avatar, 45);
@@ -267,8 +262,10 @@ class NotificationsView extends Component {
     }
     if (n.type === 'roomjoinrequest') {
       n.css += 'open-room-users-allowed';
+      n.onPress = () => navigation.navigate('AvailableSoon');
     } else if (n.type === 'groupjoinrequest') {
       n.css += 'open-group-users-allowed';
+      n.onPress = () => navigation.navigate('AvailableSoon');
     } else if (n.type === 'roomdelete') {
       n.onPress = null;
     }
