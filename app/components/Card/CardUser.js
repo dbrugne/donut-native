@@ -38,9 +38,10 @@ class CardUser extends Abstract {
     // Not editable user
     if (!this.props.onEdit) {
       return (
-        <View>
+        <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
           {this._renderIdentifier()}
           {this._renderBio()}
+          {this._renderRoles()}
           {this._renderMuted()}
           {this._renderBanned()}
         </View>
