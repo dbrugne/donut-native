@@ -1,11 +1,13 @@
 'use strict';
 
 var React = require('react-native');
+var app = require('../libs/app');
 var {
   ScrollView
   } = React;
 
 var ListItem = require('../components/ListItem');
+var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'RoomEditDescription', {
@@ -14,16 +16,28 @@ i18next.addResourceBundle('en', 'RoomEditDescription', {
 
 var RoomEditDescriptionView = React.createClass({
   propTypes: {
-    description: React.PropTypes.string,
+    roomId: React.PropTypes.string,
     navigator: React.PropTypes.object,
     saveRoomData: React.PropTypes.func
   },
   getInitialState: function () {
     return {
-      description: this.props.description
+      description: '',
+      loaded: false
     };
   },
+  componentDidMount: function () {
+    app.client.roomRead(this.props.roomId, {more: true}, (response) => {
+      if (response.err) {
+        return;
+      }
+      this.setState({description: response.description, loaded: true});
+    });
+  },
   render: function () {
+    if (!this.state.loaded) {
+      return (<LoadingView/>);
+    }
     return (
       <ScrollView style={{flex: 1}}>
         <ListItem

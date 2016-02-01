@@ -185,8 +185,6 @@ module.exports = {
         return require('./routes/RoomUsers');
       case 'RoomUser':
         return require('./routes/RoomUser');
-      case 'RoomEdit':
-        return require('./routes/RoomEdit');
       case 'RoomEditDescription':
         return require('./routes/RoomEditDescription');
       case 'RoomEditWebsite':

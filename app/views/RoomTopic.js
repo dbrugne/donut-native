@@ -10,6 +10,7 @@ var i18next = require('../libs/i18next');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var ListItem = require('../components/ListItem');
+var common = require('@dbrugne/donut-common/mobile');
 
 var UpdateRoomTopicView = React.createClass({
   propTypes: {
@@ -19,7 +20,7 @@ var UpdateRoomTopicView = React.createClass({
   },
   getInitialState: function () {
     return {
-      topic: this.props.model.get('topic')
+      topic: (this.props.model.get('topic')) ? common.markup.toText(this.props.model.get('topic')) : ''
     };
   },
   render: function () {

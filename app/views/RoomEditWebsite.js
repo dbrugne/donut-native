@@ -6,6 +6,8 @@ var {
   } = React;
 
 var ListItem = require('../components/ListItem');
+var app = require('../libs/app');
+var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'RoomEditWebsite', {
@@ -14,16 +16,31 @@ i18next.addResourceBundle('en', 'RoomEditWebsite', {
 
 var RoomEditWebsiteView = React.createClass({
   propTypes: {
-    website: React.PropTypes.string,
+    roomId: React.PropTypes.string,
     navigator: React.PropTypes.object,
     saveRoomData: React.PropTypes.func
   },
   getInitialState: function () {
     return {
-      website: this.props.website
+      website: '',
+      loaded: false
     };
   },
+  componentDidMount: function () {
+    app.client.roomRead(this.props.roomId, {more: true}, (response) => {
+      if (response.err) {
+        return;
+      }
+      if (response.website && response.website.title) {
+        this.setState({website: response.website.title});
+      }
+      this.setState({loaded: true});
+    });
+  },
   render: function () {
+    if (!this.state.loaded) {
+      return (<LoadingView/>);
+    }
     return (
       <ScrollView style={{flex: 1}}>
         <ListItem
