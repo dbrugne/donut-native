@@ -28,6 +28,7 @@ module.exports = React.createClass({
 
     return (
       <Drawer
+        type='static'
         ref='drawer'
         content={<Navigation />}
         styles={{main: {shadowColor: '#000000', shadowOpacity: 0.4, shadowRadius: 3}}}
