@@ -124,7 +124,7 @@ var RoomUsersView = React.createClass({
 
     return (
       <Card
-        onPress={() => navigation.navigate('Profile', {type: 'all', id: user.user_id, identifier: '@' + user.username})}
+        onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
         image={user.avatar}
         type='user'
         identifier={'@' + user.username}
