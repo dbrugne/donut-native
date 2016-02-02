@@ -11,7 +11,7 @@ var ListItemText = require('./ListItem/Text');
 var ListItemImageList = require('./ListItem/ImageList');
 var ListItemEditImage = require('./ListItem/EditImage');
 
-module.exports = React.createClass({
+var ListItem = React.createClass({
   propTypes: {
     onPress: React.PropTypes.func, // callback action when component is clicked
     text: React.PropTypes.string, // string to display on element
@@ -28,7 +28,7 @@ module.exports = React.createClass({
     title: React.PropTypes.string, // title to display above the ListItem
     help: React.PropTypes.string, // help message to display bellow the ListItem
     style: React.PropTypes.object, // custom styles to apply to ListItem
-    value: React.PropTypes.string, // value of the ListItemEdit
+    value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]), // value of the ListItemEdit
     autoCapitalize: React.PropTypes.string, // value of the ListItemEdit
     keyboardType: React.PropTypes.string, // value of the ListItemEdit
     loading: React.PropTypes.bool, // loading state, used for the ListItemInputButton
@@ -57,3 +57,5 @@ module.exports = React.createClass({
     }
   }
 });
+
+module.exports = ListItem;
