@@ -42,15 +42,14 @@ class AboutView extends Component {
   render () {
     return (
       <ScrollView>
-        <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1, backgroundColor: '#f0f0f0' }}>
+        <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1 }}>
           <View style={s.listGroup}>
-
             <TouchableHighlight
               onLongPress={this.toggleConfig.bind(this)}
-              underlayColor= '#DDD'
+              underlayColor= 'transparent'
               >
-              <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
-                <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('about:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}</Text>
+              <View style={[{paddingVertical: 15}, s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
+                <Text style={[{fontSize: 16}, s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('about:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}</Text>
               </View>
             </TouchableHighlight>
             {this._renderConfig()}
@@ -66,7 +65,7 @@ class AboutView extends Component {
     }
 
     return (
-      <View>
+      <View style={{backgroundColor: '#f0f0f0'}}>
         <ListItem
           text={i18next.t('about:connect')}
           type='button'
