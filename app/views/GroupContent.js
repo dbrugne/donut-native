@@ -45,18 +45,11 @@ class GroupProfileView extends Component {
   }
 
   render () {
-    // render
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
           {this._renderAvatar()}
           <Text style={styles.identifier}>{this.props.data.identifier}</Text>
-          <Link
-            onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.data.owner_id, identifier: '@' + this.props.data.owner_username})}
-            prepend={i18next.t('by')}
-            text={'@' + this.props.data.owner_username}
-            type='bold'
-            />
           {this._renderDescription()}
         </View>
 

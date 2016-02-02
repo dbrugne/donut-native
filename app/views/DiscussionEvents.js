@@ -46,6 +46,7 @@ class DiscussionEvents extends Component {
   constructor (props) {
     super(props);
 
+    this.loading = false;
     this.eventsDataSource = require('../libs/eventsDataSource')();
     this.state = {
       loading: false,
@@ -197,6 +198,7 @@ class DiscussionEvents extends Component {
     this.fetchHistory('older');
   }
   fetchHistory (direction) {
+    this.loading = direction;
     if (direction === 'older') {
       this.setState({
         loading: true
@@ -228,6 +230,7 @@ class DiscussionEvents extends Component {
       }
 
       this.setState(state);
+      this.loading = false;
 
       if (this.props.model.get('focused') === true) {
         this.markAsViewedAfterDelay();
@@ -237,6 +240,10 @@ class DiscussionEvents extends Component {
   addFreshEvent (type, data) {
     if (this.props.model.get('focused') !== true) {
       // render realtime event only if discussion is focused
+      return;
+    }
+    if (this.loading === 'later') {
+      // don't add event if we already loading new events
       return;
     }
 

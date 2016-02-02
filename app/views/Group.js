@@ -27,14 +27,12 @@ var GroupHomeView = React.createClass({
     }
     if (this.id) {
       app.client.groupJoin(this.id, (response) => {
-        if (response.err) {
-          return;
-        }
-        app.client.groupRead(this.id, {users: true, rooms: true}, (data) => {
-          this.onData(data);
-        });
+        return;
       });
     }
+  },
+  onFocus: function () {
+    this.onRefresh();
   },
   componentWillUnmount: function () {
     app.off('refreshGroup', this.onRefresh, this);

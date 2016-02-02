@@ -6,13 +6,13 @@ var UserField = require('../components/UserField');
 var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'myAccountBio', {
-  'placeholder': 'Biography',
+i18next.addResourceBundle('en', 'GroupEditDisclaimer', {
+  'placeholder': 'message displayed',
   'help': 'Maximum 255 characters'
 });
 
-class UserFieldBio extends UserField {
-  key = 'bio';
+class GroupEditDisclaimer extends UserField {
+  key = 'disclaimer';
   constructor (props) {
     super(props);
   }
@@ -22,12 +22,12 @@ class UserFieldBio extends UserField {
     <ListItem
       ref='input'
       onPress= {() => this.onPress()}
-      placeholder={i18next.t('myAccountBio:placeholder')}
+      placeholder={i18next.t('GroupEditDisclaimer:placeholder')}
       value={this.state.value}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       multi={true}
-      help={i18next.t('myAccountBio:help')}
+      help={i18next.t('GroupEditDisclaimer:help')}
       />
     );
   }
@@ -38,4 +38,4 @@ class UserFieldBio extends UserField {
   }
 }
 
-module.exports = UserFieldBio;
+module.exports = GroupEditDisclaimer;
