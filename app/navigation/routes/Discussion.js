@@ -1,11 +1,6 @@
 var React = require('react-native');
-var {
-  TouchableOpacity
-} = React;
-var Icon = require('react-native-vector-icons/FontAwesome');
-import ExNavigator from '@exponent/react-native-navigator';
-var navigation = require('../index');
 var state = require('../state');
+var RightIcon = require('../components/RightIconSettings');
 
 module.exports = function (model) {
   return {
@@ -20,22 +15,7 @@ module.exports = function (model) {
       return model.get('identifier');
     },
     renderRightButton: function (navigator) {
-      if (model.get('blocked') === true) {
-        return null;
-      }
-
-      return (
-        <TouchableOpacity
-          touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
-          onPress={() => navigation.navigate('DiscussionSettings', model)}
-          style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 44}} >
-          <Icon
-            name='cog'
-            size={22}
-            color='#999998'
-          />
-        </TouchableOpacity>
-      );
+      return (<RightIcon model={model}/>);
     },
     _onDidFocus: function () {
       if (this.scene.onFocus) {
