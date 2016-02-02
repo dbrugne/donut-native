@@ -232,7 +232,6 @@ class GroupSettings extends Component {
         />
       );
     }
-
     return (
       <View style={s.listGroup}>
         <ListItem
@@ -247,125 +246,6 @@ class GroupSettings extends Component {
       </View>
     );
   }
-
-  //_renderLinks () {
-  //  if (this.props.model.get('type') === 'onetoone') {
-  //    return (
-  //      <View style={s.listGroup}>
-  //        <ListItem
-  //          onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('id'), identifier: this.state.identifier})}
-  //          text={i18next.t('GroupSettings:see')}
-  //          icon='eye'
-  //          type='button'
-  //          first
-  //          action
-  //          />
-  //        {this._renderBlock()}
-  //      </View>
-  //    );
-  //  } else {
-  //    let itemTopic = null;
-  //    if (this.state.is_op || this.state.is_owner || this.isAdmin) {
-  //      itemTopic = (
-  //        <View>
-  //          <ListItem
-  //            onPress={() => navigation.navigate('AvailableSoon')}
-  //            text={i18next.t('GroupSettings:access')}
-  //            icon='users'
-  //            type='button'
-  //            action
-  //            title={i18next.t('GroupSettings:users-title')}
-  //            first
-  //            />
-  //          {this._renderAllowedUsers()}
-  //        </View>
-  //      );
-  //    }
-  //    return (
-  //      <View style={s.listGroup}>
-  //        {itemTopic}
-  //      </View>
-  //    );
-  //  }
-  //}
-  //_renderTopic () {
-  //  if (this.props.model.get('type') === 'onetoone') {
-  //    return null;
-  //  }
-  //
-  //  var topic;
-  //  if (this.state.topic) {
-  //    topic = common.markup.toText(this.state.topic);
-  //    topic = emojione.shortnameToUnicode(topic);
-  //  }
-  //  if (!topic) {
-  //    topic = i18next.t('GroupSettings:no-topic');
-  //  }
-  //
-  //  if (!this.state.is_op && !this.state.is_owner && !this.isAdmin) {
-  //    return (
-  //      <View style={[s.listGroup, {alignItems: 'center'}]}>
-  //        <Text style={s.topic}>{topic}</Text>
-  //      </View>
-  //    );
-  //  } else {
-  //    return (
-  //      <View style={s.listGroup}>
-  //        <ListItem
-  //          onPress={() => navigation.navigate('RoomTopic', this.props.model, () => this.fetchData())}
-  //          text={topic}
-  //          type='button'
-  //          action
-  //          first
-  //          title={i18next.t('GroupSettings:topic')}
-  //          />
-  //      </View>
-  //    );
-  //  }
-  //}
-  //_renderAllowedUsers () {
-  //  return (
-  //    <ListItem
-  //        onPress={() => navigation.navigate('AvailableSoon')}
-  //        text={i18next.t('GroupSettings:allowed')}
-  //        icon='shield'
-  //        type='button'
-  //        action
-  //      />
-  //  );
-  //}
-  //_renderEdition () {
-  //  if (this.props.model.get('type') === 'onetoone') {
-  //    return null;
-  //  }
-  //  if (!this.state.is_op && !this.state.is_owner && !this.isAdmin) {
-  //    return null;
-  //  }
-  //  return (
-  //    <View style={s.listGroup}>
-  //      <ListItem
-  //        onPress={() => this._pickImage()}
-  //        text={i18next.t('GroupSettings:avatar')}
-  //        type='edit-button'
-  //        action
-  //        first
-  //        title={i18next.t('GroupSettings:details')}
-  //        />
-  //      <ListItem
-  //        onPress={() => navigation.navigate('RoomEditDescription', this.props.model.get('id'), (key, value) => this.saveRoomData(key, value))}
-  //        text={i18next.t('GroupSettings:description')}
-  //        type='edit-button'
-  //        action
-  //        />
-  //      <ListItem
-  //        onPress={() => navigation.navigate('RoomEditWebsite', this.props.model.get('id'), (key, value) => this.saveRoomData(key, value))}
-  //        text={i18next.t('GroupSettings:website')}
-  //        type='edit-button'
-  //        action
-  //        />
-  //    </View>
-  //  );
-  //}
   _pickImage () {
     var that = this;
     imageUploader.getImageAndUpload('group,avatar', null, (err, response) => {
@@ -382,30 +262,6 @@ class GroupSettings extends Component {
       });
     });
   }
-  //saveRoomData (key, value, callback) {
-  //  var updateData = {};
-  //  updateData[key] = value;
-  //
-  //  app.client.roomUpdate(this.props.model.get('id'), updateData, (response) => {
-  //    if (response.err) {
-  //      for (var k in response.err) {
-  //        if (response.err[k] === 'website-url') {
-  //          Alert.show(i18next.t('RoomEdit:website-url'));
-  //        } else {
-  //          Alert.show('messages.unknown');
-  //        }
-  //      }
-  //      return;
-  //    }
-  //
-  //    var object = {};
-  //    object[key] = value;
-  //    this.setState(object);
-  //    if (callback) {
-  //      callback();
-  //    }
-  //  });
-  //}
 
   deleteGroup () {
     Alert.askConfirmation(
