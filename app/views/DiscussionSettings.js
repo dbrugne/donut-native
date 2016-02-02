@@ -46,7 +46,8 @@ i18next.addResourceBundle('en', 'DiscussionSettings', {
   'notifications-title': 'Notifications',
   'delete': 'Delete this discussion',
   'deleteTitle': 'Delete discussion',
-  'deleteDisclaimer': 'Are you sure you whant to delete __identifier__. This action is ireversible'
+  'deleteDisclaimer': 'Are you sure you whant to delete __identifier__. This action is ireversible',
+  'silence': 'Silence'
 }, true, true);
 
 class DiscussionSettings extends Component {
@@ -62,7 +63,9 @@ class DiscussionSettings extends Component {
       status: this.props.model.get('status'),
       banned: this.props.model.get('banned'),
       userListLoaded: false,
-      nbUsers: '...'
+      nbUsers: '...',
+      description: '',
+      website: ''
     };
   }
   fetchData () {
@@ -75,12 +78,23 @@ class DiscussionSettings extends Component {
     });
   }
   componentDidMount () {
+    console.log(this.props.model.attributes);
     if (this.props.model.get('type') === 'room') {
       app.client.roomUsers(this.props.model.get('id'), {type: 'users', selector: {start: 0, length: 8}}, (data) => {
         if (data.err || data === 'not-connected') {
           return;
         }
         this.setState({nbUsers: data.count.toString(), users: data.users, userListLoaded: true});
+      });
+      app.client.roomRead(this.props.model.get('id'), {more: true}, (data) => {
+        if (data.err || data === 'not-connected') {
+          return;
+        }
+        var website = '';
+        if (data.website && data.website.title) {
+          website = data.website.title;
+        }
+        this.setState({description: data.description, website: website});
       });
     }
   }
@@ -96,6 +110,12 @@ class DiscussionSettings extends Component {
             action
             title={i18next.t('DiscussionSettings:notifications-title')}
             first
+            />
+          <ListItem
+            text={i18next.t('DiscussionSettings:silence')}
+            type='switch'
+            switchValue={false}
+            onSwitch={() => navigation.navigate('AvailableSoon')}
             />
           </View>
       );
@@ -321,12 +341,14 @@ class DiscussionSettings extends Component {
           text={i18next.t('DiscussionSettings:description')}
           type='edit-button'
           action
+          value={this.state.description}
           />
         <ListItem
           onPress={() => navigation.navigate('RoomEditWebsite', this.props.model.get('id'), (key, value) => this.saveRoomData(key, value))}
           text={i18next.t('DiscussionSettings:website')}
           type='edit-button'
           action
+          value={this.state.website}
           />
       </View>
     );

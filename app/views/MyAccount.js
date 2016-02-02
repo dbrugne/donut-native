@@ -40,7 +40,10 @@ i18next.addResourceBundle('en', 'myAccount', {
   'notifications': 'Notifications',
   'logout-title': 'End',
   'miscellaneous': 'Miscellaneous',
-  'help': 'Help'
+  'help': 'Help',
+  'silence': 'Silence',
+  'language': 'Language: English',
+  'facebook': 'Facebook'
 });
 
 var MyAccountView = React.createClass({
@@ -158,6 +161,12 @@ var MyAccountView = React.createClass({
             first
             title={i18next.t('myAccount:notifications')}
             />
+            <ListItem
+              text={i18next.t('myAccount:silence')}
+              type='switch'
+              switchValue={false}
+              onSwitch={() => navigation.navigate('AvailableSoon')}
+              />
           </View>
         <View style={s.listGroup}>
           <ListItem
@@ -174,13 +183,25 @@ var MyAccountView = React.createClass({
             action
             type='button'
             />
+          <ListItem
+            onPress={() => navigation.navigate('AvailableSoon')}
+            text={i18next.t('myAccount:facebook')}
+            action
+            type='button'
+            />
           </View>
           <View style={s.listGroup}>
+            <ListItem
+              onPress={() => navigation.navigate('AvailableSoon')}
+              text={i18next.t('myAccount:language')}
+              action
+              title={i18next.t('myAccount:miscellaneous')}
+              type='button'
+              first
+              />
             <ListItem text={i18next.t('myAccount:eutc')}
                       type='button'
                       onPress={() => navigation.navigate('Eutc')}
-                      title={i18next.t('myAccount:miscellaneous')}
-                      first
                       action
               />
             <ListItem text={i18next.t('myAccount:help')}
