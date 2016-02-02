@@ -57,6 +57,7 @@ var RoomEditWebsiteView = React.createClass({
           onChange={(event) => this.setState({website: event.nativeEvent.text})}
           type='input-button'
           help={i18next.t('RoomEditWebsite:help')}
+          autoCapitalize={false}
           />
         </ScrollView>
       </View>
