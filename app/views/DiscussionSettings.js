@@ -391,7 +391,7 @@ class DiscussionSettings extends Component {
       );
     } else {
       var deleteRoomLink = null;
-      if (this.isOp || this.isOwner || this.isAdmin) {
+      if (this.isOwner || this.isAdmin) {
         deleteRoomLink = (
           <ListItem
             onPress={() => this._deleteRoom()}
