@@ -32,6 +32,8 @@ i18next.addResourceBundle('en', 'GroupSettings', {
   'trusted-domains': 'Trusted e-mail domains',
   'add-password': 'Add password',
   'domain-sample': '@example.com',
+  'profile-details': 'Profile details',
+  'profile-picture': 'Profile picture',
   'end': 'End',
   'delete': 'Delete this community',
   'deleteTitle': 'Delete community',
@@ -90,7 +92,9 @@ class GroupSettings extends Component {
           <Text style={{marginTop: 10}}>{this.state.identifier}</Text>
         </View>
         {this._renderAccess()}
+        <Text style={styles.listGroupItemSpacing}/>
         {this._renderProfileDetails()}
+        <Text style={styles.listGroupItemSpacing}/>
         {this._renderEnd()}
       </ScrollView>
     );
@@ -112,25 +116,25 @@ class GroupSettings extends Component {
     );
   }
   _renderAccess () {
-      return (
-        <View style={s.listGroup}>
-          <Text style={s.block}>{i18next.t('GroupSettings:access-disclaimer')}</Text>
-          <ListItem text={i18next.t('GroupSettings:disclaimer')}
-                    type='edit-button'
-                    title={i18next.t('GroupSettings:access-title')}
-                    action
-                    value={this.state.disclaimer}
-                    onPress={() => this.onGroupEdit(require('./GroupEditDisclaimer'), this.state.disclaimer)}
-          />
-          <ListItem text={i18next.t('GroupSettings:allow-user-request')}
-                    type='switch'
-                    onSwitch={this.saveGroupData.bind(this, 'allow_user_request', !this.state.allow_user_request)}
-                    switchValue={this.state.allow_user_request}
-          />
-          {this._renderTrustedDomains()}
-          {this._renderPassword()}
-        </View>
-      );
+    return (
+      <View style={s.listGroup}>
+        <Text style={s.block}>{i18next.t('GroupSettings:access-disclaimer')}</Text>
+        <ListItem text={i18next.t('GroupSettings:disclaimer')}
+                  type='edit-button'
+                  title={i18next.t('GroupSettings:access-title')}
+                  action
+                  value={this.state.disclaimer}
+                  onPress={() => this.onGroupEdit(require('./GroupEditDisclaimer'), this.state.disclaimer)}
+        />
+        <ListItem text={i18next.t('GroupSettings:allow-user-request')}
+                  type='switch'
+                  onSwitch={this.saveGroupData.bind(this, 'allow_user_request', !this.state.allow_user_request)}
+                  switchValue={this.state.allow_user_request}
+        />
+        {this._renderTrustedDomains()}
+        {this._renderPassword()}
+      </View>
+    );
   }
   _renderTrustedDomains() {
     return (
@@ -184,7 +188,18 @@ class GroupSettings extends Component {
     });
   }
   _renderProfileDetails () {
-    return null;
+    return (
+      <View style={s.listGroup}>
+        <ListItem text={i18next.t('GroupSettings:profile-picture')}
+                  type='edit-image'
+                  title={i18next.t('GroupSettings:profile-details')}
+                  action
+                  first
+                  avatar={this.state.avatar}
+                  onPress={() => this._pickImage()}
+        />
+      </View>
+    );
   }
   _renderEnd () {
     var deleteGroupLink = null;
@@ -333,19 +348,19 @@ class GroupSettings extends Component {
   //    </View>
   //  );
   //}
-  //_pickImage () {
-  //  imageUploader.getImageAndUpload('room,avatar', null, (err, response) => {
-  //    if (err) {
-  //      return Alert.show(err);
-  //    }
-  //
-  //    if (response === null) {
-  //      return;
-  //    }
-  //
-  //    this.saveRoomData('avatar', response, () => {});
-  //  });
-  //}
+  _pickImage () {
+    imageUploader.getImageAndUpload('room,avatar', null, (err, response) => {
+      if (err) {
+        return Alert.show(err);
+      }
+
+      if (response === null) {
+        return;
+      }
+
+      this.saveGroupData('avatar', response, () => {});
+    });
+  }
   //saveRoomData (key, value, callback) {
   //  var updateData = {};
   //  updateData[key] = value;

@@ -9,12 +9,13 @@ var ListItemInputButton = require('./ListItem/InputButton');
 var ListItemEdit = require('./ListItem/Edit');
 var ListItemText = require('./ListItem/Text');
 var ListItemImageList = require('./ListItem/ImageList');
+var ListItemEditImage = require('./ListItem/EditImage');
 
 module.exports = React.createClass({
   propTypes: {
     onPress: React.PropTypes.func, // callback action when component is clicked
     text: React.PropTypes.string, // string to display on element
-    type: React.PropTypes.oneOf(['switch', 'button', 'edit-button', 'input-button', 'input', 'text', 'image-list']).isRequired, // type of the ListItem
+    type: React.PropTypes.oneOf(['switch', 'button', 'edit-button', 'input-button', 'input', 'text', 'image-list', 'edit-image']).isRequired, // type of the ListItem
     onSwitch: React.PropTypes.func, // callback action on switch component if any
     switchValue: React.PropTypes.bool, // boolean, value of switch button if any
     action: React.PropTypes.bool, // boolean to display right arrow
@@ -31,7 +32,8 @@ module.exports = React.createClass({
     autoCapitalize: React.PropTypes.string, // value of the ListItemEdit
     keyboardType: React.PropTypes.string, // value of the ListItemEdit
     loading: React.PropTypes.bool, // loading state, used for the ListItemInputButton
-    imageList: React.PropTypes.array // required for ImageList item
+    imageList: React.PropTypes.array, // required for ImageList item
+    avatar: React.PropTypes.string // required for ListItemEditImage item
   },
   render () {
     switch (this.props.type) {
@@ -47,6 +49,8 @@ module.exports = React.createClass({
         return (<ListItemInput {...this.props} />);
       case 'image-list':
         return (<ListItemImageList {...this.props} />);
+      case 'edit-image':
+        return (<ListItemEditImage {...this.props} />);
       case 'text':
       default:
         return (<ListItemText {...this.props} />);
