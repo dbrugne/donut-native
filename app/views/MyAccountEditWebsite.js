@@ -42,6 +42,7 @@ class UserFieldWebsite extends UserField {
       value={value}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
+      autoCapitalize={false}
       multi={false}
       help={i18next.t('myAccountWebsite:help')}
       />
