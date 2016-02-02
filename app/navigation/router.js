@@ -147,6 +147,8 @@ module.exports = {
         return require('./routes/GroupUsers');
       case 'GroupUser':
         return require('./routes/GroupUser');
+      case 'GroupSettings':
+        return require('./routes/GroupSettings');
       case 'CreateRoom':
         return require('./routes/CreateRoom');
       case 'CreateGroup':
