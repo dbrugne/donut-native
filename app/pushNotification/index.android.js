@@ -15,7 +15,7 @@ var PushNotification = React.createClass({
   componentDidMount () {
     this._registerDevice();
     DeviceEventEmitter.addListener('remoteNotificationOpen', (e) => {
-      this._goToNotificationCenter(e);
+      navigation.navigate('Notifications');
     });
   },
   componentWillUnmount () {
@@ -38,12 +38,9 @@ var PushNotification = React.createClass({
         return debug.warn('Android popInitialNotification error =>', err);
       }
       if (notification) {
-        this._goToNotificationCenter(notification);
+        navigation.navigate('Notifications');
       }
     });
-  },
-  _goToNotificationCenter () {
-    navigation.navigate('Notifications');
   }
 });
 
