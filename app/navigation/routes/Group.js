@@ -14,6 +14,11 @@ module.exports = function (element) {
     getTitle () {
       return element.name;
     },
+    _onDidFocus: function () {
+      if (this.scene.onFocus) {
+        this.scene.onFocus();
+      }
+    },
     onBack () {
       if (state.drawerState === 'opened') {
         state.drawer.close();
