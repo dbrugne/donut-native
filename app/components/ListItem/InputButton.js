@@ -16,7 +16,7 @@ i18next.addResourceBundle('en', 'inputButton', {
   'save': 'Save'
 });
 
-class ListItemInput extends ListItemAbstract {
+class ListItemInputButton extends ListItemAbstract {
   _renderContent () {
     return (
       <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
@@ -44,4 +44,4 @@ class ListItemInput extends ListItemAbstract {
   }
 }
 
-module.exports = ListItemInput;
+module.exports = ListItemInputButton;

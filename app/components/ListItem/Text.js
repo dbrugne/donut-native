@@ -8,7 +8,7 @@ var {
   Text
 } = React;
 
-class ListItemButton extends ListItemAbstract {
+class ListItemText extends ListItemAbstract {
   _renderElement () {
     return (
       <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{this.props.text}</Text>
@@ -16,4 +16,4 @@ class ListItemButton extends ListItemAbstract {
   }
 }
 
-module.exports = ListItemButton;
+module.exports = ListItemText;
