@@ -24,6 +24,7 @@ class UserFieldRealname extends UserField {
       onPress= {() => this.onPress()}
       placeholder={i18next.t('myAccountRealname:placeholder')}
       value={this.state.value}
+      maxLength={20}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       multi={false}

@@ -8,7 +8,7 @@ var ListItem = require('../components/ListItem');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountBio', {
   'placeholder': 'Biography',
-  'help': 'Maximum 255 characters'
+  'help': 'Maximum 200 characters'
 });
 
 class UserFieldBio extends UserField {
@@ -24,6 +24,7 @@ class UserFieldBio extends UserField {
       onPress= {() => this.onPress()}
       placeholder={i18next.t('myAccountBio:placeholder')}
       value={this.state.value}
+      maxLength={200}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       multi={true}

@@ -25,6 +25,7 @@ class UserFieldLocation extends UserField {
       onPress= {() => this.onPress()}
       placeholder={i18next.t('myAccountLocation:placeholder')}
       value={this.state.value}
+      maxLength={70}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       help={i18next.t('myAccountLocation:help')}

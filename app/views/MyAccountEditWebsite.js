@@ -40,6 +40,7 @@ class UserFieldWebsite extends UserField {
       onPress= {() => this.onPress()}
       placeholder={i18next.t('myAccountWebsite:placeholder')}
       value={value}
+      maxLength={255}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       multi={false}
