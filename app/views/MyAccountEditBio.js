@@ -1,5 +1,6 @@
 'use strict';
 
+var React = require('react-native');
 var s = require('../styles/style');
 var UserField = require('../components/UserField');
 var ListItem = require('../components/ListItem');
