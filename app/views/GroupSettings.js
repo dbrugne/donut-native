@@ -25,6 +25,8 @@ var {
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupSettings', {
   'disclaimer': 'Message displayed',
+  'description': 'Description',
+  'website': 'Website',
   'access-title': 'Access',
   'access-disclaimer': 'Members create discussions and manage them. They can join any discussion opened to members. Note: public discussions are open to anyone.',
   'leave': 'Leave this community',
@@ -37,7 +39,8 @@ i18next.addResourceBundle('en', 'GroupSettings', {
   'end': 'End',
   'delete': 'Delete this community',
   'deleteTitle': 'Delete community',
-  'deleteDisclaimer': 'Are you sure you whant to delete __identifier__. This action is ireversible'
+  'deleteDisclaimer': 'Are you sure you whant to delete __identifier__. This action is ireversible',
+  'website-url': 'Wrong url'
 }, true, true);
 
 class GroupSettings extends Component {
@@ -173,7 +176,10 @@ class GroupSettings extends Component {
 
     app.client.groupUpdate(this.props.model.get('id'), updateData, (response) => {
       if (response.err) {
-        return null;
+        if (response.err.website) {
+          return Alert.show(i18next.t('GroupSettings:' + response.err.website));
+        }
+        return Alert.show(response.err);
       }
 
       var state = {loaded: true};
@@ -197,6 +203,18 @@ class GroupSettings extends Component {
                   first
                   avatar={this.state.avatar}
                   onPress={() => this._pickImage()}
+        />
+        <ListItem text={i18next.t('GroupSettings:description')}
+                  type='edit-button'
+                  action
+                  value={this.state.description}
+                  onPress={() => this.onGroupEdit(require('./GroupEditDescription'), this.state.description)}
+        />
+        <ListItem text={i18next.t('GroupSettings:website')}
+                  type='edit-button'
+                  action
+                  value={this.state.website}
+                  onPress={() => this.onGroupEdit(require('./GroupEditWebsite'), this.state.website)}
         />
       </View>
     );
