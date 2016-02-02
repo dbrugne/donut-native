@@ -10,6 +10,7 @@ var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
 var date = require('../libs/date');
 var s = require('../styles/style');
+var emojione = require('emojione');
 
 var {
   View,
@@ -244,13 +245,14 @@ class NotificationsView extends Component {
     var message = (n.data.message)
       ? common.markup.toText(n.data.message)
       : '';
+    var topic = (n.data.topic)
+      ? common.markup.toText(n.data.topic)
+      : '';
     n.message = i18next.t('notifications.messages.' + n.type, {
       name: n.name,
       username: n.username,
-      message: message,
-      topic: (n.data.topic)
-        ? common.markup.toText(n.data.topic)
-        : ''
+      message: (message) ? emojione.shortnameToUnicode(message) : '',
+      topic: (topic) ? emojione.shortnameToUnicode(topic) : ''
     });
 
     if ([ 'roomjoinrequest', 'groupjoinrequest', 'usermention' ].indexOf(n.type) !== -1) {
