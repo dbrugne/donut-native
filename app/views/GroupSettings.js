@@ -26,10 +26,11 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupSettings', {
   'disclaimer': 'Message displayed',
   'access-title': 'Access',
-  'access-disclaimer': 'Members create discussions and manage them. They can join any discussion opened to members. Note: public discussions are opened to anyone.',
+  'access-disclaimer': 'Members create discussions and manage them. They can join any discussion opened to members. Note: public discussions are open to anyone.',
   'leave': 'Leave this community',
   'allow-user-request': 'Allow users to request access',
   'trusted-domains': 'Trusted e-mail domains',
+  'add-password': 'Add password',
   'domain-sample': '@example.com',
   'end': 'End',
   'delete': 'Delete this community',
@@ -139,13 +140,21 @@ class GroupSettings extends Component {
           text={i18next.t('GroupSettings:trusted-domains')}
           type='button'
           action
-          first
         />
       </View>
     );
   }
   _renderPassword() {
-    return null;
+    return (
+      <View>
+        <ListItem
+          onPress={() => navigation.navigate('AvailableSoon')}
+          text={i18next.t('GroupSettings:add-password')}
+          type='button'
+          action
+        />
+      </View>
+    );
   }
   onGroupEdit(component, value) {
     navigation.navigate('UserField', {
