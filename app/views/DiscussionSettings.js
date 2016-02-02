@@ -198,7 +198,7 @@ class DiscussionSettings extends Component {
 
     if (!this.isOp && !this.isOwner && !this.isAdmin) {
       return (
-        <View style={s.listGroup}>
+        <View style={[s.listGroup, {alignItems: 'center'}]}>
           <Text style={s.topic}>{topic}</Text>
         </View>
       );
