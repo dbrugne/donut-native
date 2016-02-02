@@ -62,9 +62,14 @@ var InputView = React.createClass({
                    editable={this.state.userConfirmed}
                    underlineColorAndroid={this.state.inSendingIntent ? '#EEE' : '#FFF'}
                    onChange={(event) => {
+                     var inputHeight = 40;
+                     // @bug: not working on iOS until https://github.com/facebook/react-native/commit/f83d53dacf1dfda55368d92659654c77b393b278
+                     if (event.nativeEvent && event.nativeEvent.contentSize && event.nativeEvent.contentSize.height) {
+                       inputHeight = Math.max(40, event.nativeEvent.contentSize.height);
+                     }
                      this.setState({
                        text: event.nativeEvent.text,
-                       height: Math.max(40, event.nativeEvent.contentSize.height)
+                       height: inputHeight
                      });
                    }}
                    maxLength={1024}
