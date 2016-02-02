@@ -358,7 +358,9 @@ class GroupSettings extends Component {
         return;
       }
 
-      this.saveGroupData('avatar', response, () => {});
+      this.saveGroupData('avatar', response, () => {
+        this.setState({avatar: 'https://res.cloudinary.com/roomly/image/upload/h_30,w_30/' + response.path});
+      });
     });
   }
   //saveRoomData (key, value, callback) {
