@@ -252,7 +252,7 @@ var MyAccountView = React.createClass({
           if (response.err[k] === 'website-url') {
             Alert.show(i18next.t('myAccountEdit:website-url'));
           } else {
-            Alert.show('unknown');
+            Alert.show(i18next.t('messages.' + response.err[k]));
           }
         }
       } else {
