@@ -2,12 +2,11 @@
 
 var React = require('react-native');
 var {
+  AppState,
   View
 } = React;
 
-var _ = require('underscore');
 var app = require('../libs/app');
-var currentUser = require('../models/current-user');
 var navigation = require('../navigation/index');
 var ChooseUsername = require('../views/ChooseUsername');
 var Keyboard = require('../components/Keyboard');
@@ -21,6 +20,8 @@ var LoggedIn = React.createClass({
     };
   },
   componentDidMount () {
+    AppState.addEventListener('change', this.onAppStateChange);
+
     app.on('usernameRequired', this.onUsernameRequired, this);
     app.on('ready', this.onReady, this);
 
@@ -35,12 +36,23 @@ var LoggedIn = React.createClass({
     app.client.connect();
   },
   componentWillUnmount () {
+    AppState.removeEventListener('change', this.onAppStateChange);
+
     // cleanup donut-client state
     app.off(null, null, this);
     app.reset();
 
     // client
     app.client.disconnect();
+  },
+  onAppStateChange: function (appState) {
+    app.trigger('appState', appState);
+    if (appState === 'active' && app.client.isConnected() !== true) {
+      app.client.connect();
+    } else {
+      // when application goes background (= intermediate for sleep), disconnect
+      app.client.disconnect();
+    }
   },
   render () {
     if (this.state.usernameRequired === true) {
@@ -62,6 +74,10 @@ var LoggedIn = React.createClass({
     this.setState({usernameRequired: true});
   },
   onReady () {
+    if (this.state.usernameRequired === false) {
+      return this.refs.pushNotification.handleInitialNotification();
+    }
+
     // @important: async to let RootNavigator render
     this.setState({ usernameRequired: false }, () => {
       // handle cold launch from notification
