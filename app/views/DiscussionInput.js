@@ -15,6 +15,9 @@ var i18next = require('../libs/i18next');
 var alert = require('../libs/alert');
 var emojione = require('emojione');
 
+var MAXINPUTHEIGHT = 200;
+var MININPUTHEIGHT = 40;
+
 var InputView = React.createClass({
   propTypes: {
     model: React.PropTypes.object,
@@ -25,7 +28,9 @@ var InputView = React.createClass({
     this.model = this.props.model;
     return {
       text: '',
-      userConfirmed: currentUser.get('confirmed') || (this.props.model.get('type') === 'room' && this.props.model.get('mode') === 'public')
+      userConfirmed: currentUser.get('confirmed') || (this.props.model.get('type') === 'room' && this.props.model.get('mode') === 'public'),
+      height: MININPUTHEIGHT,
+      inSendingIntent: false
     };
   },
   render: function () {
@@ -38,8 +43,8 @@ var InputView = React.createClass({
       inputPlaceholder = i18next.t('messages.not-confirmed');
     }
     return (
-      <View style={styles.inputContainer}>
-        <Button style={styles.button} onPress={() => this._addImage()} disabled={!this.state.userConfirmed}>
+      <View style={[styles.inputContainer, this.state.inSendingIntent && {backgroundColor: '#EEE'}]}>
+        <Button style={styles.button} onPress={() => this._addImage()} disabled={!this.state.userConfirmed || this.state.inSendingIntent}>
           <Icon
             name='camera'
             size={28}
@@ -47,16 +52,25 @@ var InputView = React.createClass({
             style={styles.icon}
           />
         </Button>
-        <TextInput style={styles.input}
+        <View style={{flex: 1}}>
+        <TextInput style={[styles.input, {height: (this.state.height < MAXINPUTHEIGHT) ? this.state.height : MAXINPUTHEIGHT}]}
                    ref='input'
-                   onChangeText={(text) => this.setState({text})}
                    placeholder={inputPlaceholder}
                    blurOnSubmit={false}
                    value={this.state.text}
                    multiline
                    editable={this.state.userConfirmed}
+                   underlineColorAndroid={this.state.inSendingIntent ? '#EEE' : '#FFF'}
+                   onChange={(event) => {
+                     this.setState({
+                       text: event.nativeEvent.text,
+                       height: Math.max(40, event.nativeEvent.contentSize.height)
+                     });
+                   }}
+                   maxLength={1024}
           />
-        <Button style={styles.button} onPress={() => this.onSubmit()} disabled={!this.state.userConfirmed}>
+        </View>
+        <Button style={styles.button} onPress={() => this.onSubmit()} disabled={!this.state.userConfirmed || this.state.inSendingIntent}>
           <Icon
             name='paper-plane'
             size={28}
@@ -72,15 +86,19 @@ var InputView = React.createClass({
       return;
     }
 
-    var message = emojione.toShort(this.state.text);
+    this.setState({inSendingIntent: true});
+    var message = this.state.text.trim();
+    message = emojione.toShort(message);
     this.model.sendMessage(message, null, (response) => {
+      this.setState({inSendingIntent: false});
       if (response === 'not-connected') {
         return alert.show(i18next.t('messages.not-connected'));
       } else if (response.err) {
         return alert.show(i18next.t('messages.' + response.err));
       }
       this.setState({
-        text: ''
+        text: '',
+        height: MININPUTHEIGHT
       });
       this.refs.input.focus(); // @bug: not working on Android (https://github.com/facebook/react-native/pull/2149)
     });
@@ -113,8 +131,7 @@ var styles = StyleSheet.create({
     flex: 1,
     padding: 3,
     paddingHorizontal: 5,
-    height: 40,
-    fontSize: 14
+    fontSize: 17
   },
   icon: {
     marginHorizontal: 5,
