@@ -349,7 +349,8 @@ class GroupSettings extends Component {
   //  );
   //}
   _pickImage () {
-    imageUploader.getImageAndUpload('room,avatar', null, (err, response) => {
+    var that = this;
+    imageUploader.getImageAndUpload('group,avatar', null, (err, response) => {
       if (err) {
         return Alert.show(err);
       }
@@ -359,7 +360,7 @@ class GroupSettings extends Component {
       }
 
       this.saveGroupData('avatar', response, () => {
-        this.setState({avatar: 'https://res.cloudinary.com/roomly/image/upload/h_30,w_30/' + response.path});
+        that.setState({avatar: 'https://res.cloudinary.com/roomly/image/upload/h_30,w_30/' + response.path});
       });
     });
   }
