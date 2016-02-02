@@ -24,31 +24,14 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupSettings', {
-  //'settings': '__identifier__ SETTINGS',
-  //'change-topic': 'Change topic',
-  //'no-topic': 'No topic',
-  //'see': 'See profile',
-  //'block': 'Block this user',
-  //'unblock': 'Unblock this user',
-  //'edit': 'Edit',
-  //'access': 'Access',
-  //'allowed': 'Manage invitations',
   'disclaimer': 'Message displayed',
   'access-title': 'Access',
   'access-disclaimer': 'Members create discussions and manage them. They can join any discussion opened to members. Note: public discussions are opened to anyone.',
   'leave': 'Leave this community',
   'allow-user-request': 'Allow users to request access',
-  //'close': 'Close this discussion',
-  //'users': 'Users list',
-  //'users-title': 'Users',
-  //'topic': 'Current topic',
-  //'description': 'Description',
-  //'avatar': 'Profile picture',
-  //'website': 'Website',
+  'trusted-domains': 'Trusted e-mail domains',
+  'domain-sample': '@example.com',
   'end': 'End',
-  //'details': 'Profile details',
-  //'notifications': 'Custom notifications',
-  //'notifications-title': 'Notifications',
   'delete': 'Delete this community',
   'deleteTitle': 'Delete community',
   'deleteDisclaimer': 'Are you sure you whant to delete __identifier__. This action is ireversible'
@@ -89,23 +72,12 @@ class GroupSettings extends Component {
       website: data.website,
       is_member: data.is_member,
       is_op: data.is_op,
-      is_owner: data.is_owner
+      is_owner: data.is_owner,
+      new_domain: null,
+      addDomainLoading: false
     });
   }
   render () {
-    //var setRoomNotificationLink = null;
-    //setRoomNotificationLink = (
-    //  <View style={s.listGroup}>
-    //    <ListItem
-    //      onPress={() => navigation.navigate('AvailableSoon')}
-    //      text={i18next.t('GroupSettings:notifications')}
-    //      type='button'
-    //      action
-    //      title={i18next.t('GroupSettings:notifications-title')}
-    //      first
-    //      />
-    //    </View>
-    //);
     if (this.state.loaded === false) {
       return (<LoadingView />);
     }
@@ -154,8 +126,26 @@ class GroupSettings extends Component {
                     onSwitch={this.saveGroupData.bind(this, 'allow_user_request', !this.state.allow_user_request)}
                     switchValue={this.state.allow_user_request}
           />
+          {this._renderTrustedDomains()}
+          {this._renderPassword()}
         </View>
       );
+  }
+  _renderTrustedDomains() {
+    return (
+      <View>
+        <ListItem
+          onPress={() => navigation.navigate('AvailableSoon')}
+          text={i18next.t('GroupSettings:trusted-domains')}
+          type='button'
+          action
+          first
+        />
+      </View>
+    );
+  }
+  _renderPassword() {
+    return null;
   }
   onGroupEdit(component, value) {
     navigation.navigate('UserField', {
@@ -182,23 +172,6 @@ class GroupSettings extends Component {
       if (callback) {
         callback();
       }
-    });
-  }
-  _changePreferences(key) {
-    var newVal = !this.state.preferences[key];
-
-    var update = {};
-    update[key] = newVal;
-    app.client.userPreferencesUpdate(update, (response) => {
-      if (response.err) {
-        alert.show(response.err);
-      }
-
-      var preferences = _.clone(this.state.preferences);
-      preferences[key] = newVal;
-      this.setState({
-        preferences
-      });
     });
   }
   _renderProfileDetails () {
