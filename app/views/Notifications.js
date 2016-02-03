@@ -11,6 +11,7 @@ var common = require('@dbrugne/donut-common/mobile');
 var date = require('../libs/date');
 var s = require('../styles/style');
 var emojione = require('emojione');
+var state = require('../navigation/state');
 
 var {
   View,
@@ -71,7 +72,13 @@ class NotificationsView extends Component {
   }
 
   newIncomingNotification (data) {
-    // @todo : detect if focus, if yes push on top on listview
+    // if notification view is focused
+    if (state.currentRoute && state.currentRoute.id === 'notification') {
+      this.setState({
+        dataSource: this.notificationsDataSource.append(data),
+        unread: app.user.get('unviewedNotification')
+      });
+    }
   }
 
   onData (response) {
@@ -421,7 +428,10 @@ class NotificationsView extends Component {
 
     var ids = [];
     _.each(data.notifications, (notification) => {
-      ids.push(notification.id);
+      let id = (notification.id)
+        ? notification.id
+        : notification._id;
+      ids.push(id);
     });
 
     this.setState({
@@ -521,7 +531,8 @@ class NotificationsView extends Component {
     app.client.notificationViewed([], true, () => {
       clearTimeout(this.timeouts.loadingTagAsRead);
       this.setState({
-        loadingTagAsRead: false
+        loadingTagAsRead: false,
+        unread: app.user.get('unviewedNotification')
       });
     });
   }
