@@ -5,6 +5,7 @@ var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../../styles/elements/listItem');
 var ListItemAbstract = require('./Abstract');
+var navigation = require('../../navigation/index');
 
 var {
   View,
