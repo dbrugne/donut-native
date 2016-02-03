@@ -33,25 +33,25 @@ var RoomUsersView = React.createClass({
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.username !== r2.username});
     this.usersList = [];
     this.searchString = '';
-    return {
+    var object = {
       loaded: false,
       dataSource: ds.cloneWithRows([]),
       findValue: '',
       currentNumberCharged: 0,
       more: false
     };
+    this.model = app.rooms.iwhere(this.props.id);
+    if (this.model) {
+      object.is_op = this.model.currentUserIsOp();
+      object.is_owner = this.model.currentUserIsOwner();
+    }
+    return object;
   },
 
   fetchData: function () {
     this.setState({loaded: false});
     var users = [];
     app.client.roomUsers(this.props.id, {type: 'all', searchString: this.searchString, selector: {start: this.state.currentNumberCharged, length: 10}}, (response) => {
-      this.isOwner = _.find(response.users, (u) => {
-        return (u.isOwner && u.user_id === currentUser.getId());
-      });
-      this.isOp = _.find(response.users, (u) => {
-        return (u.isOp && u.user_id === currentUser.getId());
-      });
       _.each(response.users, (u) => {
         users.push(u);
       });
@@ -104,7 +104,7 @@ var RoomUsersView = React.createClass({
 
   _renderElement: function (user) {
     // No specific actions possible on this user
-    if (!this.isOwner && !this.isOp && !currentUser.isAdmin()) {
+    if (!this.state.is_owner && !this.state.is_op && !currentUser.isAdmin()) {
       return (
         <Card
           onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
