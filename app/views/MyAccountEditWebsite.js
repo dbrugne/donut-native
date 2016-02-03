@@ -51,8 +51,11 @@ class UserFieldWebsite extends UserField {
   }
 
   onPress () {
-    this.props.data.onSave(this.key, this.state.value);
-    this.props.navigator.pop();
+    this.props.data.onSave(this.key, this.state.value, (err) => {
+      if (!err) {
+        this.props.navigator.pop();
+      }
+    });
   }
 }
 

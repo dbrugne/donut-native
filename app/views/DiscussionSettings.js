@@ -325,14 +325,14 @@ class DiscussionSettings extends Component {
           title={i18next.t('DiscussionSettings:details')}
           />
         <ListItem
-          onPress={() => navigation.navigate('RoomEditDescription', this.props.model.get('id'), (key, value) => this.saveRoomData(key, value))}
+          onPress={() => navigation.navigate('RoomEditDescription', this.props.model.get('id'), (key, value, cb) => this.saveRoomData(key, value, cb))}
           text={i18next.t('DiscussionSettings:description')}
           type='edit-button'
           action
           value={this.state.description}
           />
         <ListItem
-          onPress={() => navigation.navigate('RoomEditWebsite', this.props.model.get('id'), (key, value) => this.saveRoomData(key, value))}
+          onPress={() => navigation.navigate('RoomEditWebsite', this.props.model.get('id'), (key, value, cb) => this.saveRoomData(key, value, cb))}
           text={i18next.t('DiscussionSettings:website')}
           type='edit-button'
           action
@@ -366,6 +366,9 @@ class DiscussionSettings extends Component {
           } else {
             Alert.show(i18next.t('messages.' + response.err));
           }
+        }
+        if (callback) {
+          return callback(response.err);
         }
         return;
       }

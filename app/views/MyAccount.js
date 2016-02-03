@@ -259,7 +259,7 @@ var MyAccountView = React.createClass({
     navigation.navigate('UserField', {
       component,
       value,
-      onSave: this.saveUserData.bind(this)
+      onSave: (key, value, cb) => this.saveUserData(key, value, cb)
     });
   },
 
@@ -275,6 +275,9 @@ var MyAccountView = React.createClass({
           } else {
             Alert.show(i18next.t('messages.' + response.err[k]));
           }
+        }
+        if (callback) {
+          return callback(response.err);
         }
       } else {
         var state = {loaded: true};

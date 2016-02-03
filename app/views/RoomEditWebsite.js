@@ -49,9 +49,13 @@ var RoomEditWebsiteView = React.createClass({
         <ListItem
           ref='input'
           onPress= {() => {
-            this.props.saveRoomData('website', this.state.website);
-            this.props.navigator.pop();
+            this.props.saveRoomData('website', this.state.website, (err) => {
+              if (!err) {
+                this.props.navigator.pop();
+              }
+            });
           }}
+          maxLength={255}
           placeholder={i18next.t('RoomEditWebsite:placeholder')}
           value={this.state.website}
           onChange={(event) => this.setState({website: event.nativeEvent.text})}

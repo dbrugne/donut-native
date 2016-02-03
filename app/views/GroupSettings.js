@@ -171,11 +171,11 @@ class GroupSettings extends Component {
       </View>
     );
   }
-  onGroupEdit(component, value) {
+  onGroupEdit (component, value) {
     navigation.navigate('UserField', {
       component,
       value,
-      onSave: this.saveGroupData.bind(this)
+      onSave: (key, val, cb) => this.saveGroupData(key, val, cb)
     });
   }
   saveGroupData (key, value, callback) {
@@ -184,10 +184,13 @@ class GroupSettings extends Component {
 
     app.client.groupUpdate(this.props.model.get('id'), updateData, (response) => {
       if (response.err) {
-        if (response.err.website) {
-          return Alert.show(i18next.t('GroupSettings:' + response.err.website));
+        for (var k in response.err) {
+          Alert.show(i18next.t('messages.' + response.err[k]));
         }
-        return Alert.show(response.err);
+        if (callback) {
+          return callback(response.err);
+        }
+        return;
       }
 
       var state = {loaded: true};

@@ -47,9 +47,13 @@ var RoomEditDescriptionView = React.createClass({
           <ListItem
             ref='input'
             onPress= {() => {
-              this.props.saveRoomData('description', this.state.description);
-              this.props.navigator.pop();
+              this.props.saveRoomData('description', this.state.description, (err) => {
+                if (!err) {
+                  this.props.navigator.pop();
+                }
+              });
             }}
+            maxLength={200}
             placeholder={i18next.t('RoomEditDescription:placeholder')}
             value={this.state.description}
             onChange={(event) => this.setState({description: event.nativeEvent.text})}

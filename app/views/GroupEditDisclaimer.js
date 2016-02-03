@@ -24,6 +24,7 @@ class GroupEditDisclaimer extends UserField {
       onPress= {() => this.onPress()}
       placeholder={i18next.t('GroupEditDisclaimer:placeholder')}
       value={this.state.value}
+      maxLength={255}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       multi={true}
@@ -33,8 +34,11 @@ class GroupEditDisclaimer extends UserField {
   }
 
   onPress () {
-    this.props.data.onSave(this.key, this.state.value);
-    this.props.navigator.pop();
+    this.props.data.onSave(this.key, this.state.value, (err) => {
+      if (!err) {
+        this.props.navigator.pop();
+      }
+    });
   }
 }
 
