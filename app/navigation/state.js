@@ -1,7 +1,8 @@
 var React = require('react-native');
 var {
   StatusBarIOS,
-  Platform
+  Platform,
+  InteractionManager
 } = React;
 
 var _ = require('underscore');
@@ -18,6 +19,7 @@ module.exports = {
 
   drawer: null,
   drawerState: 'closed',
+  drawerInAnimationHandle: null,
 
   reset () {
     // reset navigation state (@logout)
@@ -26,6 +28,7 @@ module.exports = {
     this.currentNavigator = null;
     this.existingRoutes = {};
     this.currentRoute = null;
+    this.drawerInAnimationHandle = null;
 
     this.drawer = null;
     this.drawerState = 'closed';
@@ -47,6 +50,9 @@ module.exports = {
   // =============================
 
   onDrawerDidOpen () {
+    if (this.drawerInAnimationHandle) {
+      InteractionManager.clearInteractionHandle(this.drawerInAnimationHandle);
+    }
     dismissKeyboard();
     debug.log('onDrawerOpen', this.drawerState);
     this.drawerState = 'opened';
@@ -59,6 +65,12 @@ module.exports = {
     this.drawerState = 'closed';
     if (Platform.OS === 'ios') {
       StatusBarIOS.setHidden(false, 'slide');
+    }
+    if (this.drawerInAnimationHandle) {
+      // @important timeout 50 ms to avoid animation leak
+      setTimeout(() => {
+        InteractionManager.clearInteractionHandle(this.drawerInAnimationHandle);
+      }, 50);
     }
   },
 

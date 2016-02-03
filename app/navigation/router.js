@@ -56,12 +56,8 @@ var routeTemplate = {
   onDidFocus () {
     state.currentRoute = this;
 
-    // delay heavy processing logic (e.g. history fetching and rendering) to
-    // avoid animation leak (visibly onDidFocus is triggered before transition end)
-    setTimeout(() => {
-      state._logCurrentStack();
-      this._onDidFocus();
-    }, 100);
+    state._logCurrentStack();
+    this._onDidFocus();
   },
   onWillBlur () {
     this._onWillBlur();

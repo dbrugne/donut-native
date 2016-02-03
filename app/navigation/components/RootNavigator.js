@@ -28,7 +28,6 @@ module.exports = React.createClass({
 
     return (
       <Drawer
-        type='static'
         ref='drawer'
         content={<Navigation />}
         styles={{main: {shadowColor: '#000000', shadowOpacity: 0.4, shadowRadius: 3}}}
@@ -39,7 +38,6 @@ module.exports = React.createClass({
         captureGestures
         onOpen={state.onDrawerDidOpen.bind(state)}
         onClose={state.onDrawerDidClose.bind(state)}
-        tweenHandler={this.getDrawerTweenHandler}
       >
         <BackButton />
         <ExNavigator
@@ -51,10 +49,5 @@ module.exports = React.createClass({
         <ConnectionState/>
       </Drawer>
     );
-  },
-  getDrawerTweenHandler (ratio) {
-    return {
-      main: { shadowRadius: Math.min(ratio * 5 * 5, 5) }
-    };
   }
 });
