@@ -1,7 +1,9 @@
 'use strict';
 
 var React = require('react-native');
+var { ScrollView, StyleSheet } = React;
 
+var GroupHeader = require('./GroupHeader');
 var GroupContent = require('./GroupContent');
 var app = require('../libs/app');
 var LoadingView = require('../components/Loading');
@@ -58,7 +60,10 @@ var GroupHomeView = React.createClass({
       );
     }
     return (
-      <GroupContent data={this.state.data} navigator={this.props.navigator} />
+      <ScrollView style={styles.main}>
+        <GroupHeader  data={this.state.data} {...this.props} />
+        <GroupContent data={this.state.data} navigator={this.props.navigator} />
+      </ScrollView>
     );
   },
   onRefresh: function () {
@@ -70,6 +75,14 @@ var GroupHomeView = React.createClass({
     if (this.id) {
       app.client.groupRead(this.id, {users: true, rooms: true}, (data) => this.onData(data));
     }
+  }
+});
+
+var styles = StyleSheet.create({
+  main: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0'
   }
 });
 

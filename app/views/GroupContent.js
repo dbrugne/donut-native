@@ -48,12 +48,8 @@ class GroupProfileView extends Component {
 
   render () {
     return (
-      <ScrollView style={styles.main}>
-        <View style={styles.container}>
-          {this._renderAvatar()}
-          <Text style={styles.identifier}>{this.props.data.identifier}</Text>
-          {this._renderDescription()}
-        </View>
+      <View>
+        {this._renderDescription()}
 
         <View style={{flex:1}}>
           {this.renderMessage()}
@@ -63,16 +59,13 @@ class GroupProfileView extends Component {
         {this.renderAction()}
 
         <Text style={styles.listGroupItemSpacing}/>
-        {this.renderWebsite()}
-        {this.renderCreatedAt()}
-
-        <Text style={styles.listGroupItemSpacing}/>
         {this.renderLinks()}
 
+        <Text style={styles.listGroupItemSpacing}/>
         <ListItem
           onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user})}
           text={i18next.t('GroupContent:rooms')}
-          icon='users'
+          icon='bars'
           type='image-list'
           action
           value={this.state.rooms.length + ''}
@@ -80,7 +73,11 @@ class GroupProfileView extends Component {
           imageList={this.state.rooms}
         />
 
-      </ScrollView>
+        <Text style={styles.listGroupItemSpacing}/>
+        {this.renderWebsite()}
+        {this.renderCreatedAt()}
+
+      </View>
     );
   }
 
@@ -93,20 +90,6 @@ class GroupProfileView extends Component {
 
     return (
       <Text style={styles.description}>{description}</Text>
-    );
-  }
-
-  _renderAvatar () {
-    if (!this.props.data.avatar) {
-      return null;
-    }
-    var avatarUrl = common.cloudinary.prepare(this.props.data.avatar, 130);
-    if (!avatarUrl) {
-      return null;
-    }
-
-    return (
-      <Image style={styles.avatar} source={{uri: avatarUrl}}/>
     );
   }
 
@@ -228,7 +211,7 @@ class GroupProfileView extends Component {
         <ListItem onPress={() => hyperlink.open(this.props.data.website.href)}
                   text={this.props.data.website.title}
                   first
-                  action='true'
+                  action
                   type='button'
                   icon='link'
           />
@@ -300,11 +283,6 @@ class GroupProfileView extends Component {
 }
 
 var styles = StyleSheet.create({
-  main: {
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
-  },
   container: {
     flex: 1,
     alignItems: 'center',
