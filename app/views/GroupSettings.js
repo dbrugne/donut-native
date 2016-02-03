@@ -67,6 +67,13 @@ class GroupSettings extends Component {
     });
   }
   onResponse(data) {
+    var atLeastOne = false;
+    _.find(app.rooms.toJSON(), (room) => {
+      if (room.group_id) {
+        atLeastOne = true;
+        return true;
+      }
+    });
     this.setState({
       loaded: true,
       disclaimer: data.disclaimer,
@@ -80,7 +87,8 @@ class GroupSettings extends Component {
       is_op: data.is_op,
       is_owner: data.is_owner,
       new_domain: null,
-      addDomainLoading: false
+      addDomainLoading: false,
+      atLeastOne: atLeastOne
     });
   }
   render () {
@@ -232,8 +240,9 @@ class GroupSettings extends Component {
         />
       );
     }
-    return (
-      <View style={s.listGroup}>
+    var leaveGroupLink = null;
+    if (!this.state.atLeastOne) {
+      leaveGroupLink = (
         <ListItem
           onPress={() => this.leaveGroup()}
           text={i18next.t('GroupSettings:leave')}
@@ -242,6 +251,11 @@ class GroupSettings extends Component {
           warning
           title={i18next.t('GroupSettings:end')}
         />
+      );
+    }
+    return (
+      <View style={s.listGroup}>
+        {leaveGroupLink}
         {deleteGroupLink}
       </View>
     );
