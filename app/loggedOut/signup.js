@@ -7,7 +7,7 @@ var {
   TextInput,
   ScrollView,
   View,
-  Image,
+  Image
 } = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
 
@@ -49,7 +49,7 @@ class Signup extends Component {
             color='#808080'
             style={{marginTop: 2, marginRight: 2}}
           />
-          <Link onPress={(this.onBack.bind(this))}
+          <Link onPress={() => this.onBack()}
                 text={i18next.t('signup:back')}
                 linkStyle={[s.link, styles.textGray]}
                 type='bold'
@@ -57,7 +57,7 @@ class Signup extends Component {
         </View>
         <ScrollView
           ref='scrollView'
-          contentContainerStyle={{flex:1}}
+          contentContainerStyle={{flex: 1}}
           keyboardDismissMode='on-drag'
           style={{flex: 1, backgroundColor: '#FAF9F5'}}>
           <View>
@@ -87,7 +87,7 @@ class Signup extends Component {
                   ref='1'
                   autoCapitalize='none'
                   placeholder={i18next.t('signup:password')}
-                  secureTextEntry={true}
+                  secureTextEntry
                   onChange={(event) => this.setState({password: event.nativeEvent.text})}
                   style={s.input}
                   onSubmitEditing={() => this._focusNextField('2')}
@@ -110,7 +110,7 @@ class Signup extends Component {
                   keyboardType='default'
                   onFocus={this.inputFocused.bind(this, 'username')}
                   onBlur={this.inputBlured.bind(this, 'username')}
-                  value=  {this.state.username} />
+                  value={this.state.username} />
               </View>
 
               <Button onPress={(this.onSubmitPressed.bind(this))}
@@ -126,7 +126,7 @@ class Signup extends Component {
     );
   }
 
-  onBack() {
+  onBack () {
     this.props.navigator.pop();
   }
 
@@ -142,7 +142,7 @@ class Signup extends Component {
     }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
   }
 
-  _updateScroll(refName, offset) {
+  _updateScroll (refName, offset) {
     let scrollResponder = this.refs.scrollView.getScrollResponder();
     scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
       React.findNodeHandle(this.refs[refName]),
@@ -151,8 +151,8 @@ class Signup extends Component {
     );
   }
 
-  _focusNextField(nextField) {
-    this.refs[nextField].focus()
+  _focusNextField (nextField) {
+    this.refs[nextField].focus();
   }
 
   onSubmitPressed () {
@@ -173,14 +173,14 @@ class Signup extends Component {
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flex:1,
+    flex: 1,
     backgroundColor: '#FAF9F5'
   },
   container: {
-    paddingLeft:20,
-    paddingRight:20,
-    paddingTop:10,
-    paddingBottom:10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
@@ -194,7 +194,7 @@ var styles = StyleSheet.create({
   },
   logoCtn: {
     marginTop: 50,
-    paddingBottom:25,
+    paddingBottom: 25,
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'center',
@@ -213,7 +213,7 @@ var styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     color: '#333',
-    alignSelf: "center"
+    alignSelf: 'center'
   },
   linkCtn: {
     flexDirection: 'row',
