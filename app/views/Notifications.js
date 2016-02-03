@@ -34,7 +34,7 @@ class NotificationsView extends Component {
       visibleRows: null
     };
     this.visibleRowsTimer = 2000; // 2sec
-    this.timeoutTimer = 2000; // 2sec
+    this.timeoutTimer = 10000; // 10sec
     this.notificationsDataSource = require('../libs/notificationsDataSource')();
     this.state = {
       loaded: false,
