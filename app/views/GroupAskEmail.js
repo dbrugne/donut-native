@@ -15,6 +15,7 @@ var _ = require('underscore');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var ListItem = require('../components/ListItem');
+var GroupHeader = require('./GroupHeader');
 
 var i18next = require('../libs/i18next');
 
@@ -67,6 +68,7 @@ class GroupAskMembershipEmail extends Component {
     if (this.props.scroll) {
       return (
         <ScrollView style={styles.main}>
+          <GroupHeader {...this.props} />
           <View style={styles.container}>
             {content}
           </View>

@@ -8,6 +8,7 @@ var {
   Component,
   StyleSheet
   } = React;
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 var ListItem = require('../components/ListItem');
 var s = require('../styles/style');
@@ -17,6 +18,7 @@ var MembershipRequest = require('./GroupAskRequest');
 var MembershipPassword = require('./GroupAskPassword');
 var MembershipEmail = require('./GroupAskEmail');
 var LoadingView = require('../components/Loading');
+var GroupHeader = require('./GroupHeader');
 
 var i18next = require('../libs/i18next');
 
@@ -67,8 +69,8 @@ class GroupAskMembership extends Component {
     if (!this.state.success) {
       return (
         <ScrollView style={styles.main}>
+          <GroupHeader {...this.props} />
           <View style={styles.container}>
-
             <Text style={[s.block]}>{i18next.t('group.message-not-member')}</Text>
 
             {this._renderDisclaimer()}
@@ -91,10 +93,17 @@ class GroupAskMembership extends Component {
     }
     // <Text>{i18next.t('group.message-from')} @{this.data.options.owner_username}:</Text>
     return (
-      <View style={[s.alertWarning, {flex: 1, marginVertical: 0, marginHorizontal: 0, borderRadius: 0}]}>
-        <View style={{flexDirection: 'column', flex: 1}}>
-          <Text
-            style={[s.alertWarningText, {fontStyle: 'italic'}]}>{this.data.options.disclaimer}</Text>
+      <View style={[s.alertWarning, {flex: 1, marginVertical: 0, marginHorizontal: 0, borderRadius: 0, alignSelf:'stretch'}]}>
+        <View style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', alignSelf:'stretch'}}>
+          <Icon
+            name='quote-right'
+            size={14}
+            color='#8a6d3b'
+            style={{marginTop: 2}}
+          />
+          <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
+            <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{this.data.options.disclaimer}</Text>
+          </View>
         </View>
       </View>
     );
@@ -189,6 +198,7 @@ var styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    flexDirection:'column',
     alignItems: 'center',
     justifyContent: 'center'
   }

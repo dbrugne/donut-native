@@ -5,10 +5,7 @@ var {
   StyleSheet,
   View,
   Text,
-  Component,
-  Image,
-  ScrollView,
-  ListView
+  Component
 } = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
 

@@ -13,7 +13,7 @@ var alert = require('../libs/alert');
 var app = require('../libs/app');
 var ListItem = require('../components/ListItem');
 var s = require('../styles/style');
-
+var GroupHeader = require('./GroupHeader');
 var i18next = require('../libs/i18next');
 
 class GroupAskMembershipPassword extends Component {
@@ -52,6 +52,7 @@ class GroupAskMembershipPassword extends Component {
     if (this.props.scroll) {
       return (
         <ScrollView style={styles.main}>
+          <GroupHeader {...this.props} />
           <View style={styles.container}>
             {content}
           </View>

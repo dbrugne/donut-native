@@ -28,23 +28,30 @@ i18next.addResourceBundle('en', 'GroupContent', {
 class GroupProfileView extends Component {
   constructor (props) {
     super(props);
+    this.state = {
+      model: app.groups.get(props.id)
+    }
   }
 
   render () {
+    if (!this.state.model) {
+      return null;
+    }
+
     return (
         <View style={styles.container}>
           {this._renderAvatar()}
-          <Text style={styles.identifier}>{this.props.data.identifier}</Text>
+          <Text style={styles.identifier}>{this.state.model.get('identifier')}</Text>
         </View>
     );
   }
 
   _renderAvatar () {
-    if (!this.props.data.avatar) {
+    if (!this.state.model.get('avatar')) {
       return null;
     }
 
-    var avatarUrl = common.cloudinary.prepare(this.props.data.avatar, 130);
+    var avatarUrl = common.cloudinary.prepare(this.state.model.get('avatar'), 160);
     if (!avatarUrl) {
       return null;
     }
@@ -62,10 +69,9 @@ var styles = StyleSheet.create({
     justifyContent: 'center'
   },
   avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginTop: 20,
+    width: 150,
+    height: 150,
+    marginTop: 40,
     marginBottom: 10
   },
   identifier: {

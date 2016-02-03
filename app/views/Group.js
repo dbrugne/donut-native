@@ -61,7 +61,7 @@ var GroupHomeView = React.createClass({
     }
     return (
       <ScrollView style={styles.main}>
-        <GroupHeader  data={this.state.data} {...this.props} />
+        <GroupHeader  id={this.props.element.id} />
         <GroupContent data={this.state.data} navigator={this.props.navigator} />
       </ScrollView>
     );
