@@ -77,6 +77,17 @@ class ListItemImageList extends ListItemAbstract {
       );
     }
 
+    if (_.has(item, 'room_id')) {
+      let avatarUrl = common.cloudinary.prepare(item.avatar, 60);
+      return (
+        <TouchableHighlight key={item.room_id}
+                            underlayColor='transparent'
+                            onPress={() => navigation.navigate('Profile', {type: 'room', id: item.room_id, identifier: item.identifier})}>
+          <Image style={{width: 40, height: 40, marginHorizontal: 2}} source={{uri: avatarUrl}}/>
+        </TouchableHighlight>
+      );
+    }
+
     return null;
   }
 }

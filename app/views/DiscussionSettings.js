@@ -48,7 +48,7 @@ i18next.addResourceBundle('en', 'DiscussionSettings', {
   'deleteTitle': 'Delete discussion',
   'deleteDisclaimer': 'Are you sure you whant to delete __identifier__. This action is ireversible',
   'silence': 'Silence'
-}, true, true);
+});
 
 class DiscussionSettings extends Component {
   constructor (props) {

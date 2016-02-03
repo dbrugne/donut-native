@@ -26,21 +26,23 @@ var alert = require('../libs/alert');
 var Card = require('../components/Card');
 
 var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'GroupContent', {
+  'rooms': 'Discussion list'
+});
 
 class GroupProfileView extends Component {
   constructor (props) {
     super(props);
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.members_count = (props.data.members && props.data.members.length) ? props.data.members.length : 0;
     this.state = {
-      dataRooms: ds.cloneWithRows(props.data.rooms),
       user: {
         isMember: this.isCurrentUserIsMember(),
         isOwner: currentUser.get('user_id') === props.data.owner_id,
         isAdmin: app.user.isAdmin(),
         isOp: this.isCurrentUserIsOP(),
         isBanned: props.data.i_am_banned
-      }
+      },
+      rooms: props.data.rooms
     };
   }
 
@@ -66,7 +68,17 @@ class GroupProfileView extends Component {
 
         <Text style={styles.listGroupItemSpacing}/>
         {this.renderLinks()}
-        {this.renderRooms()}
+
+        <ListItem
+          onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user})}
+          text={i18next.t('GroupContent:rooms')}
+          icon='users'
+          type='image-list'
+          action
+          value={this.state.rooms.length + ''}
+          first
+          imageList={this.state.rooms}
+        />
 
       </ScrollView>
     );
@@ -231,40 +243,6 @@ class GroupProfileView extends Component {
         text={i18next.t('group.created') + ' ' + date.shortDate(this.props.data.created)}
         last
         icon='clock-o'
-        />
-    );
-  }
-
-  renderRooms () {
-    return (
-      <ListView
-        dataSource={this.state.dataRooms}
-        renderRow={(e) => this.renderElement(e)}
-        style={{alignSelf: 'stretch', marginTop: 10}}
-        renderFooter={() => {
-          return (
-            <ListItem
-            type='button'
-            last
-            action
-            onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user})}
-            text={i18next.t('group.see-all')}
-            />
-            ); }
-        }
-        />
-    );
-  }
-
-  renderElement (room) {
-    return (
-      <Card
-        onPress={() => navigation.navigate('Profile', {type: 'room', id: room.room_id, identifier: room.identifier})}
-        image={room.avatar}
-        type='room'
-        identifier={room.identifier}
-        description={room.description}
-        mode={(!room.mode || room.mode === 'public') ? 'public' : (room.allow_group_member) ? 'member' : 'private'}
         />
     );
   }
