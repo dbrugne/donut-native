@@ -235,7 +235,7 @@ class GroupSettings extends Component {
     return (
       <View style={s.listGroup}>
         <ListItem
-          onPress={() => this.props.model.leave()}
+          onPress={() => this.leaveGroup()}
           text={i18next.t('GroupSettings:leave')}
           type='button'
           first
@@ -270,6 +270,16 @@ class GroupSettings extends Component {
       () => app.client.groupDelete(this.props.model.get('id'), () => {}),
       () => {}
     );
+  }
+  leaveGroup() {
+    app.client.groupLeave(this.props.model.get('id'));
+    var model = app.groups.get(this.props.model.get('id'));
+    if (!model) {
+      return;
+    }
+    app.groups.remove(model);
+    app.trigger('redrawNavigationGroups');
+    app.trigger('discussionRemoved', model);
   }
 }
 
