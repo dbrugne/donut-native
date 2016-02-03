@@ -1,6 +1,6 @@
 var React = require('react-native');
 var state = require('../state');
-var RightIcon = require('../components/RightIconSettings');
+var RightIconSettings = require('../components/RightIconSettings');
 
 module.exports = function (model) {
   return {
@@ -15,7 +15,7 @@ module.exports = function (model) {
       return model.get('identifier');
     },
     renderRightButton: function (navigator) {
-      return (<RightIcon model={model}/>);
+      return (<RightIconSettings model={model}/>);
     },
     _onDidFocus: function () {
       if (this.scene.onFocus) {

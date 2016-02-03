@@ -3,7 +3,6 @@ var {
   TouchableOpacity
   } = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
-var currentUser = require('../../models/current-user');
 import ExNavigator from '@exponent/react-native-navigator';
 var navigation = require('../index');
 
@@ -39,29 +38,10 @@ var RightIconProfile = React.createClass({
       return null;
     }
 
-    if (this.props.model.get('type') === 'room') {
-      return (
-        <TouchableOpacity
-          touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
-          onPress={() => navigation.navigate('DiscussionSettings', this.props.model)}
-          style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 44}} >
-          <Icon
-            name='cog'
-            size={22}
-            color='#999998'
-            />
-        </TouchableOpacity>
-      );
-    }
-
-    if (currentUser.get('user_id') !== this.props.model.get('id')) {
-      return null;
-    }
-
     return (
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
-        onPress={() => navigation.navigate('MyAccount')}
+        onPress={() => navigation.navigate('DiscussionSettings', this.props.model)}
         style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 44}} >
         <Icon
           name='cog'
