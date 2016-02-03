@@ -54,8 +54,7 @@ module.exports = React.createClass({
   },
   getDrawerTweenHandler (ratio) {
     return {
-      drawer: { shadowRadius: Math.min(ratio * 5 * 5, 5) },
-      main: { opacity: (2 - ratio) / 2 }
+      main: { shadowRadius: Math.min(ratio * 5 * 5, 5) }
     };
   }
 });
