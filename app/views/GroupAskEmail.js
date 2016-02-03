@@ -18,16 +18,37 @@ var ListItem = require('../components/ListItem');
 var GroupHeader = require('./GroupHeader');
 
 var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'GroupAskEmail', {
+  'info-email': 'I have an authorized e-mail',
+  'email': 'e-mail',
+  'domains': 'Authorized domains',
+  'add-email': 'Send'
+});
 
-class GroupAskMembershipEmail extends Component {
+class GroupAskEmail extends Component {
   constructor (props) {
     super(props);
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.select = '';
-    this.domains = this.getDomains();
+
+    var listDomains = [];
+    _.each(props.domains, (nomDomain, index) => {
+      var domain = {
+        name: nomDomain,
+        isSelect: (index === 0)
+      };
+      if (index === 0) {
+        this.select = nomDomain;
+      }
+      listDomains.push(domain);
+    });
+
     this.state = {
+      data: props.data,
+      domains: props.domains,
+      listDomains: listDomains,
       email: '',
-      dataSource: ds.cloneWithRows(this.domains)
+      dataSource: ds.cloneWithRows(listDomains)
     };
   }
 
@@ -35,19 +56,19 @@ class GroupAskMembershipEmail extends Component {
     let content = (
       <View style={{flex: 1, alignSelf: 'stretch'}}>
 
-        <Text style={[s.block]}>{i18next.t('group.info-email')}</Text>
+        <Text style={[s.block]}>{i18next.t('GroupAskEmail:info-email')}</Text>
 
         <ListItem
           onChangeText={(text) => this.setState({email: text})}
-          placeholder={i18next.t('group.email')}
+          placeholder={i18next.t('GroupAskEmail:email')}
           first
-          title={i18next.t('group.email')}
+          last
           type='input'
           keyboardType='email-address'
           />
 
         <Text style={s.listGroupItemSpacing}/>
-        <Text style={s.listGroupTitle}>{i18next.t('group.domains')}</Text>
+        <Text style={s.listGroupTitle}>{i18next.t('GroupAskEmail:domains')}</Text>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderElement.bind(this)}
@@ -59,7 +80,7 @@ class GroupAskMembershipEmail extends Component {
           last
           action
           type='button'
-          text={i18next.t('group.add-email')}
+          text={i18next.t('GroupAskEmail:add-email')}
           />
 
       </View>
@@ -68,7 +89,7 @@ class GroupAskMembershipEmail extends Component {
     if (this.props.scroll) {
       return (
         <ScrollView style={styles.main}>
-          <GroupHeader {...this.props} />
+          <GroupHeader  model={this.state.data}/>
           <View style={styles.container}>
             {content}
           </View>
@@ -93,7 +114,7 @@ class GroupAskMembershipEmail extends Component {
     if (this.select === nameDomain) {
       return;
     }
-    _.each(this.domains, _.bind(function (domain) {
+    _.each(this.state.listDomains, _.bind(function (domain) {
       if (domain.name === this.select) {
         domain.isSelect = false;
       }
@@ -101,32 +122,14 @@ class GroupAskMembershipEmail extends Component {
     }, this));
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.setState({
-      dataSource: ds.cloneWithRows(this.domains)
+      dataSource: ds.cloneWithRows(this.state.listDomains)
     });
     this.select = nameDomain;
     this.render();
   }
 
-  getDomains () {
-    if (!this.props.domains) {
-      return null;
-    }
-    var listDomains = [];
-    _.each(this.props.domains, _.bind(function (nomDomain, index) {
-      var domain = {
-        name: nomDomain,
-        isSelect: (index === 0)
-      };
-      if (index === 0) {
-        this.select = nomDomain;
-      }
-      listDomains.push(domain);
-    }, this));
-    return listDomains;
-  }
-
   onAddEmail () {
-    if (!this.select || _.indexOf(this.props.domains, this.select) === -1) {
+    if (!this.select || _.indexOf(this.state.domains, this.select) === -1) {
       return alert.show(i18next.t('messages.unknownerror'));
     }
     if (!this.state.email) {
@@ -135,7 +138,9 @@ class GroupAskMembershipEmail extends Component {
     var mail = this.state.email + this.select;
     app.client.accountEmail(mail, 'add', _.bind(function (response) {
       if (response.success) {
-        return alert.show(i18next.t('group.success-email'));
+        alert.show(i18next.t('group.success-email'));
+        app.trigger('refreshGroup', true);
+        this.props.navigator.popToTop();
       } else {
         if (response.err === 'mail-already-exist') {
           return alert.show(i18next.t('group.mail-already-exist'));
@@ -162,4 +167,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = GroupAskMembershipEmail;
+module.exports = GroupAskEmail;

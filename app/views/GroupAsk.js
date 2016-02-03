@@ -19,79 +19,73 @@ var MembershipPassword = require('./GroupAskPassword');
 var MembershipEmail = require('./GroupAskEmail');
 var LoadingView = require('../components/Loading');
 var GroupHeader = require('./GroupHeader');
-
 var i18next = require('../libs/i18next');
+var alert = require('../libs/alert');
 
 class GroupAskMembership extends Component {
 
   constructor (props) {
     super(props);
     this.state = {
-      loading: true,
-      success: false,
-      error: null
+      data: props.data,
+      options: null,
+      loading: true
     };
-    this.data = {};
   }
 
-  componentDidMount () {
-    if (this.props.id) {
-      app.client.groupBecomeMember(this.props.id, null, this.onData.bind(this));
-    }
+  onFocus () {
+    this.onRefresh();
+  }
+
+  onRefresh () {
+    app.client.groupBecomeMember(this.state.data.group_id, null, this.onData.bind(this));
   }
 
   onData (response) {
     if (response.err) {
-      this.setState({
-        error: 'error'
-      });
+      if (response.err === 'already-member') {
+        return this.updateGroup();
+      }
+      return alert.show(i18next.t('messages.' + response.err));
     }
-    if (response.err && response.err === 'already-member') {
-      return this.updateGroup();
-    }
-    if (!response.success) {
-      this.data = response;
-      this.setState({
+
+    // !response.success --> an option is required to join the group
+    if (!response.success && response.options) {
+      return this.setState({
+        options: response.options,
         loading: false
       });
-    } else {
-      this.updateGroup();
     }
+
+    this.updateGroup();
   }
 
   render () {
-    if (this.state.loading || this.state.success) {
+    if (this.state.loading) {
       return (
         <LoadingView />
       );
     }
 
-    if (!this.state.success) {
-      return (
-        <ScrollView style={styles.main}>
-          <GroupHeader {...this.props} />
-          <View style={styles.container}>
-            <Text style={[s.block]}>{i18next.t('group.message-not-member')}</Text>
+    return (
+      <ScrollView style={styles.main}>
+        <GroupHeader  model={this.state.data}/>
+        <View style={styles.container}>
+          <Text style={[s.block]}>{i18next.t('group.message-not-member')}</Text>
 
-            {this._renderDisclaimer()}
+          {this._renderDisclaimer()}
+          {this.renderListOptions()}
 
-            {this.renderListOptions()}
-
-          </View>
-        </ScrollView>
-      );
-    } else {
-      return (
-        <View />
-      );
-    }
+        </View>
+      </ScrollView>
+    );
   }
 
   _renderDisclaimer () {
-    if (!this.data.options.disclaimer) {
+    if (!this.state.options.disclaimer) {
       return null;
     }
-    // <Text>{i18next.t('group.message-from')} @{this.data.options.owner_username}:</Text>
+    // <Text>{i18next.t('group.message-from')} @{this.state.options.owner_username}:</Text>
     return (
       <View style={[s.alertWarning, {flex: 1, marginVertical: 0, marginHorizontal: 0, borderRadius: 0, alignSelf:'stretch'}]}>
         <View style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', alignSelf:'stretch'}}>
@@ -102,7 +96,7 @@ class GroupAskMembership extends Component {
             style={{marginTop: 2}}
           />
           <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
-            <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{this.data.options.disclaimer}</Text>
+            <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{this.state.options.disclaimer}</Text>
           </View>
         </View>
       </View>
@@ -110,16 +104,16 @@ class GroupAskMembership extends Component {
   }
 
   renderListOptions () {
-    var nbrOptions = (this.data.options.allowed_domains ? 1 : 0) + (this.data.options.password ? 1 : 0) + (this.data.options.request ? 1 : 0);
+    var nbrOptions = (this.state.options.allowed_domains ? 1 : 0) + (this.state.options.password ? 1 : 0) + (this.state.options.request ? 1 : 0);
     if (nbrOptions > 1) {
       var request = null;
       var password = null;
       var email = null;
 
-      if (this.data.options.request) {
+      if (this.state.options.request) {
         request = (
           <ListItem
-            onPress={() => navigation.navigate('GroupAskRequest', {id: this.props.id, isAllowedPending: this.data.options.isAllowedPending})}
+            onPress={() => navigation.navigate('GroupAskRequest', {data: this.state.data, options: this.state.options})}
             text={i18next.t('group.request-title')}
             first
             action
@@ -127,22 +121,22 @@ class GroupAskMembership extends Component {
             />
         );
       }
-      if (this.data.options.password) {
+      if (this.state.options.password) {
         password = (
           <ListItem
-            onPress={() => navigation.navigate('GroupAskPassword', this.props.id)}
+            onPress={() => navigation.navigate('GroupAskPassword', this.state.data)}
             text={i18next.t('group.password-title')}
-            first={(!this.data.options.request)}
-            last={(!this.data.options.email)}
+            first={(!this.state.options.request)}
+            last={(!this.state.options.email)}
             action
             type='button'
             />
         );
       }
-      if (this.data.options.allowed_domains) {
+      if (this.state.options.allowed_domains) {
         email = (
           <ListItem
-            onPress={() => navigation.navigate('GroupAskEmail', {id: this.props.id, domains: this.data.options.allowed_domains})}
+            onPress={() => navigation.navigate('GroupAskEmail', {data: this.state.data, options: this.state.options})}
             text={i18next.t('group.email-title')}
             last
             action
@@ -159,17 +153,17 @@ class GroupAskMembership extends Component {
         </View>
       );
     } else if (nbrOptions === 1) {
-      if (this.data.options.request) {
+      if (this.state.options.request) {
         return (
-          <MembershipRequest id={this.props.id} isAllowedPending={this.data.options.isAllowedPending} scroll={false} />
+          <MembershipRequest data={this.state.data} {...this.props} isAllowedPending={this.state.options.isAllowedPending} scroll={false} />
         );
-      } else if (this.data.options.password) {
+      } else if (this.state.options.password) {
         return (
-          <MembershipPassword id={this.props.id} navigator={this.props.navigator} scroll={false} />
+          <MembershipPassword data={this.state.data} {...this.props} scroll={false} />
         );
       } else {
         return (
-          <MembershipEmail id={this.props.id} domains={this.data.options.allowed_domains} scroll={false} />
+          <MembershipEmail data={this.state.data} {...this.props} domains={this.state.options.allowed_domains} scroll={false} />
         );
       }
     } else {
@@ -186,7 +180,7 @@ class GroupAskMembership extends Component {
       success: true
     });
     this.props.navigator.popToTop(); // @todo handle in navigation.popToTop() wrapper
-    app.trigger('refreshGroup');
+    app.trigger('refreshGroup', true);
   }
 }
 

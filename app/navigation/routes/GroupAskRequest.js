@@ -7,7 +7,7 @@ module.exports = function (element) {
   return {
     renderScene: function (navigator) {
       let GroupAskMembershipRequest = require('../../views/GroupAskRequest');
-      return (<GroupAskMembershipRequest navigator={navigator} id={element.id} isAllowedPending={element.isAllowedPending} scroll />);
+      return (<GroupAskMembershipRequest navigator={navigator} data={element.data} isAllowedPending={element.options.isAllowedPending} scroll />);
     },
     getTitle () {
       return i18next.t('navigation.ask-membership-request');

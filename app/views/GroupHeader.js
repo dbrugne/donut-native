@@ -25,11 +25,11 @@ i18next.addResourceBundle('en', 'GroupContent', {
   'rooms': 'Discussion list'
 });
 
-class GroupProfileView extends Component {
+class GroupHeaderView extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      model: app.groups.get(props.id)
+      model: props.model
     }
   }
 
@@ -41,17 +41,17 @@ class GroupProfileView extends Component {
     return (
         <View style={styles.container}>
           {this._renderAvatar()}
-          <Text style={styles.identifier}>{this.state.model.get('identifier')}</Text>
+          <Text style={styles.identifier}>{this.state.model.identifier}</Text>
         </View>
     );
   }
 
   _renderAvatar () {
-    if (!this.state.model.get('avatar')) {
+    if (!this.state.model.avatar) {
       return null;
     }
 
-    var avatarUrl = common.cloudinary.prepare(this.state.model.get('avatar'), 160);
+    var avatarUrl = common.cloudinary.prepare(this.state.model.avatar, 160);
     if (!avatarUrl) {
       return null;
     }
@@ -82,4 +82,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = GroupProfileView;
+module.exports = GroupHeaderView;

@@ -113,10 +113,6 @@
     "password-title": "I have the password",
     "email-title": "I have an authorized e-mail",
     "other-request": "You can join this community only if invited by its moderators.",
-    "info-email": "I have an authorized e-mail",
-    "email": "e-mail",
-    "domains": "domains",
-    "add-email": "add",
     "wrong-format-email": "Mail address is not valid",
     "mail-already-exist": "This mail address is already used",
     "success-email": "The email has been successfully added to your account. You will receive a verification e-mail.",
@@ -129,7 +125,9 @@
     "allow-pending": "An access request is already pending",
     "placeholder-request": "Your motivations, background ...",
     "success-request": "Request sent ! You will be notified when accepted.",
-    "group-users": "group members"
+    "group-users": "group members",
+    "message-wrong-format": "The message should be less than 200 character",
+    "not-confirmed": "Action authorized to verified accounts only. Verify your e-mail.",
   },
   "room": {
     "message-membership": "You are not yet a member of this donut. Before you request membership, have a glance at this donut access conditions"

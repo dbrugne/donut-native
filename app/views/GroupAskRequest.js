@@ -21,7 +21,9 @@ class GroupAskMembershipRequest extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      motivations: ''
+      data: props.data,
+      motivations: '',
+      loading: false
     };
   }
 
@@ -49,6 +51,7 @@ class GroupAskMembershipRequest extends Component {
             onPress={this.onSendRequest.bind(this)}
             last
             action
+            loading={this.state.loading}
             type='button'
             text={i18next.t('group.send')}
             />
@@ -60,7 +63,7 @@ class GroupAskMembershipRequest extends Component {
     if (this.props.scroll) {
       return (
         <ScrollView style={styles.main}>
-          <GroupHeader {...this.props} />
+          <GroupHeader  model={this.state.data}/>
           <View style={styles.container}>
             {content}
           </View>
@@ -72,12 +75,16 @@ class GroupAskMembershipRequest extends Component {
   }
 
   onSendRequest () {
-    app.client.groupRequest(this.props.id, this.state.motivations, function (response) {
+    this.setState({loading: true});
+    app.client.groupRequest(this.state.data.group_id, this.state.motivations, (response) => {
+      this.setState({loading: false});
       if (response.success) {
-        return alert.show(i18next.t('group.success-request'));
+        alert.show(i18next.t('group.success-request'));
+        app.trigger('refreshGroup', true);
+        this.props.navigator.popToTop();
       } else {
-        if (response.err === 'allow-pending') {
-          return alert.show(i18next.t('group.allow-pending'));
+        if (response.err === 'allow-pending' || response.err === 'message-wrong-format' || response.err === 'not-confirmed') {
+          return alert.show(i18next.t('group.' + response.err));
         }
         return alert.show(i18next.t('messages.' + response.err));
       }

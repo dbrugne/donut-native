@@ -7,7 +7,7 @@ module.exports = function (element) {
   return {
     renderScene: function (navigator) {
       let GroupAskMembershipEmail = require('../../views/GroupAskEmail');
-      return (<GroupAskMembershipEmail navigator={navigator} id={element.id} domains={element.domains} scroll />);
+      return (<GroupAskMembershipEmail navigator={navigator} data={element.data} domains={element.options.allowed_domains} scroll />);
     },
     getTitle () {
       return i18next.t('navigation.ask-membership-email');

@@ -27,19 +27,21 @@ i18next.addResourceBundle('en', 'GroupContent', {
   'rooms': 'Discussion list'
 });
 
-class GroupProfileView extends Component {
+class GroupContentView extends Component {
   constructor (props) {
     super(props);
-    this.members_count = (props.data.members && props.data.members.length) ? props.data.members.length : 0;
+
     this.state = {
-      user: {
-        isMember: this.isCurrentUserIsMember(),
-        isOwner: currentUser.get('user_id') === props.data.owner_id,
-        isAdmin: app.user.isAdmin(),
-        isOp: this.isCurrentUserIsOP(),
-        isBanned: props.data.i_am_banned
-      },
-      rooms: props.data.rooms
+      members_count: (props.data.members && props.data.members.length) ? props.data.members.length : 0,
+      data: props.data
+    };
+
+    this.state.user = {
+      isMember: this.isCurrentUserIsMember(),
+      isOwner: currentUser.get('user_id') === props.data.owner_id,
+      isAdmin: app.user.isAdmin(),
+      isOp: this.isCurrentUserIsOP(),
+      isBanned: props.data.i_am_banned
     };
   }
 
@@ -60,14 +62,14 @@ class GroupProfileView extends Component {
 
         <Text style={styles.listGroupItemSpacing}/>
         <ListItem
-          onPress={() => navigation.navigate('GroupRooms', {id: this.props.data.group_id, name: this.props.data.identifier, user: this.state.user})}
+          onPress={() => navigation.navigate('GroupRooms', {id: this.state.data.group_id, name: this.state.data.identifier, user: this.state.user})}
           text={i18next.t('GroupContent:rooms')}
           icon='bars'
           type='image-list'
           action
-          value={this.state.rooms.length + ''}
+          value={this.state.data.rooms.length + ''}
           first
-          imageList={this.state.rooms}
+          imageList={this.state.data.rooms}
         />
 
         <Text style={styles.listGroupItemSpacing}/>
@@ -79,11 +81,11 @@ class GroupProfileView extends Component {
   }
 
   _renderDescription () {
-    if (!this.props.data.description) {
+    if (!this.state.data.description) {
       return null;
     }
 
-    let description = _.unescape(this.props.data.description);
+    let description = _.unescape(this.state.data.description);
 
     return (
       <Text style={styles.description}>{description}</Text>
@@ -117,11 +119,11 @@ class GroupProfileView extends Component {
   }
 
   _renderDisclaimer() {
-    if (!this.props.data.disclaimer) {
+    if (!this.state.data.disclaimer) {
       return null;
     }
 
-    let disclaimer = _.unescape(this.props.data.disclaimer);
+    let disclaimer = _.unescape(this.state.data.disclaimer);
     return (
       <View style={{marginTop: 10, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center'}}>
         <Icon
@@ -171,14 +173,14 @@ class GroupProfileView extends Component {
             type='button'
             first
             action
-            onPress={() => navigation.navigate('CreateRoom', {group_id: this.props.data.group_id, group_identifier: this.props.data.identifier})}
+            onPress={() => navigation.navigate('CreateRoom', {group_id: this.state.data.group_id, group_identifier: this.state.data.identifier})}
             text={i18next.t('group.create-donut')}
             />
           <ListItem
             type='button'
             last
             action
-            onPress={() => navigation.navigate('GroupUsers', this.props.data)}
+            onPress={() => navigation.navigate('GroupUsers', this.state.data)}
             text={i18next.t('group.group-users')}
             />
           {opActions}
@@ -192,7 +194,7 @@ class GroupProfileView extends Component {
             type='button'
             first
             action
-            onPress={() => navigation.navigate('GroupAsk', this.props.data.group_id)}
+            onPress={() => navigation.navigate('GroupAsk', this.state.data)}
             text={i18next.t('group.request-membership')}
             last
             />
@@ -203,10 +205,10 @@ class GroupProfileView extends Component {
   }
 
   renderWebsite () {
-    if (this.props.data.website) {
+    if (this.state.data.website) {
       return (
-        <ListItem onPress={() => hyperlink.open(this.props.data.website.href)}
-                  text={this.props.data.website.title}
+        <ListItem onPress={() => hyperlink.open(this.state.data.website.href)}
+                  text={this.state.data.website.title}
                   first
                   action
                   type='button'
@@ -220,7 +222,7 @@ class GroupProfileView extends Component {
     return (
       <ListItem
         type='text'
-        text={i18next.t('group.created') + ' ' + date.shortDate(this.props.data.created)}
+        text={i18next.t('group.created') + ' ' + date.shortDate(this.state.data.created)}
         last
         icon='clock-o'
         />
@@ -252,7 +254,7 @@ class GroupProfileView extends Component {
 
   onGroupQuit () {
     if (this.state.user.isMember) {
-      app.client.groupQuitMembership(this.props.data.group_id, function (response) {
+      app.client.groupQuitMembership(this.state.data.group_id, function (response) {
         if (response.err) {
           return alert.show(i18next.t('group.unknownerror'));
         }
@@ -262,7 +264,7 @@ class GroupProfileView extends Component {
   }
 
   isCurrentUserIsMember () {
-    return !!_.find(this.props.data.members, function (member) {
+    return !!_.find(this.state.data.members, function (member) {
       if (currentUser.get('user_id') === member.user_id) {
         return true; // found
       }
@@ -270,10 +272,10 @@ class GroupProfileView extends Component {
   }
 
   isCurrentUserIsOP () {
-    if (!this.members_count) {
+    if (!this.state.members_count) {
       return false;
     }
-    return !!_.find(this.props.data.members, function (item) {
+    return !!_.find(this.state.data.members, function (item) {
       return (item.user_id === currentUser.get('user_id') && item.is_op === true);
     });
   }
@@ -315,4 +317,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = GroupProfileView;
+module.exports = GroupContentView;

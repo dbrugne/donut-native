@@ -7,10 +7,10 @@ module.exports = function (element) {
   return {
     id: 'discussion-' + element.id,
     initial: true,
-    model: app.groups.iwhere('group_id', element.id),
+    model: app.groups.get(element.id),
     renderScene: function (navigator) {
       let GroupHome = require('../../views/Group');
-      return <GroupHome navigator={navigator} element={element} />;
+      return <GroupHome navigator={navigator} model={app.groups.get(element.id)} />;
     },
     getTitle () {
       return element.name;
@@ -21,8 +21,7 @@ module.exports = function (element) {
       }
     },
     renderRightButton: function (navigator) {
-      var model = app.groups.get(element.id);
-      return (<RightIcon model={model}/>);
+      return (<RightIcon model={app.groups.get(element.id)}/>);
     },
     onBack () {
       if (state.drawerState === 'opened') {

@@ -20,6 +20,7 @@ class GroupAskMembershipPassword extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      data: props.data,
       password: ''
     };
   }
@@ -52,7 +53,7 @@ class GroupAskMembershipPassword extends Component {
     if (this.props.scroll) {
       return (
         <ScrollView style={styles.main}>
-          <GroupHeader {...this.props} />
+          <GroupHeader  model={this.state.data}/>
           <View style={styles.container}>
             {content}
           </View>
@@ -67,10 +68,10 @@ class GroupAskMembershipPassword extends Component {
     if (!this.state.password) {
       return alert.show(i18next.t('group.wrong-password'));
     }
-    app.client.groupBecomeMember(this.props.id, this.state.password, (response) => {
+    app.client.groupBecomeMember(this.state.data.group_id, this.state.password, (response) => {
       if (response.success) {
-        this.props.navigator.popToTop();  // @todo handle in navigation.popToTop() wrapper
-        app.trigger('refreshGroup');
+        app.trigger('refreshGroup', true);
+        this.props.navigator.popToTop();
       } else {
         if (response.err === 'wrong-password') {
           return alert.show(i18next.t('group.wrong-password'));

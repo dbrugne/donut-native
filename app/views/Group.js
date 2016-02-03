@@ -1,82 +1,85 @@
 'use strict';
 
 var React = require('react-native');
-var { ScrollView, StyleSheet } = React;
+var { ScrollView, StyleSheet, Component } = React;
 
 var GroupHeader = require('./GroupHeader');
 var GroupContent = require('./GroupContent');
 var app = require('../libs/app');
 var LoadingView = require('../components/Loading');
+var alert = require('../libs/alert');
+var i18next = require('../libs/i18next');
 
-var GroupHomeView = React.createClass({
-  propTypes: {
-    element: React.PropTypes.object,
-    navigator: React.PropTypes.object
-  },
-  getInitialState: function () {
-    this.id = this.props.element.id;
-    return {
+class GroupView extends Component {
+
+  constructor (props) {
+    super(props);
+    this.state = {
       loading: true,
-      data: null,
-      error: null
+      data: null
     };
-  },
-  componentDidMount: function () {
+  }
+
+  componentDidMount () {
     app.on('refreshGroup', this.onRefresh, this);
-    this.model = app.groups.iwhere('group_id', this.id);
-    if (this.model) {
-      this.model.on('redraw', this.onRefresh, this);
+
+    //if (this.state.model) {
+    //  this.state.model.on('redraw', this.onRefresh, this);
+    //}
+
+    // @todo still usefull ?
+    if (this.props.model.get('id')) {
+      app.client.groupJoin(this.props.model.get('id'));
     }
-    if (this.id) {
-      app.client.groupJoin(this.id, (response) => {
-        return;
-      });
-    }
-  },
-  onFocus: function () {
-    this.onRefresh();
-  },
-  componentWillUnmount: function () {
+  }
+
+  onFocus () {
+    this.onRefresh(false);
+  }
+
+  componentWillUnmount () {
     app.off('refreshGroup', this.onRefresh, this);
-    if (this.model) {
-      this.model.off(null, null, this);
-    }
-  },
-  onData: function (response) {
+
+    //if (this.props.model) {
+    //  this.props.model.off(null, null, this);
+    //}
+  }
+
+  onData (response) {
     if (response.err) {
-      return this.setState({
-        error: 'error'
-      });
+      return alert.show(i18next.t('messages.' + response.err));
     }
+
     this.setState({
       loading: false,
       data: response
     });
-  },
-  render: function () {
+  }
+
+  render () {
     if (this.state.loading) {
       return (
         <LoadingView/>
       );
     }
+
     return (
       <ScrollView style={styles.main}>
-        <GroupHeader  id={this.props.element.id} />
-        <GroupContent data={this.state.data} navigator={this.props.navigator} />
+        <GroupHeader  model={this.state.data}/>
+        <GroupContent data={this.state.data} {...this.props} />
       </ScrollView>
     );
-  },
-  onRefresh: function () {
-    this.setState({
-      loading: true,
-      data: null,
-      error: null
-    });
-    if (this.id) {
-      app.client.groupRead(this.id, {users: true, rooms: true}, (data) => this.onData(data));
+  }
+
+  onRefresh (force) {
+    if (this.state.data === null || force) {
+      this.setState({
+        loading: true
+      });
+      app.client.groupRead(this.props.model.get('id'), {users: true, rooms: true}, (data) => this.onData(data));
     }
   }
-});
+}
 
 var styles = StyleSheet.create({
   main: {
@@ -86,4 +89,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = GroupHomeView;
+module.exports = GroupView;
