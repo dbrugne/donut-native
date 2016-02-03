@@ -78,7 +78,6 @@ class DiscussionSettings extends Component {
     });
   }
   componentDidMount () {
-    console.log(this.props.model.attributes);
     if (this.props.model.get('type') === 'room') {
       app.client.roomUsers(this.props.model.get('id'), {type: 'users', selector: {start: 0, length: 8}}, (data) => {
         if (data.err || data === 'not-connected') {
@@ -97,6 +96,10 @@ class DiscussionSettings extends Component {
         this.setState({description: data.description, website: website});
       });
     }
+    this.props.model.on('change:avatar', () => this.setState({avatar: this.props.model.get('avatar')}), this);
+  }
+  componentWillUnmount () {
+    this.props.model.off(this, null, null);
   }
   render () {
     var setRoomNotificationLink = null;
@@ -308,7 +311,7 @@ class DiscussionSettings extends Component {
     if (this.props.model.get('type') === 'onetoone') {
       return null;
     }
-    if (!this.isOp && !this.isOwner && !this.isAdmin) {
+    if (!this.isOwner && !this.isAdmin) {
       return null;
     }
     return (
@@ -348,7 +351,7 @@ class DiscussionSettings extends Component {
         return;
       }
 
-      this.saveRoomData('avatar', response, () => {});
+      this.saveRoomData('avatar', response);
     });
   }
   saveRoomData (key, value, callback) {
@@ -361,15 +364,17 @@ class DiscussionSettings extends Component {
           if (response.err[k] === 'website-url') {
             Alert.show(i18next.t('RoomEdit:website-url'));
           } else {
-            Alert.show('messages.unknown');
+            Alert.show(i18next.t('messages.' + response.err));
           }
         }
         return;
       }
 
-      var object = {};
-      object[key] = value;
-      this.setState(object);
+      if (key !== 'avatar') {
+        var object = {};
+        object[key] = value;
+        this.setState(object);
+      }
       if (callback) {
         callback();
       }

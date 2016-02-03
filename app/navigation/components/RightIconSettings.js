@@ -35,7 +35,7 @@ var RightIconProfile = React.createClass({
       return null;
     }
 
-    if (this.state.blocked === true) {
+    if (!this.state || this.state.blocked === true) {
       return null;
     }
 

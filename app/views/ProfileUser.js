@@ -17,6 +17,7 @@ var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
 var ListItem = require('../components/ListItem');
+var currentUser = require('../models/current-user');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'ProfileUser', {
@@ -90,7 +91,7 @@ class UserProfileView extends Component {
     );
 
     var bannedLink = null;
-    if (this.state.banned === true) {
+    if (this.state.banned === true && data.user_id !== currentUser.get('user_id')) {
       bannedLink = (
         <ListItem
           text={i18next.t('ProfileUser:unlock')}
@@ -100,7 +101,7 @@ class UserProfileView extends Component {
           icon='ban'
           />
       );
-    } else {
+    } else if (data.user_id !== currentUser.get('user_id')) {
       bannedLink = (
         <ListItem
           text={i18next.t('ProfileUser:lock')}
@@ -113,6 +114,21 @@ class UserProfileView extends Component {
       );
     }
 
+    let discuss = null;
+    if (data.user_id !== currentUser.get('user_id')) {
+      discuss = (
+        <View>
+          <Text style={s.listGroupItemSpacing} />
+          <ListItem
+            text={i18next.t('ProfileUser:discuss')}
+            type='edit-button'
+            first
+            action
+            onPress={() => app.trigger('joinUser', data.user_id)}
+            />
+        </View>
+      );
+    }
     return (
       <ScrollView style={styles.main}>
         <View style={[styles.container, {position: 'relative'}]}>
@@ -124,15 +140,7 @@ class UserProfileView extends Component {
           {isBannedLink}
         </View>
         <View style={[s.listGroup]}>
-          <Text style={s.listGroupItemSpacing} />
-          <ListItem
-            text={i18next.t('ProfileUser:discuss')}
-            type='edit-button'
-            first
-            action
-            onPress={() => app.trigger('joinUser', data.user_id)}
-            />
-
+          {discuss}
           <Text style={s.listGroupItemSpacing} />
           {location}
           {website}
