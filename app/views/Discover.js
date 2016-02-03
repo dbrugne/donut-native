@@ -5,6 +5,7 @@ var {
   Component,
   Text,
   View,
+  ScrollView,
   TouchableHighlight
 } = React;
 
@@ -32,13 +33,15 @@ class Discover extends Component {
     currentUser.off(null, null, this);
   }
   render () {
-    var version = config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')';
+    var version = config.DONUT_VERSION; // + ' (' + config.DONUT_BUILD + ')';
     return (
-      <View style={{flex: 1, backgroundColor: '#f0f0f0'}}>
+      <ScrollView style={{backgroundColor: '#f0f0f0'}}>
         {this._renderConfirmed()}
         <Featured {...this.props} />
-        <Text>DONUT {version}</Text>
-      </View>
+        <View>
+          <Text style={{paddingVertical:2, paddingHorizontal:5, textAlign: 'right', fontSize:10, color: '#999999'}}>DONUT {version}</Text>
+        </View>
+      </ScrollView>
     );
   }
 
