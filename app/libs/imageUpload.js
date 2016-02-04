@@ -22,8 +22,6 @@ var exports = module.exports = {};
 
 exports.pickImage = function (callback) {
   var options = {
-    maxWidth: 500,
-    maxHeight: 500,
     takePhotoButtonTitle: i18next.t('imageUpload:take'),
     chooseFromLibraryButtonTitle: i18next.t('imageUpload:choose')
   };
