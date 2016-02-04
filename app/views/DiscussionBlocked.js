@@ -51,9 +51,15 @@ var DiscussionBlocked = React.createClass({
     currentUser.on('change:confirmed', () => {
       this.setState({userConfirmed: currentUser.get('confirmed')});
     });
+    this.props.model.on('change:blocked_why', () => {
+      if (this.isMounted()) {
+        this.forceUpdate();
+      }
+    }, this);
   },
   componentWillUnmount: function () {
     currentUser.off(null, null, this);
+    this.props.model.off(this, null, null);
   },
 
   onFocus: function () {
