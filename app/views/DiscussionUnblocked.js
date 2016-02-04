@@ -62,6 +62,7 @@ var DiscussionAbstract = React.createClass({
                    model={this.props.model}
                    showConfirmationModal={() => this.showConfirmationModal()}
                    closeConfirmationModal={() => this.closeConfirmationModal()}
+                   addImage={() => this._addImage()}
                    setImageSource={(src) => this.setImageSource(src)}
         />
         <View style={{height: this.state.keyboardSpace}}/>
