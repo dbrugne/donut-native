@@ -25,6 +25,9 @@ i18next.addResourceBundle('en', 'RoomUsers', {
 }, true, true);
 
 var RoomUsersView = React.createClass({
+  contextTypes: {
+    actionSheet: React.PropTypes.func
+  },
   propTypes: {
     navigator: React.PropTypes.object,
     id: React.PropTypes.string.isRequired
@@ -124,14 +127,14 @@ var RoomUsersView = React.createClass({
 
     return (
       <Card
-        onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
+//        onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
+        onPress={() => this._onOpenActionSheet(this.props.id, user.user_id)}
         image={user.avatar}
         type='user'
         identifier={'@' + user.username}
         realname={user.realname}
         bio={user.bio}
         status={user.status}
-        onEdit={() => navigation.navigate('RoomUser', this.props.id, user, () => this._refreshData())}
         op={user.isOp}
         owner={user.isOwner}
         devoiced={user.isDevoiced}
@@ -139,7 +142,21 @@ var RoomUsersView = React.createClass({
         />
     );
   },
-
+  _onOpenActionSheet (roomId, userId) {
+    // @todo dbrugne
+    // Same interface as https://facebook.github.io/react-native/docs/actionsheetios.html
+    let options = ['View profile', 'Chat', 'Kick', 'Kick and ban', 'Devoice', 'Cancel'];
+    let destructiveButtonIndex = 3;
+    let cancelButtonIndex = 5;
+    this.context.actionSheet().showActionSheetWithOptions({
+        options,
+        cancelButtonIndex,
+        destructiveButtonIndex,
+      },
+      (buttonIndex) => {
+        console.log('press on ', buttonIndex)
+      });
+  },
   _renderLoadMore: function () {
     if (!this.state.loaded) {
       return (<LoadingView style={styles.loadMore} />);

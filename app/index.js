@@ -4,7 +4,17 @@ var React = require('react-native');
 
 import CodePush from 'react-native-code-push';
 
+import ActionSheet from '@exponent/react-native-action-sheet';
+
 var Index = React.createClass({
+  childContextTypes: {
+    actionSheet: React.PropTypes.func
+  },
+  getChildContext () {
+    return {
+      actionSheet: () => this._actionSheetRef
+    };
+  },
   getInitialState () {
     // init configuration from initialProps from native
     require('./libs/config')(this.props);
@@ -56,7 +66,9 @@ var Index = React.createClass({
     } else {
       var LoggedIn = require('./loggedIn/index'); // @important, lazy load
       return (
-        <LoggedIn ref='current' />
+        <ActionSheet ref={component => this._actionSheetRef = component}>
+          <LoggedIn ref='current' />
+        </ActionSheet>
       );
     }
   }
