@@ -85,7 +85,6 @@ class GroupAskMembership extends Component {
     if (!this.state.options.disclaimer) {
       return null;
     }
-    // <Text>{i18next.t('group.message-from')} @{this.state.options.owner_username}:</Text>
     return (
       <View style={[s.alertWarning, {flex: 1, marginVertical: 0, marginHorizontal: 0, borderRadius: 0, alignSelf:'stretch'}]}>
         <View style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', alignSelf:'stretch'}}>

@@ -2,7 +2,6 @@
 
 var React = require('react-native');
 var {
-  StyleSheet,
   View,
   Text,
   Component
@@ -24,7 +23,20 @@ var Card = require('../components/Card');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupContent', {
-  'rooms': 'Discussion list'
+  'rooms': 'Discussion list',
+  'users': 'Member list',
+  'community-member': 'You are a member of this community',
+  'community-not-member': 'You are not yet a member of this community. You can join public donuts or request access to a private donut. Members have special privileges such as direct access to certain private donuts and to other members of this community.Before you request membership, have a glance at this community access conditions',
+  'community-owner': 'You are the owner of this community',
+  'community-op': 'You are an op of this community',
+  'invite': 'Invite members',
+  'manage': 'Manage members',
+  "create-donut": "Create a donut",
+  "message-ban": "You were banned from this community",
+  "request-membership": "request membership",
+  "created": "created on",
+  "leave": "leave this communtiy",
+  "unknownerror": "Unknown error, please retry later"
 });
 
 class GroupContentView extends Component {
@@ -48,19 +60,50 @@ class GroupContentView extends Component {
   render () {
     return (
       <View>
-        {this._renderDescription()}
 
         <View style={{flex:1}}>
-          {this.renderMessage()}
+          {this._renderMessage()}
         </View>
 
-        <Text style={styles.listGroupItemSpacing}/>
-        {this.renderAction()}
+        {this._renderDescription()}
 
-        <Text style={styles.listGroupItemSpacing}/>
-        {this.renderLinks()}
+        {this._renderAction()}
 
-        <Text style={styles.listGroupItemSpacing}/>
+        {this._renderDiscussionList()}
+
+        {this._renderMemberList()}
+
+        {this._renderLeaveCommunityButton()}
+
+        <Text style={s.listGroupItemSpacing}/>
+        {this.renderWebsite()}
+        {this.renderCreatedAt()}
+
+      </View>
+    );
+  }
+
+  _renderDiscussionList() {
+    if (this.state.user.isBanned) {
+      return null;
+    }
+
+    let createButton = (
+      <ListItem
+        type='button'
+        first
+        action
+        onPress={() => navigation.navigate('CreateRoom', {group_id: this.state.data.group_id, group_identifier: this.state.data.identifier})}
+        text={i18next.t('GroupContent:create-donut')}
+      />
+    );
+    if (!this.state.user.isMember) {
+      createButton = null;
+    }
+
+    return (
+      <View>
+        <Text style={s.listGroupItemSpacing}/>
         <ListItem
           onPress={() => navigation.navigate('GroupRooms', {id: this.state.data.group_id, name: this.state.data.identifier, user: this.state.user})}
           text={i18next.t('GroupContent:rooms')}
@@ -71,11 +114,52 @@ class GroupContentView extends Component {
           first
           imageList={this.state.data.rooms}
         />
+        {createButton}
+      </View>
+    );
+  }
 
-        <Text style={styles.listGroupItemSpacing}/>
-        {this.renderWebsite()}
-        {this.renderCreatedAt()}
+  _renderMemberList() {
+    if (this.state.user.isBanned || !this.state.user.isMember) {
+      return null;
+    }
 
+    let buttons = null;
+    if (this.state.user.isOwner || this.state.user.isOp) {
+      buttons = (
+        <View>
+          <ListItem
+            type='button'
+            first
+            action
+            onPress={() => navigation.navigate('AvailableSoon')}
+            text={i18next.t('GroupContent:invite')}
+          />
+          <ListItem
+            type='button'
+            action
+            last
+            onPress={() => navigation.navigate('AvailableSoon')}
+            text={i18next.t('GroupContent:manage')}
+          />
+        </View>
+      );
+    }
+
+    return (
+      <View>
+        <Text style={s.listGroupItemSpacing}/>
+        <ListItem
+          onPress={() => navigation.navigate('GroupUsers', this.state.data)}
+          text={i18next.t('GroupContent:users')}
+          icon='users'
+          type='image-list'
+          action
+          value={this.state.data.members.length + ''}
+          first
+          imageList={this.state.data.members}
+        />
+        {buttons}
       </View>
     );
   }
@@ -88,34 +172,48 @@ class GroupContentView extends Component {
     let description = _.unescape(this.state.data.description);
 
     return (
-      <Text style={styles.description}>{description}</Text>
+      <Text style={[s.p, s.block]}>{description}</Text>
     );
   }
 
-  renderMessage () {
-    if ((this.state.user.isMember || this.state.user.isOwner) && !this.state.user.isBanned) {
-      return (
-        <View style={[s.alertSuccess, {marginLeft: 0, marginRight: 0, marginBottom: 0}]}>
-          <Text style={s.alertSuccessText}>{i18next.t('group.message-member')}</Text>
-        </View>
-      );
-    }
-    if (!this.state.user.isMember && !this.state.user.isBanned && !this.state.user.isOwner) {
-      return (
-        <View style={[s.alertWarning, {marginLeft: 0, marginRight: 0, marginBottom: 0}]}>
-          <Text style={s.alertWarningText}>{i18next.t('group.message-membership')}</Text>
-          {this._renderDisclaimer()}
-        </View>
-      );
-    }
+  _renderMessage () {
+    // render banned
     if (this.state.user.isBanned) {
       return (
         <View style={[s.alertError, {marginLeft: 0, marginRight: 0, marginBottom: 0}]}>
-          <Text style={s.alertErrorText}>{i18next.t('group.message-ban')}</Text>
+          <Text style={s.alertErrorText}>{i18next.t('GroupContent:message-ban')}</Text>
+        </View>
+      );
+      // render not member
+    } else if (!this.state.user.isMember) {
+      return (
+        <View style={[s.alertWarning, {marginLeft: 0, marginRight: 0, marginBottom: 0}]}>
+          <Text style={s.alertWarning}>{i18next.t('GroupContent:community-not-member')}</Text>
+          {this._renderDisclaimer()}
+        </View>
+      );
+      // render owner
+    } else if (this.state.user.isOwner) {
+      return (
+        <View style={[s.alertSuccess, {marginLeft: 0, marginRight: 0, marginBottom: 0}]}>
+          <Text style={s.alertSuccessText}>{i18next.t('GroupContent:community-owner')}</Text>
+        </View>
+      );
+      // render op
+    } else if (this.state.user.isOp) {
+      return (
+        <View style={[s.alertSuccess, {marginLeft: 0, marginRight: 0, marginBottom: 0}]}>
+          <Text style={s.alertSuccessText}>{i18next.t('GroupContent:community-op')}</Text>
+        </View>
+      );
+      // render member
+    } else {
+      return (
+        <View style={[s.alertSuccess, {marginLeft: 0, marginRight: 0, marginBottom: 0}]}>
+          <Text style={s.alertSuccessText}>{i18next.t('GroupContent:community-member')}</Text>
         </View>
       );
     }
-    return null;
   }
 
   _renderDisclaimer() {
@@ -139,69 +237,25 @@ class GroupContentView extends Component {
     );
   }
 
-  renderAction () {
-    var opActions = null;
-    if ((this.state.user.isOwner || this.state.user.isAdmin || this.state.user.isOp) && !this.state.user.isBanned) {
-      opActions = (
-        <View>
-          <ListItem
-            type='button'
-            action
-            onPress={() => navigation.navigate('AvailableSoon')}
-            text={i18next.t('group.edit')}
-            />
-          <ListItem
-            type='button'
-            action
-            onPress={() => navigation.navigate('AvailableSoon')}
-            text={i18next.t('group.access')}
-            />
-          <ListItem
-            type='button'
-            last
-            action
-            onPress={() => navigation.navigate('AvailableSoon')}
-            text={i18next.t('group.allowed-users')}
-            />
-        </View>
-      );
+  _renderAction () {
+
+    if (this.state.user.isMember || this.state.user.isOp || this.state.user.isBanned || this.state.user.isOwner) {
+      return null;
     }
-    if ((this.state.user.isMember || this.state.user.isOwner) && !this.state.user.isBanned) {
-      return (
-        <View>
-          <ListItem
-            type='button'
-            first
-            action
-            onPress={() => navigation.navigate('CreateRoom', {group_id: this.state.data.group_id, group_identifier: this.state.data.identifier})}
-            text={i18next.t('group.create-donut')}
-            />
-          <ListItem
-            type='button'
-            last
-            action
-            onPress={() => navigation.navigate('GroupUsers', this.state.data)}
-            text={i18next.t('group.group-users')}
-            />
-          {opActions}
-        </View>
-      );
-    }
-    if (!this.state.user.isMember && !this.state.user.isOp && !this.state.user.isBanned && !this.state.user.isOwner) {
-      return (
-        <View>
-          <ListItem
-            type='button'
-            first
-            action
-            onPress={() => navigation.navigate('GroupAsk', this.state.data)}
-            text={i18next.t('group.request-membership')}
-            last
-            />
-        </View>
-      );
-    }
-    return null;
+
+    return (
+      <View>
+        <Text style={s.listGroupItemSpacing}/>
+        <ListItem
+          type='button'
+          first
+          action
+          onPress={() => navigation.navigate('GroupAsk', this.state.data)}
+          text={i18next.t('GroupContent:request-membership')}
+          last
+          />
+      </View>
+    );
   }
 
   renderWebsite () {
@@ -222,32 +276,30 @@ class GroupContentView extends Component {
     return (
       <ListItem
         type='text'
-        text={i18next.t('group.created') + ' ' + date.shortDate(this.state.data.created)}
+        text={i18next.t('GroupContent:created') + ' ' + date.shortDate(this.state.data.created)}
         last
         icon='clock-o'
         />
     );
   }
 
-  renderLinks () {
-    var quit = null;
-    if (!this.state.user.isOwner && this.state.user.isMember) {
-      quit = (
+  _renderLeaveCommunityButton () {
+    if (!this.state.user.isMember || this.state.user.isOwner) {
+      return null;
+    }
+
+    return (
+      <View>
+        <Text style={s.listGroupItemSpacing}/>
         <ListItem
           onPress={() => alert.askConfirmation('Quit group', 'You will leave this community', () => this.onGroupQuit(), () => {})}
-          text={i18next.t('group.leave')}
+          text={i18next.t('GroupContent:leave')}
           first={!(this.isOp || this.isAdmin)}
           action
           warning
           type='button'
           iconColor='#e74c3c'
-          />
-      );
-    }
-
-    return (
-      <View>
-        {quit}
+        />
       </View>
     );
   }
@@ -256,7 +308,7 @@ class GroupContentView extends Component {
     if (this.state.user.isMember) {
       app.client.groupQuitMembership(this.state.data.group_id, function (response) {
         if (response.err) {
-          return alert.show(i18next.t('group.unknownerror'));
+          return alert.show(i18next.t('GroupContent:unknownerror'));
         }
         app.trigger('refreshGroup');
       });
@@ -280,41 +332,5 @@ class GroupContentView extends Component {
     });
   }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginTop: 20,
-    marginBottom: 10
-  },
-  identifier: {
-    color: '#333333',
-    fontFamily: 'Open Sans',
-    fontSize: 22,
-    fontWeight: 'bold'
-  },
-  ownerUsername: {
-    fontFamily: 'Open Sans',
-    fontWeight: 'bold'
-  },
-  description: {
-    marginVertical: 10,
-    marginHorizontal: 10,
-    color: '#333333',
-    fontFamily: 'Open Sans',
-    fontSize: 16
-  },
-  icon: {
-    width: 14,
-    height: 14
-  }
-});
 
 module.exports = GroupContentView;

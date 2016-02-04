@@ -138,6 +138,9 @@ class RoomCreateView extends Component {
         if (data.err) {
           return alert.show(response.err);
         }
+        if (this.props.group_identifier) {
+          app.trigger('refreshGroup', true); // refresh group page list
+        }
         app.trigger('joinRoom', data.room_id);
       });
     });
