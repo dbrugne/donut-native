@@ -1,8 +1,3 @@
-var React = require('react-native');
-var {
-  InteractionManager
-  } = React;
-var _ = require('underscore');
 var state = require('./state');
 var debug = require('../libs/debug')('navigation');
 
@@ -14,13 +9,11 @@ module.exports = {
 
   openDrawer () {
     if (state.drawer && state.drawerState === 'closed') {
-      state.drawerInAnimationHandle = InteractionManager.createInteractionHandle();
       state.drawer.open();
     }
   },
   closeDrawer () {
     if (state.drawer && state.drawerState === 'opened') {
-      state.drawerInAnimationHandle = InteractionManager.createInteractionHandle();
       state.drawer.close();
     }
   },
@@ -61,16 +54,13 @@ module.exports = {
       // navigate to
       var navigator = state.getNavigator(route);
 
-      InteractionManager.runAfterInteractions(() => {
-        this._switchTo(navigator);
-      });
+      this._switchTo(navigator);
     } else {
       if (!state.currentNavigator) {
         return debug.warn('no current navigator');
       }
-      InteractionManager.runAfterInteractions(() => {
-        state.currentNavigator.scene.__navigator.push(route);
-      });
+
+      state.currentNavigator.scene.__navigator.push(route);
     }
   },
 
