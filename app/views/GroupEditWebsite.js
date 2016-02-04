@@ -42,7 +42,7 @@ class GroupEditWebsite extends UserField {
         onChange={(event) => this.setState({value: event.nativeEvent.text})}
         type='input-button'
         help={i18next.t('GroupEditWebsite:help')}
-        autoCapitalize={false}
+        autoCapitalize='none'
       />
     );
   }

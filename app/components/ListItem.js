@@ -29,7 +29,7 @@ var ListItem = React.createClass({
     help: React.PropTypes.string, // help message to display bellow the ListItem
     style: React.PropTypes.object, // custom styles to apply to ListItem
     value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]), // value of the ListItemEdit
-    autoCapitalize: React.PropTypes.string, // value of the ListItemEdit
+    autoCapitalize: React.PropTypes.oneOf(['none', 'sentences', 'words', 'characters']), // value of the ListItemEdit
     keyboardType: React.PropTypes.string, // value of the ListItemEdit
     loading: React.PropTypes.bool, // loading state, used for the ListItemInputButton
     imageList: React.PropTypes.array, // required for ImageList item
