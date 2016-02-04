@@ -68,9 +68,9 @@ class EditEmailView extends Component {
           <ListItem onPress={(this.onSendEmail.bind(this))}
                     text={i18next.t('myAccountEmailEdit:send-validation')}
                     type='button'
-                    action='true'
+                    action
                     icon='envelope-o'
-                    first={true}
+                    first
                     title={i18next.t('myAccountEmailEdit:not-validated')}
             />
 
@@ -85,9 +85,9 @@ class EditEmailView extends Component {
       return (<ListItem onPress={(this.onSetAsMainPressed.bind(this))}
                         text={i18next.t('myAccountEmailEdit:define')}
                         type='button'
-                        action='true'
+                        action
                         icon='anchor'
-                        first={true}
+                        first
                         title={i18next.t('myAccountEmailEdit:validated')}
         />);
     } else {

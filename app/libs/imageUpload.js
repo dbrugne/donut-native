@@ -4,7 +4,6 @@ var cloudinary = require('./cloudinary');
 
 var {
   NativeModules,
-  Platform,
   Alert
   } = React;
 
@@ -26,30 +25,24 @@ exports.pickImage = function (callback) {
     chooseFromLibraryButtonTitle: i18next.t('imageUpload:choose')
   };
 
-  if (Platform.OS !== 'android') {
-    ImagePickerManager.showImagePicker(options, (response) => {
-      return callback(response);
-    });
-  } else {
-    Alert.alert(
-      null,
-      i18next.t('imageUpload:description'),
-      [
-        {
-          text: i18next.t('imageUpload:take'),
-          onPress: () => ImagePickerManager.launchCamera(options, (response) => {
-            return callback(response);
-          })
-        },
-        {
-          text: i18next.t('imageUpload:choose'),
-          onPress: () => ImagePickerManager.launchImageLibrary(options, (response) => {
-            return callback(response);
-          })
-        }
-      ]
-    );
-  }
+  Alert.alert(
+    null,
+    i18next.t('imageUpload:description'),
+    [
+      {
+        text: i18next.t('imageUpload:take'),
+        onPress: () => ImagePickerManager.launchCamera(options, (response) => {
+          return callback(response, 'camera');
+        })
+      },
+      {
+        text: i18next.t('imageUpload:choose'),
+        onPress: () => ImagePickerManager.launchImageLibrary(options, (response) => {
+          return callback(response, 'library');
+        })
+      }
+    ]
+  );
 };
 
 exports.uploadToCloudinary = function (base64File, tags, preset, callback) {
@@ -66,6 +59,8 @@ exports.uploadToCloudinary = function (base64File, tags, preset, callback) {
       version: data.version,
       path: data.url.replace('http://res.cloudinary.com/roomly/image/upload/', ''),
       type: data.resource_type,
+      width: data.width,
+      height: data.height,
       filename: pathSplit[pathSplit.length - 1].replace('.jpg', ''),
       size: (data.bytes >= 1000000)
         ? (data.bytes / 1000000).toFixed(2) + ' Mb'

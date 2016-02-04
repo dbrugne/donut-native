@@ -22,7 +22,8 @@ var InputView = React.createClass({
   propTypes: {
     model: React.PropTypes.object,
     setImageSource: React.PropTypes.func,
-    showConfirmationModal: React.PropTypes.func
+    showConfirmationModal: React.PropTypes.func,
+    addImage: React.PropTypes.func
   },
   getInitialState: function () {
     this.model = this.props.model;
@@ -109,14 +110,20 @@ var InputView = React.createClass({
     });
   },
   _addImage: function () {
-    imageUpload.pickImage((response) => {
+    imageUpload.pickImage((response, type) => {
       if (response.didCancel) {
         return;
       }
-      // set image source for the confirmation modal
+      // set image source for the upload / confirmation
       this.props.setImageSource(response.data);
-      // show confirmation modal with the image
-      this.props.showConfirmationModal();
+
+      if (type === 'library') {
+        // show confirmation modal with the image
+        this.props.showConfirmationModal();
+      } else {
+        // add image directly to the conversation
+        this.props.addImage();
+      }
     });
   }
 });

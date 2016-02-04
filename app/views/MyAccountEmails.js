@@ -71,8 +71,8 @@ class EmailsView extends Component {
             onPress={() => navigation.navigate('MyAccountEmailsAdd', this.fetchData.bind(this))}
             text={i18next.t('myAccountEmails:add-email')}
             type='button'
-            action='true'
-            first='true'
+            action
+            first
             />
 
         </View>
@@ -89,8 +89,8 @@ class EmailsView extends Component {
             onPress={() => navigation.navigate('MyAccountEmail', this.state.currentEmail, this.fetchData.bind(this))}
             text={this.state.currentEmail}
             type='button'
-            action='true'
-            first='true'
+            action
+            first
             title={i18next.t('myAccountEmails:current-email')}
             />
           <Text style={s.listGroupItemSpacing} />
@@ -121,7 +121,7 @@ class EmailsView extends Component {
           onPress={() => navigation.navigate('MyAccountEmailEdit', e, this.fetchData.bind(this))}
           text={e.email}
           type='button'
-          action='true'
+          action
           icon={(e.confirmed) ? 'check' : 'times'}
           first={(i === 0 || (i === 1 && this.state.emails[0].main))}
           />
