@@ -56,8 +56,10 @@ var routeTemplate = {
   onDidFocus () {
     state.currentRoute = this;
 
-    state._logCurrentStack();
-    this._onDidFocus();
+    React.InteractionManager.runAfterInteractions(() => {
+      state._logCurrentStack();
+      this._onDidFocus();
+    });
   },
   onWillBlur () {
     this._onWillBlur();
@@ -75,7 +77,8 @@ var routeTemplate = {
 
 var initialRouteTemplate = {
   configureScene () {
-    return ExNavigator.SceneConfigs.FloatFromRight;
+    // @important simplest transition possible to avoid performance leak (on Android mostly)
+    return ExNavigator.SceneConfigs.Fade;
   },
   renderLeftButton () {
     return (<DrawerIcon navigator={navigator} />);
@@ -83,6 +86,9 @@ var initialRouteTemplate = {
 };
 
 var nonInitialRouteTemplate = {
+  configureScene () {
+    return ExNavigator.SceneConfigs.FloatFromRight;
+  }
 };
 
 module.exports = {
