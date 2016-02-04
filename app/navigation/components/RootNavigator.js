@@ -29,8 +29,8 @@ module.exports = React.createClass({
     return (
       <Drawer
         ref='drawer'
+        type='displace'
         content={<Navigation />}
-        styles={{main: {shadowColor: '#000000', shadowOpacity: 0.4, shadowRadius: 3}}}
         openDrawerOffset={50}
         panOpenMask={0}
         panCloseMask={50}
