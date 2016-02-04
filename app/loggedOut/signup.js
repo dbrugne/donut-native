@@ -42,7 +42,7 @@ class Signup extends Component {
   render () {
     return (
       <View style={{flex: 1, alignItems: 'stretch'}}>
-        <View style={styles.linkCtn} >
+        <View style={[styles.linkCtn, {marginTop:10, paddingLeft:10}]} >
           <Icon
             name='chevron-left'
             size={14}

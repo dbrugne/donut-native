@@ -24,7 +24,7 @@ i18next.addResourceBundle('en', 'forgot', {
   'what': 'What email address do you use to sign into Donut ?',
   'reset': 'Reset',
   'email': 'Email',
-  'back': 'back'
+  'back': 'Back'
 });
 
 class ForgotView extends Component {
@@ -39,7 +39,7 @@ class ForgotView extends Component {
   render() {
     return (
       <View style={{flex:1, alignItems: 'stretch'}}>
-        <View style={styles.linkCtn} >
+        <View style={[styles.linkCtn, {marginTop:10, paddingLeft:10}]} >
           <Icon
             name='chevron-left'
             size={14}
@@ -184,9 +184,6 @@ var styles = StyleSheet.create({
   linkCtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderTopWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#C3C3C3',
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: '#FFF'
