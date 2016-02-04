@@ -1,11 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-
-var {
-  View,
-  Text
-  } = React;
+var { View } = React;
 
 var Link = require('../components/Link');
 var s = require('../styles/style');
@@ -24,13 +20,13 @@ var AvailableSoonView = React.createClass({
   },
   render: function () {
     return (
-      <View style={{flex: 1, marginHorizontal: 10}}>
-        <Text stype={s.h1}>{i18next.t('availableSoon:disclaimer')}</Text>
+      <View style={{flex: 1, marginHorizontal: 10, marginVertical: 10}}>
         <Link
           onPress={() => hyperlink.open(this.state.website)}
           stype={s.h1}
           type='underlined'
           text={this.state.website}
+          prepend={i18next.t('availableSoon:disclaimer')}
           />
       </View>
     );
