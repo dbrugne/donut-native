@@ -54,6 +54,7 @@ var RoomEditDescriptionView = React.createClass({
               });
             }}
             maxLength={200}
+            multiline
             placeholder={i18next.t('RoomEditDescription:placeholder')}
             value={this.state.description}
             onChange={(event) => this.setState({description: event.nativeEvent.text})}

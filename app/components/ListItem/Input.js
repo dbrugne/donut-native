@@ -18,7 +18,7 @@ class ListItemInput extends ListItemAbstract {
     return (
       <TextInput
         {...this.props}
-        style={[s.input]}
+        style={[s.input, this.props.multiline && {height: 80}]}
       />
     );
   }

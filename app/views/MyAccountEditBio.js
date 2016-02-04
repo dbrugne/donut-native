@@ -25,6 +25,7 @@ class UserFieldBio extends UserField {
       placeholder={i18next.t('myAccountBio:placeholder')}
       value={this.state.value}
       maxLength={200}
+      multiline
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       multi={true}

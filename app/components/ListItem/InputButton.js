@@ -28,10 +28,10 @@ class ListItemInputButton extends ListItemAbstract {
 
   _renderElement () {
     return (
-      <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
+      <View style={{flexDirection: 'row', justifyContent: 'flex-start', flex: 1}}>
         <TextInput
           {...this.props}
-          style={[s.input]}
+          style={[s.input, this.props.multiline && {height: 80}]}
           />
 
         <TouchableHighlight onPress={this.props.onPress}

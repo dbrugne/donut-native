@@ -25,6 +25,7 @@ class GroupEditDisclaimer extends UserField {
       placeholder={i18next.t('GroupEditDisclaimer:placeholder')}
       value={this.state.value}
       maxLength={255}
+      multiline
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       multi={true}

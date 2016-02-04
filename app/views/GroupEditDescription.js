@@ -27,6 +27,7 @@ class GroupEditDescription extends UserField {
       maxLength={255}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
+      multiline
       multi={true}
       help={i18next.t('GroupEditDescription:help')}
       />

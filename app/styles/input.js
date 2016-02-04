@@ -3,7 +3,7 @@
 var React = require('react-native');
 
 var {
-  StyleSheet,
+  StyleSheet
   } = React;
 
 module.exports = StyleSheet.create({
@@ -28,7 +28,7 @@ module.exports = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     backgroundColor: '#FFF',
-    color: "#333",
+    color: '#333',
     height: 40,
     paddingBottom: 3,
     paddingTop: 3,

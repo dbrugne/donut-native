@@ -46,6 +46,8 @@ var UpdateRoomTopicView = React.createClass({
             value={this.state.topic}
             onChange={(event) => this.setState({topic: event.nativeEvent.text})}
             type='input-button'
+            maxLength={512}
+            multiline
             autoFocus
             help={i18next.t('RoomTopic:help')}
             />

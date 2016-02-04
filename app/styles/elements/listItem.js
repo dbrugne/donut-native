@@ -16,12 +16,12 @@ var style = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderColor: '#DDD',
-    borderBottomWidth:1,
+    borderBottomWidth: 1,
     borderStyle: 'solid'
   },
   listGroupItemFirst: {
     borderColor: '#DDD',
-    borderTopWidth:1,
+    borderTopWidth: 1,
     borderStyle: 'solid'
   },
   listGroupTitle: {
@@ -49,7 +49,6 @@ var style = {
     fontFamily: 'Open Sans',
     fontSize: 16,
     flex: 1,
-    height: 30,
     paddingTop: 2
   },
   listGroupItemValue: {
@@ -82,15 +81,16 @@ var style = {
     flex: 1,
     borderRadius: 0,
     padding: 0,
+    paddingRight: 10,
     height: 30
   },
   button: {
     alignSelf: 'flex-end',
-    justifyContent:'center',
+    justifyContent: 'center',
     marginTop: 0,
     marginBottom: 0,
-    borderWidth:1,
-    borderRadius:3
+    borderWidth: 1,
+    borderRadius: 3
   },
   color: {
     width: 20,
@@ -101,13 +101,13 @@ var style = {
   buttonGreen: {
     borderTopColor: '#0E9547',
     borderBottomColor: '#0E9547',
-    backgroundColor: "#27ae60" // Lighten 10%: #41C87A / Darken 10%: #0E9547
+    backgroundColor: '#27ae60' // Lighten 10%: #41C87A / Darken 10%: #0E9547
   },
-  labelGreen: { color: '#FFFFFF'}
+  labelGreen: {color: '#FFFFFF'}
 };
 
 var {
-  StyleSheet,
+  StyleSheet
 } = React;
 
 module.exports = StyleSheet.create(Util.merge(style, platformStyle));
