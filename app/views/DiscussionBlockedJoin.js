@@ -49,10 +49,8 @@ var DiscussionBlockedJoin = React.createClass({
   render: function () {
     return (
       <View style={{flex: 1}}>
-        <View style={{marginVertical: 10, marginHorizontal: 5, borderRadius: 0}}>
-          <View style={{flexDirection: 'column', flex: 1}}>
-            <Text style={[s.h1, {fontStyle: 'italic'}]}>{i18next.t('discussionBlockedJoin:infos')}</Text>
-          </View>
+        <View style={{marginVertical: 10, marginHorizontal: 10}}>
+          <Text>{i18next.t('discussionBlockedJoin:infos')}</Text>
         </View>
         {this._renderDisclaimer()}
         {this._renderActions()}
@@ -68,7 +66,9 @@ var DiscussionBlockedJoin = React.createClass({
   _renderActions: function () {
     if (!this.props.data.allow_user_request && !this.props.data.hasPassword) {
       return (
-        <View><Text style={[s.h1, {fontStyle: 'italic'}]}>{i18next.t('discussionBlockedJoin:invite-only')}</Text></View>
+        <View style={{marginVertical: 10, marginHorizontal: 10}}>
+          <Text>{i18next.t('discussionBlockedJoin:invite-only')}</Text>
+        </View>
       );
     }
 
