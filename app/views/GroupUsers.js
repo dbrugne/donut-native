@@ -10,7 +10,7 @@ var currentUser = require('../models/current-user');
 var {
   ListView,
   View
-  } = React;
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupUsers', {

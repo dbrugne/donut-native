@@ -9,6 +9,7 @@ var {
   Text,
   TouchableHighlight
   } = React;
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 class CardRoom extends Abstract {
   constructor (props) {
@@ -24,10 +25,7 @@ class CardRoom extends Abstract {
             {this._renderMode()}
           </View>
           <View style={s.rightContainer}>
-            <View style={s.topContainer}>
-              <Text style={s.title}>{this.props.identifier}</Text>
-            </View>
-            {this._renderDescription()}
+            {this._renderContent()}
           </View>
         </View>
       </TouchableHighlight>
@@ -48,6 +46,40 @@ class CardRoom extends Abstract {
 
     return (
       <Text style={s.description}>{this.truncate(this.props.description, true)}</Text>
+    );
+  }
+
+  _renderContent () {
+    // Not editable user
+    if (!this.props.onEdit) {
+      return (
+        <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
+          <Text style={s.title}>{this.props.identifier}</Text>
+          {this._renderDescription()}
+        </View>
+      );
+    }
+
+    // Editable user, render arrow on right
+    return (
+      <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+        <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
+          <Text style={s.title}>{this.props.identifier}</Text>
+          {this._renderDescription()}
+        </View>
+        <View style={{alignSelf: 'stretch', width: 50, flexDirection: 'column', justifyContent: 'center'}}>
+          <TouchableHighlight
+            style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}
+            underlayColor='transparent'
+            onPress={this.props.onEdit}>
+            <Icon
+              name='chevron-right'
+              size={22}
+              color='#DDD'
+            />
+          </TouchableHighlight>
+        </View>
+      </View>
     );
   }
 }

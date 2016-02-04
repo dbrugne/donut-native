@@ -1,3 +1,5 @@
+'use strict';
+
 var React = require('react-native');
 var i18next = require('../../libs/i18next');
 

@@ -105,7 +105,7 @@ class GroupContentView extends Component {
       <View>
         <Text style={s.listGroupItemSpacing}/>
         <ListItem
-          onPress={() => navigation.navigate('GroupRooms', {id: this.state.data.group_id, name: this.state.data.identifier, user: this.state.user})}
+          onPress={() => navigation.navigate('GroupRooms', this.state.data)}
           text={i18next.t('GroupContent:rooms')}
           icon='bars'
           type='image-list'

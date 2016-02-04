@@ -2,125 +2,103 @@
 
 var React = require('react-native');
 var {
-  StyleSheet,
-  ScrollView,
   View,
-  Text,
-  Component,
   ListView
 } = React;
 
 var _ = require('underscore');
 var app = require('../libs/app');
-var LoadingModal = require('../components/LoadingModal');
+var LoadingView = require('../components/Loading');
 var Card = require('../components/Card');
+var alert = require('../libs/alert');
 var navigation = require('../navigation/index');
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'GroupRooms', {
+  '': ''
+}, true, true);
 
-class GroupRoomsListView extends Component {
-  constructor (props) {
-    super(props);
-    this.id = props.id;
-    this.user = props.user;
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1!== r2});
-    this.state = {
-      error: null,
-      loading: true,
-      dataSource: ds.cloneWithRows([])
-    }
-  }
-
+var GroupRoomsListView = React.createClass({
+  propTypes: {
+    data: React.PropTypes.object
+  },
+  getInitialState: function () {
+    return {
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2
+      }),
+      loading: true
+    };
+  },
   componentDidMount () {
-    if (this.user && this.user.isBanned) {
-      return;
+    if (this.props.data.is_banned) {
+      return this.props.navigator.popToTop();
     }
-    if (this.id) {
-      app.client.groupRead(this.id, {rooms: true}, this.onData.bind(this));
-    }
-  }
-
-  onData (response) {
-    if (response.err) {
-      return this.setState({
-        error: 'error'
-      });
-    }
-    var rooms = [];
-    _.each(response.rooms, _.bind(function (room) {
-      if (room.mode === 'public' || (room.mode === 'private' && (this.user.isOwner || this.user.isMember))) {
-        rooms.push(room);
+    this.fetchData();
+  },
+  fetchData: function () {
+    this.setState({loading: true});
+    app.client.groupRead(this.props.data.group_id, {rooms: true}, (response) => {
+      this.setState({loading: false});
+      if (response.err) {
+        return alert.show(i18next.t('messages.' + response.err));
       }
-    }, this));
-    this.setState({
-      loading: false,
-      dataSource: this.state.dataSource.cloneWithRows(rooms)
+      var rooms = [];
+      _.each(response.rooms, _.bind(function (room) {
+        if (room.mode === 'public' || (room.mode === 'private' && (this.props.data.is_owner || this.props.data.is_member))) {
+          // default room of this group
+          if (response.default === room.id) {
+            room.is_default = true;
+          }
+          rooms.push(room);
+        }
+      }, this));
+      this.setState({dataSource: this.state.dataSource.cloneWithRows(rooms)});
     });
-  }
-
+  },
   render () {
-    if (this.user && this.user.isBanned) {
-      return (
-        <View>
-          <Text>Vous êtes banni de cette communauté</Text>
-        </View>
-      );
-    }
     if (this.state.loading) {
+      return (<LoadingView/>);
+    }
+
+    return (
+      <View style={{flex: 1}}>
+        <ListView
+          ref='listViewRooms'
+          dataSource={this.state.dataSource}
+          renderRow={(room) => this._renderElement(room)}
+          style={{alignSelf: 'stretch'}}
+          />
+      </View>
+    );
+  },
+  _renderElement (room) {
+    // @todo also add group_owner & group_op
+    if (!this.props.data.is_op && !this.props.data.is_owner && !currentUser.isAdmin()) {
       return (
-        <View style={styles.loading}>
-          <LoadingModal />
-        </View>
+        <Card
+          onPress={() => navigation.navigate('Profile', {type: 'room', id: room.room_id, identifier: room.identifier})}
+          image={room.avatar}
+          type='room'
+          key={room.room_id}
+          identifier={room.identifier}
+          description={room.description}
+          mode={(!room.mode || room.mode === 'public') ? 'public' : (room.allow_group_member) ? 'member' : 'private'}
+          />
       );
     }
-    return (
-      <ScrollView style={styles.main}>
-        <View style={styles.container}>
-          <ListView
-            dataSource={this.state.dataSource}
-            renderRow={this.renderElement.bind(this)}
-            style={{alignSelf: 'stretch'}}
-            />
-        </View>
-      </ScrollView>
-    );
-  }
 
-  renderElement (rowData) {
     return (
       <Card
-        onPress={() => navigation.navigate('Profile', {type: 'room', id: rowData.room_id, identifier: rowData.identifier})}
-        image={rowData.avatar}
+        onPress={() => navigation.navigate('Profile', {type: 'room', id: room.room_id, identifier: room.identifier})}
+        image={room.avatar}
         type='room'
-        identifier={rowData.identifier}
-        description={rowData.description}
-        mode={(!rowData.mode || rowData.mode === 'public') ? 'public' : (rowData.allow_group_member) ? 'member' : 'private'}
-        />
+        key={room.room_id}
+        identifier={room.identifier}
+        description={room.description}
+        mode={(!room.mode || room.mode === 'public') ? 'public' : (room.allow_group_member) ? 'member' : 'private'}
+        onEdit={() => navigation.navigate('GroupRoom', this.props.data, room)}
+      />
     );
-  }
-}
-
-var styles = StyleSheet.create({
-  main: {
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    justifyContent: 'center'
-  },
-  loading: {
-    flex: 1,
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0
-  },
-  listContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center'
   }
 });
 
