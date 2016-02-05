@@ -36,7 +36,7 @@ i18next.addResourceBundle('en', 'RoomAccess', {
   'password-disclaimer': 'Users with the password can join without prior invitation.',
   'password-placeholder': 'Enter a password',
   'password-help': 'The password must be between 4 and 255 characters',
-  'password-success': 'The password has between successfully saved'
+  'password-success': 'The password has been successfully saved'
 });
 
 var RoomAccessView = React.createClass({
@@ -58,7 +58,7 @@ var RoomAccessView = React.createClass({
     };
     app.client.roomRead(this.props.room.id, what, _.bind(function (data) {
       if (data.err) {
-        return alert.show(i18next.t('mesage.' + data.err));
+        return alert.show(i18next.t('message.' + data.err));
       }
       this.setState({
         loading: false,

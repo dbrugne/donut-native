@@ -1,7 +1,6 @@
 'use strict';
 var React = require('react-native');
 var _ = require('underscore');
-var currentUser = require('../models/current-user');
 var app = require('../libs/app');
 var s = require('../styles/style');
 var ListItem = require('../components/ListItem');
@@ -87,7 +86,6 @@ class GroupSettings extends Component {
       is_op: data.is_op,
       is_owner: data.is_owner,
       new_domain: null,
-      addDomainLoading: false,
       atLeastOne: atLeastOne
     });
   }
@@ -102,7 +100,9 @@ class GroupSettings extends Component {
           {this._renderAvatar(this.state.avatar)}
           <Text style={{marginTop: 10}}>{this.state.identifier}</Text>
         </View>
+
         {this._renderAccess()}
+
         <Text style={styles.listGroupItemSpacing}/>
         {this._renderProfileDetails()}
         <Text style={styles.listGroupItemSpacing}/>
@@ -127,46 +127,20 @@ class GroupSettings extends Component {
     );
   }
   _renderAccess () {
-    return (
-      <View style={s.listGroup}>
-        <Text style={s.block}>{i18next.t('GroupSettings:access-disclaimer')}</Text>
-        <ListItem text={i18next.t('GroupSettings:disclaimer')}
-                  type='edit-button'
-                  title={i18next.t('GroupSettings:access-title')}
-                  action
-                  value={this.state.disclaimer}
-                  onPress={() => this.onGroupEdit(require('./GroupEditDisclaimer'), this.state.disclaimer)}
-        />
-        <ListItem text={i18next.t('GroupSettings:allow-user-request')}
-                  type='switch'
-                  onSwitch={this.saveGroupData.bind(this, 'allow_user_request', !this.state.allow_user_request)}
-                  switchValue={this.state.allow_user_request}
-        />
-        {this._renderTrustedDomains()}
-        {this._renderPassword()}
-      </View>
-    );
-  }
-  _renderTrustedDomains() {
+    if (!this.state.is_op && !this.state.is_owner && !this.isAdmin) {
+      return  null;
+    }
+
     return (
       <View>
+        <Text style={styles.listGroupItemSpacing}/>
         <ListItem
-          onPress={() => navigation.navigate('AvailableSoon')}
-          text={i18next.t('GroupSettings:trusted-domains')}
+          onPress={() => navigation.navigate('GroupAccess', this.props.model)}
+          text={i18next.t('GroupSettings:access-title')}
+          icon='users'
           type='button'
           action
-        />
-      </View>
-    );
-  }
-  _renderPassword() {
-    return (
-      <View>
-        <ListItem
-          onPress={() => navigation.navigate('AvailableSoon')}
-          text={i18next.t('GroupSettings:add-password')}
-          type='button'
-          action
+          first
         />
       </View>
     );

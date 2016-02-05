@@ -55,11 +55,10 @@
     "unknown": "Incorrect e-mail format",
     "not-in": "User is not in the discussion"
   },
-  "help": {
-
-  },
   "navigation": {
     "room-access": "Manage access __roomname__",
+    "group-access": "Manage access __groupname__",
+    "group-edit-disclaimer": "Edit group disclaimer",
     "discover": "Discover",
     "search": "Search",
     "create-donut": "Create a donut",
