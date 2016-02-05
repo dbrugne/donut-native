@@ -99,6 +99,7 @@ var RoomAccessView = React.createClass({
             type='edit-button'
             help={i18next.t('RoomAccess:disclaimer-help')}
             action
+            autoCapitalize='none'
             value={this.state.data.disclaimer}
           />
           {this._renderPassword()}
