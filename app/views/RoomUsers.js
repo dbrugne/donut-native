@@ -221,49 +221,20 @@ var RoomUsersView = React.createClass({
   },
 
   _onSearch: function (text) {
-    var users = [];
     this.searchString = text;
-    this.setState({loaded: false});
-    app.client.roomUsers(this.props.id, {type: this.type, searchString: text, selector: {start: 0, length: 10}}, (response) => {
-      _.each(response.users, (u) => {
-        users.push(u);
-      });
-      users = _.sortBy(users, (u) => {
-        return u.username.toLowerCase();
-      });
-      users = _.sortBy(users, (u) => {
-        return u.status === 'offline';
-      });
-      this.usersList = users;
-      this.currentNumberCharged = users.length;
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(users),
-        loaded: true,
-        more: (response.count > this.usersList.length)
-      });
-    });
+    this.currentNumberCharged = 0;
+    this.usersList = [];
+    this.setState({dataSource: this.state.dataSource.cloneWithRows([])});
+    this.fetchData();
   },
 
   _refreshData: function () {
-    var users = [];
     this.searchString = '';
     this.type = 'users';
-    this.setState({loaded: false, dataSource: this.state.dataSource.cloneWithRows([])});
-    app.client.roomUsers(this.props.id, {type: this.type, selector: {start: 0, length: 10}}, (response) => {
-      _.each(response.users, (u) => {
-        users.push(u);
-      });
-      users = _.sortBy(users, (u) => {
-        return u.username.toLowerCase();
-      });
-      this.usersList = users;
-      this.currentNumberCharged = users.length;
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(users),
-        loaded: true,
-        more: (response.count > this.usersList.length)
-      });
-    });
+    this.currentNumberCharged = 0;
+    this.usersList = [];
+    this.setState({dataSource: this.state.dataSource.cloneWithRows([])});
+    this.fetchData();
   }
 });
 
