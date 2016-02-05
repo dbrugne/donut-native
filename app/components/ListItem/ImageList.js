@@ -6,6 +6,7 @@ var common = require('@dbrugne/donut-common/mobile');
 var s = require('../../styles/elements/listItem');
 var ListItemAbstract = require('./Abstract');
 var navigation = require('../../navigation/index');
+var userActionSheet = require('../../libs/UserActionsSheet');
 
 var {
   View,
@@ -76,7 +77,7 @@ class ListItemImageList extends ListItemAbstract {
       return (
         <TouchableHighlight key={item.user_id}
                             underlayColor='transparent'
-                            onPress={() => navigation.navigate('Profile', {type: 'user', id: item.user_id, identifier: '@' + item.username})}>
+                            onPress={() => this._renderActionSheet(item)}>
           <Image style={{width: 40, height: 40, marginHorizontal: 2}} source={{uri: avatarUrl}}/>
         </TouchableHighlight>
       );
@@ -94,6 +95,14 @@ class ListItemImageList extends ListItemAbstract {
     }
 
     return null;
+  }
+
+  _renderActionSheet (user) {
+    if (this.props.parentType === 'group') {
+      userActionSheet.openActionSheet(this.context.actionSheet(), 'groupUsers', this.props.id, user, this.props.isOwnerAdminOrOp);
+    } else {
+      userActionSheet.openActionSheet(this.context.actionSheet(), 'roomUsers', this.props.id, user, this.props.isOwnerAdminOrOp);
+    }
   }
 }
 

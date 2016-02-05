@@ -79,7 +79,7 @@ class DiscussionSettings extends Component {
   }
   componentDidMount () {
     if (this.props.model.get('type') === 'room') {
-      app.client.roomUsers(this.props.model.get('id'), {type: 'users', selector: {start: 0, length: 12}}, (data) => {
+      app.client.roomUsers(this.props.model.get('id'), {type: 'users', selector: {start: 0, length: 15}}, (data) => {
         if (data.err || data === 'not-connected') {
           return;
         }
@@ -180,6 +180,9 @@ class DiscussionSettings extends Component {
             icon='users'
             type='image-list'
             action
+            id={this.props.model.get('id')}
+            parentType='room'
+            isOwnerAdminOrOp={this.isOp || this.isOwner || this.isAdmin}
             value={this.state.nbUsers}
             title={(!itemTopic) ? i18next.t('DiscussionSettings:users-title') : null}
             first={!(itemTopic)}

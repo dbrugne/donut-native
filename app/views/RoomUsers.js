@@ -166,28 +166,9 @@ var RoomUsersView = React.createClass({
   },
 
   _renderElement: function (user) {
-    // No specific actions possible on this user
-    if (!this.state.is_owner && !this.state.is_op && !currentUser.isAdmin()) {
-      return (
-        <Card
-          onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
-          image={user.avatar}
-          type='user'
-          identifier={'@' + user.username}
-          realname={user.realname}
-          bio={user.bio}
-          status={user.status}
-          op={user.isOp}
-          owner={user.isOwner}
-          devoiced={user.isDevoiced}
-          banned={user.isBanned}
-          />
-      );
-    }
-
     return (
       <Card
-        onPress={() => this._onOpenActionSheet(user)}
+        onPress={() => this._onOpenActionSheet(user, this.state.is_owner || this.state.is_op || currentUser.isAdmin())}
         image={user.avatar}
         type='user'
         identifier={'@' + user.username}
@@ -229,8 +210,8 @@ var RoomUsersView = React.createClass({
     this.fetchData();
   },
 
-  _onOpenActionSheet (user) {
-    userActionSheet.openActionSheet(this.context.actionSheet(), 'roomUsers', this.props.id, user);
+  _onOpenActionSheet (user, ownerAdminOrOp) {
+    userActionSheet.openActionSheet(this.context.actionSheet(), 'roomUsers', this.props.id, user, ownerAdminOrOp);
   }
 });
 

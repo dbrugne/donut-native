@@ -1,6 +1,5 @@
 'use strict';
 var React = require('react-native');
-var navigation = require('../navigation/index');
 var Card = require('../components/Card');
 var LoadingView = require('../components/Loading');
 var app = require('../libs/app');
@@ -68,29 +67,14 @@ var GroupUsersView = React.createClass({
   },
 
   _renderElement: function (user) {
-    if (!this.props.data.is_op && !this.props.data.is_owner && !currentUser.isAdmin()) {
-      return (
-        <Card
-          onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
-          image={user.avatar}
-          type='user'
-          identifier={'@' + user.username}
-          realname={user.realname}
-          bio={user.bio}
-          status={user.status}
-          key={user.user_id}
-          op={user.is_op}
-          owner={user.is_owner}
-          />
-      );
-    }
-
     return (
       <Card
-        onPress={() => this._onOpenActionSheet(user)}
+        onPress={() => this._onOpenActionSheet(user, this.props.data.is_op || this.props.data.is_owner || currentUser.isAdmin())}
         image={user.avatar}
         type='user'
         identifier={'@' + user.username}
+        realname={user.realname}
+        bio={user.bio}
         op={user.is_op}
         owner={user.is_owner}
         status={user.status}
@@ -99,8 +83,8 @@ var GroupUsersView = React.createClass({
     );
   },
 
-  _onOpenActionSheet: function (user) {
-    userActionSheet.openActionSheet(this.context.actionSheet(), 'groupUsers', this.props.data.group_id, user);
+  _onOpenActionSheet: function (user, adminOwnerOrOp) {
+    userActionSheet.openActionSheet(this.context.actionSheet(), 'groupUsers', this.props.data.group_id, user, adminOwnerOrOp);
   }
 });
 

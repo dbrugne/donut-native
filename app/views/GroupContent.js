@@ -157,6 +157,9 @@ class GroupContentView extends Component {
           action
           value={this.state.data.members.length + ''}
           first
+          id={this.state.data.group_id}
+          parentType='group'
+          isOwnerAdminOrOp={this.state.user.isOwner || this.state.user.isOp || this.state.user.isAdmin}
           imageList={this.state.data.members}
         />
         {buttons}

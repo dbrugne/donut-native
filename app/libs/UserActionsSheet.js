@@ -30,7 +30,7 @@ i18next.addResourceBundle('en', 'UserActionSheet', {
 }, true, true);
 
 module.exports = {
-  openActionSheet: function (actionSheet, type, id, user) {
+  openActionSheet: function (actionSheet, type, id, user, currentUserGotRights) {
     if (['roomUsers', 'roomInvite', 'groupUsers', 'groupInvite'].indexOf(type) === -1) {
       return debug.warn('Wrong type value for userActionSheet :', type);
     }
@@ -38,7 +38,7 @@ module.exports = {
       return debug.warn('Wrong params for userActionSheet');
     }
 
-    var options = _getOptionsForActionSheet(type, id, user);
+    var options = _getOptionsForActionSheet(type, id, user, currentUserGotRights);
     let destructiveButtonIndex = -1;
     let cancelButtonIndex = -1;
     for (var i = 0; i < options.length; i++) {
@@ -61,7 +61,7 @@ module.exports = {
   }
 };
 
-var _getOptionsForActionSheet = function (type, id, user) {
+var _getOptionsForActionSheet = function (type, id, user, currentUserGotRights) {
   var options = [
     {
       text: i18next.t('UserActionSheet:view-profile'),
@@ -74,18 +74,18 @@ var _getOptionsForActionSheet = function (type, id, user) {
   ];
 
   if (type === 'roomUsers' || type === 'groupUsers') {
-    options = options.concat(_getActionUsersOptionsForActionSheet(type, id, user));
+    options = options.concat(_getActionUsersOptionsForActionSheet(type, id, user, currentUserGotRights));
   } else {
-
+    // @todo for type 'groupInvite' && 'roomInvite' when view will get implemented
   }
 
   return options;
 };
 
-var _getActionUsersOptionsForActionSheet = function (type, id, user) {
+var _getActionUsersOptionsForActionSheet = function (type, id, user, currentUserGotRights) {
   var options = [];
-  // if it's owner no more actions than chat and see profile
-  if (user.isOwner || user.is_owner) {
+  // if target is owner or current user got not rights return cancel button
+  if (user.isOwner || user.is_owner || !currentUserGotRights) {
     options.push({
       text: i18next.t('UserActionSheet:cancel'),
       onPress: () => {},
@@ -165,8 +165,8 @@ var _onDeop = function (type, id, user) {
     });
   }
   alert.askConfirmation(
-    i18next.t('RoomUsers:make-deop'),
-    i18next.t('RoomUsers:modal-description-deop', {username: user.username}),
+    i18next.t('UserActionSheet:make-deop'),
+    i18next.t('UserActionSheet:modal-description-deop', {username: user.username}),
     action,
     () => {}
   );
@@ -190,8 +190,8 @@ var _onOp = function (type, id, user) {
     });
   }
   alert.askConfirmation(
-    i18next.t('RoomUsers:make-op'),
-    i18next.t('RoomUsers:modal-description-op', {username: user.username}),
+    i18next.t('UserActionSheet:make-op'),
+    i18next.t('UserActionSheet:modal-description-op', {username: user.username}),
     action,
     () => {}
   );
@@ -199,8 +199,8 @@ var _onOp = function (type, id, user) {
 
 var _onDevoice = function (id, user) {
   alert.askConfirmation(
-    i18next.t('RoomUsers:make-devoice'),
-    i18next.t('RoomUsers:modal-description-devoice', {username: user.username}),
+    i18next.t('UserActionSheet:make-devoice'),
+    i18next.t('UserActionSheet:modal-description-devoice', {username: user.username}),
     () => {
       app.client.roomDevoice(id, user.user_id, null, (response) => {
         if (response.err) {
@@ -215,8 +215,8 @@ var _onDevoice = function (id, user) {
 
 var _onVoice = function (id, user) {
   alert.askConfirmation(
-    i18next.t('RoomUsers:make-voice'),
-    i18next.t('RoomUsers:modal-description-voice', {username: user.username}),
+    i18next.t('UserActionSheet:make-voice'),
+    i18next.t('UserActionSheet:modal-description-voice', {username: user.username}),
     () => {
       app.client.roomVoice(id, user.user_id, (response) => {
         if (response.err) {
@@ -247,8 +247,8 @@ var _onUnban = function (type, id, user) {
     });
   }
   alert.askConfirmation(
-    i18next.t('RoomUsers:make-deban'),
-    i18next.t('RoomUsers:modal-description-deban', {username: user.username}),
+    i18next.t('UserActionSheet:make-deban'),
+    i18next.t('UserActionSheet:modal-description-deban', {username: user.username}),
     action,
     () => {}
   );
@@ -272,8 +272,8 @@ var _onBan = function (type, id, user) {
     });
   }
   alert.askConfirmation(
-    i18next.t('RoomUsers:make-ban'),
-    i18next.t('RoomUsers:modal-description-ban', {username: user.username}),
+    i18next.t('UserActionSheet:make-ban'),
+    i18next.t('UserActionSheet:modal-description-ban', {username: user.username}),
     action,
     () => {}
   );
@@ -281,8 +281,8 @@ var _onBan = function (type, id, user) {
 
 var _onKick = function (id, user) {
   alert.askConfirmation(
-    i18next.t('RoomUsers:make-kick'),
-    i18next.t('RoomUsers:modal-description-kick', {username: user.username}),
+    i18next.t('UserActionSheet:make-kick'),
+    i18next.t('UserActionSheet:modal-description-kick', {username: user.username}),
     () => {
       app.client.roomKick(id, user.user_id, null, (response) => {
         if (response.err) {

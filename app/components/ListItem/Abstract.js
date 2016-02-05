@@ -117,5 +117,12 @@ ListItemAbstract.propTypes = {
   iconColor: React.PropTypes.string, // color of the icon to display on left, default is #666
   iconRight: React.PropTypes.string, // fontawesome code name of the icon to display on right
   title: React.PropTypes.string, // title to display above the ListItem
-  help: React.PropTypes.string // help message to display bellow the ListItem
+  help: React.PropTypes.string, // help message to display bellow the ListItem
+  id: React.PropTypes.string, // id of the room / group
+  parentType: React.PropTypes.oneOf(['room', 'group']),
+  isOwnerAdminOrOp: React.PropTypes.bool
+};
+
+ListItemAbstract.contextTypes = {
+  actionSheet: React.PropTypes.func
 };
