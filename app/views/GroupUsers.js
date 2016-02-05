@@ -6,6 +6,7 @@ var LoadingView = require('../components/Loading');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var currentUser = require('../models/current-user');
+var userActionSheet = require('../libs/UserActionsSheet');
 
 var {
   ListView,
@@ -19,6 +20,9 @@ i18next.addResourceBundle('en', 'GroupUsers', {
 }, true, true);
 
 var GroupUsersView = React.createClass({
+  contextTypes: {
+    actionSheet: React.PropTypes.func
+  },
   propTypes: {
     data: React.PropTypes.object
   },
@@ -83,17 +87,20 @@ var GroupUsersView = React.createClass({
 
     return (
       <Card
-        onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
+        onPress={() => this._onOpenActionSheet(user)}
         image={user.avatar}
         type='user'
         identifier={'@' + user.username}
-        onEdit={() => navigation.navigate('GroupUser', this.props.data.group_id, user, () => this.fetchData())}
         op={user.is_op}
         owner={user.is_owner}
         status={user.status}
         key={user.user_id}
         />
     );
+  },
+
+  _onOpenActionSheet: function (user) {
+    userActionSheet.openActionSheet(this.context.actionSheet(), 'groupUsers', this.props.data.group_id, user);
   }
 });
 
