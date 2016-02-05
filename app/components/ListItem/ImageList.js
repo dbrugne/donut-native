@@ -11,7 +11,8 @@ var {
   View,
   TouchableHighlight,
   Text,
-  Image
+  Image,
+  ScrollView
 } = React;
 
 class ListItemImageList extends ListItemAbstract {
@@ -57,11 +58,15 @@ class ListItemImageList extends ListItemAbstract {
     }
 
     return (
-      <View style={{flexDirection: 'row', flex: 1, height: 50, alignItems: 'center', flexWrap: 'wrap'}} >
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={{height: 50, flex: 1}}
+        contentContainerStyle={{alignItems: 'center', flex: 1}}>
         {_.map(this.props.imageList, (item) => {
           return this._renderImageButton(item);
         })}
-      </View>
+        </ScrollView>
     );
   }
 

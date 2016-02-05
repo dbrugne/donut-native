@@ -79,7 +79,7 @@ class DiscussionSettings extends Component {
   }
   componentDidMount () {
     if (this.props.model.get('type') === 'room') {
-      app.client.roomUsers(this.props.model.get('id'), {type: 'users', selector: {start: 0, length: 8}}, (data) => {
+      app.client.roomUsers(this.props.model.get('id'), {type: 'users', selector: {start: 0, length: 12}}, (data) => {
         if (data.err || data === 'not-connected') {
           return;
         }
