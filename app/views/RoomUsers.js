@@ -7,6 +7,7 @@ var ListItem = require('../components/ListItem');
 var app = require('../libs/app');
 var navigation = require('../navigation/index');
 var currentUser = require('../models/current-user');
+var alert = require('../libs/alert');
 
 var {
   ListView,
@@ -25,7 +26,25 @@ i18next.addResourceBundle('en', 'RoomUsers', {
   'users': 'Users',
   'ban': 'Banned',
   'op': 'Moderators',
-  'devoice': 'Mute'
+  'devoice': 'Mute',
+  'make-op': 'Make moderator',
+  'modal-description-op': 'Are you sure you want to make @__username__ moderator?',
+  'make-deop': 'Remove from moderator',
+  'modal-description-deop': 'Are you sure you want to remove @__username__ from moderators?',
+  'make-voice': 'Unmute',
+  'modal-description-voice': 'Are you sure you want to unmute @__username__?',
+  'make-devoice': 'Mute',
+  'modal-description-devoice': 'Are you sure you want to mute @__username__?',
+  'make-ban': 'Kick and ban',
+  'modal-description-ban': 'Are you sure you want to ban @__username__?',
+  'make-deban': 'Unban',
+  'modal-description-deban': 'Are you sure you want to unban @__username__?',
+  'make-kick': 'Kick',
+  'modal-description-kick': 'Are you sure you want to kick @__username__?',
+  'title': 'Actions on this user',
+  'chat': 'Chat one-to-one',
+  'cancel': 'Cancel',
+  'view-profile': 'View profile'
 }, true, true);
 
 var RoomUsersView = React.createClass({
@@ -54,19 +73,17 @@ var RoomUsersView = React.createClass({
 
   fetchData: function () {
     this.setState({loaded: false});
-    var users = [];
     app.client.roomUsers(this.props.id, {type: this.type, searchString: this.searchString, selector: {start: this.currentNumberCharged, length: 10}}, (response) => {
-      _.each(response.users, (u) => {
-        users.push(u);
-      });
-      users = _.sortBy(users, (u) => {
-        return u.username.toLowerCase();
-      });
-      users = _.sortBy(users, (u) => {
-        return u.status === 'offline';
-      });
-      this.usersList = this.usersList.concat(users);
-      this.currentNumberCharged = this.currentNumberCharged + users.length;
+      if (response.err) {
+        return;
+      }
+
+      var numberUsersReceive = 0;
+      if (response.users && response.users.length) {
+        numberUsersReceive = response.users.length;
+      }
+      this.currentNumberCharged = this.currentNumberCharged + numberUsersReceive;
+      this.usersList = this.usersList.concat(response.users);
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.usersList),
         loaded: true,
@@ -171,7 +188,7 @@ var RoomUsersView = React.createClass({
 
     return (
       <Card
-        onPress={() => this._onOpenActionSheet(this.props.id, user)}
+        onPress={() => this._onOpenActionSheet(user)}
         image={user.avatar}
         type='user'
         identifier={'@' + user.username}
@@ -184,21 +201,6 @@ var RoomUsersView = React.createClass({
         banned={user.isBanned}
         />
     );
-  },
-  _onOpenActionSheet (roomId, user) {
-    // @todo dbrugne
-    // Same interface as https://facebook.github.io/react-native/docs/actionsheetios.html
-    let options = ['View profile', 'Chat', 'Kick', 'Kick and ban', 'Devoice', 'Cancel'];
-    let destructiveButtonIndex = 3;
-    let cancelButtonIndex = 5;
-    this.context.actionSheet().showActionSheetWithOptions({
-      options,
-      cancelButtonIndex,
-      destructiveButtonIndex
-    },
-      (buttonIndex) => {
-        console.log('press on ', buttonIndex);
-      });
   },
   _renderLoadMore: function () {
     if (!this.state.loaded) {
@@ -226,6 +228,202 @@ var RoomUsersView = React.createClass({
     this.usersList = [];
     this.setState({dataSource: this.state.dataSource.cloneWithRows([])});
     this.fetchData();
+  },
+
+  _getOptionsForActionSheet (user) {
+    var options = [
+      {
+        text: i18next.t('RoomUsers:view-profile'),
+        onPress: () => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})
+      },
+      {
+        text: i18next.t('RoomUsers:chat'),
+        onPress: () => app.trigger('joinUser', user.user_id)
+      }
+    ];
+
+    // if it's owner no more actions than chat and see profile
+    if (user.isOwner) {
+      options.push({
+        text: i18next.t('RoomUsers:cancel'),
+        onPress: () => {},
+        isCancelButton: true
+      });
+      return options;
+    }
+
+    // op / deop
+    options.push({
+      text: (user.isOp)
+        ? i18next.t('RoomUsers:make-deop')
+        : i18next.t('RoomUsers:make-op'),
+      onPress: () => (user.isOp)
+        ? this._onDeop(user)
+        : this._onOp(user)
+    });
+
+    // devoice / voice
+    options.push({
+      text: (user.isDevoiced)
+        ? i18next.t('RoomUsers:make-voice')
+        : i18next.t('RoomUsers:make-devoice'),
+      onPress: () => (user.isDevoiced)
+        ? this._onVoice(user)
+        : this._onDevoice(user)
+    });
+
+    // kick
+    options.push({
+      text: i18next.t('RoomUsers:make-kick'),
+      onPress: () => this._onKick(user)
+    });
+
+    // ban / unban
+    options.push({
+      text: (user.isBanned)
+        ? i18next.t('RoomUsers:make-deban')
+        : i18next.t('RoomUsers:make-ban'),
+      onPress: () => (user.isBanned)
+        ? this._onUnban(user)
+        : this._onBan(user),
+      isDestructiveButton: true
+    });
+
+    options.push({
+      text: i18next.t('RoomUsers:cancel'),
+      onPress: () => {},
+      isCancelButton: true
+    });
+
+    return options;
+  },
+
+  _onOpenActionSheet (user) {
+    var options = this._getOptionsForActionSheet(user);
+    let destructiveButtonIndex = null;
+    let cancelButtonIndex = null;
+    for (var i = 0; i < options.length; i++) {
+      if (options[i].isDestructiveButton) {
+        destructiveButtonIndex = i;
+      }
+      if (options[i].isCancelButton) {
+        cancelButtonIndex = i;
+      }
+    }
+    var optionsTitles = _.map(options, 'text');
+    this.context.actionSheet().showActionSheetWithOptions({
+      options: optionsTitles,
+      cancelButtonIndex,
+      destructiveButtonIndex
+    },
+      (buttonIndex) => {
+        options[buttonIndex].onPress();
+      });
+  },
+
+  _onDeop: function (user) {
+    alert.askConfirmation(
+      i18next.t('RoomUsers:make-deop'),
+      i18next.t('RoomUsers:modal-description-deop', {username: user.username}),
+      () => {
+        app.client.roomDeop(this.props.id, user.user_id, (response) => {
+          if (response.err) {
+            return alert.show(response.err);
+          }
+          user.isOp = false;
+        });
+      },
+      () => {}
+    );
+  },
+  _onOp: function (user) {
+    alert.askConfirmation(
+      i18next.t('RoomUsers:make-op'),
+      i18next.t('RoomUsers:modal-description-op', {username: user.username}),
+      () => {
+        app.client.roomOp(this.props.id, user.user_id, (response) => {
+          if (response.err) {
+            return alert.show(i18next.t('messages.' + response.err));
+          }
+          user.isOp = true;
+        });
+      },
+      () => {}
+    );
+  },
+  _onDevoice: function (user) {
+    alert.askConfirmation(
+      i18next.t('RoomUsers:make-devoice'),
+      i18next.t('RoomUsers:modal-description-devoice', {username: user.username}),
+      () => {
+        app.client.roomDevoice(this.props.id, user.user_id, null, (response) => {
+          if (response.err) {
+            return alert.show(i18next.t('messages.' + response.err));
+          }
+          user.isDevoiced = true;
+        });
+      },
+      () => {}
+    );
+  },
+  _onVoice: function (user) {
+    alert.askConfirmation(
+      i18next.t('RoomUsers:make-voice'),
+      i18next.t('RoomUsers:modal-description-voice', {username: user.username}),
+      () => {
+        app.client.roomVoice(this.props.id, user.user_id, (response) => {
+          if (response.err) {
+            return alert.show(i18next.t('messages.' + response.err));
+          }
+          user.isDevoiced = false;
+        });
+      },
+      () => {}
+    );
+  },
+  _onUnban: function (user) {
+    alert.askConfirmation(
+      i18next.t('RoomUsers:make-deban'),
+      i18next.t('RoomUsers:modal-description-deban', {username: user.username}),
+      () => {
+        app.client.roomDeban(this.props.id, user.user_id, (response) => {
+          if (response.err) {
+            return alert.show(i18next.t('messages.' + response.err));
+          }
+          user.isBanned = false;
+        });
+      },
+      () => {}
+    );
+  },
+  _onBan: function (user) {
+    alert.askConfirmation(
+      i18next.t('RoomUsers:make-ban'),
+      i18next.t('RoomUsers:modal-description-ban', {username: user.username}),
+      () => {
+        app.client.roomBan(this.props.id, user.user_id, null, (response) => {
+          if (response.err) {
+            return alert.show(i18next.t('messages.' + response.err));
+          }
+          user.isBanned = true;
+        });
+      },
+      () => {}
+    );
+  },
+  _onKick: function (user) {
+    alert.askConfirmation(
+      i18next.t('RoomUsers:make-kick'),
+      i18next.t('RoomUsers:modal-description-kick', {username: user.username}),
+      () => {
+        app.client.roomKick(this.props.id, user.user_id, null, (response) => {
+          if (response.err) {
+            return alert.show(i18next.t('messages.' + response.err));
+          }
+        });
+      },
+      () => {}
+    );
   }
 });
 
