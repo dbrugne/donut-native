@@ -47,7 +47,7 @@ class DrawerContent extends Component {
         <View style={styles.actions}>
           {this.renderAction('home', false, () => navigation.navigate('Discover'))}
           {this.renderAction('search', false, () => navigation.navigate('Search'))}
-          {this.renderAction('plus', false, () => navigation.navigate('CreateRoom'))}
+          {this.renderAction('plus', false, () => navigation.navigate('Create'))}
           {this.renderAction('bell', true, () => navigation.navigate('Notifications'))}
         </View>
         <NavigationOnesView />

@@ -5,7 +5,6 @@ var state = require('../state');
 module.exports = function (data) {
   return {
     id: 'create-room-' + (data && data.group_id ? data.group_id : ''),
-    initial: true,
     group_id: data && data.group_id ? data && data.group_id : null,
     group_identifier: data && data.group_identifier ? data && data.group_identifier : null,
     renderScene: function (navigator) {

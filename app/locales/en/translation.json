@@ -56,13 +56,14 @@
     "not-in": "User is not in the discussion"
   },
   "navigation": {
+    "create": "Create",
+    "create-donut": "Create a discussion",
+    "create-group": "Create a community",
     "room-access": "Manage access __roomname__",
     "group-access": "Manage access __groupname__",
     "group-edit-disclaimer": "Edit group disclaimer",
     "discover": "Discover",
     "search": "Search",
-    "create-donut": "Create a donut",
-    "create-group": "Create a community",
     "my-account": "My Account",
     "my-email": "My Email",
     "my-emails": "My Emails",

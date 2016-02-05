@@ -85,31 +85,9 @@ class RoomCreateView extends Component {
             text={i18next.t('createRoom:create')}
             />
 
-          {this._renderCommunityButton()}
           <Text style={[styles.block]}/>
         </ScrollView>
         {this.state.showLoading ? <LoadingModal/> : null}
-      </View>
-    );
-  }
-
-  _renderCommunityButton() {
-    if (this.props.group_identifier) {
-      return null;
-    }
-
-    return (
-      <View>
-        <Text style={styles.listGroupItemSpacing}/>
-        <Text style={[styles.block]}>{i18next.t('createRoom:community')}</Text>
-        <ListItem
-          type='button'
-          first
-          last
-          action
-          onPress={() => navigation.navigate('CreateGroup')}
-          text={i18next.t('createRoom:create-community')}
-          />
       </View>
     );
   }
