@@ -133,8 +133,7 @@ var RoomUsersView = React.createClass({
 
     return (
       <Card
-//        onPress={() => navigation.navigate('Profile', {type: 'user', id: user.user_id, identifier: '@' + user.username})}
-        onPress={() => this._onOpenActionSheet(this.props.id, user.user_id)}
+        onPress={() => this._onOpenActionSheet(this.props.id, user)}
         image={user.avatar}
         type='user'
         identifier={'@' + user.username}
@@ -148,19 +147,19 @@ var RoomUsersView = React.createClass({
         />
     );
   },
-  _onOpenActionSheet (roomId, userId) {
+  _onOpenActionSheet (roomId, user) {
     // @todo dbrugne
     // Same interface as https://facebook.github.io/react-native/docs/actionsheetios.html
     let options = ['View profile', 'Chat', 'Kick', 'Kick and ban', 'Devoice', 'Cancel'];
     let destructiveButtonIndex = 3;
     let cancelButtonIndex = 5;
     this.context.actionSheet().showActionSheetWithOptions({
-        options,
-        cancelButtonIndex,
-        destructiveButtonIndex,
-      },
+      options,
+      cancelButtonIndex,
+      destructiveButtonIndex
+    },
       (buttonIndex) => {
-        console.log('press on ', buttonIndex)
+        console.log('press on ', buttonIndex);
       });
   },
   _renderLoadMore: function () {
