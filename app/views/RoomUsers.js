@@ -138,7 +138,7 @@ var RoomUsersView = React.createClass({
   },
 
   _changeType: function (type) {
-    if (this.type === 'type') {
+    if (this.type === type) {
       return;
     }
 
