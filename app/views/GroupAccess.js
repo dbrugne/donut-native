@@ -160,7 +160,7 @@ var GroupAccessView = React.createClass({
     return (
       <View>
         <Text style={s.listGroupItemSpacing}/>
-        <Text style={s.block}>i18next.t('GroupAccess:domains')}</Text>
+        <Text style={s.block}>{i18next.t('GroupAccess:domains')}</Text>
         <Text style={s.block}>{i18next.t('GroupAccess:domains-disclaimer')}</Text>
 
         <Text style={s.listGroupItemSpacing}/>
@@ -237,7 +237,7 @@ var GroupAccessView = React.createClass({
   },
   _savePassword: function() {
     if (!this.passwordPattern.test(this.state.data.password)) {
-      return alert.show(i18next.t('message.'+response.err));
+      return alert.show(i18next.t('message.invalid-password'));
     }
 
     this.saveGroupData({password: this.state.data.password}, () => {
@@ -255,7 +255,7 @@ var GroupAccessView = React.createClass({
     });
   },
   saveGroupData (update, callback) {
-    app.client.groupDomains(this.state.data.group_id, update, (response) => {
+    app.client.groupUpdate(this.state.data.group_id, update, (response) => {
       if (response.err) {
         alert.show(i18next.t('message.' + response.err));
         if (callback) {
