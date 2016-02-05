@@ -41,13 +41,10 @@ var RoomUsersView = React.createClass({
       dataSource: ds.cloneWithRows([]),
       findValue: '',
       currentNumberCharged: 0,
-      more: false
+      more: false,
+      is_op: false,
+      is_owner: false
     };
-    this.model = app.rooms.iwhere(this.props.id);
-    if (this.model) {
-      object.is_op = this.model.currentUserIsOp();
-      object.is_owner = this.model.currentUserIsOwner();
-    }
     return object;
   },
 
@@ -75,7 +72,16 @@ var RoomUsersView = React.createClass({
   },
 
   componentDidMount: function () {
-    this.fetchData();
+    app.client.roomRead(this.props.id, {}, (response) => {
+      if (response.err) {
+        return;
+      }
+      this.setState({
+        is_op: response.is_op,
+        is_owner: response.is_owner
+      });
+      this.fetchData();
+    });
   },
 
   render: function () {
