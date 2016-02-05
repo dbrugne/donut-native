@@ -232,7 +232,7 @@ var style = {
   },
   block: {
     color: '#333',
-    marginVertical: 20,
+    marginTop: 20,
     marginHorizontal: 10
   },
   help: {

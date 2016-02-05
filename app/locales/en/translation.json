@@ -59,6 +59,7 @@
 
   },
   "navigation": {
+    "room-access": "Manage access __roomname__",
     "discover": "Discover",
     "search": "Search",
     "create-donut": "Create a donut",
@@ -89,7 +90,8 @@
     "eutc": "EUTC",
     "room-edit": "Edit donut",
     "room-edit-website": "Edit donut website",
-    "room-edit-description": "Edit donut description",
+    "room-edit-description": "Edit discussion description",
+    "room-edit-disclaimer": "Edit discussion disclaimer",
     "discussion-blocked-join": "Join discussion",
     "available-soon": "Available soon"
   },

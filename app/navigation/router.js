@@ -187,12 +187,16 @@ module.exports = {
         return require('./routes/Eutc');
       case 'RoomTopic':
         return require('./routes/RoomTopic');
+      case 'RoomAccess':
+        return require('./routes/RoomAccess');
       case 'RoomUsers':
         return require('./routes/RoomUsers');
       case 'RoomUser':
         return require('./routes/RoomUser');
       case 'RoomEditDescription':
         return require('./routes/RoomEditDescription');
+      case 'RoomEditDisclaimer':
+        return require('./routes/RoomEditDisclaimer');
       case 'RoomEditWebsite':
         return require('./routes/RoomEditWebsite');
       case 'AvailableSoon':

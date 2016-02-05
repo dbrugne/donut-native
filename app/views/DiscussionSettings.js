@@ -159,7 +159,7 @@ class DiscussionSettings extends Component {
         itemTopic = (
           <View>
             <ListItem
-              onPress={() => navigation.navigate('AvailableSoon')}
+              onPress={() => navigation.navigate('RoomAccess', this.props.model)}
               text={i18next.t('DiscussionSettings:access')}
               icon='users'
               type='button'

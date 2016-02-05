@@ -27,7 +27,7 @@ var ListItem = React.createClass({
     iconRight: React.PropTypes.string, // fontawesome code name of the icon to display on right
     title: React.PropTypes.string, // title to display above the ListItem
     help: React.PropTypes.string, // help message to display bellow the ListItem
-    style: React.PropTypes.object, // custom styles to apply to ListItem
+    style: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.object]), // custom styles to apply to ListItem
     value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]), // value of the ListItemEdit
     autoCapitalize: React.PropTypes.oneOf(['none', 'sentences', 'words', 'characters']), // value of the ListItemEdit
     keyboardType: React.PropTypes.string, // value of the ListItemEdit
