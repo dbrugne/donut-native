@@ -24,9 +24,14 @@ i18next.addResourceBundle('en', 'RoomAccess', {
   'disclaimer-public-2': 'You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public donut will remain members once this donut switched to private. Caution, this action cannot be undone.',
   'switch-button': 'Switch to private mode',
   'switch-disclaimer': 'Warning, this action is irreversible',
-  'allow-members-join': 'Allow community members to join this donut',
+  'allow-members-join': 'Allow members to join this discussion',
+  'allow-members-join-true': 'Community members will be automatically allowed to enter this discussion',
+  'allow-members-join-false': 'Community members will not be alowed to enter this discussion automatically',
   'allow-users-request': 'Allow users to request access',
-  'disclaimer': 'Display a message'
+  'allow-users-request-true': 'Users will be able to ask for an invitation to this discussion',
+  'allow-users-request-false': 'Users will be not be able to ask for an invitation to this discussion',
+  'disclaimer': 'Display a message',
+  'disclaimer-help': 'This message will be displayed to any not allowed user trying to enter this discussion'
 });
 
 var RoomAccessView = React.createClass({
@@ -72,16 +77,20 @@ var RoomAccessView = React.createClass({
         <Text style={[s.listGroupTitle, s.marginTop20]}>{i18next.t('RoomAccess:title')}</Text>
         <View style={s.listGroup}>
           {this._renderGroupAllow()}
+          <Text style={s.listGroupItemSpacing}/>
           <ListItem
             text={i18next.t('RoomAccess:allow-users-request')}
             type='switch'
+            help={this.state.data.allow_user_request ? i18next.t('RoomAccess:allow-users-request-true') : i18next.t('RoomAccess:allow-users-request-false')}
             switchValue={this.state.data.allow_user_request}
             onSwitch={this.saveRoomData.bind(this, {allow_user_request: !this.state.data.allow_user_request})}
           />
+          <Text style={s.listGroupItemSpacing}/>
           <ListItem
             onPress={() => navigation.navigate('RoomEditDisclaimer', this.state.data.room_id, (update, cb) => this.saveRoomData(update, cb))}
             text={i18next.t('RoomAccess:disclaimer')}
             type='edit-button'
+            help={i18next.t('RoomAccess:disclaimer-help')}
             action
             value={this.state.data.disclaimer}
           />
@@ -99,12 +108,16 @@ var RoomAccessView = React.createClass({
     {allow_group_member: true};
 
     return (
-      <ListItem
-        text={i18next.t('RoomAccess:allow-members-join')}
-        type='switch'
-        onSwitch={this.saveRoomData.bind(this, update)}
-        switchValue={this.state.data.allow_group_member}
-      />
+      <View>
+        <Text style={s.listGroupItemSpacing}/>
+        <ListItem
+          text={i18next.t('RoomAccess:allow-members-join')}
+          help={this.state.data.allow_group_member ? i18next.t('RoomAccess:allow-members-join-true') : i18next.t('RoomAccess:allow-members-join-false')}
+          type='switch'
+          onSwitch={this.saveRoomData.bind(this, update)}
+          switchValue={this.state.data.allow_group_member}
+        />
+      </View>
     );
   },
   _renderPublic: function () {
@@ -142,34 +155,6 @@ var RoomAccessView = React.createClass({
       }
     );
   },
-  //_changeUserRequest: function () {
-  //  var update = {allow_user_request: !this.state.data.allow_user_request};
-  //
-  //  app.client.roomUpdate(this.state.data.room_id, update, (response) => {
-  //    if (response.err) {
-  //      return alert.show(i18next.t('message.' + response.err));
-  //    }
-  //
-  //    this.setState({
-  //      data: _.extend(this.state.data, update)
-  //    });
-  //  });
-  //},
-  //_changeGroupAllow: function () {
-  //  var update = this.state.data.allow_group_member ?
-  //  {allow_group_member: false, add_users_to_allow: true} :
-  //  {allow_group_member: true};
-  //
-  //  app.client.roomUpdate(this.state.data.room_id, update, (response) => {
-  //    if (response.err) {
-  //      return alert.show(i18next.t('message.' + response.err));
-  //    }
-  //
-  //    this.setState({
-  //      data: _.extend(this.state.data, update)
-  //    });
-  //  });
-  //},
   saveRoomData (update, callback) {
     app.client.roomUpdate(this.state.data.room_id, update, (response) => {
       if (response.err) {
