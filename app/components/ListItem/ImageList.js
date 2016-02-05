@@ -44,14 +44,14 @@ class ListItemImageList extends ListItemAbstract {
     return (
       <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
         <Text style={s.listGroupItemText}>{this.props.text}</Text>
-        <View style={{alignSelf: 'center', flexDirection: 'row', alignItems:'center'}}>
+        <View style={{alignSelf: 'center', flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{color: '#999', fontFamily: 'Open Sans', fontSize: 16, paddingBottom: 1, marginRight: 10}}>{value}</Text>
         </View>
       </View>
     );
   }
 
-  _renderImageList() {
+  _renderImageList () {
     if (!this.props.imageList || this.props.imageList.length === 0) {
       return null;
     }
@@ -65,7 +65,7 @@ class ListItemImageList extends ListItemAbstract {
     );
   }
 
-  _renderImageButton(item) {
+  _renderImageButton (item) {
     if (_.has(item, 'user_id')) {
       let avatarUrl = common.cloudinary.prepare(item.avatar, 60);
       return (
