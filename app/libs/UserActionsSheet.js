@@ -50,11 +50,14 @@ module.exports = {
       }
     }
     var optionsTitles = _.map(options, 'text');
-    actionSheet.showActionSheetWithOptions({
+    var ActionsSheetOptions = {
       options: optionsTitles,
-      cancelButtonIndex,
-      destructiveButtonIndex
-    },
+      cancelButtonIndex
+    };
+    if (destructiveButtonIndex !== null) {
+      ActionsSheetOptions.destructiveButtonIndex = destructiveButtonIndex;
+    }
+    actionSheet.showActionSheetWithOptions(ActionsSheetOptions,
     (buttonIndex) => {
       options[buttonIndex].onPress();
     });
