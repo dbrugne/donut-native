@@ -4,8 +4,9 @@ var React = require('react-native');
 var {
   View,
   Text,
-  ScrollView
-  } = React;
+  ScrollView,
+  ListView
+} = React;
 
 var _ = require('underscore');
 var i18next = require('../libs/i18next');
@@ -31,7 +32,13 @@ i18next.addResourceBundle('en', 'GroupAccess', {
   'password-disclaimer': 'Users with the password can join without prior invitation.',
   'password-placeholder': 'Enter a password',
   'password-help': 'The password must be between 4 and 255 characters',
-  'password-success': 'The password has been successfully saved'
+  'password-success': 'The password has been successfully saved',
+  'domains': 'Trusted e-mail domain',
+  'domains-placeholder': '@example.com',
+  'domains-disclaimer': 'Authorize any user having a trusted e-mail to join (e.g. **@college.edu).',
+  'delete-domain': 'Remove',
+  'delete-domain-title': 'Remove __domain__',
+  'delete-domain-disclaimer': 'You are about to delete the email domain __domain__ from the allowed domains, a new user with the given email could no more join this community without previous invitation, old user with this email domain will remain members'
 });
 
 var GroupAccessView = React.createClass({
@@ -57,7 +64,9 @@ var GroupAccessView = React.createClass({
       this.setState({
         loading: false,
         data: data,
-        setPassword: !!data.password
+        setPassword: !!data.password,
+        newDomain: null,
+        ds: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(data.allowed_domains)
       });
     }, this));
   },
@@ -91,6 +100,8 @@ var GroupAccessView = React.createClass({
           />
 
           {this._renderPassword()}
+
+          {this._renderTrustedDomains()}
         </View>
       </ScrollView>
     );
@@ -145,9 +156,88 @@ var GroupAccessView = React.createClass({
       </View>
     );
   },
+  _renderTrustedDomains: function() {
+    return (
+      <View>
+        <Text style={s.listGroupItemSpacing}/>
+        <Text style={s.block}>i18next.t('GroupAccess:domains')}</Text>
+        <Text style={s.block}>{i18next.t('GroupAccess:domains-disclaimer')}</Text>
+
+        <Text style={s.listGroupItemSpacing}/>
+        <ListItem
+          type='input-button'
+          onPress= {this._addDomain}
+          placeholder={i18next.t('GroupAccess:domains-placeholder')}
+          maxLength={255}
+          value={this.state.newDomain}
+          onChangeText={(domain) => this.setState({
+            newDomain: domain
+          })}
+        />
+        <ListView
+          dataSource={this.state.ds}
+          scrollEnabled={false}
+          renderRow={this._renderTrustedDomain}
+        />
+      </View>
+    );
+  },
+  _renderTrustedDomain: function(domain, sectionID, rowID, highlightRow) {
+    return (
+      <ListItem
+        key={rowID}
+        onPress={this._removeDomain.bind(this, domain)}
+        text={i18next.t('GroupAccess:delete-domain')}
+        type='edit-button'
+        iconRight='times'
+        warning
+        action
+        value={domain}
+      />
+    );
+  },
+  _addDomain: function() {
+    if (!this.state.newDomain) {
+      return;
+    }
+    app.client.groupDomains(this.state.data.group_id, this.state.newDomain, 'add', _.bind(function (response) {
+      if (response.err) {
+        return alert.show(i18next.t('message.' + response.err));
+      }
+
+      let newData = _.clone(this.state.data);
+      newData.allowed_domains.push(this.state.newDomain);
+      this.setState({
+        data: newData,
+        newDomain: null,
+        ds: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(newData.allowed_domains)
+      });
+    }, this));
+  },
+  _removeDomain: function(domain) {
+    alert.askConfirmation(
+      i18next.t('GroupAccess:delete-domain-title', {domain: domain}),
+      i18next.t('GroupAccess:delete-domain-disclaimer', {domain: domain}),
+      () => app.client.groupDomains(this.state.data.group_id, domain, 'delete', (response) => {
+        if (response.err) {
+          return alert.show(i18next.t('message.' + response.err));
+        }
+
+        let newData = _.clone(this.state.data);
+        newData.allowed_domains = _.filter(this.state.data.allowed_domains, (d) => {
+          return d !== domain;
+        });
+        this.setState({
+          data: newData,
+          ds: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(newData.allowed_domains)
+        });
+      }),
+      () => {}
+    );
+  },
   _savePassword: function() {
     if (!this.passwordPattern.test(this.state.data.password)) {
-      return alert.show(i18next.t('GroupAccess:password-help'));
+      return alert.show(i18next.t('message.'+response.err));
     }
 
     this.saveGroupData({password: this.state.data.password}, () => {
@@ -165,7 +255,7 @@ var GroupAccessView = React.createClass({
     });
   },
   saveGroupData (update, callback) {
-    app.client.groupUpdate(this.state.data.group_id, update, (response) => {
+    app.client.groupDomains(this.state.data.group_id, update, (response) => {
       if (response.err) {
         alert.show(i18next.t('message.' + response.err));
         if (callback) {

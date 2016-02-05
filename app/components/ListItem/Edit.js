@@ -36,7 +36,7 @@ class ListItemEdit extends ListItemAbstract {
 
     return (
       <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
-        <Text style={s.listGroupItemText}>{this.props.text}</Text>
+        <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{this.props.text}</Text>
         <View style={{alignSelf: 'center', flexDirection: 'row', alignItems:'center'}}>
           <Text style={{color: '#999', fontFamily: 'Open Sans', fontSize: 16, paddingBottom: 1, marginRight: 10}}>{value}</Text>
         </View>

@@ -293,36 +293,7 @@ var styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 3
-  },
-  //containerAvatarOne: {
-  //  flexDirection: 'column'
-  //},
-  //avatarOne: {
-  //  width: 50,
-  //  height: 50
-  //},
-  //status: {
-  //  marginBottom: 8,
-  //  alignSelf: 'center',
-  //  textAlign: 'center',
-  //  flex: 1,
-  //  fontWeight: '400',
-  //  fontSize: 12,
-  //  fontFamily: 'Open Sans',
-  //  width: 50,
-  //  paddingLeft: 5,
-  //  paddingRight: 5,
-  //  overflow: 'hidden'
-  //},
-  //statusOnline: { backgroundColor: 'rgba(79, 237, 192, 0.8)' },
-  //statusConnecting: { backgroundColor: 'rgba(255, 218, 62, 0.8)' },
-  //statusOffline: { backgroundColor: 'rgba(119,119,119,0.8)' },
-  //statusText: {
-  //  color: '#FFFFFF',
-  //  fontWeight: '500',
-  //  fontSize: 16,
-  //  fontFamily: 'Open Sans'
-  //}
+  }
 });
 
 module.exports = GroupSettings;
