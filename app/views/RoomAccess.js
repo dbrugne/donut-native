@@ -31,7 +31,12 @@ i18next.addResourceBundle('en', 'RoomAccess', {
   'allow-users-request-true': 'Users will be able to ask for an invitation to this discussion',
   'allow-users-request-false': 'Users will be not be able to ask for an invitation to this discussion',
   'disclaimer': 'Display a message',
-  'disclaimer-help': 'This message will be displayed to any not allowed user trying to enter this discussion'
+  'disclaimer-help': 'This message will be displayed to any not allowed user trying to enter this discussion',
+  'password': 'Set a password',
+  'password-disclaimer': 'Users with the password can join without prior invitation.',
+  'password-placeholder': 'Enter a password',
+  'password-help': 'The password must be between 4 and 255 characters',
+  'password-success': 'The password has between successfully saved'
 });
 
 var RoomAccessView = React.createClass({
@@ -40,6 +45,7 @@ var RoomAccessView = React.createClass({
     navigator: React.PropTypes.object
   },
   getInitialState: function () {
+    this.passwordPattern = /(.{4,255})$/i;
     return {
       loading: true
     };
@@ -56,7 +62,8 @@ var RoomAccessView = React.createClass({
       }
       this.setState({
         loading: false,
-        data: data
+        data: data,
+        setPassword: !!data.password
       });
     }, this));
   },
@@ -94,9 +101,61 @@ var RoomAccessView = React.createClass({
             action
             value={this.state.data.disclaimer}
           />
+          {this._renderPassword()}
         </View>
       </View>
     );
+  },
+  _renderPassword: function() {
+    let passwordField = null;
+    if (this.state.setPassword) {
+      passwordField = (
+        <ListItem
+          ref='input'
+          onPress= {this._savePassword}
+          placeholder={i18next.t('RoomAccess:password-placeholder')}
+          value={this.state.data.password}
+          maxLength={255}
+          onChangeText={(password) => this.setState({
+            data: _.extend(this.state.data, {password: password})
+          })}
+          type='input-button'
+          help={i18next.t('RoomAccess:password-help')}
+        />
+      );
+    }
+    return (
+      <View>
+        <Text style={s.listGroupItemSpacing}/>
+        <ListItem type='switch'
+                  first
+                  text={i18next.t('RoomAccess:password')}
+                  switchValue={this.state.setPassword}
+                  onSwitch={this.state.setPassword ? this._cleanPassword : () => { this.setState({ setPassword: true })}}
+                  help={this.state.setPassword ? '' : i18next.t('RoomAccess:password-disclaimer')}
+        />
+        {passwordField}
+      </View>
+    );
+  },
+  _savePassword: function() {
+    if (!this.passwordPattern.test(this.state.data.password)) {
+      return alert.show(i18next.t('RoomAccess:password-help'));
+    }
+
+    this.saveRoomData({password: this.state.data.password}, () => {
+      alert.show(i18next.t('RoomAccess:password-success'));
+      this.setState({
+        setPassword: true
+      });
+    });
+  },
+  _cleanPassword: function() {
+    this.saveRoomData({password: null}, () => {
+      this.setState({
+        setPassword: false
+      });
+    });
   },
   _renderGroupAllow: function() {
     if (!this.state.data.group_id) {
@@ -165,9 +224,7 @@ var RoomAccessView = React.createClass({
         return;
       }
 
-      this.setState({
-        data: _.extend(this.state.data, update)
-      });
+      this.setState({ data: _.extend(this.state.data, update)});
 
       if (callback) {
         callback();
