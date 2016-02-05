@@ -21,7 +21,11 @@ i18next.addResourceBundle('en', 'RoomUsers', {
   'edit': 'Edit',
   'search': 'search',
   'load-more': 'Load more',
-  'no-results': 'No results'
+  'no-results': 'No results',
+  'users': 'Users',
+  'ban': 'Banned',
+  'op': 'Moderators',
+  'devoice': 'Mute'
 }, true, true);
 
 var RoomUsersView = React.createClass({
@@ -36,22 +40,22 @@ var RoomUsersView = React.createClass({
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.username !== r2.username});
     this.usersList = [];
     this.searchString = '';
-    var object = {
+    this.type = 'users';
+    this.currentNumberCharged = 0;
+    return {
       loaded: false,
       dataSource: ds.cloneWithRows([]),
       findValue: '',
-      currentNumberCharged: 0,
       more: false,
       is_op: false,
       is_owner: false
     };
-    return object;
   },
 
   fetchData: function () {
     this.setState({loaded: false});
     var users = [];
-    app.client.roomUsers(this.props.id, {type: 'all', searchString: this.searchString, selector: {start: this.state.currentNumberCharged, length: 10}}, (response) => {
+    app.client.roomUsers(this.props.id, {type: this.type, searchString: this.searchString, selector: {start: this.currentNumberCharged, length: 10}}, (response) => {
       _.each(response.users, (u) => {
         users.push(u);
       });
@@ -62,10 +66,10 @@ var RoomUsersView = React.createClass({
         return u.status === 'offline';
       });
       this.usersList = this.usersList.concat(users);
+      this.currentNumberCharged = this.currentNumberCharged + users.length;
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.usersList),
         loaded: true,
-        currentNumberCharged: this.state.currentNumberCharged + users.length,
         more: (response.count > this.usersList.length)
       });
     });
@@ -99,6 +103,28 @@ var RoomUsersView = React.createClass({
                     iconRight='search'
             />
         </View>
+        <View style={styles.buttonContainer}>
+          <TouchableHighlight onPress={() => this._changeType('users')}
+                              underlayColor= '#DDD'
+                              style={[styles.button, this.type === 'users' && styles.buttonActive]}>
+            <Text style={styles.textButton}>{i18next.t('RoomUsers:users')}</Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={() => this._changeType('ban')}
+                              underlayColor= '#DDD'
+                              style={[styles.button, this.type === 'ban' && styles.buttonActive]}>
+            <Text style={styles.textButton}>{i18next.t('RoomUsers:ban')}</Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={() => this._changeType('op')}
+                              underlayColor= '#DDD'
+                              style={[styles.button, this.type === 'op' && styles.buttonActive]}>
+            <Text style={styles.textButton}>{i18next.t('RoomUsers:op')}</Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={() => this._changeType('devoice')}
+                              underlayColor= '#DDD'
+                              style={[styles.button, this.type === 'devoice' && styles.buttonActive]}>
+            <Text style={styles.textButton}>{i18next.t('RoomUsers:devoice')}</Text>
+          </TouchableHighlight>
+        </View>
 
         <ListView
           ref='listViewUsers'
@@ -109,6 +135,18 @@ var RoomUsersView = React.createClass({
           />
       </View>
     );
+  },
+
+  _changeType: function (type) {
+    if (this.type === 'type') {
+      return;
+    }
+
+    this.type = type;
+    this.usersList = [];
+    this.currentNumberCharged = 0;
+    this.setState({dataSource: this.state.dataSource.cloneWithRows([])});
+    this.fetchData();
   },
 
   _renderElement: function (user) {
@@ -186,7 +224,7 @@ var RoomUsersView = React.createClass({
     var users = [];
     this.searchString = text;
     this.setState({loaded: false});
-    app.client.roomUsers(this.props.id, {type: 'all', searchString: text, selector: {start: 0, length: 10}}, (response) => {
+    app.client.roomUsers(this.props.id, {type: this.type, searchString: text, selector: {start: 0, length: 10}}, (response) => {
       _.each(response.users, (u) => {
         users.push(u);
       });
@@ -197,10 +235,10 @@ var RoomUsersView = React.createClass({
         return u.status === 'offline';
       });
       this.usersList = users;
+      this.currentNumberCharged = users.length;
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(users),
         loaded: true,
-        currentNumberCharged: users.length,
         more: (response.count > this.usersList.length)
       });
     });
@@ -209,8 +247,9 @@ var RoomUsersView = React.createClass({
   _refreshData: function () {
     var users = [];
     this.searchString = '';
+    this.type = 'users';
     this.setState({loaded: false, dataSource: this.state.dataSource.cloneWithRows([])});
-    app.client.roomUsers(this.props.id, {type: 'all', selector: {start: 0, length: 10}}, (response) => {
+    app.client.roomUsers(this.props.id, {type: this.type, selector: {start: 0, length: 10}}, (response) => {
       _.each(response.users, (u) => {
         users.push(u);
       });
@@ -218,10 +257,10 @@ var RoomUsersView = React.createClass({
         return u.username.toLowerCase();
       });
       this.usersList = users;
+      this.currentNumberCharged = users.length;
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(users),
         loaded: true,
-        currentNumberCharged: users.length,
         more: (response.count > this.usersList.length)
       });
     });
@@ -238,6 +277,30 @@ var styles = StyleSheet.create({
     height: 40,
     backgroundColor: '#f5f8fa',
     justifyContent: 'center'
+  },
+  buttonContainer: {
+    borderTopWidth: 3,
+    borderStyle: 'solid',
+    borderColor: '#DDD',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  button: {
+    height: 40,
+    flex: 1,
+    borderBottomWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#3498db'
+  },
+  buttonActive: {
+    borderBottomWidth: 3,
+    borderStyle: 'solid',
+    borderColor: '#3498db'
+  },
+  textButton: {
+    padding: 10,
+    textAlign: 'center',
+    color: '#333'
   }
 });
 
