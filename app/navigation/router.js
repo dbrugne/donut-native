@@ -151,8 +151,6 @@ module.exports = {
         return require('./routes/GroupAskRequest');
       case 'GroupUsers':
         return require('./routes/GroupUsers');
-      case 'GroupUser':
-        return require('./routes/GroupUser');
       case 'GroupSettings':
         return require('./routes/GroupSettings');
       case 'CreateRoom':
@@ -193,8 +191,6 @@ module.exports = {
         return require('./routes/RoomAccess');
       case 'RoomUsers':
         return require('./routes/RoomUsers');
-      case 'RoomUser':
-        return require('./routes/RoomUser');
       case 'RoomEditDescription':
         return require('./routes/RoomEditDescription');
       case 'RoomEditDisclaimer':
