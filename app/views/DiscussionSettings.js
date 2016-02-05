@@ -56,6 +56,7 @@ class DiscussionSettings extends Component {
     this.isOwner = (currentUser.get('user_id') === props.model.get('owner_id'));
     this.isAdmin = app.user.isAdmin();
     this.isOp = (_.indexOf(props.model.get('op'), currentUser.get('user_id')) !== -1);
+    this.can_delete = true;
     this.state = {
       topic: this.props.model.get('topic'),
       avatar: this.props.model.get('avatar'),
@@ -93,6 +94,7 @@ class DiscussionSettings extends Component {
         if (data.website && data.website.title) {
           website = data.website.title;
         }
+        this.can_delete = data.can_delete;
         this.setState({description: data.description, website: website});
       });
     }
@@ -209,8 +211,13 @@ class DiscussionSettings extends Component {
 
     if (!this.isOp && !this.isOwner && !this.isAdmin) {
       return (
-        <View style={[s.listGroup, {alignItems: 'center'}]}>
-          <Text style={s.topic}>{topic}</Text>
+        <View style={s.listGroup}>
+          <ListItem
+            text={topic}
+            type='text'
+            first
+            title={i18next.t('DiscussionSettings:topic')}
+            />
         </View>
       );
     } else {
@@ -402,7 +409,7 @@ class DiscussionSettings extends Component {
       );
     } else {
       var deleteRoomLink = null;
-      if (this.isOwner || this.isAdmin) {
+      if ((this.isOwner || this.isAdmin) && this.can_delete) {
         deleteRoomLink = (
           <ListItem
             onPress={() => this._deleteRoom()}

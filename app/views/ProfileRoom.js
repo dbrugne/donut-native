@@ -49,11 +49,24 @@ class RoomProfileView extends Component {
         <ListItem
           text={data.website.title}
           type='edit-button'
-          first
+          first={!data.users_count}
           action
           onPress={() => hyperlink.open(data.website.href)}
           icon='link'
         />
+      );
+    }
+
+    var numberOfUsers = null;
+    if (data.users_count) {
+      numberOfUsers = (
+        <ListItem
+          text={'' + data.users_count}
+          type='text'
+          first
+          icon='user'
+          iconColor='#f1c40f'
+          />
       );
     }
 
@@ -81,16 +94,15 @@ class RoomProfileView extends Component {
         <View style={s.listGroup}>
           <Text style={s.listGroupItemSpacing} />
           <ListItem
-            text={i18next.t('profileRoom:join') + ' ' + data.users_count}
+            text={i18next.t('profileRoom:join')}
             type='edit-button'
             first
             action
             last
             onPress={() => app.trigger('joinRoom', data.room_id)}
-            icon='user'
-            iconColor='#f1c40f'
             />
           <Text style={s.listGroupItemSpacing} />
+          {numberOfUsers}
           {website}
           {createdAt}
         </View>
