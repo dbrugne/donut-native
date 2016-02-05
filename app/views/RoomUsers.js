@@ -226,15 +226,6 @@ var RoomUsersView = React.createClass({
     this.usersList = [];
     this.setState({dataSource: this.state.dataSource.cloneWithRows([])});
     this.fetchData();
-  },
-
-  _refreshData: function () {
-    this.searchString = '';
-    this.type = 'users';
-    this.currentNumberCharged = 0;
-    this.usersList = [];
-    this.setState({dataSource: this.state.dataSource.cloneWithRows([])});
-    this.fetchData();
   }
 });
 
