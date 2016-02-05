@@ -39,8 +39,8 @@ module.exports = {
     }
 
     var options = _getOptionsForActionSheet(type, id, user);
-    let destructiveButtonIndex = null;
-    let cancelButtonIndex = null;
+    let destructiveButtonIndex = -1;
+    let cancelButtonIndex = -1;
     for (var i = 0; i < options.length; i++) {
       if (options[i].isDestructiveButton) {
         destructiveButtonIndex = i;
@@ -50,14 +50,11 @@ module.exports = {
       }
     }
     var optionsTitles = _.map(options, 'text');
-    var ActionsSheetOptions = {
+    actionSheet.showActionSheetWithOptions({
       options: optionsTitles,
-      cancelButtonIndex
-    };
-    if (destructiveButtonIndex !== null) {
-      ActionsSheetOptions.destructiveButtonIndex = destructiveButtonIndex;
-    }
-    actionSheet.showActionSheetWithOptions(ActionsSheetOptions,
+      cancelButtonIndex,
+      destructiveButtonIndex
+    },
     (buttonIndex) => {
       options[buttonIndex].onPress();
     });
