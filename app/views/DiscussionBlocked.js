@@ -8,8 +8,6 @@ var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../navigation/index');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
-var LoadingView = require('../components/Loading');
-var alert = require('../libs/alert');
 var Disclaimer = require('../components/Disclaimer');
 
 var {
@@ -19,14 +17,15 @@ var {
   TouchableHighlight,
   Image,
   Text
-  } = React;
+} = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'discussionBlocked', {
   'by': 'by',
   'allowed': 'This donut is private.',
   'disallow': 'This donut is private.',
-  'click': 'Request an access',
+  'request': 'To join,',
+  'click': 'Request an access.',
   'password': 'direct access',
   'password-placeholder': 'password',
   'join': 'join',
@@ -45,8 +44,7 @@ var DiscussionBlocked = React.createClass({
   },
   getInitialState: function () {
     return {
-      userConfirmed: currentUser.get('confirmed'),
-      loaded: false
+      userConfirmed: currentUser.get('confirmed')
     };
   },
 
@@ -54,13 +52,11 @@ var DiscussionBlocked = React.createClass({
     currentUser.on('change:confirmed', () => {
       this.setState({userConfirmed: currentUser.get('confirmed')});
     });
-
     this.props.model.on('change:blocked_why', () => {
-      this.render();
-      this.fetchData();
+      if (this.isMounted()) {
+        this.forceUpdate();
+      }
     }, this);
-
-    this.fetchData();
   },
   componentWillUnmount: function () {
     currentUser.off(null, null, this);
@@ -69,16 +65,9 @@ var DiscussionBlocked = React.createClass({
 
   onFocus: function () {
     this.render();
-    this.fetchData();
   },
 
   render: function () {
-    if (!this.state.loaded) {
-      return (
-        <LoadingView />
-      );
-    }
-
     return (
       <View style={{flex: 1}}>
         <ScrollView style={styles.main}>
@@ -92,11 +81,12 @@ var DiscussionBlocked = React.createClass({
                 <Text style={styles.ownerUsername}>@{this.props.model.get('owner_username')}</Text>
               </Text>
             </TouchableHighlight>
+
             {this._renderDescription()}
 
             <Disclaimer owner_id={this.props.model.get('owner_id')}
                         owner_username={this.props.model.get('owner_username')}
-                        text={this.state.data.disclaimer}
+                        text={this.props.model.get('disclaimer')}
                         navigator={this.props.navigator}
             />
 
@@ -119,33 +109,6 @@ var DiscussionBlocked = React.createClass({
     );
   },
 
-  fetchData: function () {
-    app.client.roomBecomeMember(this.props.model.get('id'), (data) => {
-      if (data.err) {
-        return alert.show(i18next.t('response.' + data.err));
-      }
-
-      if (data && data.infos) {
-        this.setState({
-          loaded: true,
-          data: data.infos
-        });
-      } else if (data.success) {
-        return app.client.roomJoin(this.props.model.get('id'), null, function (response) {
-        });
-      }
-    });
-  },
-
-  _renderDescription: function () {
-    if (!this.props.model.get('description')) {
-      return null;
-    }
-
-    return (
-      <Text style={styles.description}>{description}</Text>
-    );
-  },
   _renderAvatar: function (avatar) {
     if (!avatar) {
       return null;
@@ -157,6 +120,15 @@ var DiscussionBlocked = React.createClass({
 
     return (
       <Image style={styles.avatar} source={{uri: avatarUrl}}/>
+    );
+  },
+  _renderDescription: function () {
+    if (!this.props.model.get('description')) {
+      return null;
+    }
+
+    return (
+      <Text style={styles.description}>{description}</Text>
     );
   },
   _renderActions: function () {
