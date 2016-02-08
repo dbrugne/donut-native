@@ -15,7 +15,7 @@ var {
   Component,
   ListView
 } = React;
-var _ = require('underscore');
+
 var Button = require('react-native-button');
 var InvertibleScrollView = require('react-native-invertible-scroll-view');
 
@@ -30,6 +30,7 @@ var EventPromote = require('./../components/events/Promote');
 var EventUserPromote = require('./../components/events/UserPromote');
 var EventStatus = require('./../components/events/Status');
 var EventTopic = require('./../components/events/Topic');
+var EventHello = require('./../components/events/Hello');
 var UserBlock = require('./../components/events/UserBlock');
 var Unviewed = require('./../components/events/Unviewed');
 var discussionActionSheet = require('../libs/DiscussionActionsSheet');
@@ -104,7 +105,7 @@ class DiscussionEvents extends Component {
   }
   renderRow (event) {
     var data = eventsPrepare(event.type, event.data);
-    var Comp = this.getComponent(event.type);
+    var Comp = this.getComponent(event);
 
     if (!Comp) {
       return (<View />);
@@ -120,6 +121,7 @@ class DiscussionEvents extends Component {
           navigator={this.props.navigator}
           type={event.type}
           data={data}
+          model={this.props.model}
           renderActionSheet={() => this._renderActionSheet(data)}
           />
       </UserBlock>
@@ -131,11 +133,13 @@ class DiscussionEvents extends Component {
         navigator={this.props.navigator}
         type={event.type}
         data={data}
+        model={this.props.model}
         renderActionSheet={() => this._renderActionSheet(data)}
       />
     );
   }
-  getComponent (type) {
+  getComponent (event) {
+    let type = event.type;
     if (type === 'unviewed') {
       return Unviewed;
     }
@@ -147,6 +151,9 @@ class DiscussionEvents extends Component {
     }
     if (['room:message', 'user:message'].indexOf(type) !== -1) {
       return EventMessage;
+    }
+    if (type === 'room:in' && event.data.user_id === app.user.get('user_id')) {
+      return EventHello;
     }
     if (['user:online', 'user:offline', 'room:out', 'room:in'].indexOf(type) !== -1) {
       return EventStatus;
