@@ -97,7 +97,7 @@ var NavigationGroupsView = React.createClass({
         onPress={() => app.trigger('joinGroup', e.group_id)}
         >
         <View style={styles.item}>
-          <Text style={[styles.itemTitle, e.blocked && {textDecorationLine: 'line-through'}]}>#{e.name}</Text>
+          <Text style={[styles.itemTitle, e.blocked && {textDecorationLine: 'line-through', color: '#e74c3c'}]}>#{e.name}</Text>
           <TouchableHighlight
             style={[styles.leaveGroupButton, {backgroundColor: (groupModel && groupModel.get('focused')) ? '#666' : '#222'}]}
             underlayColor= '#414041'
@@ -145,7 +145,7 @@ var NavigationGroupsView = React.createClass({
             underlayColor= '#414041'
             >
             <View style={(model.get('group_id')) ? styles.itemGroup : styles.item}>
-              <Text style={[styles.itemTitle, {textDecorationLine: 'line-through'}]}>
+              <Text style={[styles.itemTitle, {textDecorationLine: 'line-through', color: '#e74c3c'}]}>
                 {(model.get('group_id')) ? '/' + model.get('name') : '#' + model.get('name')}
               </Text>
             </View>

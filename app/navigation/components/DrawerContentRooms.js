@@ -95,7 +95,7 @@ class NavigationRoomsView extends Component {
             underlayColor= '#414041'
             >
             <View style={styles.item}>
-              <Text style={[styles.itemTitle, {textDecorationLine: 'line-through'}]}>
+              <Text style={[styles.itemTitle, {textDecorationLine: 'line-through', color: '#e74c3c'}]}>
                 {('#' + model.get('name'))}
               </Text>
             </View>
