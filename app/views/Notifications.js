@@ -68,6 +68,7 @@ class NotificationsView extends Component {
   }
 
   fetchData () {
+    this.notificationsDataSource.blob = [];
     return app.client.notificationRead(null, null, 10, this.onData.bind(this));
   }
 
@@ -78,6 +79,7 @@ class NotificationsView extends Component {
         dataSource: this.notificationsDataSource.append(data),
         unread: app.user.get('unviewedNotification')
       });
+      this._setViewedAfterTimeout();
     }
   }
 
@@ -93,6 +95,7 @@ class NotificationsView extends Component {
       unread: app.user.get('unviewedNotification'),
       more: response.more
     });
+    this._setViewedAfterTimeout();
   }
 
   render () {
@@ -115,7 +118,7 @@ class NotificationsView extends Component {
           renderRow={this.renderRow.bind(this)}
           renderHeader={this.renderHeader.bind(this)}
           renderFooter={this.renderFooter.bind(this)}
-          onChangeVisibleRows={this.onChangeVisibleRows.bind(this)}
+          onChangeVisibleRows={(visibleRows, changedRows) => this.onChangeVisibleRows(visibleRows, changedRows)}
           style={{flex: 1, backgroundColor: '#f0f0f0'}}
           scrollEnabled
         />
@@ -430,7 +433,7 @@ class NotificationsView extends Component {
     _.each(data.notifications, (notification) => {
       let id = (notification.id)
         ? notification.id
-        : notification._id;
+        : notification;
       ids.push(id);
     });
 
@@ -516,6 +519,7 @@ class NotificationsView extends Component {
         unread: data.unread,
         dataSource: this.notificationsDataSource.prepend(data.notifications)
       });
+      this._setViewedAfterTimeout();
     });
   }
 
@@ -541,6 +545,26 @@ class NotificationsView extends Component {
     this.setState({
       discussionsUnviewed: app.getUnviewed()
     });
+  }
+
+  _setViewedAfterTimeout () {
+    setTimeout(() => {
+      if (!this.notificationsDataSource.blob) {
+        return;
+      }
+      let ids = [];
+      _.each(this.notificationsDataSource.blob, (notification) => {
+        if (!notification.viewed) {
+          ids.push(notification.id);
+        }
+      });
+      app.client.notificationViewed(ids, false, () => {
+        this.setState({
+          loadingTagAsRead: false,
+          unread: app.user.get('unviewedNotification')
+        });
+      });
+    }, this.visibleRowsTimer);
   }
 }
 
