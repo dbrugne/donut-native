@@ -81,7 +81,7 @@ class GroupSettings extends Component {
       allowed_domains: data.allowed_domains,
       avatar: data.avatar,
       identifier: data.identifier,
-      website: data.website,
+      website: data.website && data.website.title ? data.website.title : '',
       is_member: data.is_member,
       is_op: data.is_op,
       is_owner: data.is_owner,
