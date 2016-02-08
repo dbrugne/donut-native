@@ -64,6 +64,8 @@ class DiscussionEvents extends Component {
     this.props.model.on('messageUnspam', this.onMarkedAsUnspam, this);
     this.props.model.on('messageEdit', this.onEdited, this);
     this.props.model.on('change:unviewed', this.onUnviewedChange, this);
+    this.props.model.on('view-spammed', this.onViewSpammed, this);
+    this.props.model.on('remask-spammed', this.onRemaskSpammed, this);
   }
   componentWillUnmount () {
     this.props.model.off(null, null, this);
@@ -263,7 +265,7 @@ class DiscussionEvents extends Component {
     }
 
     this.setState({
-      dataSource: this.eventsDataSource.updateEvent(id, {spammed: true})
+      dataSource: this.eventsDataSource.updateEvent(id, {spammed: true, viewed: false})
     });
   }
   onMarkedAsUnspam (data) {
@@ -273,7 +275,7 @@ class DiscussionEvents extends Component {
     }
 
     this.setState({
-      dataSource: this.eventsDataSource.updateEvent(id, {spammed: false})
+      dataSource: this.eventsDataSource.updateEvent(id, {spammed: false, viewed: false})
     });
   }
   onUnviewedChange (model, nowIsUnviewed) {
@@ -317,6 +319,16 @@ class DiscussionEvents extends Component {
   }
   _renderActionSheet (data) {
     discussionActionSheet.openActionSheet(this.context.actionSheet(), this.props.model, data);
+  }
+  onViewSpammed (messageId) {
+    this.setState({
+      dataSource: this.eventsDataSource.updateEvent(messageId, {viewed: true})
+    });
+  }
+  onRemaskSpammed (messageId) {
+    this.setState({
+      dataSource: this.eventsDataSource.updateEvent(messageId, {viewed: false})
+    });
   }
 }
 

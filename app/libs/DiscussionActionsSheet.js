@@ -72,8 +72,8 @@ var _getOptionsForActionSheet = function (model, data) {
 
   if (data.spammed) {
     let spamOption = data.viewed
-      ? { text: i18next.t('DiscussionActionSheet:hide-spam'), onPress: () => _onRemaskSpammed(model.get('room_id'), data.id)}
-      : { text: i18next.t('DiscussionActionSheet:show-spam'), onPress: () => _onViewSpammed(model.get('room_id'), data.id)}
+      ? { text: i18next.t('DiscussionActionSheet:hide-spam'), onPress: () => _onRemaskSpammed(model, data.id)}
+      : { text: i18next.t('DiscussionActionSheet:show-spam'), onPress: () => _onViewSpammed(model, data.id)}
     ;
     options.push(spamOption);
   }
@@ -111,21 +111,19 @@ var _isEditable = function (data) {
  *                           ACTIONS
  */
 var _onMarkAsSpam = function (roomId, messageId) {
-  console.log('_onMarkAsSpam');
   app.client.roomMessageSpam(roomId, messageId);
 };
 
 var _onMarkAsUnspam = function (roomId, messageId) {
-  console.log('_onMarkAsUnspam');
   app.client.roomMessageUnspam(roomId, messageId);
 };
 
-var _onViewSpammed = function (roomId, messageId) {
-  console.log('_onViewSpammed');
+var _onViewSpammed = function (model, messageId) {
+  model.trigger('view-spammed', messageId);
 };
 
-var _onRemaskSpammed = function (roomId, messageId) {
-  console.log('_onRemaskSpammed');
+var _onRemaskSpammed = function (model, messageId) {
+  model.trigger('remask-spammed', messageId);
 };
 
 var _onEdit = function (roomId, messageId) {

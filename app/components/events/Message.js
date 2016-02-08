@@ -29,25 +29,25 @@ module.exports = React.createClass({
   },
   render () {
     var message;
+    var edited = null;
+    if (this.props.data.edited) {
+      edited = (
+        <Text style={s.edited}>{i18next.t('message:edited')}</Text>
+      );
+    }
     if (this.props.data.message) {
-      if (this.props.data.spammed) {
+      if (this.props.data.spammed && !this.props.data.viewed) {
         message = (
           <View>
             <Text style={s.spammed}>{i18next.t('message:spammed')}</Text>
           </View>
         );
       } else {
-        var edited = null;
-        if (this.props.data.edited) {
-          edited = (
-            <Text style={s.edited}>{i18next.t('message:edited')}</Text>
-          );
-        }
         message = (
           <Text>
             <ParsedText
               navigator={this.props.navigator}
-              style={[s.messageContent, {flexWrap: 'wrap'}]}
+              style={[s.messageContent, {flexWrap: 'wrap'}, this.props.data.viewed && {backgroundColor: 'rgba(241,82,97,0.15)'}]}
             >
               {this.props.data.message}
             </ParsedText>
