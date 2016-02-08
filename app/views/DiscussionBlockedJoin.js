@@ -6,6 +6,7 @@ var app = require('../libs/app');
 var Alert = require('../libs/alert');
 var ListItem = require('../components/ListItem');
 var LoadingModal = require('../components/LoadingModal');
+var Disclaimer = require('../components/Disclaimer');
 
 var {
   View,
@@ -52,7 +53,11 @@ var DiscussionBlockedJoin = React.createClass({
         <View style={{marginVertical: 10, marginHorizontal: 10}}>
           <Text>{i18next.t('discussionBlockedJoin:infos')}</Text>
         </View>
-        {this._renderDisclaimer()}
+        <Disclaimer owner_id={this.props.data.owner_id}
+                    owner_username={this.props.data.owner_username}
+                    text={this.props.data.disclaimer}
+                    navigator={this.props.navigator}
+        />
         {this._renderActions()}
         {
           (this.state.showLoading)
@@ -100,22 +105,6 @@ var DiscussionBlockedJoin = React.createClass({
       </View>
     );
   },
-
-  _renderDisclaimer: function () {
-    if (!this.props.data.disclaimer) {
-      return null;
-    }
-
-    return (
-      <View style={[s.alertWarning, {marginVertical: 0, marginHorizontal: 0, borderRadius: 0}]}>
-        <View style={{flexDirection: 'column', flex: 1}}>
-          <Text
-            style={[s.alertWarningText, {fontStyle: 'italic'}]}>{this.props.data.disclaimer}</Text>
-        </View>
-      </View>
-    );
-  },
-
   _renderAllowUserRequest: function () {
     if (this.props.data.isAllowedPending) {
       return (

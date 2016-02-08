@@ -8,6 +8,9 @@ var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../navigation/index');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
+var LoadingView = require('../components/Loading');
+var alert = require('../libs/alert');
+var Disclaimer = require('../components/Disclaimer');
 
 var {
   StyleSheet,
@@ -23,8 +26,7 @@ i18next.addResourceBundle('en', 'discussionBlocked', {
   'by': 'by',
   'allowed': 'This donut is private.',
   'disallow': 'This donut is private.',
-  'request': 'To join,',
-  'click': 'click here.',
+  'click': 'Request an access',
   'password': 'direct access',
   'password-placeholder': 'password',
   'join': 'join',
@@ -43,7 +45,8 @@ var DiscussionBlocked = React.createClass({
   },
   getInitialState: function () {
     return {
-      userConfirmed: currentUser.get('confirmed')
+      userConfirmed: currentUser.get('confirmed'),
+      loaded: false
     };
   },
 
@@ -51,11 +54,13 @@ var DiscussionBlocked = React.createClass({
     currentUser.on('change:confirmed', () => {
       this.setState({userConfirmed: currentUser.get('confirmed')});
     });
+
     this.props.model.on('change:blocked_why', () => {
-      if (this.isMounted()) {
-        this.forceUpdate();
-      }
+      this.render();
+      this.fetchData();
     }, this);
+
+    this.fetchData();
   },
   componentWillUnmount: function () {
     currentUser.off(null, null, this);
@@ -64,13 +69,13 @@ var DiscussionBlocked = React.createClass({
 
   onFocus: function () {
     this.render();
+    this.fetchData();
   },
 
   render: function () {
-    let description = null;
-    if (this.props.model.get('description')) {
-      description = (
-        <Text style={styles.description}>{description}</Text>
+    if (!this.state.loaded) {
+      return (
+        <LoadingView />
       );
     }
 
@@ -87,11 +92,19 @@ var DiscussionBlocked = React.createClass({
                 <Text style={styles.ownerUsername}>@{this.props.model.get('owner_username')}</Text>
               </Text>
             </TouchableHighlight>
-            {description}
+            {this._renderDescription()}
+
+            <Disclaimer owner_id={this.props.model.get('owner_id')}
+                        owner_username={this.props.model.get('owner_username')}
+                        text={this.state.data.disclaimer}
+                        navigator={this.props.navigator}
+            />
+
           </View>
 
           {this._renderActions()}
 
+          <Text style={s.listGroupItemSpacing}/>
           <ListItem type='button'
                     onPress={() => this.props.model.leaveBlocked()}
                     text={i18next.t('discussionBlocked:close')}
@@ -99,13 +112,40 @@ var DiscussionBlocked = React.createClass({
                     first
                     last
                     warning
-            />
+          />
 
         </ScrollView>
       </View>
     );
   },
 
+  fetchData: function () {
+    app.client.roomBecomeMember(this.props.model.get('id'), (data) => {
+      if (data.err) {
+        return alert.show(i18next.t('response.' + data.err));
+      }
+
+      if (data && data.infos) {
+        this.setState({
+          loaded: true,
+          data: data.infos
+        });
+      } else if (data.success) {
+        return app.client.roomJoin(this.props.model.get('id'), null, function (response) {
+        });
+      }
+    });
+  },
+
+  _renderDescription: function () {
+    if (!this.props.model.get('description')) {
+      return null;
+    }
+
+    return (
+      <Text style={styles.description}>{description}</Text>
+    );
+  },
   _renderAvatar: function (avatar) {
     if (!avatar) {
       return null;
@@ -119,24 +159,22 @@ var DiscussionBlocked = React.createClass({
       <Image style={styles.avatar} source={{uri: avatarUrl}}/>
     );
   },
-
   _renderActions: function () {
     var why = (!this.state.userConfirmed)
       ? 'not-confirmed'
       : this.props.model.get('blocked_why');
+
     var rejoinButton = (why !== 'ban' && why !== 'groupban' && why !== 'not-confirmed')
-      ? <Link onPress={() => this.onJoin()}
-              prepend={i18next.t('discussionBlocked:request')}
-              text={i18next.t('discussionBlocked:click')}
-              linkStyle={s.alertErrorText}
-              prependStyle={s.alertErrorText}
-              appendStyle={s.alertErrorText}
-              type='underlined'
-        />
+      ? <ListItem onPress={() => this.onJoin()}
+                  text={i18next.t('discussionBlocked:click')}
+                  action
+                  first
+                  type='button'
+    />
       : null;
     return (
-      <View style={[s.alertError, {marginHorizontal: 0, borderRadius: 0}]}>
-        <Text style={s.alertErrorText}>
+      <View>
+        <Text style={{marginHorizontal: 10, marginVertical: 10}}>
           {i18next.t('discussionBlocked:' + why)}
         </Text>
         {rejoinButton}
@@ -160,7 +198,6 @@ var DiscussionBlocked = React.createClass({
     });
   }
 });
-
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
