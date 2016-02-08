@@ -28,33 +28,32 @@ module.exports = React.createClass({
     renderActionSheet: React.PropTypes.func
   },
   render () {
-    var message;
+    var message = null;
     var edited = null;
     if (this.props.data.edited) {
       edited = (
         <Text style={s.edited}>{i18next.t('message:edited')}</Text>
       );
     }
-    if (this.props.data.message) {
-      if (this.props.data.spammed && !this.props.data.viewed) {
-        message = (
-          <View>
-            <Text style={s.spammed}>{i18next.t('message:spammed')}</Text>
-          </View>
-        );
-      } else {
-        message = (
-          <Text>
-            <ParsedText
-              navigator={this.props.navigator}
-              style={[s.messageContent, {flexWrap: 'wrap'}, this.props.data.viewed && {backgroundColor: 'rgba(241,82,97,0.15)'}]}
-            >
-              {this.props.data.message}
-            </ParsedText>
-            {edited}
-          </Text>
-        );
-      }
+
+    if (this.props.data.spammed && !this.props.data.viewed) {
+      message = (
+        <View>
+          <Text style={s.spammed}>{i18next.t('message:spammed')}</Text>
+        </View>
+      );
+    } else if (this.props.data.message) {
+      message = (
+        <Text>
+          <ParsedText
+            navigator={this.props.navigator}
+            style={[s.messageContent, {flexWrap: 'wrap'}, this.props.data.viewed && {backgroundColor: 'rgba(241,82,97,0.15)'}]}
+          >
+            {this.props.data.message}
+          </ParsedText>
+          {edited}
+        </Text>
+      );
     }
 
     return (
@@ -69,6 +68,10 @@ module.exports = React.createClass({
     );
   },
   renderFiles () {
+    if (this.props.data.spammed && !this.props.data.viewed) {
+      return null;
+    }
+
     if (this.props.data.files && this.props.data.files.length > 0) {
       let elements = _.map(this.props.data.files, (element, index) => {
         return (element.type === 'image')
@@ -81,7 +84,7 @@ module.exports = React.createClass({
       }
 
       return (
-        <View style={{flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center'}}>
+        <View style={[{flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center'}, this.props.data.viewed && {backgroundColor: 'rgba(241,82,97,0.15)'}]}>
           {elements}
         </View>
       );
@@ -102,7 +105,8 @@ module.exports = React.createClass({
       <TouchableHighlight
         key={this.props.data.id + '-' + index}
         underlayColor='transparent'
-        onPress={() => hyperlink.open(element.href)}>
+        onPress={() => hyperlink.open(element.href)}
+        onLongPress={() => this.props.renderActionSheet()}>
         {this._renderImage(element.thumbnail)}
       </TouchableHighlight>
     );
@@ -113,7 +117,7 @@ module.exports = React.createClass({
     }
 
     return (
-      <Image style={{width: 100, height: 100, marginTop:5, borderRadius:3}} source={{uri: url}} />
+      <Image style={{width: 100, height: 100, marginTop:5, marginBottom:5, marginLeft:5, borderRadius:3}} source={{uri: url}} />
     );
   }
 });
