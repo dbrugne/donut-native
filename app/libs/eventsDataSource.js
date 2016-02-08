@@ -115,15 +115,17 @@ module.exports = function () {
       if ((isDifferentDay && messagesTypes.indexOf(item.type) !== -1) ||
         (messagesTypes.indexOf(item.type) !== -1 && (!previous || previous.data.user_id !== item.data.user_id || previous.type !== item.type))) {
         item.data.first = true;
-        item.data.userBlock = {
-          id: item.data.id,
-          user_id: item.data.user_id,
-          username: item.data.username,
-          realname: item.data.realname,
-          avatarRaw: item.data.avatar,
-          time: item.data.time
-        };
       }
+
+      item.data.userBlock = {
+        id: item.data.id,
+        user_id: item.data.user_id,
+        username: item.data.username,
+        realname: item.data.realname,
+        avatarRaw: item.data.avatar,
+        time: item.data.time,
+        room_id: item.data.room_id
+      };
 
       var list = [item];
 

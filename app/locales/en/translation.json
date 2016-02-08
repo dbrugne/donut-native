@@ -93,7 +93,8 @@
     "room-edit-description": "Edit discussion description",
     "room-edit-disclaimer": "Edit discussion disclaimer",
     "discussion-blocked-join": "Join discussion",
-    "available-soon": "Available soon"
+    "available-soon": "Available soon",
+    "report": "Report"
   },
   "group": {
     "message-not-member": "Members have special priviledges such as direct access to certain private donuts and to other members of this community.",

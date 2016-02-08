@@ -5,7 +5,7 @@ var s = require('../../styles/events');
 var Username = require('./Username');
 var date = require('../../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
-var navigation = require('../../navigation/index');
+var userActionSheet = require('../../libs/UserActionsSheet');
 
 var {
   View,
@@ -15,16 +15,20 @@ var {
 } = React;
 
 module.exports = React.createClass({
+  contextTypes: {
+    actionSheet: React.PropTypes.func
+  },
   propTypes: {
     data: React.PropTypes.object.isRequired,
-    navigator: React.PropTypes.object.isRequired
+    navigator: React.PropTypes.object.isRequired,
+    onPress: React.PropTypes.func
   },
   render () {
     return (
-      <View style={{flexDirection: 'row', flex:1, alignItems: 'flex-start'}}>
+      <View style={{flexDirection: 'row', flex: 1, alignItems: 'flex-start'}}>
         {this._renderAvatar()}
-        <View style={{flexDirection: 'column', flex:1}}>
-          <View style={{flexDirection: 'row', flex:1, alignItems: 'center'}}>
+        <View style={{flexDirection: 'column', flex: 1}}>
+          <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
             <Username
               user_id={this.props.data.user_id}
               username={this.props.data.username}
@@ -58,10 +62,9 @@ module.exports = React.createClass({
     );
   },
   onPress () {
-    navigation.navigate('Profile', {
-      type: 'user',
-      id: this.props.data.user_id,
-      identifier: '@' + this.props.data.username
-    });
+    if (this.props.onPress) {
+      return this.props.onPress();
+    }
+    userActionSheet.openActionSheet(this.context.actionSheet(), 'roomUsers', this.props.data.room_id, this.props.data);
   }
 });

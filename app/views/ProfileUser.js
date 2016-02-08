@@ -18,6 +18,7 @@ var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
 var ListItem = require('../components/ListItem');
 var currentUser = require('../models/current-user');
+var navigation = require('../navigation/index');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'ProfileUser', {
@@ -25,7 +26,8 @@ i18next.addResourceBundle('en', 'ProfileUser', {
   'unlock': 'unblock this user',
   'lock': 'block this user',
   'blocked': 'this user blocked you',
-  'discuss': 'Chat'
+  'discuss': 'Chat',
+  'report': 'report user'
 });
 
 class UserProfileView extends Component {
@@ -135,7 +137,7 @@ class UserProfileView extends Component {
           {this._renderAvatar(data.avatar)}
           <Text style={[styles.statusText, styles.status, data.status === 'connecting' && styles.statusConnecting, data.status === 'offline' && styles.statusOffline, data.status === 'online' && styles.statusOnline]}>{data.status}</Text>
           {realname}
-          <Text style={[styles.username, data.realname && styles.usernameGray ]}>@{data.username}</Text>
+          <Text style={[styles.username, data.realname && styles.usernameGray]}>@{data.username}</Text>
           <Text style={styles.bio}>{bio}</Text>
           {isBannedLink}
         </View>
@@ -146,6 +148,14 @@ class UserProfileView extends Component {
           {website}
           {registeredAt}
           {bannedLink}
+          <ListItem
+            text={i18next.t('ProfileUser:report')}
+            type='edit-button'
+            action
+            onPress={() => navigation.navigate('Report', {type: 'user', user: data})}
+            icon='ban'
+            iconColor='#ff3838'
+            />
         </View>
       </ScrollView>
     );

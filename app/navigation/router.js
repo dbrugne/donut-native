@@ -201,6 +201,8 @@ module.exports = {
         return require('./routes/RoomEditWebsite');
       case 'AvailableSoon':
         return require('./routes/AvailableSoon');
+      case 'Report':
+        return require('./routes/Report');
     }
   }
 };

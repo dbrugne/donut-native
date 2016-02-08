@@ -111,7 +111,7 @@ class DiscussionEvents extends Component {
       return (<View />);
     }
 
-    if (event.data.userBlock) {
+    if (event.data.userBlock && event.data.first) {
       return(
       <UserBlock
         navigator={this.props.navigator}

@@ -19,7 +19,8 @@ i18next.addResourceBundle('en', 'DiscussionActionSheet', {
   'expand-all': 'Expand all',
   'expand': 'Expand',
   'title': 'Actions on __message__',
-  'cancel': 'Cancel'
+  'cancel': 'Cancel',
+  'report': 'Report content'
 }, true, true);
 
 module.exports = {
@@ -69,7 +70,6 @@ var _getOptionsForActionSheet = function (model, data, type) {
     let cancelAction = { text: i18next.t('DiscussionActionSheet:cancel'), onPress: () => {}, isCancelButton: true};
 
     options.push(spamAction);
-    options.push(cancelAction);
 
     if (data.spammed) {
       let spamOption = data.viewed
@@ -79,10 +79,18 @@ var _getOptionsForActionSheet = function (model, data, type) {
       options.push(spamOption);
     }
 
+    options.push({
+      text: i18next.t('DiscussionActionSheet:report'),
+      onPress: () => navigation.navigate('Report', {type: 'event', event: data}),
+      isDestructiveButton: true
+    });
+
     // @todo with #206
     //if (_isEditable(data)) {
     //  options.push({ text: i18next.t('DiscussionActionSheet:edit'), onPress: () => _onEdit(model.get('room_id'), data.id)})
     //}
+
+    options.push(cancelAction);
 
     return options;
   } else {

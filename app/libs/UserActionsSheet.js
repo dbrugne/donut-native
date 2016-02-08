@@ -26,7 +26,8 @@ i18next.addResourceBundle('en', 'UserActionSheet', {
   'title': 'Actions on this user',
   'chat': 'Chat one-to-one',
   'cancel': 'Cancel',
-  'view-profile': 'View profile'
+  'view-profile': 'View profile',
+  'report': 'Report user'
 }, true, true);
 
 module.exports = {
@@ -62,6 +63,9 @@ module.exports = {
 };
 
 var _getOptionsForActionSheet = function (type, id, user, currentUserGotRights) {
+  var roomId = (type === 'roomUsers' || type === 'roomInvite')
+    ? id
+    : null;
   var options = [
     {
       text: i18next.t('UserActionSheet:view-profile'),
@@ -70,6 +74,11 @@ var _getOptionsForActionSheet = function (type, id, user, currentUserGotRights) 
     {
       text: i18next.t('UserActionSheet:chat'),
       onPress: () => app.trigger('joinUser', user.user_id)
+    },
+    {
+      text: i18next.t('UserActionSheet:report'),
+      onPress: () => navigation.navigate('Report', {user: user, room_id: roomId, type: 'user'}),
+      isDestructiveButton: true
     }
   ];
 
