@@ -5,7 +5,6 @@ var {
   View,
   Image,
   TouchableHighlight,
-  StyleSheet,
   Text
 } = React;
 var ParsedText = require('../ParsedText');
@@ -23,6 +22,11 @@ i18next.addResourceBundle('en', 'message', {
 });
 
 module.exports = React.createClass({
+  propTypes: {
+    data: React.PropTypes.object,
+    navigator: React.PropTypes.object,
+    renderActionSheet: React.PropTypes.func
+  },
   render () {
     var message;
     if (this.props.data.message) {
@@ -54,12 +58,14 @@ module.exports = React.createClass({
     }
 
     return (
-      <View key={this.props.data.id} style={{marginBottom: 10}}>
+      <TouchableHighlight key={this.props.data.id} style={{marginBottom: 10}}
+                          underlayColor='transparent'
+                          onLongPress={() => this.props.renderActionSheet()}>
         <View style={[{flexDirection: 'column', flex:1, marginLeft:55}, this.props.data.first && {marginLeft:0}]}>
           <View>{message}</View>
           {this.renderFiles()}
         </View>
-      </View>
+      </TouchableHighlight>
     );
   },
   renderFiles () {

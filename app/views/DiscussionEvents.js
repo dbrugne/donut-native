@@ -32,6 +32,7 @@ var EventStatus = require('./../components/events/Status');
 var EventTopic = require('./../components/events/Topic');
 var UserBlock = require('./../components/events/UserBlock');
 var Unviewed = require('./../components/events/Unviewed');
+var discussionActionSheet = require('../libs/DiscussionActionsSheet');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'DiscussionEvents', {
@@ -117,6 +118,7 @@ class DiscussionEvents extends Component {
           navigator={this.props.navigator}
           type={event.type}
           data={data}
+          renderActionSheet={() => this._renderActionSheet(data.id)}
           />
       </UserBlock>
       );
@@ -127,6 +129,7 @@ class DiscussionEvents extends Component {
         navigator={this.props.navigator}
         type={event.type}
         data={data}
+        renderActionSheet={() => this._renderActionSheet(data.id)}
       />
     );
   }
@@ -312,6 +315,13 @@ class DiscussionEvents extends Component {
       this.props.model.markAsViewed();
     }, 2000); // 2s
   }
+  _renderActionSheet (id) {
+    discussionActionSheet.openActionSheet(this.context.actionSheet(), this.props.model, id);
+  }
 }
+
+DiscussionEvents.contextTypes = {
+  actionSheet: React.PropTypes.func
+};
 
 module.exports = DiscussionEvents;
