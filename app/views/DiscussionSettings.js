@@ -371,11 +371,7 @@ class DiscussionSettings extends Component {
     app.client.roomUpdate(this.props.model.get('id'), updateData, (response) => {
       if (response.err) {
         for (var k in response.err) {
-          if (response.err[k] === 'website-url') {
-            Alert.show(i18next.t('RoomEdit:website-url'));
-          } else {
-            Alert.show(i18next.t('messages.' + response.err));
-          }
+          Alert.show(i18next.t('messages.' + response.err[k]));
         }
         if (callback) {
           return callback(response.err);

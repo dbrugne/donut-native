@@ -270,11 +270,7 @@ var MyAccountView = React.createClass({
     app.client.userUpdate(updateData, (response) => {
       if (response.err) {
         for (var k in response.err) {
-          if (response.err[k] === 'website-url') {
-            Alert.show(i18next.t('myAccountEdit:website-url'));
-          } else {
-            Alert.show(i18next.t('messages.' + response.err[k]));
-          }
+          Alert.show(i18next.t('messages.' + response.err[k]));
         }
         if (callback) {
           return callback(response.err);
