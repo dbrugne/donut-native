@@ -71,7 +71,6 @@ class GroupAskMembership extends Component {
       <ScrollView style={styles.main}>
         <GroupHeader  model={this.state.data}/>
         <View style={styles.container}>
-          <Text style={[s.block]}>{i18next.t('group.message-not-member')}</Text>
 
           {this._renderDisclaimer()}
           {this.renderListOptions()}

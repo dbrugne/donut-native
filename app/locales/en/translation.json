@@ -97,7 +97,6 @@
     "report": "Report"
   },
   "group": {
-    "message-not-member": "Members have special priviledges such as direct access to certain private donuts and to other members of this community.",
     "request-title": "I request membership",
     "password-title": "I have the password",
     "email-title": "I have an authorized e-mail",
