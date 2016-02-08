@@ -118,7 +118,7 @@ class DiscussionEvents extends Component {
           navigator={this.props.navigator}
           type={event.type}
           data={data}
-          renderActionSheet={() => this._renderActionSheet(data.id)}
+          renderActionSheet={() => this._renderActionSheet(data)}
           />
       </UserBlock>
       );
@@ -129,7 +129,7 @@ class DiscussionEvents extends Component {
         navigator={this.props.navigator}
         type={event.type}
         data={data}
-        renderActionSheet={() => this._renderActionSheet(data.id)}
+        renderActionSheet={() => this._renderActionSheet(data)}
       />
     );
   }
@@ -315,8 +315,8 @@ class DiscussionEvents extends Component {
       this.props.model.markAsViewed();
     }, 2000); // 2s
   }
-  _renderActionSheet (id) {
-    discussionActionSheet.openActionSheet(this.context.actionSheet(), this.props.model, id);
+  _renderActionSheet (data) {
+    discussionActionSheet.openActionSheet(this.context.actionSheet(), this.props.model, data);
   }
 }
 

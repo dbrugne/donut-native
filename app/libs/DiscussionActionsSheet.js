@@ -23,8 +23,8 @@ i18next.addResourceBundle('en', 'DiscussionActionSheet', {
 }, true, true);
 
 module.exports = {
-  openActionSheet: function (actionSheet, model, messageId) {
-    if (!model) {
+  openActionSheet: function (actionSheet, model, data) {
+    if (!model || !data) {
       return debug.warn('Wrong params for DiscussionActionSheet');
     }
 
@@ -32,11 +32,7 @@ module.exports = {
       return debug.warn('Wrong type value for DiscussionActionSheet :', type);
     }
 
-    if (!messageId) {
-      return debug.warn('Wrong params for DiscussionActionSheet');
-    }
-
-    var options = _getOptionsForActionSheet(model, messageId);
+    var options = _getOptionsForActionSheet(model, data);
 
     let destructiveButtonIndex = -1;
     let cancelButtonIndex = -1;
@@ -50,45 +46,65 @@ module.exports = {
     }
     var optionsTitles = _.map(options, 'text');
     actionSheet.showActionSheetWithOptions({
-      options: optionsTitles,
-      cancelButtonIndex,
-      destructiveButtonIndex
-    },
-    (buttonIndex) => {
-      options[buttonIndex].onPress();
-    });
+        options: optionsTitles,
+        cancelButtonIndex,
+        destructiveButtonIndex
+      },
+      (buttonIndex) => {
+        options[buttonIndex].onPress();
+      });
   }
 };
 
-var _getOptionsForActionSheet = function (model, messageId) {
-  // @todo perform historyRead for this message to get allowed actions
-  return [
-    {
-      text: i18next.t('DiscussionActionSheet:mark-as-spam'),
-      onPress: () => _onMarkAsSpam()
-    },
-    {
-      text: i18next.t('DiscussionActionSheet:unmark-as-spam'),
-      onPress: () => _onMarkAsUnspam()
-    },
-    {
-      text: i18next.t('DiscussionActionSheet:show-spam'),
-      onPress: () => _onViewSpammed()
-    },
-    {
-      text: i18next.t('DiscussionActionSheet:hide-spam'),
-      onPress: () => _onRemaskSpammed()
-    },
-    {
-      text: i18next.t('DiscussionActionSheet:edit'),
-      onPress: () => _onEdit()
-    },
-    {
-      text: i18next.t('DiscussionActionSheet:cancel'),
-      onPress: () => {},
-      isCancelButton: true
-    }
-  ];
+var _getOptionsForActionSheet = function (model, data) {
+  let isAllowed = model.currentUserIsOp() || model.currentUserIsOwner() || app.user.isAdmin();
+  let options = [];
+
+  let spamAction = isAllowed && data.spammed
+    ? { text: i18next.t('DiscussionActionSheet:unmark-as-spam'), onPress: () => _onMarkAsUnspam()}
+    : { text: i18next.t('DiscussionActionSheet:mark-as-spam'), onPress: () => _onMarkAsSpam()}
+  ;
+
+  let cancelAction = { text: i18next.t('DiscussionActionSheet:cancel'), onPress: () => {}, isCancelButton: true};
+
+  options.push(spamAction);
+  options.push(cancelAction);
+
+  if (data.spammed) {
+    let spamOption = data.viewed
+      ? { text: i18next.t('DiscussionActionSheet:hide-spam'), onPress: () => _onRemaskSpammed()}
+      : { text: i18next.t('DiscussionActionSheet:show-spam'), onPress: () => _onViewSpammed()}
+    ;
+    options.push(spamOption);
+  }
+
+  if (_isEditable(data)) {
+    options.push({ text: i18next.t('DiscussionActionSheet:edit'), onPress: () => _onEdit()})
+  }
+
+  return options;
+};
+
+var _isEditable = function (data) {
+  let maxEditTime = 5 * 60 * 1000; // 5 minutes
+
+  // can only edit /me messages on special messages (me, random, ...)
+  if (data.special && data.special !== 'me') {
+    return false;
+  }
+
+  // can only edit own messages
+  if (app.user.get('user_id') !== data.user_id) {
+    return false;
+  }
+
+  // only editable if less than 5 minutes
+  if (((Date.now() - new Date(data.time)) > maxEditTime)) {
+    return false;
+  }
+
+  // only editable if not spammed
+  return !data.spammed;
 };
 
 /*
