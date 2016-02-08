@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var state = require('./state');
 var debug = require('../libs/debug')('navigation');
 
