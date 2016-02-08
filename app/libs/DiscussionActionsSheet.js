@@ -28,11 +28,11 @@ module.exports = {
       return debug.warn('Wrong params for DiscussionActionSheet');
     }
 
-    if (['room', 'one'].indexOf(model.get('type')) === -1) {
-      return debug.warn('Wrong type value for DiscussionActionSheet :', type);
+    if (['room', 'onetoone'].indexOf(model.get('type')) === -1) {
+      return debug.warn('Wrong type value for DiscussionActionSheet :', model.get('type'));
     }
 
-    var options = _getOptionsForActionSheet(model, data);
+    var options = _getOptionsForActionSheet(model, data, model.get('type'));
 
     let destructiveButtonIndex = -1;
     let cancelButtonIndex = -1;
@@ -56,33 +56,49 @@ module.exports = {
   }
 };
 
-var _getOptionsForActionSheet = function (model, data) {
-  let isAllowed = model.currentUserIsOp() || model.currentUserIsOwner() || app.user.isAdmin();
-  let options = [];
+var _getOptionsForActionSheet = function (model, data, type) {
+  if (type === 'room') {
+    let isAllowed = model.currentUserIsOp() || model.currentUserIsOwner() || app.user.isAdmin();
+    let options = [];
 
-  let spamAction = isAllowed && data.spammed
-    ? { text: i18next.t('DiscussionActionSheet:unmark-as-spam'), onPress: () => _onMarkAsUnspam(model.get('room_id'), data.id)}
-    : { text: i18next.t('DiscussionActionSheet:mark-as-spam'), onPress: () => _onMarkAsSpam(model.get('room_id'), data.id)}
-  ;
+    let spamAction = isAllowed && data.spammed
+        ? { text: i18next.t('DiscussionActionSheet:unmark-as-spam'), onPress: () => _onMarkAsUnspam(model.get('room_id'), data.id)}
+        : { text: i18next.t('DiscussionActionSheet:mark-as-spam'), onPress: () => _onMarkAsSpam(model.get('room_id'), data.id)}
+      ;
 
-  let cancelAction = { text: i18next.t('DiscussionActionSheet:cancel'), onPress: () => {}, isCancelButton: true};
+    let cancelAction = { text: i18next.t('DiscussionActionSheet:cancel'), onPress: () => {}, isCancelButton: true};
 
-  options.push(spamAction);
-  options.push(cancelAction);
+    options.push(spamAction);
+    options.push(cancelAction);
 
-  if (data.spammed) {
-    let spamOption = data.viewed
-      ? { text: i18next.t('DiscussionActionSheet:hide-spam'), onPress: () => _onRemaskSpammed(model, data.id)}
-      : { text: i18next.t('DiscussionActionSheet:show-spam'), onPress: () => _onViewSpammed(model, data.id)}
-    ;
-    options.push(spamOption);
+    if (data.spammed) {
+      let spamOption = data.viewed
+          ? { text: i18next.t('DiscussionActionSheet:hide-spam'), onPress: () => _onRemaskSpammed(model, data.id)}
+          : { text: i18next.t('DiscussionActionSheet:show-spam'), onPress: () => _onViewSpammed(model, data.id)}
+        ;
+      options.push(spamOption);
+    }
+
+    // @todo with #206
+    //if (_isEditable(data)) {
+    //  options.push({ text: i18next.t('DiscussionActionSheet:edit'), onPress: () => _onEdit(model.get('room_id'), data.id)})
+    //}
+
+    return options;
+  } else {
+    let options = [];
+
+    let cancelAction = { text: i18next.t('DiscussionActionSheet:cancel'), onPress: () => {}, isCancelButton: true};
+
+    options.push(cancelAction);
+
+    // @todo with #206
+    //if (_isEditable(data)) {
+    //  options.push({ text: i18next.t('DiscussionActionSheet:edit'), onPress: () => _onEdit(model.get('room_id'), data.id)})
+    //}
+
+    return options;
   }
-
-  if (_isEditable(data)) {
-    options.push({ text: i18next.t('DiscussionActionSheet:edit'), onPress: () => _onEdit(model.get('room_id'), data.id)})
-  }
-
-  return options;
 };
 
 var _isEditable = function (data) {
