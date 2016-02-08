@@ -61,8 +61,8 @@ var _getOptionsForActionSheet = function (model, data) {
   let options = [];
 
   let spamAction = isAllowed && data.spammed
-    ? { text: i18next.t('DiscussionActionSheet:unmark-as-spam'), onPress: () => _onMarkAsUnspam()}
-    : { text: i18next.t('DiscussionActionSheet:mark-as-spam'), onPress: () => _onMarkAsSpam()}
+    ? { text: i18next.t('DiscussionActionSheet:unmark-as-spam'), onPress: () => _onMarkAsUnspam(model.get('room_id'), data.id)}
+    : { text: i18next.t('DiscussionActionSheet:mark-as-spam'), onPress: () => _onMarkAsSpam(model.get('room_id'), data.id)}
   ;
 
   let cancelAction = { text: i18next.t('DiscussionActionSheet:cancel'), onPress: () => {}, isCancelButton: true};
@@ -72,14 +72,14 @@ var _getOptionsForActionSheet = function (model, data) {
 
   if (data.spammed) {
     let spamOption = data.viewed
-      ? { text: i18next.t('DiscussionActionSheet:hide-spam'), onPress: () => _onRemaskSpammed()}
-      : { text: i18next.t('DiscussionActionSheet:show-spam'), onPress: () => _onViewSpammed()}
+      ? { text: i18next.t('DiscussionActionSheet:hide-spam'), onPress: () => _onRemaskSpammed(model.get('room_id'), data.id)}
+      : { text: i18next.t('DiscussionActionSheet:show-spam'), onPress: () => _onViewSpammed(model.get('room_id'), data.id)}
     ;
     options.push(spamOption);
   }
 
   if (_isEditable(data)) {
-    options.push({ text: i18next.t('DiscussionActionSheet:edit'), onPress: () => _onEdit()})
+    options.push({ text: i18next.t('DiscussionActionSheet:edit'), onPress: () => _onEdit(model.get('room_id'), data.id)})
   }
 
   return options;
@@ -112,12 +112,12 @@ var _isEditable = function (data) {
  */
 var _onMarkAsSpam = function (roomId, messageId) {
   console.log('_onMarkAsSpam');
-  //app.client.roomMessageSpam(roomId, messageId);
+  app.client.roomMessageSpam(roomId, messageId);
 };
 
 var _onMarkAsUnspam = function (roomId, messageId) {
   console.log('_onMarkAsUnspam');
-  //app.client.roomMessageUnspam(roomId, messageId);
+  app.client.roomMessageUnspam(roomId, messageId);
 };
 
 var _onViewSpammed = function (roomId, messageId) {
