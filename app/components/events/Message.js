@@ -47,7 +47,7 @@ module.exports = React.createClass({
         <Text>
           <ParsedText
             navigator={this.props.navigator}
-            style={[s.messageContent, {flexWrap: 'wrap'}, this.props.data.viewed && {backgroundColor: 'rgba(241,82,97,0.15)'}]}
+            style={[s.messageContent, {flexWrap: 'wrap'}, this.props.data.viewed && {backgroundColor: 'rgba(241,82,97,0.15)'}, this.props.data.special && {fontSize: 12, fontStyle: 'italic', fontFamily: 'Open Sans', color: '#666666'}]}
           >
             {this.props.data.message}
           </ParsedText>
