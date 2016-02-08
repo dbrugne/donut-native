@@ -7,12 +7,14 @@ var Alert = require('../libs/alert');
 var ListItem = require('../components/ListItem');
 var LoadingModal = require('../components/LoadingModal');
 var Disclaimer = require('../components/Disclaimer');
+var DiscussionHeader = require('./DiscussionHeader');
 
 var {
   View,
   Text,
   TouchableHighlight,
-  StyleSheet
+  StyleSheet,
+  ScrollView
 } = React;
 
 var i18next = require('../libs/i18next');
@@ -35,6 +37,7 @@ i18next.addResourceBundle('en', 'discussionBlockedJoin', {
 var DiscussionBlockedJoin = React.createClass({
   propTypes: {
     data: React.PropTypes.object,
+    model: React.PropTypes.object,
     navigator: React.PropTypes.object
   },
 
@@ -49,29 +52,32 @@ var DiscussionBlockedJoin = React.createClass({
 
   render: function () {
     return (
-      <View style={{flex: 1}}>
-        <View style={{marginVertical: 10, marginHorizontal: 10}}>
-          <Text>{i18next.t('discussionBlockedJoin:infos')}</Text>
+      <ScrollView style={styles.main}>
+        <View style={styles.container}>
+          <DiscussionHeader identifier={this.props.model.get('identifier')} avatar={this.props.model.get('avatar')} />
+          <Text style={{marginVertical: 10, marginHorizontal: 10}}>{i18next.t('discussionBlockedJoin:infos')}</Text>
+          <Disclaimer owner_id={this.props.data.owner_id}
+                      owner_username={this.props.data.owner_username}
+                      text={this.props.data.disclaimer}
+                      navigator={this.props.navigator}
+          />
+
+          <Text style={s.listGroupItemSpacing}/>
+          {this._renderActions()}
+          {
+            (this.state.showLoading)
+              ? <LoadingModal/>
+              : null
+          }
         </View>
-        <Disclaimer owner_id={this.props.data.owner_id}
-                    owner_username={this.props.data.owner_username}
-                    text={this.props.data.disclaimer}
-                    navigator={this.props.navigator}
-        />
-        {this._renderActions()}
-        {
-          (this.state.showLoading)
-            ? <LoadingModal/>
-            : null
-        }
-      </View>
+      </ScrollView>
     );
   },
 
   _renderActions: function () {
     if (!this.props.data.allow_user_request && !this.props.data.hasPassword) {
       return (
-        <View style={{marginVertical: 10, marginHorizontal: 10}}>
+        <View style={{marginVertical: 10, marginHorizontal: 10, flex: 1, alignSelf: 'stretch'}}>
           <Text>{i18next.t('discussionBlockedJoin:invite-only')}</Text>
         </View>
       );
@@ -189,6 +195,14 @@ var DiscussionBlockedJoin = React.createClass({
   }
 });
 var styles = StyleSheet.create({
+  main: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    backgroundColor: '#f0f0f0'
+  },
+  container: {
+    flex: 1
+  },
   buttonContainer: {
     borderTopWidth: 3,
     borderStyle: 'solid',

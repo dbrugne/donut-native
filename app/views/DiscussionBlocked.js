@@ -9,13 +9,12 @@ var navigation = require('../navigation/index');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var Disclaimer = require('../components/Disclaimer');
+var DiscussionHeader = require('./DiscussionHeader');
 
 var {
   StyleSheet,
   View,
   ScrollView,
-  TouchableHighlight,
-  Image,
   Text
 } = React;
 
@@ -66,60 +65,35 @@ var DiscussionBlocked = React.createClass({
   onFocus: function () {
     this.render();
   },
-
   render: function () {
     return (
-      <View style={{flex: 1}}>
-        <ScrollView style={styles.main}>
-          <View style={styles.container}>
-            {this._renderAvatar(this.props.model.get('avatar'))}
-            <Text style={styles.identifier}>{this.props.model.get('identifier')}</Text>
-            <TouchableHighlight
-              onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('owner_id'), identifier: '@' + this.props.model.get('owner_username')})}>
-              <Text>
-                <Text>{i18next.t('discussionBlocked:by')}</Text>
-                <Text style={styles.ownerUsername}>@{this.props.model.get('owner_username')}</Text>
-              </Text>
-            </TouchableHighlight>
+      <ScrollView style={styles.main}>
+        <View style={styles.container}>
+          <DiscussionHeader identifier={this.props.model.get('identifier')} avatar={this.props.model.get('avatar')} />
 
-            {this._renderDescription()}
+          {this._renderDescription()}
 
-            <Disclaimer owner_id={this.props.model.get('owner_id')}
-                        owner_username={this.props.model.get('owner_username')}
-                        text={this.props.model.get('disclaimer')}
-                        navigator={this.props.navigator}
-            />
-
-          </View>
-
-          {this._renderActions()}
-
-          <Text style={s.listGroupItemSpacing}/>
-          <ListItem type='button'
-                    onPress={() => this.props.model.leaveBlocked()}
-                    text={i18next.t('discussionBlocked:close')}
-                    ation
-                    first
-                    last
-                    warning
+          <Disclaimer owner_id={this.props.model.get('owner_id')}
+                      owner_username={this.props.model.get('owner_username')}
+                      text={this.props.model.get('disclaimer')}
+                      navigator={this.props.navigator}
           />
 
-        </ScrollView>
-      </View>
-    );
-  },
+        </View>
 
-  _renderAvatar: function (avatar) {
-    if (!avatar) {
-      return null;
-    }
-    var avatarUrl = common.cloudinary.prepare(avatar, 120);
-    if (!avatarUrl) {
-      return null;
-    }
+        {this._renderActions()}
 
-    return (
-      <Image style={styles.avatar} source={{uri: avatarUrl}}/>
+        <Text style={s.listGroupItemSpacing}/>
+        <ListItem type='button'
+                  onPress={() => this.props.model.leaveBlocked()}
+                  text={i18next.t('discussionBlocked:close')}
+                  ation
+                  first
+                  last
+                  warning
+        />
+
+      </ScrollView>
     );
   },
   _renderDescription: function () {
@@ -145,8 +119,8 @@ var DiscussionBlocked = React.createClass({
     />
       : null;
     return (
-      <View>
-        <Text style={{marginHorizontal: 10, marginVertical: 10}}>
+      <View style={(why === 'ban' || why === 'groupban') && s.alertError}>
+        <Text style={[{marginHorizontal: 10, marginVertical: 10}, (why === 'ban' || why === 'groupban') && s.alertErrorText]}>
           {i18next.t('discussionBlocked:' + why)}
         </Text>
         {rejoinButton}
@@ -160,7 +134,7 @@ var DiscussionBlocked = React.createClass({
         return;
       }
       if (data && data.infos) {
-        return navigation.navigate('DiscussionBlockJoin', data.infos);
+        return navigation.navigate('DiscussionBlockJoin', data.infos, this.props.model);
       } else if (data.success) {
         app.client.roomJoin(this.props.model.get('id'), null, function (response) {
           // @todo handle errors

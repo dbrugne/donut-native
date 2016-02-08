@@ -195,9 +195,7 @@ var style = {
     backgroundColor: '#f2dede',
     borderColor: '#ebccd1',
     padding: 10,
-    borderRadius: 4,
-    marginVertical: 10,
-    marginHorizontal: 10
+    marginVertical: 10
   },
   alertErrorText: {
     fontFamily: 'Open Sans',
