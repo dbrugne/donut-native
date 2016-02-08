@@ -90,7 +90,7 @@ module.exports = React.createClass({
 
     return (
       <View>
-        <Text style={styles.text}>{i18next.t('eventsHello:private')}</Text>
+        <Text style={styles.text}>{i18next.t('eventsHello:private', {owner: this.props.model.get('owner_username')})}</Text>
         <Text style={styles.text}>{i18next.t('eventsHello:engage')}</Text>
       </View>
     );
