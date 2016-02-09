@@ -5,6 +5,8 @@ var s = require('../styles/style');
 var config = require('../libs/config')();
 var storage = require('../libs/storage');
 var app = require('../libs/app');
+var Link = require('../components/Link');
+var hyperlink = require('../libs/hyperlink');
 
 var debug = require('../libs/debug')('storage');
 
@@ -13,7 +15,9 @@ var {
   View,
   Text,
   ScrollView,
-  ListView, TouchableHighlight
+  ListView,
+  Image,
+  TouchableHighlight
   } = React;
 
 var i18next = require('../libs/i18next');
@@ -21,7 +25,11 @@ i18next.addResourceBundle('en', 'about', {
   'version': 'Version __version__',
   'disconnect': 'Disconnect',
   'connect': 'Connect',
-  'disconnect-reconnect': 'Disconnect 15 sec'
+  'disconnect-reconnect': 'Disconnect 15 sec',
+  'title': 'DONUT CHAT',
+  'infos': '© 2016 DONUT SYSTEMS SAS',
+  'right': 'All rights reserved',
+  'discover': 'Discover DONUT on your computer'
 });
 
 class AboutView extends Component {
@@ -44,14 +52,33 @@ class AboutView extends Component {
       <ScrollView>
         <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1 }}>
           <View style={s.listGroup}>
+            <View style={{paddingTop: 15}}>
+              <Text style={[{fontSize: 20, textAlign: 'center', color: '#333333', fontFamily: 'Open Sans'}, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('about:title')}</Text>
+            </View>
             <TouchableHighlight
               onLongPress={this.toggleConfig.bind(this)}
               underlayColor= 'transparent'
               >
-              <View style={[{paddingVertical: 15}, s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
-                <Text style={[{fontSize: 16}, s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('about:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}</Text>
+              <View style={{paddingTop: 5}}>
+                <Text style={[{fontSize: 14, textAlign: 'center', color: '#999', fontFamily: 'Open Sans'}, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('about:version', {version: config.DONUT_VERSION + ' (' + config.DONUT_BUILD + ')'})}</Text>
               </View>
             </TouchableHighlight>
+            <View style={{alignItems: 'center', paddingVertical: 40}}>
+              <Image source={require('../assets/logo.png')} resizeMode='contain' style={{width: 350, height: 71}} />
+            </View>
+            <View style={{alignItems: 'center', paddingVertical: 10}}>
+              <Text style={[{textAlign: 'center'}, s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('about:infos')}</Text>
+              <Text style={[{textAlign: 'center'}, s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('about:right')}</Text>
+            </View>
+            <View style={{alignItems: 'center', paddingVertical: 20}}>
+              <Text style={[{textAlign: 'center'}, s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{i18next.t('about:discover')}</Text>
+              <Link
+                onPress={() => hyperlink.open('https://donut.me')}
+                stype={s.h1}
+                type='underlined'
+                text={'https://donut.me'}
+                />
+            </View>
             {this._renderConfig()}
           </View>
         </View>
@@ -70,6 +97,7 @@ class AboutView extends Component {
           text={i18next.t('about:connect')}
           type='button'
           onPress={() => { app.client.connect(); }}
+          first
         />
         <ListItem
           text={i18next.t('about:disconnect')}
