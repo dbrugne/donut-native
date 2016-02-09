@@ -105,6 +105,23 @@ var RoomUsersView = React.createClass({
   },
 
   render: function () {
+    let types = null;
+    if (this.state.is_op || this.state.is_owner || currentUser.isAdmin()) {
+      types = (
+        <View>
+          <TouchableHighlight onPress={() => this._changeType('devoice')}
+                              underlayColor= '#DDD'
+                              style={[styles.button, this.type === 'devoice' && styles.buttonActive]}>
+            <Text style={styles.textButton}>{i18next.t('RoomUsers:devoice')}</Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={() => this._changeType('ban')}
+                              underlayColor= '#DDD'
+                              style={[styles.button, this.type === 'ban' && styles.buttonActive]}>
+            <Text style={styles.textButton}>{i18next.t('RoomUsers:ban')}</Text>
+          </TouchableHighlight>
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <View>
@@ -125,21 +142,12 @@ var RoomUsersView = React.createClass({
                               style={[styles.button, this.type === 'users' && styles.buttonActive]}>
             <Text style={styles.textButton}>{i18next.t('RoomUsers:users')}</Text>
           </TouchableHighlight>
-          <TouchableHighlight onPress={() => this._changeType('ban')}
-                              underlayColor= '#DDD'
-                              style={[styles.button, this.type === 'ban' && styles.buttonActive]}>
-            <Text style={styles.textButton}>{i18next.t('RoomUsers:ban')}</Text>
-          </TouchableHighlight>
           <TouchableHighlight onPress={() => this._changeType('op')}
                               underlayColor= '#DDD'
                               style={[styles.button, this.type === 'op' && styles.buttonActive]}>
             <Text style={styles.textButton}>{i18next.t('RoomUsers:op')}</Text>
           </TouchableHighlight>
-          <TouchableHighlight onPress={() => this._changeType('devoice')}
-                              underlayColor= '#DDD'
-                              style={[styles.button, this.type === 'devoice' && styles.buttonActive]}>
-            <Text style={styles.textButton}>{i18next.t('RoomUsers:devoice')}</Text>
-          </TouchableHighlight>
+          {types}
         </View>
 
         <ListView
