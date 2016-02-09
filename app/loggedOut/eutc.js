@@ -65,7 +65,7 @@ class EutcView extends Component {
           <View style={styles.spacer}/>
           <Text style={styles.h2}>Paramètres Modifiables de Salon : <Text style={styles.text}>Photo de profil du Salon, "poster" ou Papier Peint du Salon, Sujet du Salon</Text></Text>
           <View style={styles.spacer}/>
-          <Text style={styles.h2}>Salon de discussion (ou donut) : <Text style={styles.text}>Espace de discussion instantanée identifié par un Nom de Salon (précédé de du caractère #) et dans lequel sont regroupés un certain nombre d'Utilisateurs afin qu'ils interagissent entre eux.</Text></Text>
+          <Text style={styles.h2}>Salon de discussion : <Text style={styles.text}>Espace de discussion instantanée identifié par un Nom de Salon (précédé de du caractère #) et dans lequel sont regroupés un certain nombre d'Utilisateurs afin qu'ils interagissent entre eux.</Text></Text>
           <View style={styles.spacer}/>
           <Text style={styles.h2}>Service : <Text style={styles.text}>Ensemble des fonctionnalités mises à la disposition de l'Utilisateur.</Text></Text>
           <View style={styles.spacer}/>

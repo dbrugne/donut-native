@@ -21,7 +21,7 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'discussionBlockedJoin', {
   'request': 'Request',
   'request-placeholder': 'Your motivations ...',
-  'request-disclaimer': 'Your contact details and your following message (optional) will be sent to the moderators of this donut.',
+  'request-disclaimer': 'Your contact details and your following message (optional) will be sent to the moderators of this discussion.',
   'password': 'Password',
   'password-disclaimer': 'Enter the discussion password',
   'password-placeholder': 'password',

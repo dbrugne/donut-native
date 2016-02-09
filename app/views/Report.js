@@ -177,7 +177,7 @@ var ReportView = React.createClass({
     } else {
       app.client.signalEvent(this.props.data.event.id, this.state.focused, this.state.comment);
     }
-    Alert.show('The report was sent to the donut team');
+    Alert.show('The report was sent to the DONUT team');
     this.props.navigator.pop();
   },
   onKeyboardWillShow (height) {

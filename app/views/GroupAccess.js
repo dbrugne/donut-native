@@ -20,9 +20,9 @@ var emojione = require('emojione');
 var navigation = require('../navigation/index');
 
 i18next.addResourceBundle('en', 'GroupAccess', {
-  'title': 'Members create donuts and manage them. Members can join any donut open to members. Note: public donuts are open to anyone.',
-  'disclaimer-public': 'This donut is public. Any user can access it.',
-  'disclaimer-public-2': 'You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public donut will remain members once this donut switched to private. Caution, this action cannot be undone.',
+  'title': 'Members create discussions and manage them. Members can join any discussion open to members. Note: public discussions are open to anyone.',
+  'disclaimer-public': 'This discussion is public. Any user can access it.',
+  'disclaimer-public-2': 'You can switch this discussion to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public discussion will remain members once this discussion switched to private. Caution, this action cannot be undone.',
   'allow-users-request': 'Allow users to request access',
   'allow-users-request-true': 'Users will be able to ask for an invitation to enter this community',
   'allow-users-request-false': 'Users will be not be able to ask for an invitation to enter this community',

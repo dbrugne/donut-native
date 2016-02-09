@@ -19,8 +19,8 @@ var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'Search', {
-  'search': 'Search donut, community or user here',
-  'donuts': 'donuts',
+  'search': 'Search discussion, community or user here',
+  'donuts': 'discussions',
   'users': 'users',
   'communities': 'communities',
   'load-more': 'load more',
