@@ -18,6 +18,7 @@ var app = require('../libs/app');
 var Alert = require('../libs/alert');
 var EventMessage = require('./../components/events/Message');
 var UserBlock = require('./../components/events/UserBlock');
+var ListItem = require('./../components/ListItem');
 var common = require('@dbrugne/donut-common/mobile');
 var animation = require('../libs/animations').keyboard;
 
@@ -127,12 +128,15 @@ var ReportView = React.createClass({
   },
   _renderOption: function (option, index) {
     return (
-      <TouchableHighlight key={option} style={[styles.line, index === 0 && styles.first]} underlayColor='transparent' onPress={() => this.setState({focused: option})}>
-        <View style={styles.container}>
-          <View style={[styles.radio, this.state.focused === option && {backgroundColor: '#FC2063', borderColor: '#FC2063'}]}/>
-          <Text style={styles.text}>{i18next.t('report:' + option)}</Text>
-        </View>
-      </TouchableHighlight>
+      <ListItem
+        type='radio'
+        key={option}
+        first={index === 0}
+        last={index === options.length}
+        onPress={() => this.setState({focused: option})}
+        active={this.state.focused === option}
+        text={i18next.t('report:' + option)}
+        />
     );
   },
   _renderTextArea: function () {
