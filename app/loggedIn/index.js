@@ -86,6 +86,7 @@ var LoggedIn = React.createClass({
   },
   onDiscussionAdded: function (model) {
     if (this.nextFocus === model.get('id')) {
+      this.nextFocus = null;
       if (model.get('type') === 'group') {
         return navigation.navigate('Group', {id: model.get('id'), name: model.get('name')});
       }

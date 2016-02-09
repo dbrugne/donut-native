@@ -12,8 +12,8 @@ var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'RoomEditWebsite', {
-  'placeholder': 'Website',
-  'help': 'Require valid url and 255 characters max'
+  'placeholder': ' URL',
+  'help': 'Valid URL of 255 characters max.'
 }, true, true);
 
 var RoomEditWebsiteView = React.createClass({

@@ -31,7 +31,7 @@ i18next.addResourceBundle('en', 'discussionBlocked', {
   'not-confirmed': 'Not confirmed user can\'t join private discussions',
   'ban': 'You were banned from this discussion',
   'groupban': 'You were banned from this community',
-  'kick': 'You have been kicked out from this discussion.',
+  'kick': 'You have been kicked out.',
   'rejoin': ' to get back in.',
   'close': 'Close this discussion'
 });

@@ -21,7 +21,7 @@ var Icon = require('react-native-vector-icons/FontAwesome');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'forgot', {
   'forgot': 'Forgot Password',
-  'what': 'What email address do you use to sign into Donut ?',
+  'what': 'What email do you usually use to sign in ?',
   'reset': 'Reset',
   'email': 'Email',
   'back': 'Back'

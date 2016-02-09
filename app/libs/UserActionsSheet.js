@@ -35,7 +35,7 @@ module.exports = {
     if (['roomUsers', 'roomInvite', 'groupUsers', 'groupInvite'].indexOf(type) === -1) {
       return debug.warn('Wrong type value for userActionSheet :', type);
     }
-    if (!id || !user || !user.user_id) {
+    if (!user || !user.user_id) {
       return debug.warn('Wrong params for userActionSheet');
     }
 

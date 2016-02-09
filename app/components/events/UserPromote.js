@@ -24,9 +24,9 @@ module.exports = React.createClass({
     var what;
     switch (this.props.type) {
       case 'user:ban':
-        what = 'banned'; break;
+        what = 'blocked'; break;
       case 'user:deban':
-        what = 'unbanned'; break;
+        what = 'unblocked'; break;
       default :
         what = this.props.type;
     }

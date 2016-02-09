@@ -8,7 +8,7 @@ var ListItem = require('../components/ListItem');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupEditDescription', {
   'placeholder': 'describe this community in a few words',
-  'help': 'Maximum 255 characters'
+  'help': '255 characters max.'
 });
 
 class GroupEditDescription extends UserField {

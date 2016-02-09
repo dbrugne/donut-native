@@ -16,7 +16,8 @@ module.exports = React.createClass({
     username: React.PropTypes.string.isRequired,
     realname: React.PropTypes.string,
     navigator: React.PropTypes.object.isRequired,
-    prepend: React.PropTypes.string
+    prepend: React.PropTypes.string,
+    onPress: React.PropTypes.func
   },
   render () {
     var realname = null;
@@ -40,6 +41,9 @@ module.exports = React.createClass({
     );
   },
   onPress () {
+    if (this.props.onPress) {
+      return this.props.onPress();
+    }
     navigation.navigate('Profile', {
       type: 'user',
       id: this.props.user_id,

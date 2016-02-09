@@ -35,7 +35,7 @@ class Discover extends Component {
   render () {
     var version = config.DONUT_VERSION; // + ' (' + config.DONUT_BUILD + ')';
     return (
-      <ScrollView style={{backgroundColor: '#f0f0f0'}}>
+      <ScrollView>
         {this._renderConfirmed()}
         <Featured {...this.props} />
         <View>

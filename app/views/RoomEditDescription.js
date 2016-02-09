@@ -15,7 +15,7 @@ var LoadingView = require('../components/Loading');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'RoomEditDescription', {
   'placeholder': 'Description',
-  'help': 'Maximum 200 characters'
+  'help': '200 characters max.'
 });
 
 var RoomEditDescriptionView = React.createClass({

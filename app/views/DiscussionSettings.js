@@ -46,7 +46,7 @@ i18next.addResourceBundle('en', 'DiscussionSettings', {
   'notifications-title': 'Notifications',
   'delete': 'Delete this discussion',
   'deleteTitle': 'Delete discussion',
-  'deleteDisclaimer': 'Are you sure you whant to delete __identifier__. This action is ireversible',
+  'deleteDisclaimer': 'Are you sure you want to delete this discussion ? This action is irreversible.',
   'silence': 'Silence'
 });
 

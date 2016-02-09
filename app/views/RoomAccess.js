@@ -25,18 +25,17 @@ i18next.addResourceBundle('en', 'RoomAccess', {
   'switch-button': 'Switch to private mode',
   'switch-disclaimer': 'Warning, this action is irreversible',
   'allow-members-join': 'Allow members to join this discussion',
-  'allow-members-join-true': 'Community members will be automatically allowed to enter this discussion',
   'allow-members-join-false': 'Community members will not be alowed to enter this discussion automatically',
   'allow-users-request': 'Allow users to request access',
   'allow-users-request-true': 'Users will be able to ask for an invitation to this discussion',
   'allow-users-request-false': 'Users will be not be able to ask for an invitation to this discussion',
   'disclaimer': 'Display a message',
-  'disclaimer-help': 'This message will be displayed to any not allowed user trying to enter this discussion',
+  'disclaimer-help': 'Message displayed to all users trying to join',
   'password': 'Set a password',
   'password-disclaimer': 'Users with the password can join without prior invitation.',
   'password-placeholder': 'Enter a password',
-  'password-help': 'The password must be between 4 and 255 characters',
-  'password-success': 'The password has been successfully saved'
+  'password-help': 'Between 4 and 255 characters',
+  'password-success': 'Password saved'
 });
 
 var RoomAccessView = React.createClass({
@@ -179,7 +178,7 @@ var RoomAccessView = React.createClass({
         <Text style={s.listGroupItemSpacing}/>
         <ListItem
           text={i18next.t('RoomAccess:allow-members-join')}
-          help={this.state.data.allow_group_member ? i18next.t('RoomAccess:allow-members-join-true') : i18next.t('RoomAccess:allow-members-join-false')}
+          help={this.state.data.allow_group_member ? '' : i18next.t('RoomAccess:allow-members-join-false')}
           type='switch'
           onSwitch={this.saveRoomData.bind(this, update)}
           switchValue={this.state.data.allow_group_member}

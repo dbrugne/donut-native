@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var _ = require('underscore');
 var s = require('./../../styles/search');
 var Abstract = require('./Abstract');
 
@@ -81,9 +82,9 @@ class CardUser extends Abstract {
     return (
       <Icon
         name='microphone-slash'
-        size={35}
+        size={25}
         color='#ff3838'
-        style={{position: 'absolute', top: 30, right: 10}}
+        style={{position: 'absolute', top: 35, right: 20}}
       />
     );
   }
@@ -96,9 +97,9 @@ class CardUser extends Abstract {
     return (
       <Icon
         name='ban'
-        size={35}
+        size={25}
         color='#ff3838'
-        style={{position: 'absolute', top: 30, right: 10}}
+        style={{position: 'absolute', top: 35, right: 20}}
         />
     );
   }
@@ -121,7 +122,7 @@ class CardUser extends Abstract {
     if (this.props.realname) {
       return (
         <Text>
-          <Text style={[s.title, {marginLeft: 5}]}>{this.props.realname}</Text>
+          <Text style={[s.title, {marginLeft: 5}]}>{_.unescape(this.props.realname)}</Text>
           <Text> </Text>
           <Text style={[s.title, {fontWeight: 'normal', color: '#999999'}]}>{this.props.identifier}</Text>
         </Text>
@@ -139,7 +140,7 @@ class CardUser extends Abstract {
     }
 
     return (
-      <Text style={s.description}>{this.truncate(this.props.bio, true)}</Text>
+      <Text style={s.description}>{_.unescape(this.truncate(this.props.bio, true))}</Text>
     );
   }
 

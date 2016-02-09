@@ -7,8 +7,8 @@ var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupEditWebsite', {
-  'placeholder': 'URL of a website',
-  'help': 'Require valid url and 255 characters max'
+  'placeholder': 'Website URL',
+  'help': 'Valid URL of 255 characters max.'
 });
 
 class GroupEditWebsite extends UserField {

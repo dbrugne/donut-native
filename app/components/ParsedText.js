@@ -8,8 +8,14 @@ var common = require('@dbrugne/donut-common');
 var navigation = require('../navigation/index');
 var hyperlink = require('../libs/hyperlink');
 var s = require('../styles/events');
+var userActionSheet = require('../libs/UserActionsSheet');
+var roomActionSheet = require('../libs/RoomActionsSheet');
+var app = require('../libs/app');
 
 module.exports = React.createClass({
+  contextTypes: {
+    actionSheet: React.PropTypes.func
+  },
   render () {
     if (!this.props.children) {
       return (<View />);
@@ -21,7 +27,7 @@ module.exports = React.createClass({
         parse={[{
           pattern: common.markup.markupPattern,
           style: s.linksRoom,
-          onPress: this.onPress,
+          onPress: (string) => this.onPress(string),
           renderText: (string) => {
             var markup = common.markup.markupToObject(string);
             if (!markup) {
@@ -42,12 +48,16 @@ module.exports = React.createClass({
       hyperlink.open(markup.href);
     }
 
-    if (['user', 'group', 'room'].indexOf(markup.type) !== -1) {
-      navigation.navigate('Profile', {
-        type: markup.type,
-        id: markup.id,
-        identifier: markup.title
-      });
+    if (markup.type === 'user') {
+      userActionSheet.openActionSheet(this.context.actionSheet(), 'roomUsers', null, {user_id: markup.id, username: markup.title.replace('@', '')});
+    }
+
+    if (markup.type === 'room') {
+      roomActionSheet.openActionSheet(this.context.actionSheet(), {room_id: markup.id, identifier: markup.title});
+    }
+
+    if (markup.type === 'group') {
+      app.trigger('joinGroup', markup.id);
     }
   }
 });
