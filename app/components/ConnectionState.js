@@ -38,13 +38,13 @@ class ConnectionState extends Component {
     }
     if (this.state.status === 'offline') {
       return (
-        <View style={[styles.container, {backgroundColor: '#F00'}]}>
+        <View style={[styles.container, {backgroundColor: '#BBB'}]}>
           <Text style={{color: '#FFF'}}>{i18next.t('connectionState:' + this.state.status)}</Text>
         </View>
       );
     }
     return (
-      <View style={[styles.container, {backgroundColor: '#FA0'}]}>
+      <View style={[styles.container, {backgroundColor: '#BBB'}]}>
         <Text style={{color: '#FFF'}}>{i18next.t('connectionState:' + this.state.status)}</Text>
         <View style={{width: 10}}/>
         {
@@ -54,7 +54,7 @@ class ConnectionState extends Component {
               animating
               style={styles.loading}
               size='small'
-              color='#666666'
+              color='#FFF'
             />
         }
       </View>
