@@ -60,7 +60,7 @@ class CurrentUserView extends Component {
         <TouchableHighlight
           underlayColor= '#414041'
           onPress={() => navigation.navigate('MyAccount')}>
-          <View style={{flexDirection: 'row', backgroundColor: '1D1D1D', alignItems:'center', justifyContent:'center'}}>
+          <View style={{flexDirection: 'row', backgroundColor: '#1D1D1D', alignItems: 'center', justifyContent: 'center'}}>
             <View style={styles.avatarCtn}>
               <View style={[styles.linkContainer, {position: 'relative'}]}>
                 {avatar}
