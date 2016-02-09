@@ -14,9 +14,6 @@ var Card = require('../components/Card');
 var alert = require('../libs/alert');
 var navigation = require('../navigation/index');
 var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'GroupRooms', {
-  '': ''
-});
 
 var GroupRoomsListView = React.createClass({
   propTypes: {

@@ -94,6 +94,18 @@ class ListItemImageList extends ListItemAbstract {
       );
     }
 
+    if (_.has(item, 'group_id')) {
+      let avatarUrl = common.cloudinary.prepare(item.avatar, 60);
+      return (
+        <TouchableHighlight key={item.group_id}
+                            underlayColor='transparent'
+                            onPress={() => navigation.navigate('Group', {id: item.group_id, name: item.name})}
+                            >
+          <Image style={{width: 40, height: 40, marginHorizontal: 2}} source={{uri: avatarUrl}}/>
+        </TouchableHighlight>
+      );
+    }
+
     return null;
   }
 

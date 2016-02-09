@@ -3,21 +3,28 @@
 var React = require('react-native');
 var {
   ListView,
+  View,
   Text,
   Component
 } = React;
 
+var _ = require('underscore');
 var app = require('./../libs/app');
 var s = require('../styles/style');
 var navigation = require('../navigation/index');
 var Card = require('../components/Card');
 var Button = require('../components/Button');
+var ListItem = require('../components/ListItem');
 var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'DiscoverFeatured', {
-  'welcome': 'Join new communities and discussions from this list',
-  'view-more': 'View more'
+  'welcome': [
+    'Welcome !',
+    'Find your way arounf DONUT by joining or creating communities and discussions you belong with.'
+  ],
+  'groups': 'Featured communities',
+  'rooms': 'Featured discussions'
 });
 
 class Featured extends Component {
@@ -26,7 +33,8 @@ class Featured extends Component {
     this.discoverDataSource = require('../libs/discoverDataSource')();
     this.state = {
       loaded: false,
-      dataSource: this.discoverDataSource.dataSource
+      rooms: [],
+      groups: []
     };
   }
   componentDidMount () {
@@ -39,9 +47,21 @@ class Featured extends Component {
   onReady () {
     app.client.home((response) => {
       if (response && response.rooms) {
+        let rooms = [];
+        let groups = [];
+
+        _.each(response.rooms.list, function(elt){
+          if (elt.type === 'room') {
+            rooms.push(elt);
+          } else {
+            groups.push(elt);
+          }
+        });
+
         this.setState({
           loaded: true,
-          dataSource: this.discoverDataSource.append(response.rooms.list)
+          rooms: rooms,
+          groups: groups
         });
       }
     });
@@ -54,39 +74,61 @@ class Featured extends Component {
     }
 
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderHeader={this.renderHeader}
-        renderRow={this.renderRow.bind(this)}
-        renderFooter={this.renderFooter.bind(this)}
-        style={{flex: 1}}
-        scrollEnabled
-        />
+      <View>
+        {this._renderStats()}
+
+        <Text style={[s.p, {marginTop: 20}]}>{i18next.t('DiscoverFeatured:welcome')}</Text>
+
+        {this._renderGroups()}
+
+        {this._renderRooms()}
+      </View>
     );
   }
-  renderHeader () {
-    return (<Text style={[s.p, {marginTop: 20}]}>{i18next.t('DiscoverFeatured:welcome')}</Text>);
+  _renderStats() {
+    // @todo when handler ready
+    return null;
   }
-  renderRow (room) {
+  _renderGroups() {
+    if (this.state.groups.length === 0) {
+      return null;
+    }
+
     return (
-      <Card
-        onPress={() => navigation.navigate('Profile', {type: 'room', id: room.room_id, identifier: room.identifier})}
-        image={room.avatar}
-        type='room'
-        identifier={room.identifier}
-        description={room.description}
-        mode={room.mode}
-        key={room.room_id}
-        />
+      <View>
+        <Text style={s.listGroupItemSpacing}/>
+        <ListItem
+          onPress={() => navigation.navigate('GroupList')}
+          text={i18next.t('DiscoverFeatured:groups')}
+          icon='bars'
+          type='image-list'
+          action
+          value={this.state.groups.length + ''}
+          first
+          imageList={this.state.groups}
+          />
+      </View>
     );
   }
-  renderFooter () {
+  _renderRooms() {
+    if (this.state.rooms.length === 0) {
+      return null;
+    }
+
     return (
-      <Button
-        type='white'
-        onPress={() => navigation.navigate('Search')}
-        label={i18next.t('DiscoverFeatured:view-more')}
-      />
+      <View>
+        <Text style={s.listGroupItemSpacing}/>
+        <ListItem
+          onPress={() => navigation.navigate('RoomList')}
+          text={i18next.t('DiscoverFeatured:rooms')}
+          icon='bars'
+          type='image-list'
+          action
+          value={this.state.rooms.length + ''}
+          first
+          imageList={this.state.rooms}
+          />
+      </View>
     );
   }
 }
