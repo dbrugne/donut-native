@@ -46,6 +46,11 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+      if (!isTaskRoot()) {
+          finish();
+          return;
+      }
+
       super.onCreate(savedInstanceState);
 
       String env = "none";

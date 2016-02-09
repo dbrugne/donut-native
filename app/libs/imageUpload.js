@@ -4,7 +4,8 @@ var cloudinary = require('./cloudinary');
 
 var {
   NativeModules,
-  Alert
+  Alert,
+  Platform
   } = React;
 
 var i18next = require('../libs/i18next');
@@ -12,7 +13,8 @@ i18next.addResourceBundle('en', 'imageUpload', {
   'description': 'Upload image from',
   'take': 'Camera',
   'choose': 'Gallery',
-  'uploading': 'uploading ...'
+  'uploading': 'uploading ...',
+  'cancel': 'Cancel'
 });
 
 let { UIImagePickerManager: ImagePickerManager } = NativeModules;
@@ -25,24 +27,49 @@ exports.pickImage = function (callback) {
     chooseFromLibraryButtonTitle: i18next.t('imageUpload:choose')
   };
 
-  Alert.alert(
-    null,
-    i18next.t('imageUpload:description'),
-    [
-      {
-        text: i18next.t('imageUpload:take'),
-        onPress: () => ImagePickerManager.launchCamera(options, (response) => {
-          return callback(response, 'camera');
-        })
-      },
-      {
-        text: i18next.t('imageUpload:choose'),
-        onPress: () => ImagePickerManager.launchImageLibrary(options, (response) => {
-          return callback(response, 'library');
-        })
-      }
-    ]
-  );
+  if (Platform.OS === 'android') {
+    Alert.alert(
+      null,
+      i18next.t('imageUpload:description'),
+      [
+        {
+          text: i18next.t('imageUpload:take'),
+          onPress: () => ImagePickerManager.launchCamera(options, (response) => {
+            return callback(response, 'camera');
+          })
+        },
+        {
+          text: i18next.t('imageUpload:choose'),
+          onPress: () => ImagePickerManager.launchImageLibrary(options, (response) => {
+            return callback(response, 'library');
+          })
+        }
+      ]
+    );
+  } else {
+    Alert.alert(
+      null,
+      i18next.t('imageUpload:description'),
+      [
+        {
+          text: i18next.t('imageUpload:take'),
+          onPress: () => ImagePickerManager.launchCamera(options, (response) => {
+            return callback(response, 'camera');
+          })
+        },
+        {
+          text: i18next.t('imageUpload:choose'),
+          onPress: () => ImagePickerManager.launchImageLibrary(options, (response) => {
+            return callback(response, 'library');
+          })
+        },
+        {
+          text: i18next.t('imageUpload:cancel'),
+          onPress: () => {}
+        }
+      ]
+    );
+  }
 };
 
 exports.uploadToCloudinary = function (base64File, tags, preset, callback) {
