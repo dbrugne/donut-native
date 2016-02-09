@@ -5,7 +5,8 @@ var {
   ListView,
   View,
   Text,
-  Component
+  Component,
+  StyleSheet
 } = React;
 
 var _ = require('underscore');
@@ -19,10 +20,8 @@ var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'DiscoverFeatured', {
-  'welcome': [
-    'Welcome !',
-    'Find your way arounf DONUT by joining or creating communities and discussions you belong with.'
-  ],
+  'title': 'Welcome',
+  'welcome': 'Find your way around DONUT by joining or creating communities and discussions you belong with.',
   'groups': 'Featured communities',
   'rooms': 'Featured discussions'
 });
@@ -77,7 +76,8 @@ class Featured extends Component {
       <View>
         {this._renderStats()}
 
-        <Text style={[s.p, {marginTop: 20}]}>{i18next.t('DiscoverFeatured:welcome')}</Text>
+        <Text style={{ marginHorizontal: 10, marginTop: 10, fontSize: 20, color: '#FC2063', letterSpacing: 1.88, lineHeight: 30, textAlign: 'center'}}>{i18next.t('DiscoverFeatured:title')}</Text>
+        <Text style={{ marginHorizontal: 10, marginTop: 10, fontSize: 14, color: '#AFBAC8', letterSpacing: 1.50, lineHeight: 20, textAlign: 'center'}}>{i18next.t('DiscoverFeatured:welcome')}</Text>
 
         {this._renderGroups()}
 
@@ -96,17 +96,17 @@ class Featured extends Component {
 
     return (
       <View>
-        <Text style={s.listGroupItemSpacing}/>
+        <Text style={[s.listGroupItemSpacing, {backgroundColor: '#FFF'}]}/>
         <ListItem
           onPress={() => navigation.navigate('GroupList')}
           text={i18next.t('DiscoverFeatured:groups')}
-          icon='bars'
           type='image-list'
           action
           value={this.state.groups.length + ''}
           first
-          imageList={this.state.groups}
+          imageList={_.first(this.state.groups, 5)}
           />
+
       </View>
     );
   }
@@ -117,20 +117,23 @@ class Featured extends Component {
 
     return (
       <View>
-        <Text style={s.listGroupItemSpacing}/>
+        <Text style={[s.listGroupItemSpacing, {backgroundColor: '#FFF'}]}/>
         <ListItem
           onPress={() => navigation.navigate('RoomList')}
           text={i18next.t('DiscoverFeatured:rooms')}
-          icon='bars'
           type='image-list'
           action
           value={this.state.rooms.length + ''}
           first
-          imageList={this.state.rooms}
+          imageList={_.first(this.state.rooms, 5)}
           />
       </View>
     );
   }
 }
+
+var styles = StyleSheet.create({
+
+});
 
 module.exports = Featured;
