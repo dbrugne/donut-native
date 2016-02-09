@@ -8,7 +8,8 @@ var {
   TouchableHighlight,
   StyleSheet,
   TextInput,
-  Image
+  Image,
+  LayoutAnimation
   } = React;
 
 var _ = require('underscore');
@@ -18,6 +19,7 @@ var Alert = require('../libs/alert');
 var EventMessage = require('./../components/events/Message');
 var UserBlock = require('./../components/events/UserBlock');
 var common = require('@dbrugne/donut-common/mobile');
+var animation = require('../libs/animations').keyboard;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'report', {
@@ -46,27 +48,38 @@ var ReportView = React.createClass({
   },
   getInitialState: function () {
     return {
+      keyboardSpace: 0,
       focused: null,
       comment: ''
     };
   },
+  componentDidMount () {
+    app.on('keyboardWillShow', this.onKeyboardWillShow, this);
+    app.on('keyboardWillHide', this.onKeyboardWillHide, this);
+  },
+  componentWillUnmount () {
+    app.off(null, null, this);
+  },
   render: function () {
     return (
-      <ScrollView style={{flex: 1}}>
-        {this._renderWhatIsReported()}
-        {_.map(options, (opt, index) => {
-          return this._renderOption(opt, index);
-        })}
-        {this._renderTextArea()}
-        <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10}}>
-          <TouchableHighlight underlayColor='#FF6656' style={[s.buttonRed, s.button, styles.button]} onPress={() => this._onCancel()}>
-            <Text style={[s.textCtn, {color: '#FFF'}]}>{i18next.t('report:cancel')}</Text>
-          </TouchableHighlight>
-          <TouchableHighlight underlayColor='#41C87A' style={[s.buttonGreen, s.button, styles.button]} onPress={() => this._onSend()}>
-            <Text style={[s.textCtn, {color: '#FFF'}]}>{i18next.t('report:send')}</Text>
-          </TouchableHighlight>
-        </View>
-      </ScrollView>
+      <View style={{flex: 1, flexDirection: 'column'}}>
+        <ScrollView>
+          {this._renderWhatIsReported()}
+          {_.map(options, (opt, index) => {
+            return this._renderOption(opt, index);
+          })}
+          {this._renderTextArea()}
+          <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10}}>
+            <TouchableHighlight underlayColor='#FF6656' style={[s.buttonRed, s.button, styles.button]} onPress={() => this._onCancel()}>
+              <Text style={[s.textCtn, {color: '#FFF'}]}>{i18next.t('report:cancel')}</Text>
+            </TouchableHighlight>
+            <TouchableHighlight underlayColor='#41C87A' style={[s.buttonGreen, s.button, styles.button]} onPress={() => this._onSend()}>
+              <Text style={[s.textCtn, {color: '#FFF'}]}>{i18next.t('report:send')}</Text>
+            </TouchableHighlight>
+          </View>
+        </ScrollView>
+        <View style={{height: this.state.keyboardSpace}}/>
+      </View>
     );
   },
   _renderWhatIsReported: function () {
@@ -148,6 +161,14 @@ var ReportView = React.createClass({
     }
     Alert.show('The report was sent to the donut team');
     this.props.navigator.pop();
+  },
+  onKeyboardWillShow (height) {
+    LayoutAnimation.configureNext(animation);
+    this.setState({ keyboardSpace: height });
+  },
+  onKeyboardWillHide () {
+    LayoutAnimation.configureNext(animation);
+    this.setState({ keyboardSpace: 0 });
   }
 });
 
