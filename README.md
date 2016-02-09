@@ -58,6 +58,19 @@ For each scenario launch Xcode project select a scheme (listed bellow), select a
  
 https://github.com/facebook/react-native/commit/8db35d492b846f51a758e8ee7e5e402c6bad3785
 
-**Temporary bug in react-native navigation bar https://github.com/facebook/react-native/issues/4559
+**Temporary bug in react-native navigation bar (Android only)**
+https://github.com/facebook/react-native/issues/4559
 in: node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorNavigationBar.js
 change ```pointerEvents="box-none"``` by ```pointerEvents={route === this.props.navigator.navigationContext.currentRoute ? 'box-none' : 'none'}```
+
+**Bug with current react-native v0.20.0-rc1**
+
+https://github.com/facebook/react-native/commit/9baff8f437eee49f8ab0e6f433bf86466ca16662
+
+```
+# ./node_modules/react-native/Libraries/Utilities/MessageQueue.js:331
+  ...
+  // resolve(Platform.OS == 'ios' ? data[0] : data);
+  resolve(data);
+  ...
+```
