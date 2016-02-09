@@ -23,7 +23,7 @@ var routeTemplate = {
       : title;
     return (
       <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={{fontFamily: '.HelveticaNeueInterface-MediumP4', fontSize: 16, color: '222', fontWeight: 'bold'}}>
+        <Text style={{fontFamily: '.HelveticaNeueInterface-MediumP4', fontSize: 16, color: '#222', fontWeight: 'bold'}}>
           {title}
         </Text>
       </View>
