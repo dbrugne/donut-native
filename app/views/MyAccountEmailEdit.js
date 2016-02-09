@@ -15,10 +15,10 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountEmailEdit', {
   'modal-title': 'Delete email',
   'modal-description': 'Are you sure you want to delete this email ? This action is irreversible and cannot be undone',
-  'delete': 'delete',
+  'delete': 'Delete',
   'validated': 'THIS EMAIL WAS VALIDATED',
-  'not-validated': 'THIS EMAIL WASN\'T VALIDATED',
-  'send-validation': 'Send a validation email',
+  'not-validated': 'E-MAIL NOT VERIFIED',
+  'send-validation': 'Send a verification email',
   'define': 'Define as main email'
 });
 

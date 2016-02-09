@@ -13,7 +13,7 @@ var {
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountEmail', {
   'change': 'CHANGE MAIN EMAIL',
-  'mail': 'Mail'
+  'mail': 'Email'
 });
 
 class ChangeEmailView extends Component {

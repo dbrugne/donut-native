@@ -7,8 +7,8 @@ var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupEditDisclaimer', {
-  'placeholder': 'message displayed',
-  'help': 'Maximum 255 characters'
+  'placeholder': 'selection criteria, password hint...',
+  'help': '255 characters max'
 });
 
 class GroupEditDisclaimer extends UserField {

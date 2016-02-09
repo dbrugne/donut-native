@@ -7,8 +7,8 @@ var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountBio', {
-  'placeholder': 'Biography',
-  'help': 'Maximum 200 characters'
+  'placeholder': 'Tell a few words about yourself',
+  'help': '200 characters max'
 });
 
 class UserFieldBio extends UserField {

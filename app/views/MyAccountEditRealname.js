@@ -7,8 +7,8 @@ var ListItem = require('../components/ListItem');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountRealname', {
-  'placeholder': 'name and first name',
-  'help': 'Between 2 and 20 characters, letters with or without accents, numbers, dashes (-) and spaces.'
+  'placeholder': 'Full name',
+  'help': 'Between 2 and 20 characters. Letters, dashes (-), apostrophes and spaces.'
 });
 
 class UserFieldRealname extends UserField {

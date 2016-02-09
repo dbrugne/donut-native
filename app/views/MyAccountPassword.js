@@ -142,7 +142,7 @@ class ChangePasswordView extends Component {
 
     app.client.accountPassword(this.state.newPassword, this.state.oldPassword, (response) => {
       if (response.err) {
-        alert.show(response.err);
+        alert.show(i18next.t('messages.' + response.err));
       } else {
         alert.show(i18next.t('messages.success'));
       }

@@ -8,7 +8,7 @@ var ListItem = require('../components/ListItem');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountLocation', {
   'placeholder': 'City, country where you are',
-  'help': 'Maximum 70 characters'
+  'help': '70 characters max.'
 });
 
 class UserFieldLocation extends UserField {

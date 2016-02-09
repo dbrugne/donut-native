@@ -24,21 +24,20 @@ i18next.addResourceBundle('en', 'GroupAccess', {
   'disclaimer-public': 'This discussion is public. Any user can access it.',
   'disclaimer-public-2': 'You can switch this discussion to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public discussion will remain members once this discussion switched to private. Caution, this action cannot be undone.',
   'allow-users-request': 'Allow users to request access',
-  'allow-users-request-true': 'Users will be able to ask for an invitation to enter this community',
   'allow-users-request-false': 'Users will be not be able to ask for an invitation to enter this community',
   'disclaimer': 'Display a message',
-  'disclaimer-help': 'This message will be displayed to any not allowed user trying to enter this community',
+  'disclaimer-help': 'Message displayed to all users trying to join',
   'password': 'Set a password',
   'password-disclaimer': 'Users with the password can join without prior invitation.',
   'password-placeholder': 'Enter a password',
-  'password-help': 'The password must be between 4 and 255 characters',
-  'password-success': 'The password has been successfully saved',
+  'password-help': 'Between 4 and 255 characters',
+  'password-success': 'Password saved',
   'domains': 'Trusted e-mail domain',
   'domains-placeholder': '@example.com',
   'domains-disclaimer': 'Authorize any user having a trusted e-mail to join (e.g. **@college.edu).',
   'delete-domain': 'Remove',
   'delete-domain-title': 'Remove __domain__',
-  'delete-domain-disclaimer': 'You are about to delete the email domain __domain__ from the allowed domains, a new user with the given email could no more join this community without previous invitation, old user with this email domain will remain members'
+  'delete-domain-disclaimer': 'Users having a @__domain__ email will no longer auto-join the community. However members who have joined thanks to a @__domain__ email will remain members.'
 });
 
 var GroupAccessView = React.createClass({
@@ -83,7 +82,7 @@ var GroupAccessView = React.createClass({
           <ListItem
             text={i18next.t('GroupAccess:allow-users-request')}
             type='switch'
-            help={this.state.data.allow_user_request ? i18next.t('GroupAccess:allow-users-request-true') : i18next.t('GroupAccess:allow-users-request-false')}
+            help={this.state.data.allow_user_request ? '' : i18next.t('GroupAccess:allow-users-request-false')}
             switchValue={this.state.data.allow_user_request}
             onSwitch={this.saveGroupData.bind(this, {allow_user_request: !this.state.data.allow_user_request})}
           />
@@ -202,7 +201,7 @@ var GroupAccessView = React.createClass({
     }
     app.client.groupDomains(this.state.data.group_id, this.state.newDomain, 'add', _.bind(function (response) {
       if (response.err) {
-        return alert.show(i18next.t('message.' + response.err));
+        return alert.show(i18next.t('messages.' + response.err));
       }
 
       let newData = _.clone(this.state.data);
@@ -220,7 +219,7 @@ var GroupAccessView = React.createClass({
       i18next.t('GroupAccess:delete-domain-disclaimer', {domain: domain}),
       () => app.client.groupDomains(this.state.data.group_id, domain, 'delete', (response) => {
         if (response.err) {
-          return alert.show(i18next.t('message.' + response.err));
+          return alert.show(i18next.t('messages.' + response.err));
         }
 
         let newData = _.clone(this.state.data);
@@ -237,7 +236,7 @@ var GroupAccessView = React.createClass({
   },
   _savePassword: function() {
     if (!this.passwordPattern.test(this.state.data.password)) {
-      return alert.show(i18next.t('message.invalid-password'));
+      return alert.show(i18next.t('messages.invalid-password'));
     }
 
     this.saveGroupData({password: this.state.data.password}, () => {
@@ -257,7 +256,7 @@ var GroupAccessView = React.createClass({
   saveGroupData (update, callback) {
     app.client.groupUpdate(this.state.data.group_id, update, (response) => {
       if (response.err) {
-        alert.show(i18next.t('message.' + response.err));
+        alert.show(i18next.t('messages.' + response.err));
         if (callback) {
           return callback(response.err);
         }

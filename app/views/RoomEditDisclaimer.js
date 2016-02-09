@@ -14,8 +14,8 @@ var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'RoomEditDisclaimer', {
-  'placeholder': 'Disclaimer',
-  'help': 'Maximum 200 characters'
+  'placeholder': 'selection criteria, password hint...',
+  'help': '200 characters max.'
 });
 
 var RoomEditDisclaimerView = React.createClass({

@@ -38,7 +38,7 @@ var discussionActionSheet = require('../libs/DiscussionActionsSheet');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'DiscussionEvents', {
   'in': 'You are in',
-  'discuss': 'You discuss with',
+  'discuss': 'Chat with',
   'load-more': 'Load more'
 });
 

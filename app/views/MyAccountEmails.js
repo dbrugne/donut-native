@@ -18,7 +18,7 @@ var {
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountEmails', {
   'add-email': 'Add email',
-  'current-email': 'CURRENT EMAIL',
+  'current-email': 'MAIN EMAIL',
   'missing-email': 'You do not have entered a main email for this account.',
   'additional-emails': 'ADDITIONAL EMAILS.'
 });
