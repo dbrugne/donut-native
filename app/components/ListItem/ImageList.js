@@ -7,6 +7,7 @@ var s = require('../../styles/elements/listItem');
 var ListItemAbstract = require('./Abstract');
 var navigation = require('../../navigation/index');
 var userActionSheet = require('../../libs/UserActionsSheet');
+var app = require('../../libs/app');
 
 var {
   View,
@@ -99,7 +100,7 @@ class ListItemImageList extends ListItemAbstract {
       return (
         <TouchableHighlight key={item.group_id}
                             underlayColor='transparent'
-                            onPress={() => navigation.navigate('Group', {id: item.group_id, name: item.name})}
+                            onPress={() => app.trigger('joinGroup', item.group_id)}
                             >
           <Image style={{width: 40, height: 40, marginHorizontal: 2}} source={{uri: avatarUrl}}/>
         </TouchableHighlight>

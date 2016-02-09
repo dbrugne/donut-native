@@ -11,7 +11,6 @@ var app = require('../libs/app');
 var LoadingView = require('../components/Loading');
 var Card = require('../components/Card');
 var alert = require('../libs/alert');
-var navigation = require('../navigation/index');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupList', {
   '': ''
@@ -65,7 +64,7 @@ var GroupListView = React.createClass({
   _renderElement (group) {
     return (
       <Card
-        onPress={() => navigation.navigate('Group', {id: group.group_id, name: group.name})}
+        onPress={() => app.trigger('joinGroup', group.group_id)}
         image={group.avatar}
         type='group'
         key={group.room_id}
