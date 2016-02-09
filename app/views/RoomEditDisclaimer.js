@@ -8,6 +8,7 @@ var {
   ScrollView
   } = React;
 
+var _ = require('underscore');
 var ListItem = require('../components/ListItem');
 var LoadingView = require('../components/Loading');
 
@@ -34,7 +35,7 @@ var RoomEditDisclaimerView = React.createClass({
       if (response.err) {
         return;
       }
-      this.setState({disclaimer: response.disclaimer, loaded: true});
+      this.setState({disclaimer: _.unescape(response.disclaimer), loaded: true});
     });
   },
   render: function () {

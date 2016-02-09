@@ -339,7 +339,7 @@ class DiscussionSettings extends Component {
           text={i18next.t('DiscussionSettings:description')}
           type='edit-button'
           action
-          value={this.state.description}
+          value={_.unescape(this.state.description)}
           />
         <ListItem
           onPress={() => navigation.navigate('RoomEditWebsite', this.props.model.get('id'), (key, value, cb) => this.saveRoomData(key, value, cb))}

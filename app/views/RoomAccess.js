@@ -20,8 +20,8 @@ var navigation = require('../navigation/index');
 
 i18next.addResourceBundle('en', 'RoomAccess', {
   'title': 'This discussion is private.',
-  'disclaimer-public': 'This donut is public. Any user can access it.',
-  'disclaimer-public-2': 'You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public donut will remain members once this donut switched to private. Caution, this action cannot be undone.',
+  'disclaimer-public': 'This discussion is public. Any user can access it.',
+  'disclaimer-public-2': 'You can switch this discussion to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public discussion will remain members once this discussion switched to private. Caution, this action cannot be undone.',
   'switch-button': 'Switch to private mode',
   'switch-disclaimer': 'Warning, this action is irreversible',
   'allow-members-join': 'Allow members to join this discussion',
@@ -100,7 +100,7 @@ var RoomAccessView = React.createClass({
             help={i18next.t('RoomAccess:disclaimer-help')}
             action
             autoCapitalize='none'
-            value={this.state.data.disclaimer}
+            value={_.unescape(this.state.data.disclaimer)}
           />
           {this._renderPassword()}
         </View>

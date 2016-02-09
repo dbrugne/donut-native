@@ -8,6 +8,7 @@ var {
   ScrollView
   } = React;
 
+var _ = require('underscore');
 var ListItem = require('../components/ListItem');
 var LoadingView = require('../components/Loading');
 
@@ -34,7 +35,7 @@ var RoomEditDescriptionView = React.createClass({
       if (response.err) {
         return;
       }
-      this.setState({description: response.description, loaded: true});
+      this.setState({description: _.unescape(response.description), loaded: true});
     });
   },
   render: function () {

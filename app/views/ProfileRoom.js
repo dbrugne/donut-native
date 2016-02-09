@@ -27,7 +27,7 @@ i18next.addResourceBundle('en', 'profileRoom', {
   'edit': 'edit',
   'manage-users': 'manage users',
   'access': 'access',
-  'delete': 'delete this donut',
+  'delete': 'delete this discussion',
   'by': 'by',
   'join': 'join'
 });

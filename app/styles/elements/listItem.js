@@ -48,8 +48,7 @@ var style = {
     color: '#333333',
     fontFamily: 'Open Sans',
     fontSize: 16,
-    flex: 1,
-    paddingTop: 2
+    flex: 1
   },
   listGroupItemValue: {
     color: '#999999',

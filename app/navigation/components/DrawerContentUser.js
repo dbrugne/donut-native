@@ -10,6 +10,7 @@ var {
   Component
 } = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
+var _ = require('underscore');
 
 var common = require('@dbrugne/donut-common/mobile');
 var currentUser = require('../../models/current-user');
@@ -46,7 +47,7 @@ class CurrentUserView extends Component {
     var realname = null;
     if (user.realname) {
       realname = (
-        <Text style={[styles.text, styles.username]}>{user.realname}</Text>
+        <Text style={[styles.text, styles.username]}>{_.unescape(user.realname)}</Text>
       );
     }
 

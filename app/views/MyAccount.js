@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var _ = require('underscore');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var common = require('@dbrugne/donut-common/mobile');
@@ -77,10 +78,10 @@ var MyAccountView = React.createClass({
   fetchData: function () {
     app.client.userRead(currentUser.get('user_id'), {more: true, admin: true}, (response) => {
       this.setState({
-        realname: response.realname,
-        bio: response.bio,
+        realname: _.unescape(response.realname),
+        bio: _.unescape(response.bio),
         color: response.color,
-        location: response.location,
+        location: _.unescape(response.location),
         website: (response.website && response.website.title ? response.website.title : {value: ''}),
         avatar: common.cloudinary.prepare(response.avatar, 120),
         loaded: true

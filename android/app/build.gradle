@@ -23,6 +23,13 @@ import com.android.build.OutputFile
  *   // whether to bundle JS and assets in release mode
  *   bundleInRelease: true,
  *
+ *   // whether to bundle JS and assets in another build variant (if configured).
+ *   // See http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Build-Variants
+ *   // The configuration property is in the format 'bundleIn${productFlavor}${buildType}'
+ *   // bundleInFreeDebug: true,
+ *   // bundleInPaidRelease: true,
+ *   // bundleInBeta: true,
+ *
  *   // the root of your project, i.e. where "package.json" lives
  *   root: "../../",
  *
@@ -153,7 +160,7 @@ android {
 dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
-    compile "com.facebook.react:react-native:0.19.+"
+    compile "com.facebook.react:react-native:0.20.+"
 
     // @CodePush
     compile project(':react-native-code-push')

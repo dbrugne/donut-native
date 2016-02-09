@@ -21,19 +21,19 @@ var {
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'discussionBlocked', {
   'by': 'by',
-  'allowed': 'This donut is private.',
-  'disallow': 'This donut is private.',
+  'allowed': 'This discussion is private.',
+  'disallow': 'This discussion is private.',
   'request': 'To join,',
   'click': 'Request an access.',
   'password': 'direct access',
   'password-placeholder': 'password',
   'join': 'join',
   'not-confirmed': 'Not confirmed user can\'t join private discussions',
-  'ban': 'You were banned from this donut',
+  'ban': 'You were banned from this discussion',
   'groupban': 'You were banned from this community',
-  'kick': 'You have been kicked out from this donut.',
+  'kick': 'You have been kicked out from this discussion.',
   'rejoin': ' to get back in.',
-  'close': 'Close this donut'
+  'close': 'Close this discussion'
 });
 
 var DiscussionBlocked = React.createClass({

@@ -18,6 +18,7 @@ var app = require('../libs/app');
 var Alert = require('../libs/alert');
 var EventMessage = require('./../components/events/Message');
 var UserBlock = require('./../components/events/UserBlock');
+var ListItem = require('./../components/ListItem');
 var common = require('@dbrugne/donut-common/mobile');
 var animation = require('../libs/animations').keyboard;
 
@@ -64,19 +65,45 @@ var ReportView = React.createClass({
     return (
       <View style={{flex: 1, flexDirection: 'column'}}>
         <ScrollView>
+
           {this._renderWhatIsReported()}
+
           {_.map(options, (opt, index) => {
             return this._renderOption(opt, index);
           })}
-          {this._renderTextArea()}
-          <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10}}>
-            <TouchableHighlight underlayColor='#FF6656' style={[s.buttonRed, s.button, styles.button]} onPress={() => this._onCancel()}>
-              <Text style={[s.textCtn, {color: '#FFF'}]}>{i18next.t('report:cancel')}</Text>
-            </TouchableHighlight>
-            <TouchableHighlight underlayColor='#41C87A' style={[s.buttonGreen, s.button, styles.button]} onPress={() => this._onSend()}>
-              <Text style={[s.textCtn, {color: '#FFF'}]}>{i18next.t('report:send')}</Text>
-            </TouchableHighlight>
-          </View>
+
+
+          <Text style={s.listGroupItemSpacing}/>
+          <ListItem
+            ref='input'
+            placeholder={i18next.t('report:placeholder')}
+            value={this.state.comment}
+            maxLength={255}
+            onChangeText={(comment) => this.setState({comment: comment})}
+            type='input'
+            multiline
+            first
+            last
+            multi={true}
+            />
+
+          <Text style={s.listGroupItemSpacing}/>
+          <ListItem
+            onPress={() => this._onSend()}
+            text={i18next.t('report:send')}
+            action
+            type='button'
+            first
+            warning
+            />
+          <ListItem
+            onPress={() => this._onCancel()}
+            text={i18next.t('report:cancel')}
+            action
+            type='button'
+            last
+            />
+
         </ScrollView>
         <View style={{height: this.state.keyboardSpace}}/>
       </View>
@@ -127,23 +154,14 @@ var ReportView = React.createClass({
   },
   _renderOption: function (option, index) {
     return (
-      <TouchableHighlight key={option} style={[styles.line, index === 0 && styles.first]} underlayColor='transparent' onPress={() => this.setState({focused: option})}>
-        <View style={styles.container}>
-          <View style={[styles.radio, this.state.focused === option && {backgroundColor: '#FC2063', borderColor: '#FC2063'}]}/>
-          <Text style={styles.text}>{i18next.t('report:' + option)}</Text>
-        </View>
-      </TouchableHighlight>
-    );
-  },
-  _renderTextArea: function () {
-    return (
-      <TextInput
-        style={styles.textArea}
-        multiline
-        onChangeText={(text) => this.setState({comment: text})}
-        value={this.state.comment}
-        placeholder={i18next.t('report:placeholder')}
-        underlineColorAndroid='#FFF'
+      <ListItem
+        type='radio'
+        key={option}
+        first={index === 0}
+        last={index === options.length}
+        onPress={() => this.setState({focused: option})}
+        active={this.state.focused === option}
+        text={i18next.t('report:' + option)}
         />
     );
   },
@@ -159,7 +177,7 @@ var ReportView = React.createClass({
     } else {
       app.client.signalEvent(this.props.data.event.id, this.state.focused, this.state.comment);
     }
-    Alert.show('The report was sent to the donut team');
+    Alert.show('The report was sent to the DONUT team');
     this.props.navigator.pop();
   },
   onKeyboardWillShow (height) {

@@ -7,6 +7,7 @@ var {
 } = React;
 var navigation = require('../../navigation/index');
 var s = require('../../styles/events');
+var _ = require('underscore');
 
 module.exports = React.createClass({
   propTypes: {
@@ -21,7 +22,7 @@ module.exports = React.createClass({
     var realname = null;
     if (this.props.realname) {
       realname = (
-        <Text style={[s.username, this.props.style]}>{this.props.realname + ' '}</Text>
+        <Text style={[s.username, this.props.style]}>{_.unescape(this.props.realname) + ' '}</Text>
       );
     }
     this.prepend = (this.props.prepend ? this.props.prepend + ' ' : '');

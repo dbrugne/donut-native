@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var _ = require('underscore');
 var Username = require('./events/Username');
 var s = require('../styles/style');
 
@@ -44,7 +45,7 @@ var Link = React.createClass({
             style={{marginTop: 2}}
           />
           <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
-            <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{this.props.text}</Text>
+            <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{_.unescape(this.props.text)}</Text>
           </View>
         </View>
       </View>
