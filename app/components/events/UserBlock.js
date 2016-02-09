@@ -34,6 +34,7 @@ module.exports = React.createClass({
               username={this.props.data.username}
               realname={this.props.data.realname}
               navigator={this.props.navigator}
+              onPress={() => this.onPress()}
               />
             <Text style={s.time}>{date.shortTime(this.props.data.time)}</Text>
           </View>
