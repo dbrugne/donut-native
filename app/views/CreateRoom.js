@@ -17,17 +17,14 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'createRoom', {
-  'name': 'name of donut',
+  'name': 'Enter a discussion name',
   'help': 'Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_)',
-  'disclaimer': 'You are about to create a donut in the global space, if you want to create a donut in a community you are a member of, go to the community page and click on "Create a donut"',
-  'disclaimer2': 'You are on the donut creation page. Start by entering a name',
-  'disclaimer2_group': 'You are on the donut creation page of community __community__. Start by entering a name',
-  'who': 'Who can join the donut',
+  'who': 'Who can join this discussion',
   'public': 'Public',
   'any': 'Any user can join, participate and access history. Moderation tools available.',
   'private': 'Private',
   'only': 'Only users you authorize can join, participate and access history. Moderation tools available.',
-  'create': 'create a donut',
+  'create': 'create',
   'joining': 'joining ...',
   'community': 'Already lead a community ? Want your users to feel home ?',
   'create-community': 'create a community'
@@ -48,8 +45,7 @@ class RoomCreateView extends Component {
       <View style={{flex: 1}}>
         <ScrollView style={styles.container}>
 
-          <Text style={[styles.block]}>{this.props.group_identifier ? i18next.t('createRoom:disclaimer2_group', {community: this.props.group_identifier}) : i18next.t('createRoom:disclaimer2')}</Text>
-
+          <Text style={styles.listGroupItemSpacing}/>
           <ListItem
             type='input'
             title={this.props.group_identifier ? this.props.group_identifier+ ' /' : ''}
@@ -62,8 +58,7 @@ class RoomCreateView extends Component {
             help={i18next.t('createRoom:help')}
             />
 
-          <Text style={[styles.block]}>{i18next.t('createRoom:disclaimer')}</Text>
-
+          <Text style={styles.listGroupItemSpacing}/>
           <ListItem
             type='switch'
             first

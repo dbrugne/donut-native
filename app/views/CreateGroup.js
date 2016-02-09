@@ -18,10 +18,8 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'createGroup', {
-  'name': 'name of community',
+  'name': 'Enter a community name',
   'help': 'Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_). Caution the community name cannot be changed',
-  'disclaimer2': 'You are on the community creation page. Start by entering a name',
-  'disclaimer': 'A community is a place where your members can gather and create donuts to chat with each other and external users if they want.',
   'create': 'create'
 });
 
@@ -39,8 +37,7 @@ class RoomCreateView extends Component {
       <View style={{flex: 1}}>
         <ScrollView style={styles.container}>
 
-          <Text style={styles.block}>{i18next.t('createGroup:disclaimer2')}</Text>
-
+          <Text style={styles.listGroupItemSpacing}/>
           <ListItem
             type='input'
             first
@@ -52,8 +49,7 @@ class RoomCreateView extends Component {
             help={i18next.t('createGroup:help')}
             />
 
-          <Text style={[styles.block]}>{i18next.t('createGroup:disclaimer')}</Text>
-
+          <Text style={styles.listGroupItemSpacing}/>
           <ListItem
             type='button'
             first
