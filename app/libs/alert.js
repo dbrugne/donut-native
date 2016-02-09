@@ -9,7 +9,7 @@ var {
 var Platform = require('Platform');
 
 module.exports = {
-  show: function(string) {
+  show: function (string) {
     if (Platform.OS === 'android') {
       ToastAndroid.show(string, ToastAndroid.SHORT);
     } else {
