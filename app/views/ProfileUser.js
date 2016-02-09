@@ -45,7 +45,7 @@ class UserProfileView extends Component {
     var realname = null;
     if (data.realname) {
       realname = (
-        <Text style={styles.realname}>{data.realname}</Text>
+        <Text style={styles.realname}>{_.unescape(data.realname)}</Text>
       );
     }
 
@@ -62,7 +62,7 @@ class UserProfileView extends Component {
     if (data.location) {
       location = (
       <ListItem
-        text={data.location}
+        text={_.unescape(data.location)}
         type='text'
         icon='map-marker'
         />
