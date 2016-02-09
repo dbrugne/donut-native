@@ -65,19 +65,45 @@ var ReportView = React.createClass({
     return (
       <View style={{flex: 1, flexDirection: 'column'}}>
         <ScrollView>
+
           {this._renderWhatIsReported()}
+
           {_.map(options, (opt, index) => {
             return this._renderOption(opt, index);
           })}
-          {this._renderTextArea()}
-          <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10}}>
-            <TouchableHighlight underlayColor='#FF6656' style={[s.buttonRed, s.button, styles.button]} onPress={() => this._onCancel()}>
-              <Text style={[s.textCtn, {color: '#FFF'}]}>{i18next.t('report:cancel')}</Text>
-            </TouchableHighlight>
-            <TouchableHighlight underlayColor='#41C87A' style={[s.buttonGreen, s.button, styles.button]} onPress={() => this._onSend()}>
-              <Text style={[s.textCtn, {color: '#FFF'}]}>{i18next.t('report:send')}</Text>
-            </TouchableHighlight>
-          </View>
+
+
+          <Text style={s.listGroupItemSpacing}/>
+          <ListItem
+            ref='input'
+            placeholder={i18next.t('report:placeholder')}
+            value={this.state.comment}
+            maxLength={255}
+            onChangeText={(comment) => this.setState({comment: comment})}
+            type='input'
+            multiline
+            first
+            last
+            multi={true}
+            />
+
+          <Text style={s.listGroupItemSpacing}/>
+          <ListItem
+            onPress={() => this._onSend()}
+            text={i18next.t('report:send')}
+            action
+            type='button'
+            first
+            warning
+            />
+          <ListItem
+            onPress={() => this._onCancel()}
+            text={i18next.t('report:cancel')}
+            action
+            type='button'
+            last
+            />
+
         </ScrollView>
         <View style={{height: this.state.keyboardSpace}}/>
       </View>
@@ -136,18 +162,6 @@ var ReportView = React.createClass({
         onPress={() => this.setState({focused: option})}
         active={this.state.focused === option}
         text={i18next.t('report:' + option)}
-        />
-    );
-  },
-  _renderTextArea: function () {
-    return (
-      <TextInput
-        style={styles.textArea}
-        multiline
-        onChangeText={(text) => this.setState({comment: text})}
-        value={this.state.comment}
-        placeholder={i18next.t('report:placeholder')}
-        underlineColorAndroid='#FFF'
         />
     );
   },
