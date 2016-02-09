@@ -81,9 +81,9 @@ class CardUser extends Abstract {
     return (
       <Icon
         name='microphone-slash'
-        size={35}
+        size={25}
         color='#ff3838'
-        style={{position: 'absolute', top: 30, right: 10}}
+        style={{position: 'absolute', top: 35, right: 20}}
       />
     );
   }
@@ -96,9 +96,9 @@ class CardUser extends Abstract {
     return (
       <Icon
         name='ban'
-        size={35}
+        size={25}
         color='#ff3838'
-        style={{position: 'absolute', top: 30, right: 10}}
+        style={{position: 'absolute', top: 35, right: 20}}
         />
     );
   }
