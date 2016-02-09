@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var _ = require('underscore');
 var s = require('./../../styles/search');
 var Abstract = require('./Abstract');
 
@@ -45,7 +46,7 @@ class CardRoom extends Abstract {
     }
 
     return (
-      <Text style={s.description}>{this.truncate(this.props.description, true)}</Text>
+      <Text style={s.description}>{this.truncate(_.unescape(this.props.description), true)}</Text>
     );
   }
 

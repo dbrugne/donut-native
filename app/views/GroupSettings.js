@@ -75,8 +75,8 @@ class GroupSettings extends Component {
     });
     this.setState({
       loaded: true,
-      disclaimer: data.disclaimer,
-      description: data.description,
+      disclaimer: _.unescape(data.disclaimer),
+      description: _.unescape(data.description),
       allow_user_request: data.allow_user_request,
       allowed_domains: data.allowed_domains,
       avatar: data.avatar,

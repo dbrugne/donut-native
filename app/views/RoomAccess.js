@@ -100,7 +100,7 @@ var RoomAccessView = React.createClass({
             help={i18next.t('RoomAccess:disclaimer-help')}
             action
             autoCapitalize='none'
-            value={this.state.data.disclaimer}
+            value={_.unescape(this.state.data.disclaimer)}
           />
           {this._renderPassword()}
         </View>

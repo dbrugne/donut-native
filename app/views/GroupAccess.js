@@ -90,13 +90,13 @@ var GroupAccessView = React.createClass({
 
           <Text style={s.listGroupItemSpacing}/>
           <ListItem
-            onPress={() => this.onGroupEdit(require('./GroupEditDisclaimer'), this.state.data.disclaimer)}
+            onPress={() => this.onGroupEdit(require('./GroupEditDisclaimer'), _.unescape(this.state.data.disclaimer))}
             text={i18next.t('GroupAccess:disclaimer')}
             type='edit-button'
             help={i18next.t('GroupAccess:disclaimer-help')}
             action
             autoCapitalize='none'
-            value={this.state.data.disclaimer}
+            value={_.unescape(this.state.data.disclaimer)}
           />
 
           {this._renderPassword()}
