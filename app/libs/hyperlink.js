@@ -2,39 +2,23 @@
 
 var React = require('react-native');
 var {
-  LinkingIOS,
-  IntentAndroid,
-  AlertIOS,
-  ToastAndroid,
+  Linking,
+  Alert
 } = React;
-var Platform = require('Platform');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'hyperlink', {
-  'error': 'Can\'t open URL: __url__'
+  'error': 'Can\'t open following URL'
 });
 
 module.exports = {
   open (url) {
-    this._openURL(url);
-  },
-  _openURL (url) {
-    if (Platform.OS === 'android') {
-      IntentAndroid.canOpenURL(url, (supported) => {
-        if (supported) {
-          IntentAndroid.openURL(url);
-        } else {
-          ToastAndroid.show(i18next.t('hyperlink:error', {url}), ToastAndroid.SHORT);
-        }
-      });
-    } else {
-      LinkingIOS.canOpenURL(url, (supported) => {
-        if (supported) {
-          LinkingIOS.openURL(url);
-        } else {
-          AlertIOS.alert(i18next.t('hyperlink:error', {url}));
-        }
-      });
-    }
+    Linking.canOpenURL(url).then(supported => {
+      if (!supported) {
+        Alert.alert(i18next.t('hyperlink:error'), url, {text: 'Cancel', style: 'cancel'});
+      } else {
+        return Linking.openURL(url);
+      }
+    }).catch(err => console.error('An error occurred', err));
   }
 };

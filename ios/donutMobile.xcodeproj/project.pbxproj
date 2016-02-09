@@ -36,6 +36,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		6D0531211C1B1FF500A9A042 /* environment.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D0531201C1B1FF500A9A042 /* environment.plist */; };
 		6D49AB981C3BCFF4008625EB /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D49AB8A1C3BCF3C008625EB /* libCodePush.a */; };
+		6D65A73F1C6A01C700214A85 /* UIImagePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DED13C01C4EA25400480302 /* UIImagePickerManager.m */; };
 		6D830ACB1C0769ED007AF824 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830ACA1C0769BD007AF824 /* libRCTFBLogin.a */; };
 		6D830AD61C0779C5007AF824 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */; };
 		6D830AD71C0779C5007AF824 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD41C0779C5007AF824 /* FBSDKLoginKit.framework */; };
@@ -64,7 +65,6 @@
 		6DB978321C5A7E3500612E6F /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6DB9782A1C5A7E3500612E6F /* Octicons.ttf */; };
 		6DB978331C5A7E3500612E6F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6DB9782B1C5A7E3500612E6F /* Zocial.ttf */; };
 		6DCC57EE1C0C689C008F42F0 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCC57ED1C0C6817008F42F0 /* libRCTPushNotification.a */; };
-		6DED13C11C4EA25400480302 /* UIImagePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DED13C01C4EA25400480302 /* UIImagePickerManager.m */; };
 		6DF0674E1C0F69740096C874 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6DF067411C0F66F20096C874 /* OpenSans-Bold.ttf */; };
 		6DF0674F1C0F69740096C874 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6DF067421C0F66F20096C874 /* OpenSans-BoldItalic.ttf */; };
 		6DF067501C0F69740096C874 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6DF067431C0F66F20096C874 /* OpenSans-ExtraBold.ttf */; };
@@ -816,8 +816,8 @@
 			files = (
 				6DAF46831C36B6BB004BD0A5 /* DonutParse.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				6D65A73F1C6A01C700214A85 /* UIImagePickerManager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				6DED13C11C4EA25400480302 /* UIImagePickerManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -885,6 +885,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -968,6 +969,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -1051,6 +1053,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
