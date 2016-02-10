@@ -20,6 +20,7 @@ var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
 var Link = require('../components/Link');
 var ListItem = require('../components/ListItem');
+var DiscussionHeader = require('./DiscussionHeader');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'profileRoom', {
@@ -81,13 +82,7 @@ class RoomProfileView extends Component {
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
-          {this._renderAvatar(data.avatar)}
-          <Text style={styles.identifier}>{data.identifier}</Text>
-          <Link onPress={() => navigation.navigate('Profile', {type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})}
-                prepend={i18next.t('profileRoom:by')}
-                text= {'@' + data.owner_username}
-                type='bold'
-            />
+          <DiscussionHeader data={data} />
 
           <Text style={styles.description}>{description}</Text>
         </View>

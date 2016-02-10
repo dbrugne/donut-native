@@ -36,8 +36,8 @@ i18next.addResourceBundle('en', 'discussionBlockedJoin', {
 
 var DiscussionBlockedJoin = React.createClass({
   propTypes: {
+    infos: React.PropTypes.object,
     data: React.PropTypes.object,
-    model: React.PropTypes.object,
     navigator: React.PropTypes.object
   },
 
@@ -54,11 +54,12 @@ var DiscussionBlockedJoin = React.createClass({
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
-          <DiscussionHeader identifier={this.props.model.get('identifier')} avatar={this.props.model.get('avatar')} />
+          <DiscussionHeader data={this.props.data} />
+
           <Text style={{marginVertical: 10, marginHorizontal: 10}}>{i18next.t('discussionBlockedJoin:infos')}</Text>
-          <Disclaimer owner_id={this.props.data.owner_id}
-                      owner_username={this.props.data.owner_username}
-                      text={this.props.data.disclaimer}
+          <Disclaimer owner_id={this.props.infos.owner_id}
+                      owner_username={this.props.infos.owner_username}
+                      text={this.props.infos.disclaimer}
                       navigator={this.props.navigator}
           />
 
@@ -75,7 +76,7 @@ var DiscussionBlockedJoin = React.createClass({
   },
 
   _renderActions: function () {
-    if (!this.props.data.allow_user_request && !this.props.data.hasPassword) {
+    if (!this.props.infos.allow_user_request && !this.props.infos.hasPassword) {
       return (
         <View style={{marginVertical: 10, marginHorizontal: 10, flex: 1, alignSelf: 'stretch'}}>
           <Text>{i18next.t('discussionBlockedJoin:invite-only')}</Text>
@@ -83,9 +84,9 @@ var DiscussionBlockedJoin = React.createClass({
       );
     }
 
-    if (!this.props.data.allow_user_request && this.props.data.hasPassword) {
+    if (!this.props.infos.allow_user_request && this.props.infos.hasPassword) {
       return this._renderPassword();
-    } else if (this.props.data.allow_user_request && !this.props.data.hasPassword) {
+    } else if (this.props.infos.allow_user_request && !this.props.infos.hasPassword) {
       return this._renderAllowUserRequest();
     }
 
@@ -112,7 +113,7 @@ var DiscussionBlockedJoin = React.createClass({
     );
   },
   _renderAllowUserRequest: function () {
-    if (this.props.data.isAllowedPending) {
+    if (this.props.infos.isAllowedPending) {
       return (
         <View>
             <Text>{i18next.t('discussionBlockedJoin:allowed-pending')}</Text>
@@ -144,7 +145,7 @@ var DiscussionBlockedJoin = React.createClass({
 
   onUserRequest: function () {
     this.setState({showLoading: true});
-    app.client.roomJoinRequest(this.props.data.room_id, this.state.request, (response) => {
+    app.client.roomJoinRequest(this.props.infos.room_id, this.state.request, (response) => {
       this.setState({showLoading: false});
       if (response.err) {
         Alert.show(response.err);
@@ -156,7 +157,7 @@ var DiscussionBlockedJoin = React.createClass({
   },
 
   _renderPassword: function () {
-    if (!this.props.data.hasPassword) {
+    if (!this.props.infos.hasPassword) {
       return null;
     }
 
@@ -183,12 +184,12 @@ var DiscussionBlockedJoin = React.createClass({
 
   onValidatePassword: function () {
     this.setState({showLoading: true});
-    app.client.roomJoin(this.props.data.room_id, this.state.password, (response) => {
+    app.client.roomJoin(this.props.infos.room_id, this.state.password, (response) => {
       this.setState({showLoading: false});
       if (response.err) {
         Alert.show(i18next.t('discussionBlockedJoin:' + response.err));
       } else {
-        app.trigger('joinRoom', this.props.data.room_id);
+        app.trigger('joinRoom', this.props.infos.room_id);
         this.props.navigator.pop();
       }
     });

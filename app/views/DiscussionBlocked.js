@@ -21,8 +21,8 @@ var {
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'discussionBlocked', {
   'by': 'by',
-  'allowed': 'This discussion is private.',
-  'disallow': 'This discussion is private.',
+  'allowed': 'This discussion is private, request an access',
+  'disallow': 'This discussion is private, request an access',
   'request': 'To join,',
   'click': 'Request an access.',
   'password': 'direct access',
@@ -69,7 +69,7 @@ var DiscussionBlocked = React.createClass({
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
-          <DiscussionHeader identifier={this.props.model.get('identifier')} avatar={this.props.model.get('avatar')} />
+          <DiscussionHeader data={this.props.model.toJSON()} />
 
           {this._renderDescription()}
 
@@ -134,7 +134,7 @@ var DiscussionBlocked = React.createClass({
         return;
       }
       if (data && data.infos) {
-        return navigation.navigate('DiscussionBlockJoin', data.infos, this.props.model);
+        return navigation.navigate('DiscussionBlockJoin', data.infos, this.props.model.toJSON());
       } else if (data.success) {
         app.client.roomJoin(this.props.model.get('id'), null, function (response) {
           // @todo handle errors
@@ -148,7 +148,7 @@ var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
     flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
+    position: 'relative'
   },
   container: {
     flex: 1,
