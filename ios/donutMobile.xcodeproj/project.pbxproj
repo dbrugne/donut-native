@@ -36,6 +36,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		6D0531211C1B1FF500A9A042 /* environment.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D0531201C1B1FF500A9A042 /* environment.plist */; };
 		6D49AB981C3BCFF4008625EB /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D49AB8A1C3BCF3C008625EB /* libCodePush.a */; };
+		6D5CA5881C6B3E8300233DBE /* libRNGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5CA5871C6B3E5F00233DBE /* libRNGL.a */; };
 		6D65A73F1C6A01C700214A85 /* UIImagePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DED13C01C4EA25400480302 /* UIImagePickerManager.m */; };
 		6D830ACB1C0769ED007AF824 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830ACA1C0769BD007AF824 /* libRCTFBLogin.a */; };
 		6D830AD61C0779C5007AF824 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */; };
@@ -149,6 +150,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = CodePush;
 		};
+		6D5CA5861C6B3E5F00233DBE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D5CA5751C6B3E5F00233DBE /* RNGL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
+			remoteInfo = RNGL;
+		};
 		6D830AC91C0769BD007AF824 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6D830AC51C0769BD007AF824 /* RCTFBLogin.xcodeproj */;
@@ -201,6 +209,7 @@
 		6D05311D1C1B1FC400A9A042 /* environment_TEST.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = environment_TEST.plist; path = donutMobile/environment_TEST.plist; sourceTree = "<group>"; };
 		6D0531201C1B1FF500A9A042 /* environment.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = environment.plist; path = donutMobile/environment.plist; sourceTree = "<group>"; };
 		6D49AB581C3BBAD9008625EB /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/CodePush.xcodeproj"; sourceTree = "<group>"; };
+		6D5CA5751C6B3E5F00233DBE /* RNGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGL.xcodeproj; path = "../node_modules/gl-react-native/ios/RNGL.xcodeproj"; sourceTree = "<group>"; };
 		6D830AC51C0769BD007AF824 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBLogin.xcodeproj; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; };
 		6D830AD31C0779C5007AF824 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		6D830AD41C0779C5007AF824 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
@@ -251,6 +260,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D5CA5881C6B3E8300233DBE /* libRNGL.a in Frameworks */,
 				6D49AB981C3BCFF4008625EB /* libCodePush.a in Frameworks */,
 				6DAF46891C36DCC5004BD0A5 /* Social.framework in Frameworks */,
 				6DAF46871C36DCBB004BD0A5 /* Accounts.framework in Frameworks */,
@@ -427,6 +437,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6D5CA5761C6B3E5F00233DBE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6D5CA5871C6B3E5F00233DBE /* libRNGL.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		6D830AC61C0769BD007AF824 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -478,6 +496,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				6D5CA5751C6B3E5F00233DBE /* RNGL.xcodeproj */,
 				6DED13BF1C4EA25400480302 /* UIImagePickerManager.h */,
 				6DED13C01C4EA25400480302 /* UIImagePickerManager.m */,
 				6D49AB581C3BBAD9008625EB /* CodePush.xcodeproj */,
@@ -631,6 +650,10 @@
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
+				{
+					ProductGroup = 6D5CA5761C6B3E5F00233DBE /* Products */;
+					ProjectRef = 6D5CA5751C6B3E5F00233DBE /* RNGL.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -702,6 +725,13 @@
 			fileType = archive.ar;
 			path = libCodePush.a;
 			remoteRef = 6D49AB891C3BCF3C008625EB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6D5CA5871C6B3E5F00233DBE /* libRNGL.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNGL.a;
+			remoteRef = 6D5CA5861C6B3E5F00233DBE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		6D830ACA1C0769BD007AF824 /* libRCTFBLogin.a */ = {

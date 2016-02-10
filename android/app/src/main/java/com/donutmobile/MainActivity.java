@@ -33,6 +33,9 @@ import com.parsepushnotification.ParsePushNotificationPackage;
 // @VectorIcons
 import com.oblador.vectoricons.VectorIconsPackage;
 
+// @RNGL
+import com.projectseptember.RNGL.RNGLPackage;
+
 public class MainActivity extends ReactActivity {
 
     // @ImagePicker
@@ -151,7 +154,8 @@ public class MainActivity extends ReactActivity {
         new NotificationAndroidPackage(this),
         new ParsePushNotificationPackage(this),
         mImagePicker,
-        new VectorIconsPackage()
+        new VectorIconsPackage(),
+        new RNGLPackage()
       );
     }
 

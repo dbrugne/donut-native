@@ -177,4 +177,7 @@ dependencies {
 
     // @VectorIcons
     compile project(':react-native-vector-icons')
+
+    // @RNGL
+    compile project(':RNGL')
 }

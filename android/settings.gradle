@@ -17,3 +17,7 @@ project(':react-native-image-picker').projectDir = new File(settingsDir, '../nod
 // @VectorIcons
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+
+// @RNGL
+include ':RNGL'
+project(':RNGL').projectDir = file('../node_modules/gl-react-native/android')
