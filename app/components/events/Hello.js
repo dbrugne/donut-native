@@ -109,6 +109,7 @@ var styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 23,
     fontStyle: 'italic',
-    textAlign: 'center'
+    textAlign: 'center',
+    alignSelf: 'center'
   }
 });
