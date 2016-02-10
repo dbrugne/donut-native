@@ -22,8 +22,9 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'DiscoverFeatured', {
   'title': 'Welcome',
   'welcome': 'Find your way around DONUT by joining or creating communities and discussions you belong with.',
-  'groups': 'Featured communities',
-  'rooms': 'Featured discussions'
+  'groups': 'FEATURED COMMUNITIES',
+  'rooms': 'FEATURED DISCUSSIONS',
+  'see-all': 'See all'
 });
 
 class Featured extends Component {
@@ -102,7 +103,7 @@ class Featured extends Component {
           text={i18next.t('DiscoverFeatured:groups')}
           type='image-list'
           action
-          value={this.state.groups.length + ''}
+          value={i18next.t('DiscoverFeatured:see-all')}
           first
           imageList={_.first(this.state.groups, 5)}
           />
@@ -123,7 +124,7 @@ class Featured extends Component {
           text={i18next.t('DiscoverFeatured:rooms')}
           type='image-list'
           action
-          value={this.state.rooms.length + ''}
+          value={i18next.t('DiscoverFeatured:see-all')}
           first
           imageList={_.first(this.state.rooms, 5)}
           />

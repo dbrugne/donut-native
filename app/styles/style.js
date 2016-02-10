@@ -9,7 +9,7 @@ var {
   } = React;
 
 var style = {
-
+  // ratio: 0.5
   // colors
   // clNavLeft: { color: '#434a54'},
   clText: {color: '#333'},
