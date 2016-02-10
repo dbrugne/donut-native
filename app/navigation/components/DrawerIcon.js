@@ -5,7 +5,8 @@ var {
   TouchableOpacity
 } = React;
 
-var Icon = require('react-native-vector-icons/FontAwesome');
+var Icon = require('react-native-vector-icons/EvilIcons');
+var IconFA = require('react-native-vector-icons/FontAwesome');
 import ExNavigator from '@exponent/react-native-navigator'; // @important: should be 'import'
 var app = require('../../libs/app');
 
@@ -25,7 +26,7 @@ module.exports = React.createClass({
   },
   render () {
     var badge = (this.state.unviewed === true)
-      ? (<Icon name='circle' size={14} color='#fc2063' style={{position: 'absolute', top: 8, left: 30}} />)
+      ? (<IconFA name='circle' size={13} color='#fc2063' style={{position: 'absolute', top: 6, left: 27, backgroundColor: 'transparent'}} />)
       : null;
 
     return (
@@ -34,9 +35,9 @@ module.exports = React.createClass({
         onPress={() => require('../index').toggleDrawer()}
         style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 44, height:44}} >
         <Icon
-          name='bars'
-          size={22}
-          color='#999998'
+          name='navicon'
+          size={35}
+          color='#FC2063'
         />
         {badge}
       </TouchableOpacity>

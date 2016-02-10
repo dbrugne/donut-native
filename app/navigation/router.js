@@ -6,7 +6,7 @@ var {
   View,
   Text
 } = React;
-var Icon = require('react-native-vector-icons/FontAwesome');
+var Icon = require('react-native-vector-icons/EvilIcons');
 import ExNavigator from '@exponent/react-native-navigator';
 var _ = require('underscore');
 var app = require('../libs/app');
@@ -23,7 +23,7 @@ var routeTemplate = {
       : title;
     return (
       <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={{fontFamily: '.HelveticaNeueInterface-MediumP4', fontSize: 16, color: '#222', fontWeight: 'bold'}}>
+        <Text style={{fontFamily: 'Open sans', fontSize: 13, color: '#353F4C', fontWeight: 'bold', letterSpacing: 1}}>
           {title}
         </Text>
       </View>
@@ -37,12 +37,11 @@ var routeTemplate = {
         style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}} >
         <View style={{flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center'}} >
           <Icon
-            name='angle-left'
-            size={18}
-            color='#999998'
+            name='chevron-left'
+            size={35}
+              color='#FC2063'
             style={{marginLeft: 5}}
           />
-          <Text style={{fontSize: 17, color: '#999998'}}> {i18next.t('navigation.back')}</Text>
         </View>
       </TouchableOpacity>
     );
