@@ -24,7 +24,8 @@ i18next.addResourceBundle('en', 'myAccountPassword', {
   'new-password': 'new password',
   'confirm': 'confirm',
   'change': 'CHANGE',
-  'wrong-format': 'Password should be between 6 and 50 characters length'
+  'wrong-format': 'Password should be between 6 and 50 characters length',
+  'wrong-password': 'Old password is wrong'
 });
 
 class ChangePasswordView extends Component {
@@ -145,6 +146,8 @@ class ChangePasswordView extends Component {
       if (response.err) {
         if (response.err === 'wrong-format') {
           alert.show(i18next.t('myAccountPassword:wrong-format'));
+        } else if (response.err === 'wrong-password') {
+          alert.show(i18next.t('myAccountPassword:wrong-password'));
         } else {
           alert.show(i18next.t('messages.' + response.err));
         }

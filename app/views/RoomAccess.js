@@ -27,7 +27,6 @@ i18next.addResourceBundle('en', 'RoomAccess', {
   'allow-members-join': 'Allow members to join this discussion',
   'allow-members-join-false': 'Community members will not be alowed to enter this discussion automatically',
   'allow-users-request': 'Allow users to request access',
-  'allow-users-request-true': 'Users will be able to ask for an invitation to this discussion',
   'allow-users-request-false': 'Users will be not be able to ask for an invitation to this discussion',
   'disclaimer': 'Display a message',
   'disclaimer-help': 'Message displayed to all users trying to join',
@@ -57,7 +56,7 @@ var RoomAccessView = React.createClass({
     };
     app.client.roomRead(this.props.room.id, what, _.bind(function (data) {
       if (data.err) {
-        return alert.show(i18next.t('message.' + data.err));
+        return alert.show(i18next.t('messages.' + data.err));
       }
       this.setState({
         loading: false,
@@ -87,7 +86,7 @@ var RoomAccessView = React.createClass({
           <ListItem
             text={i18next.t('RoomAccess:allow-users-request')}
             type='switch'
-            help={this.state.data.allow_user_request ? i18next.t('RoomAccess:allow-users-request-true') : i18next.t('RoomAccess:allow-users-request-false')}
+            help={this.state.data.allow_user_request ? '' : i18next.t('RoomAccess:allow-users-request-false')}
             switchValue={this.state.data.allow_user_request}
             onSwitch={this.saveRoomData.bind(this, {allow_user_request: !this.state.data.allow_user_request})}
           />
@@ -210,7 +209,7 @@ var RoomAccessView = React.createClass({
       i18next.t('RoomAccess:switch-disclaimer'),
       () => app.client.roomSetPrivate(this.state.data.room_id, (response) => {
         if (response.err) {
-          return alert.show(i18next.t('message.' + response.err));
+          return alert.show(i18next.t('messages.' + response.err));
         }
 
         this.setState({
@@ -224,7 +223,7 @@ var RoomAccessView = React.createClass({
   saveRoomData (update, callback) {
     app.client.roomUpdate(this.state.data.room_id, update, (response) => {
       if (response.err) {
-        alert.show(i18next.t('message.' + response.err));
+        alert.show(i18next.t('messages.' + response.err));
         if (callback) {
           return callback(response.err);
         }

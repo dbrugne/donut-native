@@ -11,7 +11,7 @@
   "op": "moderator",
   "messages": {
     "success": "success",
-    "validation-email-sent" : "Verification email succesfully re-sent !",
+    "validation-email-sent" : "Verification email successfully sent !",
     "wrong-format": "Mail address is not valid",
     "mail-already-exist": "This mail address is already used",
     "not-allowed": "This mail address is already verified",
@@ -50,7 +50,7 @@
     "not-available": "This username is not available",
     "mail-notconfirmed": "Verify your account ! Check your mailbox.",
     "error-try-again": "Impossible to achieve this request, please try again later",
-    "not-connected": "issue",
+    "not-connected": "Looks like there is connection issue",
     "wrong": "Incorrect e-mail or password",
     "unknown": "Incorrect e-mail format",
     "not-in": "User is not in the discussion"
@@ -61,7 +61,7 @@
     "create-group": "Create a community",
     "room-access": "Manage access __roomname__",
     "group-access": "Manage access __groupname__",
-    "group-edit-disclaimer": "Edit group disclaimer",
+    "group-edit-disclaimer": "Edit",
     "discover": "Discover",
     "search": "Search",
     "my-account": "My Account",
@@ -93,7 +93,7 @@
     "room-edit": "Edit discussion",
     "room-edit-website": "Edit",
     "room-edit-description": "Edit",
-    "room-edit-disclaimer": "Edit discussion disclaimer",
+    "room-edit-disclaimer": "Edit",
     "discussion-blocked-join": "Join discussion",
     "available-soon": "Available soon",
     "report": "Report"

@@ -20,7 +20,7 @@ i18next.addResourceBundle('en', 'myAccountEmails', {
   'add-email': 'Add email',
   'current-email': 'MAIN EMAIL',
   'missing-email': 'You do not have entered a main email for this account.',
-  'additional-emails': 'ADDITIONAL EMAILS.'
+  'additional-emails': 'ADDITIONAL EMAILS'
 });
 
 class EmailsView extends Component {
