@@ -110,7 +110,7 @@ class ListItemImageList extends ListItemAbstract {
         onPress: () => app.trigger('joinRoom', item.room_id),
         text: 'JOIN',
         identifier: item.identifier,
-        avatarRadius: { borderRadius: 40 }
+        avatarRadius: { borderRadius: 40, borderColor: 'transparent' }
       };
     } else if (_.has(item, 'group_id')) {
       data = {
@@ -130,11 +130,14 @@ class ListItemImageList extends ListItemAbstract {
       <View style={styles.element} key={data.key}>
         <View style={{position: 'relative'}}>
           <Image style={{width: 160, height: 130, position: 'absolute', top: 0, left: 0}} source={{uri: avatarUrl}}/>
+          <View style={{width: 160, height: 130, position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(28,37,47,0.60)'}}></View>
           <TouchableHighlight underlayColor='transparent'
                               onPress={data.onProfile}
                               style={{width: 160, height: 130}}
             >
-            <Image style={[{width: 80, height: 80, position: 'absolute', top: 15, left: 40}, data.avatarRadius]} source={{uri: avatarUrl}}/>
+            <View style={[styles.avatarCtn, data.avatarRadius]}>
+              <Image style={[styles.avatar, data.avatarRadius]} source={{uri: avatarUrl}}/>
+            </View>
           </TouchableHighlight>
           {this._renderMode(item)}
         </View>
@@ -197,7 +200,25 @@ var styles = StyleSheet.create({
     position: 'absolute',
     width: 160,
     height: 19, // 38px
-    top: 100
+    top: 105
+  },
+  avatarCtn: {
+    position: 'absolute',
+    top: 15,
+    left: 40,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: '#FFFFFF',
+    width: 80,
+    height: 80
+  },
+  avatar: {
+    shadowColor: 'rgb(28,36,47)',
+    shadowOffset: {width: 0, height: 3},
+    shadowRadius: 3,
+    shadowOpacity: 1,
+    width: 76,
+    height: 76
   },
   seeAll: {
     color: '#B3BECC',
@@ -205,16 +226,12 @@ var styles = StyleSheet.create({
     fontSize: 14
   },
   identifierText: {
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 1,
-    textShadowColor: '#AAAAAA',
-
     backgroundColor: 'transparent',
     fontFamily: 'Open sans',
     fontWeight: '600', // semi-bold
     fontSize: 14, // 28px
     color: '#FFFFFF',
-    lineHeight: 13, // 26px
+    lineHeight: 14, // 26px
     textAlign: 'center'
   },
   button: {
