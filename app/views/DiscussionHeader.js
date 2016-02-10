@@ -14,12 +14,6 @@ var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
 var Icon = require('react-native-vector-icons/EvilIcons');
-var navigation = require('../navigation/index');
-var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'DiscussionHeader', {
-  'join': 'JOIN',
-  'request': 'REQUEST AN ACCESS'
-});
 
 var DiscussionHeaderView = React.createClass({
   propTypes: {
@@ -38,9 +32,8 @@ var DiscussionHeaderView = React.createClass({
           {this._renderMode()}
           {this._renderGroup()}
           {this._renderName()}
-          {this._renderButton()}
+          {this.props.children}
         </View>
-        {this._renderDisclaimer()}
       </View>
     );
   },
@@ -77,48 +70,6 @@ var DiscussionHeaderView = React.createClass({
     return (
       <Image style={styles.avatar} source={{uri: avatarUrl}}/>
     );
-  },
-  _renderButton() {
-    if (!this.props.data.blocked) {
-      return (
-        <View style={styles.button}>
-          <TouchableHighlight onPress={() => app.trigger('joinRoom', this.state.data.room_id)}
-                              underlayColor='transparent' >
-            <Text style={styles.buttonText}>{i18next.t('DiscussionHeader:join')}</Text>
-          </TouchableHighlight>
-        </View>
-      );
-    }
-
-    if (this.props.data.blocked_why === 'disallow') {
-      return (
-        <View style={styles.button}>
-          <TouchableHighlight onPress={() => this.onJoin()}
-                              underlayColor='transparent' >
-            <Text style={styles.buttonText}>{i18next.t('DiscussionHeader:request')}</Text>
-          </TouchableHighlight>
-        </View>
-      );
-    }
-  },
-  _renderDisclaimer() {
-
-  },
-  onJoin: function () {
-    app.client.roomBecomeMember(this.state.data.room_id, (data) => {
-      if (data.err) {
-        return alert.show(i18next.t('message.'+ data.err));
-      }
-      if (data && data.infos) {
-        return navigation.navigate('DiscussionBlockJoin', data.infos, this.state.data);
-      } else if (data.success) {
-        app.client.roomJoin(this.state.data.room_id, null, function (response) {
-          if (data.err) {
-            return alert.show(i18next.t('message.'+ data.err));
-          }
-        });
-      }
-    });
   }
 });
 
@@ -130,7 +81,6 @@ var styles = StyleSheet.create({
     position: 'relative',
     alignSelf: 'stretch',
     flexDirection: 'column',
-    backgroundColor: 'red'
   },
   containerTop: {
     alignItems: 'center',
@@ -170,26 +120,6 @@ var styles = StyleSheet.create({
     fontSize: 14,
     color: '#394350',
     lineHeight: 14
-  },
-  button: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 4,
-    alignSelf: 'stretch',
-    marginTop: 5,
-    marginBottom: 15,
-    marginHorizontal: 40,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  buttonText: {
-    fontFamily: 'Open Sans',
-    fontWeight: '600',
-    fontSize: 13,
-    color: '#353F4C',
-    letterSpacing: 1,
-    textAlign: 'center',
-    paddingVertical: 10
   }
 });
 

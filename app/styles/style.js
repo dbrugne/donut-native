@@ -88,7 +88,6 @@ var style = {
     paddingBottom: 10,
     paddingLeft: 10,
     paddingRight: 10,
-    backgroundColor: '#f0f0f0',
     height: 20
   },
   listGroupItemIcon: {
@@ -110,37 +109,12 @@ var style = {
     fontSize: 14,
     flex: 1
   },
-  // buttons
-  button: {
-    height: 40,
-    backgroundColor: '#f5f8fa',
-    borderColor: '#e1e8ed',
-    borderWidth: 1,
-    borderRadius: 4,
-    marginBottom: 10,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    flexWrap: 'nowrap',
-    flexDirection: 'row'
-  },
   buttonLabel: {
     flexWrap: 'nowrap',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1
-  },
-  buttonText: {
-    fontFamily: 'Open Sans',
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   buttonIcon: {
     width: 20,
@@ -246,7 +220,13 @@ var style = {
 
   // new design
   centeredBlock: { marginHorizontal: 20, marginVertical: 20 },
-  centeredBlockText: { fontSize: 16, color: '#AFBAC8', letterSpacing: 1.50, lineHeight: 20, textAlign: 'center'}
+  centeredBlockText: { fontSize: 16, color: '#AFBAC8', letterSpacing: 1.50, lineHeight: 20, textAlign: 'center'},
+  button: { backgroundColor: '#FFFFFF', borderRadius: 4, alignSelf: 'stretch', marginTop: 5, marginBottom: 15, marginHorizontal: 40, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'},
+  buttonText: { fontFamily: 'Open Sans', fontWeight: '600', fontSize: 13, color: '#353F4C', letterSpacing: 1, textAlign: 'center', paddingVertical: 10},
+  disclaimer: { backgroundColor: '#E7ECF3', paddingVertical: 20, paddingHorizontal: 20 },
+  disclaimerWarning: { backgroundColor: '#F15261'},
+  disclaimerText: { fontFamily: 'Open Sans', fontSize: 14, color: '#394350', lineHeight: 20, fontWeight: '500'},
+  disclaimerTextWarning: { color: '#FFFFFF'}
 
 };
 

@@ -7,7 +7,8 @@ var {
   Text,
   Component,
   Image,
-  ScrollView
+  ScrollView,
+  TouchableHighlight
 } = React;
 
 var _ = require('underscore');
@@ -33,36 +34,37 @@ i18next.addResourceBundle('en', 'profileRoom', {
   'join': 'join'
 });
 
-class RoomProfileView extends Component {
-  constructor (props) {
-    super(props);
-
-    this.data = props.data;
-  }
-
+var RoomProfileView = React.createClass({
+  propTypes: {
+    data: React.PropTypes.object.isRequired
+  },
+  getInitialState: function () {
+    return {
+      data: this.props.data
+    };
+  },
   render () {
-    var data = this.data;
-    var description = _.unescape(data.description);
+    var description = _.unescape(this.state.data.description);
 
     var website = null;
-    if (data.website) {
+    if (this.state.data.website) {
       website = (
         <ListItem
-          text={data.website.title}
+          text={this.state.data.website.title}
           type='edit-button'
-          first={!data.users_count}
+          first={!this.state.data.users_count}
           action
-          onPress={() => hyperlink.open(data.website.href)}
+          onPress={() => hyperlink.open(this.state.data.website.href)}
           icon='link'
         />
       );
     }
 
     var numberOfUsers = null;
-    if (data.users_count) {
+    if (this.state.data.users_count) {
       numberOfUsers = (
         <ListItem
-          text={'' + data.users_count}
+          text={'' + this.state.data.users_count}
           type='text'
           first
           icon='user'
@@ -73,7 +75,7 @@ class RoomProfileView extends Component {
 
     var createdAt = (
     <ListItem
-      text={i18next.t('profileRoom:created-on', {date: date.shortDate(data.created)})}
+      text={i18next.t('profileRoom:created-on', {date: date.shortDate(this.state.data.created)})}
       type='text'
       icon='clock-o'
       />
@@ -82,20 +84,18 @@ class RoomProfileView extends Component {
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
-          <DiscussionHeader data={data} />
+          <DiscussionHeader data={this.state.data} >
+            <View style={s.button}>
+              <TouchableHighlight onPress={() => app.trigger('joinRoom', this.state.data.room_id)}
+                                  underlayColor='transparent' >
+                <Text style={s.buttonText}>{i18next.t('profileRoom:join')}</Text>
+              </TouchableHighlight>
+            </View>
+          </DiscussionHeader>
 
           <Text style={styles.description}>{description}</Text>
         </View>
         <View style={s.listGroup}>
-          <Text style={s.listGroupItemSpacing} />
-          <ListItem
-            text={i18next.t('profileRoom:join')}
-            type='edit-button'
-            first
-            action
-            last
-            onPress={() => app.trigger('joinRoom', data.room_id)}
-            />
           <Text style={s.listGroupItemSpacing} />
           {numberOfUsers}
           {website}
@@ -103,8 +103,7 @@ class RoomProfileView extends Component {
         </View>
       </ScrollView>
     );
-  }
-
+  },
   _renderAvatar (avatar) {
     if (!avatar) {
       return null;
@@ -118,13 +117,12 @@ class RoomProfileView extends Component {
       <Image style={styles.avatar} source={{uri: avatarUrl}}/>
     );
   }
-}
+});
 
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
+    flexWrap: 'wrap'
   },
   container: {
     flex: 1,
@@ -151,7 +149,8 @@ var styles = StyleSheet.create({
   description: {
     marginVertical: 20,
     marginHorizontal: 10,
-    color: '#333333',
+    color: '#394350',
+    lineHeight: 24,
     fontFamily: 'Open Sans',
     fontSize: 16
   },
