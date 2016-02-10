@@ -77,6 +77,7 @@ var GroupRoomsListView = React.createClass({
           image={room.avatar}
           type='room'
           key={room.room_id}
+          count={room.users}
           identifier={room.identifier}
           description={room.description}
           mode={(!room.mode || room.mode === 'public') ? 'public' : (room.allow_group_member) ? 'member' : 'private'}
@@ -90,6 +91,7 @@ var GroupRoomsListView = React.createClass({
         image={room.avatar}
         type='room'
         key={room.room_id}
+        count={room.users}
         identifier={room.identifier}
         description={room.description}
         mode={(!room.mode || room.mode === 'public') ? 'public' : (room.allow_group_member) ? 'member' : 'private'}

@@ -38,6 +38,7 @@ module.exports = React.createClass({
           name='navicon'
           size={35}
           color='#FC2063'
+          style={{backgroundColor: 'transparent'}}
         />
         {badge}
       </TouchableOpacity>

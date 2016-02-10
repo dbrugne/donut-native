@@ -20,9 +20,9 @@ class CardRoom extends Abstract {
   render () {
     return (
       <TouchableHighlight onPress={this.props.onPress}>
-        <View style={s.container}>
+        <View style={[s.container, this.props.first && s.first]}>
           <View style={s.thumbnailContainer}>
-            {this._renderThumbnail(this.props.image, false)}
+            {this._renderThumbnail(this.props.image, true)}
             {this._renderMode()}
           </View>
           <View style={s.rightContainer}>
@@ -57,6 +57,8 @@ class CardRoom extends Abstract {
         <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
           <Text style={s.title}>{this.props.identifier}</Text>
           {this._renderDescription()}
+          {this._renderRightArrow()}
+          {this._renderUsersCount(this.props.count)}
         </View>
       );
     }
@@ -91,6 +93,8 @@ CardRoom.propTypes = {
   identifier: React.PropTypes.string.isRequired,
   onPress: React.PropTypes.func.isRequired,
   image: React.PropTypes.string,
+  first: React.PropTypes.bool,
+  count: React.PropTypes.number,
   description: React.PropTypes.string,
   mode: React.PropTypes.string
 };

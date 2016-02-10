@@ -68,6 +68,7 @@ var RoomListView = React.createClass({
         onPress={() => navigation.navigate('Profile', {type: 'room', id: room.room_id, identifier: room.identifier})}
         image={room.avatar}
         type='room'
+        count={room.users}
         key={room.room_id}
         identifier={room.identifier}
         description={room.description}

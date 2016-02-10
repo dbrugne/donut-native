@@ -3,17 +3,20 @@
 var React = require('react-native');
 var {
   View,
-  ListView
+  ListView,
+  ScrollView,
+  Text
 } = React;
 
 var _ = require('underscore');
+var s = require('../styles/style');
 var app = require('../libs/app');
 var LoadingView = require('../components/Loading');
 var Card = require('../components/Card');
 var alert = require('../libs/alert');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupList', {
-  '': ''
+  'disclaimer': 'Join a community to access all its related discussions and hang out with their members'
 });
 
 var GroupListView = React.createClass({
@@ -52,23 +55,31 @@ var GroupListView = React.createClass({
     }
 
     return (
-      <View style={{flex: 1}}>
+      <ScrollView>
+
+        <View style={s.centeredBlock}>
+          <Text style={s.centeredBlockText}>{i18next.t('GroupList:disclaimer')}</Text>
+        </View>
+
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={(room) => this._renderElement(room)}
-          style={{alignSelf: 'stretch'}}
+          renderRow={this._renderElement}
+          style={{alignSelf: 'stretch', marginTop: 10}}
+          scrollEnabled={false}
           />
-      </View>
+      </ScrollView>
     );
   },
-  _renderElement (group) {
+  _renderElement (group, sectionID, rowID) {
     return (
       <Card
         onPress={() => app.trigger('joinGroup', group.group_id)}
         image={group.avatar}
         type='group'
-        key={group.room_id}
+        first={rowID === '0'}
+        key={group.group_id}
         identifier={group.name}
+        count={group.users}
         description={group.description}
         />
     );

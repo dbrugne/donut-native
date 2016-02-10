@@ -97,7 +97,7 @@ class SearchView extends Component {
       </View>
     );
   }
-  renderElement (rowData) {
+  renderElement (rowData, sectionID, rowID) {
     if (this.state.type === 'rooms') {
       return (
         <Card
@@ -106,6 +106,7 @@ class SearchView extends Component {
           type='room'
           identifier={rowData.identifier}
           description={rowData.description}
+          count={rowData.users}
           mode={rowData.mode}
           />
       );
@@ -127,8 +128,11 @@ class SearchView extends Component {
           onPress={() => app.trigger('joinGroup', rowData.group_id)}
           image={rowData.avatar}
           type='group'
+          first={rowID === '0'}
+          key={'group'+rowData.group_id}
           identifier={'#' + rowData.name}
           description={rowData.description}
+          count={rowData.users}
           />
       );
     }

@@ -30,7 +30,6 @@ i18next.addResourceBundle('en', 'DiscoverFeatured', {
 class Featured extends Component {
   constructor (props) {
     super(props);
-    this.discoverDataSource = require('../libs/discoverDataSource')();
     this.state = {
       loaded: false,
       rooms: [],
@@ -78,8 +77,9 @@ class Featured extends Component {
         {this._renderStats()}
 
         <Text style={{ marginHorizontal: 10, marginTop: 10, fontSize: 20, color: '#FC2063', letterSpacing: 1.88, lineHeight: 30, textAlign: 'center'}}>{i18next.t('DiscoverFeatured:title')}</Text>
-        <Text style={{ marginHorizontal: 10, marginTop: 10, fontSize: 14, color: '#AFBAC8', letterSpacing: 1.50, lineHeight: 20, textAlign: 'center'}}>{i18next.t('DiscoverFeatured:welcome')}</Text>
-
+        <View style={s.centeredBlock}>
+          <Text style={s.centeredBlockText}>{i18next.t('DiscoverFeatured:welcome')}</Text>
+        </View>
         {this._renderGroups()}
 
         {this._renderRooms()}

@@ -47,6 +47,7 @@ var RightIconProfile = React.createClass({
           name='gear'
           size={30}
           color='#D0D9E6'
+          style={{backgroundColor: 'transparent'}}
           />
       </TouchableOpacity>
     );

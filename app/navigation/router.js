@@ -39,8 +39,8 @@ var routeTemplate = {
           <Icon
             name='chevron-left'
             size={35}
-              color='#FC2063'
-            style={{marginLeft: 5}}
+            color='#FC2063'
+            style={{marginLeft: 5, backgroundColor: 'transparent'}}
           />
         </View>
       </TouchableOpacity>
