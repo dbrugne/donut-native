@@ -83,7 +83,7 @@ class ListItemImageList extends ListItemAbstract {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={{height: 200, flex: 1, marginLeft: 10, marginTop: 20}}
+        style={{height: 200, flex: 1, marginTop: 20}}
         contentContainerStyle={{alignItems: 'flex-start', flex: 1}}>
         {_.map(this.props.imageList, (item) => {
           return this._renderImageButton(item);
