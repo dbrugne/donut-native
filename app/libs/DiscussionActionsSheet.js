@@ -12,8 +12,8 @@ i18next.addResourceBundle('en', 'DiscussionActionSheet', {
   'mark-as-spam': 'Mark as spam',
   'unmark-as-spam': 'Unmark as spam',
   'edit': 'Edit',
-  'show-spam': 'Show spammed',
-  'hide-spam': 'Hide spammed',
+  'show-spam': 'Show spam',
+  'hide-spam': 'Hide spam',
   'collapse-all': 'Collapse all',
   'collapse': 'Collapse',
   'expand-all': 'Expand all',
@@ -62,14 +62,16 @@ var _getOptionsForActionSheet = function (model, data, type) {
     let isAllowed = model.currentUserIsOp() || model.currentUserIsOwner() || app.user.isAdmin();
     let options = [];
 
-    let spamAction = isAllowed && data.spammed
+    let spamAction = data.spammed
         ? { text: i18next.t('DiscussionActionSheet:unmark-as-spam'), onPress: () => _onMarkAsUnspam(model.get('room_id'), data.id)}
         : { text: i18next.t('DiscussionActionSheet:mark-as-spam'), onPress: () => _onMarkAsSpam(model.get('room_id'), data.id)}
       ;
 
     let cancelAction = { text: i18next.t('DiscussionActionSheet:cancel'), onPress: () => {}, isCancelButton: true};
 
-    options.push(spamAction);
+    if (isAllowed) {
+      options.push(spamAction);
+    }
 
     if (data.spammed) {
       let spamOption = data.viewed

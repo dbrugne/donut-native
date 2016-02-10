@@ -4,6 +4,7 @@ var React = require('react-native');
 var {
   View,
   Text,
+  TouchableHighlight,
   Image,
   StyleSheet
 } = React;
@@ -12,12 +13,14 @@ var ParsedText = require('../ParsedText');
 var UserBlock = require('./UserBlock');
 var s = require('../../styles/events');
 var app = require('../../libs/app');
+var Icon = require('react-native-vector-icons/EvilIcons');
+var navigation = require('../../navigation/index');
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'eventsHello', {
-  'welcome': 'Welcome !',
-  'success': 'Success !',
-  'chat': 'Chat with @__username__',
+  'welcome': 'Welcome',
+  'success': 'Success',
+  'chat': 'Chat with __username__',
   'chat-message': 'This conversation is private. Only you and your interlocutor can see it.',
   'public': 'This public conversation and its history are accessible to anyone.',
   'private': 'This private conversation and its history are only accessible to users authorized by @__owner__.',
@@ -79,10 +82,20 @@ module.exports = React.createClass({
       );
     }
 
-    // @todo implement action cog
     if (this.props.model.get('owner_id') === app.user.get('user_id')) {
       return (
-        <View>
+        <View style={{flexDirection: 'column', alignItems: 'center'}}>
+          <TouchableHighlight onPress={() => navigation.navigate('DiscussionSettings', this.props.model)}
+                              style={[s.button, styles.buttonFacebook]}
+                              underlayColor='transparent'
+            >
+            <Icon
+              name={'gear'}
+              size={25}
+              color='#AFBAC8'
+              style={{ backgroundColor: 'transparent'}}
+              />
+            </TouchableHighlight>
           <Text style={styles.text}>{i18next.t('eventsHello:owner')}</Text>
         </View>
       );
@@ -109,6 +122,7 @@ var styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 23,
     fontStyle: 'italic',
-    textAlign: 'center'
+    textAlign: 'center',
+    alignSelf: 'center'
   }
 });

@@ -13,7 +13,7 @@ React.Navigator.NavigationBar.StylesAndroid.General.NavBarHeight =
     46;
 
 // @hack style correctly navigationBar
-var add = {marginLeft: 0, flexDirection: 'column', justifyContent: 'center'};
+var add = {marginLeft: 0, flexDirection: 'column', justifyContent: 'center', backgroundColor: '#FFF', borderBottomWidth: 1, borderStyle: 'solid', borderColor: '#E7ECF3'};
 var platformTitle = (Platform.OS === 'android') ? {paddingTop:10} : {};
 var platformLeftButton = (Platform.OS === 'android') ? {marginTop:-5} : {};
 var platformRightButton = (Platform.OS === 'android') ? {marginTop:-5} : {};

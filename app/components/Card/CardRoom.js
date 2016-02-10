@@ -10,7 +10,7 @@ var {
   Text,
   TouchableHighlight
   } = React;
-var Icon = require('react-native-vector-icons/FontAwesome');
+var Icon = require('react-native-vector-icons/EvilIcons');
 
 class CardRoom extends Abstract {
   constructor (props) {
@@ -20,24 +20,38 @@ class CardRoom extends Abstract {
   render () {
     return (
       <TouchableHighlight onPress={this.props.onPress}>
-        <View style={s.container}>
+        <View style={[s.container, this.props.first && s.first]}>
           <View style={s.thumbnailContainer}>
-            {this._renderThumbnail(this.props.image, false)}
+            {this._renderThumbnail(this.props.image, true)}
             {this._renderMode()}
           </View>
-          <View style={s.rightContainer}>
+          <View style={[s.rightContainer]}>
             {this._renderContent()}
           </View>
+          {this._renderRightArrow()}
         </View>
       </TouchableHighlight>
     );
   }
 
   _renderMode () {
-    if (!this.props.mode) {
+    if (!this.props.mode || this.props.mode === 'public') {
       return null;
     }
-    return (<Text style={s.mode}>{this.props.mode}</Text>);
+
+    return (
+      <Icon
+        name={'lock'}
+        size={30}
+        color='#AFBAC8'
+        style={{
+          position: 'absolute',
+          top:10,
+          left:10,
+          backgroundColor: 'transparent'
+        }}
+        />
+    );
   }
 
   _renderDescription () {
@@ -54,9 +68,10 @@ class CardRoom extends Abstract {
     // Not editable user
     if (!this.props.onEdit) {
       return (
-        <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
+        <View style={{alignSelf: 'stretch'}}>
           <Text style={s.title}>{this.props.identifier}</Text>
           {this._renderDescription()}
+          {this._renderUsersCount(this.props.count)}
         </View>
       );
     }
@@ -91,6 +106,8 @@ CardRoom.propTypes = {
   identifier: React.PropTypes.string.isRequired,
   onPress: React.PropTypes.func.isRequired,
   image: React.PropTypes.string,
+  count: React.PropTypes.number,
+  first: React.PropTypes.bool,
   description: React.PropTypes.string,
   mode: React.PropTypes.string
 };

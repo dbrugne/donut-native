@@ -2,7 +2,7 @@ var React = require('react-native');
 var {
   TouchableOpacity
   } = React;
-var Icon = require('react-native-vector-icons/FontAwesome');
+var Icon = require('react-native-vector-icons/EvilIcons');
 import ExNavigator from '@exponent/react-native-navigator';
 var navigation = require('../index');
 
@@ -44,9 +44,10 @@ var RightIconProfile = React.createClass({
         onPress={() => navigation.navigate('DiscussionSettings', this.props.model)}
         style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 44}} >
         <Icon
-          name='cog'
-          size={22}
-          color='#999998'
+          name='gear'
+          size={30}
+          color='#D0D9E6'
+          style={{backgroundColor: 'transparent'}}
           />
       </TouchableOpacity>
     );

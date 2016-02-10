@@ -1,6 +1,7 @@
 'use strict';
 var React = require('react-native');
 var cloudinary = require('./cloudinary');
+var app = require('./app');
 
 var {
   NativeModules,
@@ -104,6 +105,18 @@ exports.getImageAndUpload = function (tags, preset, callback) {
       return callback(null, null);
     }
 
-    this.uploadToCloudinary(response.data, tags, preset, callback);
+    this.uploadToCloudinary(response.data, tags, preset, (err, response) => {
+      if (err) {
+        return callback(err);
+      }
+      // if client not connected wait 'ready' before sending response
+      if (app.client.isConnected() !== true) {
+        app.on('ready', () => {
+          callback(null, response);
+        }, this);
+      } else {
+        return callback(null, response);
+      }
+    });
   });
 };

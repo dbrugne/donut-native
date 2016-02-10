@@ -9,7 +9,7 @@ var {
   } = React;
 
 var style = {
-
+  // ratio: 0.5
   // colors
   // clNavLeft: { color: '#434a54'},
   clText: {color: '#333'},
@@ -242,7 +242,12 @@ var style = {
     color: '#999999',
     fontSize: 12,
     fontStyle: 'italic'
-  }
+  },
+
+  // new design
+  centeredBlock: { marginHorizontal: 10, marginVertical: 15 },
+  centeredBlockText: { fontSize: 16, color: '#AFBAC8', letterSpacing: 1.50, lineHeight: 20, textAlign: 'center'}
+
 };
 
 module.exports = StyleSheet.create(Util.merge(style, platformStyle));

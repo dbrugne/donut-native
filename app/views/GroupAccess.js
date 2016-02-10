@@ -37,7 +37,7 @@ i18next.addResourceBundle('en', 'GroupAccess', {
   'domains-disclaimer': 'Authorize any user having a trusted e-mail to join (e.g. **@college.edu).',
   'delete-domain': 'Remove',
   'delete-domain-title': 'Remove __domain__',
-  'delete-domain-disclaimer': 'Users having a @__domain__ email will no longer auto-join the community. However members who have joined thanks to a @__domain__ email will remain members.'
+  'delete-domain-disclaimer': 'Users having a __domain__ email will no longer auto-join the community. However members who have joined thanks to a __domain__ email will remain members.'
 });
 
 var GroupAccessView = React.createClass({
@@ -58,7 +58,7 @@ var GroupAccessView = React.createClass({
     };
     app.client.groupRead(this.props.group.id, what, _.bind(function (data) {
       if (data.err) {
-        return alert.show(i18next.t('message.' + data.err));
+        return alert.show(i18next.t('messages.' + data.err));
       }
       this.setState({
         loading: false,

@@ -12,6 +12,7 @@ module.exports = React.createClass({
     type: React.PropTypes.oneOf(['user', 'group', 'room']).isRequired, // type of the result to display user / [room] / group
     identifier: React.PropTypes.string.isRequired,                     // identifier of the row (username / room_identifier / group_name)
     image: React.PropTypes.string,                                     // image to display
+    first: React.PropTypes.bool,                                       // is first Card in the List
     description: React.PropTypes.string,                               // (room / group only).
     bio: React.PropTypes.string,                                       // (user only).
     status: React.PropTypes.string,                                    // (user only).

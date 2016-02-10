@@ -7,17 +7,19 @@ var { StyleSheet } = React;
 module.exports = StyleSheet.create({
   container: {
     position: 'relative',
-    height: 100,
-    padding: 5,
+    height: 120,
     flex: 1,
     backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderStyle: 'solid',
-    borderTopColor: '#EEEEEE',
     borderBottomWidth: 1,
-    borderBottomColor: '#D7D7D7',
+    borderStyle: 'solid',
+    borderColor: '#E7ECF3',
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  first: {
+    borderTopWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#E7ECF3'
   },
   thumbnailContainer: {
     flexDirection: 'column',
@@ -25,18 +27,17 @@ module.exports = StyleSheet.create({
     justifyContent: 'center'
   },
   thumbnail: {
-    width: 50,
-    height: 50,
-    borderRadius: 25
+    width: 100,
+    height: 100
   },
-  thumbnailUser: {
-    width: 50,
-    height: 50,
-    borderRadius: 0
+  thumbnailCircle: {
+    borderRadius: 50
   },
   rightContainer: {
-    height: 90,
-    marginLeft: 10,
+    height: 120,
+    paddingVertical:10,
+    paddingRight:40,
+    marginLeft: 30,
     flexDirection: 'column',
     justifyContent: 'center',
     alignSelf: 'stretch',
@@ -46,10 +47,11 @@ module.exports = StyleSheet.create({
     flexDirection: 'row'
   },
   title: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Open Sans',
-    fontWeight: 'bold',
-    color: '#333'
+    fontWeight: '600',
+    color: '#586473',
+    marginBottom: 5
   },
   mode: {
     alignSelf: 'center',
@@ -62,10 +64,11 @@ module.exports = StyleSheet.create({
   },
   description: {
     flexDirection: 'column',
-    color: '#999999',
+    color: '#586473',
     fontFamily: 'Open Sans',
-    fontSize: 12,
-    height: 50,
+    fontSize: 13,
+    lineHeight: 20,
+    height: 45,
     overflow: 'hidden'
   },
   statusText: {

@@ -22,9 +22,9 @@ class CardUser extends Abstract {
   render () {
     return (
       <TouchableHighlight onPress={this.props.onPress}>
-        <View style={s.container}>
+        <View style={[s.container, this.props.first && s.first]}>
           <View style={s.thumbnailContainer}>
-            {this._renderThumbnail(this.props.image, true)}
+            {this._renderThumbnail(this.props.image, false)}
             {this._renderStatus()}
           </View>
           <View style={s.rightContainer}>
@@ -159,6 +159,7 @@ CardUser.propTypes = {
   onPress: React.PropTypes.func.isRequired,
   status: React.PropTypes.string,
   realname: React.PropTypes.string,
+  first: React.PropTypes.bool,
   image: React.PropTypes.string,
   bio: React.PropTypes.string,
   mode: React.PropTypes.string,
