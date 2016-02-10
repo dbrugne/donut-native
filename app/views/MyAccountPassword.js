@@ -23,7 +23,8 @@ i18next.addResourceBundle('en', 'myAccountPassword', {
   'change-password': 'Change password',
   'new-password': 'new password',
   'confirm': 'confirm',
-  'change': 'CHANGE'
+  'change': 'CHANGE',
+  'wrong-format': 'Password should be between 6 and 50 characters length'
 });
 
 class ChangePasswordView extends Component {
@@ -62,9 +63,9 @@ class ChangePasswordView extends Component {
         <TextInput
           ref='1'
           autoCapitalize='none'
-          autoFocus={true}
+          autoFocus
           placeholder={i18next.t('myAccountPassword:old-password')}
-          secureTextEntry={true}
+          secureTextEntry
           returnKeyType='next'
           style={[styles.input, s.marginTop10]}
           onChangeText={(text) => this.setState({oldPassword: text})}
@@ -142,7 +143,11 @@ class ChangePasswordView extends Component {
 
     app.client.accountPassword(this.state.newPassword, this.state.oldPassword, (response) => {
       if (response.err) {
-        alert.show(i18next.t('messages.' + response.err));
+        if (response.err === 'wrong-format') {
+          alert.show(i18next.t('myAccountPassword:wrong-format'));
+        } else {
+          alert.show(i18next.t('messages.' + response.err));
+        }
       } else {
         alert.show(i18next.t('messages.success'));
       }
