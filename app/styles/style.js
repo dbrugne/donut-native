@@ -245,7 +245,7 @@ var style = {
   },
 
   // new design
-  centeredBlock: { marginHorizontal: 10, marginVertical: 15 },
+  centeredBlock: { marginHorizontal: 20, marginVertical: 20 },
   centeredBlockText: { fontSize: 16, color: '#AFBAC8', letterSpacing: 1.50, lineHeight: 20, textAlign: 'center'}
 
 };
