@@ -120,7 +120,8 @@ ListItemAbstract.propTypes = {
   help: React.PropTypes.string, // help message to display bellow the ListItem
   id: React.PropTypes.string, // id of the room / group
   parentType: React.PropTypes.oneOf(['room', 'group']),
-  isOwnerAdminOrOp: React.PropTypes.bool
+  isOwnerAdminOrOp: React.PropTypes.bool,
+  model: React.PropTypes.object // model of parent room / group
 };
 
 ListItemAbstract.contextTypes = {

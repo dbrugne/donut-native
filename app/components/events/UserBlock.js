@@ -6,6 +6,7 @@ var Username = require('./Username');
 var date = require('../../libs/date');
 var common = require('@dbrugne/donut-common/mobile');
 var userActionSheet = require('../../libs/UserActionsSheet');
+var navigation = require('../../navigation/index');
 
 var {
   View,
@@ -21,7 +22,8 @@ module.exports = React.createClass({
   propTypes: {
     data: React.PropTypes.object.isRequired,
     navigator: React.PropTypes.object.isRequired,
-    onPress: React.PropTypes.func
+    onPress: React.PropTypes.func,
+    model: React.PropTypes.object
   },
   render () {
     return (
@@ -35,6 +37,7 @@ module.exports = React.createClass({
               realname={this.props.data.realname}
               navigator={this.props.navigator}
               onPress={() => this.onPress()}
+              model={this.props.model}
               />
             <Text style={s.time}>{date.shortTime(this.props.data.time)}</Text>
           </View>
@@ -66,6 +69,13 @@ module.exports = React.createClass({
     if (this.props.onPress) {
       return this.props.onPress();
     }
-    userActionSheet.openActionSheet(this.context.actionSheet(), 'roomUsers', this.props.data.room_id, this.props.data);
+    if (this.props.model && this.props.model.get('type') === 'room') {
+      return userActionSheet.openRoomActionSheet(this.context.actionSheet(), 'roomUsers', this.props.model, this.props.data);
+    }
+    navigation.navigate('Profile', {
+      type: 'user',
+      id: this.props.data.user_id,
+      identifier: '@' + this.props.data.username
+    });
   }
 });

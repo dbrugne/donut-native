@@ -116,6 +116,7 @@ class DiscussionEvents extends Component {
       <UserBlock
         navigator={this.props.navigator}
         data={event.data.userBlock}
+        model={this.props.model}
         >
         <Comp
           navigator={this.props.navigator}

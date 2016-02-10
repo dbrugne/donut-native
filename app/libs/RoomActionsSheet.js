@@ -8,7 +8,7 @@ var debug = require('../libs/debug')('storage');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'RoomActionSheet', {
   'cancel': 'Cancel',
-  'profile': 'Profile'
+  'profile': 'View profile'
 }, true, true);
 
 module.exports = {

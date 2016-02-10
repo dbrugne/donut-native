@@ -31,15 +31,15 @@ i18next.addResourceBundle('en', 'UserActionSheet', {
 }, true, true);
 
 module.exports = {
-  openActionSheet: function (actionSheet, type, id, user, currentUserGotRights) {
-    if (['roomUsers', 'roomInvite', 'groupUsers', 'groupInvite'].indexOf(type) === -1) {
+  openRoomActionSheet: function (actionSheet, type, model, user) {
+    if (['roomUsers', 'roomInvite'].indexOf(type) === -1) {
       return debug.warn('Wrong type value for userActionSheet :', type);
     }
-    if (!user || !user.user_id) {
+    if (!user || !user.user_id || !model) {
       return debug.warn('Wrong params for userActionSheet');
     }
 
-    var options = _getOptionsForActionSheet(type, id, user, currentUserGotRights);
+    var options = _getOptionsForRoomActionSheet(type, model, user);
     let destructiveButtonIndex = -1;
     let cancelButtonIndex = -1;
     for (var i = 0; i < options.length; i++) {
@@ -59,13 +59,43 @@ module.exports = {
     (buttonIndex) => {
       options[buttonIndex].onPress();
     });
+  },
+  openGroupActionSheet: function (actionSheet, type, groupId, userData, isOwnerOpOrAdmin) {
+    if (['groupUsers', 'groupInvite'].indexOf(type) === -1) {
+      return debug.warn('Wrong type value for userActionSheet :', type);
+    }
+    if (!userData || !userData.user_id || !groupId) {
+      return debug.warn('Wrong params for userActionSheet');
+    }
+
+    var options = _getOptionsForGroupActionSheet(type, groupId, userData, isOwnerOpOrAdmin);
+    let destructiveButtonIndex = -1;
+    let cancelButtonIndex = -1;
+    for (var i = 0; i < options.length; i++) {
+      if (options[i].isDestructiveButton) {
+        destructiveButtonIndex = i;
+      }
+      if (options[i].isCancelButton) {
+        cancelButtonIndex = i;
+      }
+    }
+    var optionsTitles = _.map(options, 'text');
+    actionSheet.showActionSheetWithOptions({
+      options: optionsTitles,
+      cancelButtonIndex,
+      destructiveButtonIndex
+    },
+      (buttonIndex) => {
+        options[buttonIndex].onPress();
+      });
   }
 };
 
-var _getOptionsForActionSheet = function (type, id, user, currentUserGotRights) {
-  var roomId = (type === 'roomUsers' || type === 'roomInvite')
-    ? id
-    : null;
+var _getOptionsForRoomActionSheet = function (type, model, user) {
+  var roomId = model.get('id');
+
+  var userData = _getUser(user, model);
+
   var options = [
     {
       text: i18next.t('UserActionSheet:view-profile'),
@@ -82,19 +112,38 @@ var _getOptionsForActionSheet = function (type, id, user, currentUserGotRights) 
     }
   ];
 
-  if (type === 'roomUsers' || type === 'groupUsers') {
-    options = options.concat(_getActionUsersOptionsForActionSheet(type, id, user, currentUserGotRights));
-  } else {
-    // @todo for type 'groupInvite' && 'roomInvite' when view will get implemented
-  }
+  options = options.concat(_getActionUsersOptionsForRoomActionSheet(type, model, userData));
 
   return options;
 };
 
-var _getActionUsersOptionsForActionSheet = function (type, id, user, currentUserGotRights) {
+var _getOptionsForGroupActionSheet = function (type, groupId, userData, isOwnerOpOrAdmin) {
+  var options = [
+    {
+      text: i18next.t('UserActionSheet:view-profile'),
+      onPress: () => navigation.navigate('Profile', {type: 'user', id: userData.user_id, identifier: '@' + userData.username})
+    },
+    {
+      text: i18next.t('UserActionSheet:chat'),
+      onPress: () => app.trigger('joinUser', userData.user_id)
+    },
+    {
+      text: i18next.t('UserActionSheet:report'),
+      onPress: () => navigation.navigate('Report', {user: userData, type: 'user'}),
+      isDestructiveButton: true
+    }
+  ];
+
+  options = options.concat(_getActionUsersOptionsForGroupActionSheet(type, groupId, userData, isOwnerOpOrAdmin));
+
+  return options;
+};
+
+var _getActionUsersOptionsForRoomActionSheet = function (type, model, user) {
   var options = [];
-  // if target is owner or current user got not rights return cancel button
-  if (user.isOwner || user.is_owner || !currentUserGotRights) {
+  // if target is owner or current user got not rights or targeted user is not in room return cancel button
+  if (user.isOwner || user.is_owner ||
+    (!model.currentUserIsOwner() && !model.currentUserIsOp()) || user.not_in) {
     options.push({
       text: i18next.t('UserActionSheet:cancel'),
       onPress: () => {},
@@ -102,6 +151,8 @@ var _getActionUsersOptionsForActionSheet = function (type, id, user, currentUser
     });
     return options;
   }
+
+  var id = model.get('id');
 
   // op / deop
   options.push({
@@ -116,10 +167,10 @@ var _getActionUsersOptionsForActionSheet = function (type, id, user, currentUser
   // devoice / voice
   if (type === 'roomUsers') {
     options.push({
-      text: (user.isDevoiced)
+      text: (user.isDevoiced || user.is_devoice)
         ? i18next.t('UserActionSheet:make-voice')
         : i18next.t('UserActionSheet:make-devoice'),
-      onPress: () => (user.isDevoiced)
+      onPress: () => (user.isDevoiced || user.is_devoice)
         ? _onVoice(id, user)
         : _onDevoice(id, user)
     });
@@ -151,6 +202,63 @@ var _getActionUsersOptionsForActionSheet = function (type, id, user, currentUser
   });
 
   return options;
+};
+
+var _getActionUsersOptionsForGroupActionSheet = function (type, groupId, user, isOwnerOpOrAdmin) {
+  var options = [];
+  // if target is owner or current user got not rights or targeted user is not in room return cancel button
+  if (user.isOwner || user.is_owner || !isOwnerOpOrAdmin) {
+    options.push({
+      text: i18next.t('UserActionSheet:cancel'),
+      onPress: () => {},
+      isCancelButton: true
+    });
+    return options;
+  }
+
+  // op / deop
+  options.push({
+    text: (user.isOp || user.is_op)
+      ? i18next.t('UserActionSheet:make-deop')
+      : i18next.t('UserActionSheet:make-op'),
+    onPress: () => (user.isOp)
+      ? _onDeop(type, groupId, user)
+      : _onOp(type, groupId, user)
+  });
+
+  // ban / unban
+  options.push({
+    text: (user.isBanned)
+      ? i18next.t('UserActionSheet:make-deban')
+      : i18next.t('UserActionSheet:make-ban'),
+    onPress: () => (user.isBanned)
+      ? _onUnban(type, groupId, user)
+      : _onBan(type, groupId, user),
+    isDestructiveButton: true
+  });
+
+  options.push({
+    text: i18next.t('UserActionSheet:cancel'),
+    onPress: () => {},
+    isCancelButton: true
+  });
+
+  return options;
+};
+
+var _getUser = function (user, model) {
+  if (!model.users || !model.users.length) {
+    return _.extend(user, {not_in: true});
+  }
+  var userData = _.find(model.users.models, (u) => {
+    if (u.get('user_id') === user.user_id) {
+      return u;
+    }
+  });
+  if (!userData) {
+    return _.extend(user, {not_in: true});
+  }
+  return userData.attributes;
 };
 
 /*

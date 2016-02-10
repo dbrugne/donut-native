@@ -175,9 +175,9 @@ class ListItemImageList extends ListItemAbstract {
 
   _renderActionSheet (user) {
     if (this.props.parentType === 'group') {
-      userActionSheet.openActionSheet(this.context.actionSheet(), 'groupUsers', this.props.id, user, this.props.isOwnerAdminOrOp);
+      userActionSheet.openGroupActionSheet(this.context.actionSheet(), 'groupUsers', this.props.id, user, this.props.isOwnerAdminOrOp);
     } else {
-      userActionSheet.openActionSheet(this.context.actionSheet(), 'roomUsers', this.props.id, user, this.props.isOwnerAdminOrOp);
+      userActionSheet.openRoomActionSheet(this.context.actionSheet(), 'roomUsers', this.props.model, user);
     }
   }
 }

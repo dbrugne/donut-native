@@ -28,7 +28,8 @@ module.exports = React.createClass({
   propTypes: {
     data: React.PropTypes.object.isRequired,
     type: React.PropTypes.string.isRequired,
-    navigator: React.PropTypes.object.isRequired
+    navigator: React.PropTypes.object.isRequired,
+    model: React.PropTypes.object
   },
   render () {
     let message;
@@ -72,6 +73,7 @@ module.exports = React.createClass({
       <View style={s.event}>
         <UserBlock
           navigator={this.props.navigator}
+          model={this.props.model}
           {...this.props}
           >
           <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
@@ -81,6 +83,7 @@ module.exports = React.createClass({
               username={this.props.data.by_username}
               realname={this.props.data.by_realname}
               navigator={this.props.navigator}
+              model={this.props.model}
               />
           </View>
         </UserBlock>

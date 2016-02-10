@@ -49,7 +49,10 @@ var DiscussionAbstract = React.createClass({
     app.off(null, null, this);
   },
   onFocus () {
-    if (this.refs.events) {
+    if (this.props.model.get('type') === 'room') {
+      this.refs.events.onFocus();
+      this.props.model.users.fetchUsers();
+    } else if (this.refs.events) {
       this.refs.events.onFocus();
     }
   },

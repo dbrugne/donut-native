@@ -60,6 +60,7 @@ var RoomUsersView = React.createClass({
     this.searchString = '';
     this.type = 'users';
     this.currentNumberCharged = 0;
+    this.model = app.rooms.iwhere('id', this.props.id);
     return {
       loaded: false,
       dataSource: ds.cloneWithRows([]),
@@ -176,7 +177,7 @@ var RoomUsersView = React.createClass({
   _renderElement: function (user) {
     return (
       <Card
-        onPress={() => this._onOpenActionSheet(user, this.state.is_owner || this.state.is_op || currentUser.isAdmin())}
+        onPress={() => this._onOpenActionSheet(user)}
         image={user.avatar}
         type='user'
         identifier={'@' + user.username}
@@ -218,8 +219,8 @@ var RoomUsersView = React.createClass({
     this.fetchData();
   },
 
-  _onOpenActionSheet (user, ownerAdminOrOp) {
-    userActionSheet.openActionSheet(this.context.actionSheet(), 'roomUsers', this.props.id, user, ownerAdminOrOp);
+  _onOpenActionSheet (user) {
+    userActionSheet.openRoomActionSheet(this.context.actionSheet(), 'roomUsers', this.model, user);
   }
 });
 

@@ -22,6 +22,7 @@ module.exports = React.createClass({
       <View style={s.event}>
         <UserBlock
           navigator={this.props.navigator}
+          model={this.props.model}
           {...this.props}
         >
           <Text style={s.eventText}>{this._renderTopic()}</Text>
@@ -37,7 +38,7 @@ module.exports = React.createClass({
       );
     }
     return (
-      <ParsedText navigator={this.props.navigator} style={{fontSize: 12, fontFamily: 'Open Sans', color: '#666666'}}>
+      <ParsedText model={this.props.model} navigator={this.props.navigator} style={{fontSize: 12, fontFamily: 'Open Sans', color: '#666666'}}>
         {i18next.t('topic:topic')+': "'+this.props.data.topic+'"'}
       </ParsedText>
     );

@@ -182,7 +182,7 @@ class DiscussionSettings extends Component {
             icon='users'
             type='image-list'
             action
-            id={this.props.model.get('id')}
+            model={this.props.model}
             parentType='room'
             isOwnerAdminOrOp={this.isOp || this.isOwner || this.isAdmin}
             value={this.state.nbUsers}
