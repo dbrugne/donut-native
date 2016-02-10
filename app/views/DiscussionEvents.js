@@ -170,11 +170,19 @@ class DiscussionEvents extends Component {
   }
   renderHeader () {
     if (!this.state.more) {
-      var prefix = (this.props.model.get('type') === 'room')
-        ? i18next.t('DiscussionEvents:in')
-        : i18next.t('DiscussionEvents:discuss');
+      if (this.props.model.get('type') === 'room') {
+        return (
+          <Text style={[s.h1, s.textCenter]}>{i18next.t('DiscussionEvents:in')} {this.props.title}</Text>
+        );
+      }
+
       return (
-        <Text style={[s.h1, s.textCenter]}>{prefix} {this.props.title}</Text>
+        <EventHello
+          navigator={this.props.navigator}
+          type='onetoone'
+          data={{username: this.props.title}}
+          model={this.props.model}
+          />
       );
     }
 
