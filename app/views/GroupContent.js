@@ -26,7 +26,7 @@ i18next.addResourceBundle('en', 'GroupContent', {
   'rooms': 'Discussion list',
   'users': 'Member list',
   'community-member': 'You are a member of this community',
-  'community-not-member': 'You are not yet a member of this community. You can join public discussions or request access to a private discussion. Members have special privileges such as direct access to certain private discussions and to other members of this community.Before you request membership, have a glance at this community access conditions',
+  'community-not-member': 'You are not a member yet ! You can only see public discussions. Members have special priviledges such as direct access to certain private discussions and to this community members.',
   'community-owner': 'You are the owner of this community',
   'community-op': 'You are an op of this community',
   'invite': 'Invite members',
