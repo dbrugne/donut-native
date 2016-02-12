@@ -49,6 +49,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+      // @bug: fix app refocus that trigger app reload
       if (!isTaskRoot()) {
           finish();
           return;
