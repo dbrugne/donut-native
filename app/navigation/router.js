@@ -206,6 +206,10 @@ module.exports = {
         return require('./routes/AvailableSoon');
       case 'Report':
         return require('./routes/Report');
+      case 'ManageInvitations':
+        return require('./routes/ManageInvitations');
+      case 'AllowedUsers':
+        return require('./routes/AllowedUsers');
     }
   }
 };

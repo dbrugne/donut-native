@@ -29,8 +29,7 @@ i18next.addResourceBundle('en', 'GroupContent', {
   'community-not-member': 'You are not a member yet ! You can only see public discussions. Members have special priviledges such as direct access to certain private discussions and to this community members.',
   'community-owner': 'You are the owner of this community',
   'community-op': 'You are an op of this community',
-  'invite': 'Invite members',
-  'manage': 'Manage members',
+  'invite': 'Manage invitations',
   "create-donut": "Create a discussion",
   "message-ban": "You were banned from this community",
   "request-membership": "request membership",
@@ -119,15 +118,8 @@ class GroupContentView extends Component {
             type='button'
             first
             action
-            onPress={() => navigation.navigate('AvailableSoon')}
+            onPress={() => navigation.navigate('ManageInvitations', {id: this.props.data.group_id, type: 'group'})}
             text={i18next.t('GroupContent:invite')}
-          />
-          <ListItem
-            type='button'
-            action
-            last
-            onPress={() => navigation.navigate('AvailableSoon')}
-            text={i18next.t('GroupContent:manage')}
           />
         </View>
       );

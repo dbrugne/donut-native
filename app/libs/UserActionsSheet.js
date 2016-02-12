@@ -27,6 +27,14 @@ i18next.addResourceBundle('en', 'UserActionSheet', {
   'chat': 'Chat one-to-one',
   'cancel': 'Cancel',
   'view-profile': 'View profile',
+  'accept-request': 'Accept request',
+  'refuse-request': 'Refuse request',
+  'make-accept-request': 'Accept',
+  'modal-accept-request': 'Are you sure you want to accept @__username__ membership?',
+  'make-refuse-request': 'Refuse',
+  'modal-refuse-request': 'Are you sure you want to refuse @__username__ membership?',
+  'disallow': 'Disallow',
+  'modal-disallow': 'Are you sure you want to disallow @__username__?',
   'report': 'Report user'
 }, true, true);
 
@@ -60,7 +68,7 @@ module.exports = {
       options[buttonIndex].onPress();
     });
   },
-  openGroupActionSheet: function (actionSheet, type, groupId, userData, isOwnerOpOrAdmin) {
+  openGroupActionSheet: function (actionSheet, type, groupId, userData, isOwnerOpOrAdmin, callback) {
     if (['groupUsers', 'groupInvite'].indexOf(type) === -1) {
       return debug.warn('Wrong type value for userActionSheet :', type);
     }
@@ -86,7 +94,7 @@ module.exports = {
       destructiveButtonIndex
     },
       (buttonIndex) => {
-        options[buttonIndex].onPress();
+        options[buttonIndex].onPress(callback);
       });
   }
 };
@@ -182,18 +190,36 @@ var _getActionUsersOptionsForRoomActionSheet = function (type, model, user) {
       text: i18next.t('UserActionSheet:make-kick'),
       onPress: () => _onKick(id, user)
     });
+
+    // ban / unban
+    options.push({
+      text: (user.isBanned)
+        ? i18next.t('UserActionSheet:make-deban')
+        : i18next.t('UserActionSheet:make-ban'),
+      onPress: () => (user.isBanned)
+        ? _onUnban(type, id, user)
+        : _onBan(type, id, user),
+      isDestructiveButton: true
+    });
   }
 
-  // ban / unban
-  options.push({
-    text: (user.isBanned)
-      ? i18next.t('UserActionSheet:make-deban')
-      : i18next.t('UserActionSheet:make-ban'),
-    onPress: () => (user.isBanned)
-      ? _onUnban(type, id, user)
-      : _onBan(type, id, user),
-    isDestructiveButton: true
-  });
+  if (user.isPending) {
+    options.push({
+      text: i18next.t('UserActionSheet:accept-request'),
+      onPress: (callback) => _onAcceptRequest(type, id, user, callback)
+    });
+    options.push({
+      text: i18next.t('UserActionSheet:refuse-request'),
+      onPress: (callback) => _onRefuseRequest(type, id, user, callback)
+    });
+  }
+
+  if (user.isAllowed) {
+    options.push({
+      text: i18next.t('UserActionSheet:disallow'),
+      onPress: (callback) => _onDisallow(type, id, user, callback)
+    });
+  }
 
   options.push({
     text: i18next.t('UserActionSheet:cancel'),
@@ -216,26 +242,46 @@ var _getActionUsersOptionsForGroupActionSheet = function (type, groupId, user, i
     return options;
   }
 
-  // op / deop
-  options.push({
-    text: (user.isOp || user.is_op)
-      ? i18next.t('UserActionSheet:make-deop')
-      : i18next.t('UserActionSheet:make-op'),
-    onPress: () => (user.isOp)
-      ? _onDeop(type, groupId, user)
-      : _onOp(type, groupId, user)
-  });
+  if (type === 'groupUsers') {
+    // op / deop
+    options.push({
+      text: (user.isOp || user.is_op)
+        ? i18next.t('UserActionSheet:make-deop')
+        : i18next.t('UserActionSheet:make-op'),
+      onPress: () => (user.isOp)
+        ? _onDeop(type, groupId, user)
+        : _onOp(type, groupId, user)
+    });
 
-  // ban / unban
-  options.push({
-    text: (user.isBanned)
-      ? i18next.t('UserActionSheet:make-deban')
-      : i18next.t('UserActionSheet:make-ban'),
-    onPress: () => (user.isBanned)
-      ? _onUnban(type, groupId, user)
-      : _onBan(type, groupId, user),
-    isDestructiveButton: true
-  });
+    // ban / unban
+    options.push({
+      text: (user.isBanned)
+        ? i18next.t('UserActionSheet:make-deban')
+        : i18next.t('UserActionSheet:make-ban'),
+      onPress: () => (user.isBanned)
+        ? _onUnban(type, groupId, user)
+        : _onBan(type, groupId, user),
+      isDestructiveButton: true
+    });
+  }
+
+  if (user.isPending) {
+    options.push({
+      text: i18next.t('UserActionSheet:accept-request'),
+      onPress: (callback) => _onAcceptRequest(type, groupId, user, callback)
+    });
+    options.push({
+      text: i18next.t('UserActionSheet:refuse-request'),
+      onPress: (callback) => _onRefuseRequest(type, groupId, user, callback)
+    });
+  }
+
+  if (user.isAllowed) {
+    options.push({
+      text: i18next.t('UserActionSheet:disallow'),
+      onPress: (callback) => _onDisallow(type, groupId, user, callback)
+    });
+  }
 
   options.push({
     text: i18next.t('UserActionSheet:cancel'),
@@ -407,6 +453,95 @@ var _onKick = function (id, user) {
         }
       });
     },
+    () => {}
+  );
+};
+
+var _onAcceptRequest = function (type, id, user, callback) {
+  var action;
+  if (type === 'groupInvite') {
+    action = () => app.client.groupRequestAccept(id, user.user_id, (response) => {
+      if (response.err) {
+        return alert.show(i18next.t('messages.' + response.err));
+      }
+      user.isAllowed = true;
+      if (callback) {
+        return callback(response.err);
+      }
+    });
+  } else {
+    action = () => app.client.roomAccept(id, user.user_id, (response) => {
+      if (response.err) {
+        return alert.show(i18next.t('messages.' + response.err));
+      }
+      user.isAllowed = true;
+      if (callback) {
+        return callback(response.err);
+      }
+    });
+  }
+  alert.askConfirmation(
+    i18next.t('UserActionSheet:make-accept-request'),
+    i18next.t('UserActionSheet:modal-accept-request', {username: user.username}),
+    action,
+    () => {}
+  );
+};
+
+var _onRefuseRequest = function (type, id, user, callback) {
+  var action;
+  if (type === 'groupInvite') {
+    action = () => app.client.groupRequestRefuse(id, user.user_id, (response) => {
+      if (response.err) {
+        return alert.show(i18next.t('messages.' + response.err));
+      }
+      if (callback) {
+        return callback(response.err);
+      }
+    });
+  } else {
+    action = () => app.client.roomRefuse(id, user.user_id, (response) => {
+      if (response.err) {
+        alert.show(i18next.t('messages.' + response.err));
+      }
+      if (callback) {
+        return callback(response.err);
+      }
+    });
+  }
+  alert.askConfirmation(
+    i18next.t('UserActionSheet:make-refuse-request'),
+    i18next.t('UserActionSheet:modal-refuse-request', {username: user.username}),
+    action,
+    () => {}
+  );
+};
+
+var _onDisallow = function (type, id, user, callback) {
+  var action;
+  if (type === 'groupInvite') {
+    action = () => app.client.groupAllowedRemove(id, user.user_id, (response) => {
+      if (response.err) {
+        alert.show(i18next.t('messages.' + response.err));
+      }
+      if (callback) {
+        return callback(response.err);
+      }
+    });
+  } else {
+    action = () => app.client.roomDisallow(id, user.user_id, (response) => {
+      if (response.err) {
+        alert.show(i18next.t('messages.' + response.err));
+      }
+      if (callback) {
+        return callback(response.err);
+      }
+    });
+  }
+  alert.askConfirmation(
+    i18next.t('UserActionSheet:disallow'),
+    i18next.t('UserActionSheet:modal-disallow', {username: user.username}),
+    action,
     () => {}
   );
 };

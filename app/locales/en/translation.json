@@ -53,7 +53,8 @@
     "not-connected": "Looks like there is connection issue",
     "wrong": "Incorrect e-mail or password",
     "unknown": "Incorrect e-mail format",
-    "not-in": "User is not in the discussion"
+    "not-in": "User is not in the discussion",
+    "internal": "Error"
   },
   "navigation": {
     "create": "Create",
@@ -96,7 +97,9 @@
     "room-edit-disclaimer": "Edit",
     "discussion-blocked-join": "Join discussion",
     "available-soon": "Available soon",
-    "report": "Report"
+    "report": "Report",
+    "manage-invitations": "Manage invitations",
+    "allowed-users": "Allowed users"
   },
   "group": {
     "request-title": "I request membership",
