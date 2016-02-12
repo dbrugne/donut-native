@@ -103,6 +103,18 @@ class ListItemImageList extends ListItemAbstract {
         identifier: '@' + item.username,
         avatarRadius: { borderRadius: 0 }
       };
+      return (
+        <View style={styles.element} key={data.key}>
+          <View style={{position: 'relative'}}>
+            <TouchableHighlight underlayColor='transparent'
+                                onPress={data.onProfile}
+                                style={{width: 80, height: 80}}
+              >
+              <Image style={{width: 80, height: 80, position: 'absolute', top: 0, left: 0}} source={{uri: common.cloudinary.prepare(item.avatar, 120)}}/>
+            </TouchableHighlight>
+          </View>
+        </View>
+      );
     } else if (_.has(item, 'room_id')) {
       data = {
         key: 'room' + item.room_id,
