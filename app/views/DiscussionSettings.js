@@ -283,7 +283,7 @@ class DiscussionSettings extends Component {
   _renderAllowedUsers () {
     return (
       <ListItem
-          onPress={() => navigation.navigate('AvailableSoon')}
+          onPress={() => navigation.navigate('ManageInvitations', {id: this.props.model.get('id'), type: 'room'})}
           text={i18next.t('DiscussionSettings:allowed')}
           icon='shield'
           type='button'

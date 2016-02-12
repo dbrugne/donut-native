@@ -39,7 +39,7 @@ i18next.addResourceBundle('en', 'UserActionSheet', {
 }, true, true);
 
 module.exports = {
-  openRoomActionSheet: function (actionSheet, type, model, user) {
+  openRoomActionSheet: function (actionSheet, type, model, user, callback) {
     if (['roomUsers', 'roomInvite'].indexOf(type) === -1) {
       return debug.warn('Wrong type value for userActionSheet :', type);
     }
@@ -65,7 +65,7 @@ module.exports = {
       destructiveButtonIndex
     },
     (buttonIndex) => {
-      options[buttonIndex].onPress();
+      options[buttonIndex].onPress(callback);
     });
   },
   openGroupActionSheet: function (actionSheet, type, groupId, userData, isOwnerOpOrAdmin, callback) {
@@ -151,7 +151,7 @@ var _getActionUsersOptionsForRoomActionSheet = function (type, model, user) {
   var options = [];
   // if target is owner or current user got not rights or targeted user is not in room return cancel button
   if (user.isOwner || user.is_owner ||
-    (!model.currentUserIsOwner() && !model.currentUserIsOp()) || user.not_in) {
+    (!model.currentUserIsOwner() && !model.currentUserIsOp()) || (user.not_in && !user.isPending && !user.isAllowed)) {
     options.push({
       text: i18next.t('UserActionSheet:cancel'),
       onPress: () => {},
@@ -162,18 +162,18 @@ var _getActionUsersOptionsForRoomActionSheet = function (type, model, user) {
 
   var id = model.get('id');
 
-  // op / deop
-  options.push({
-    text: (user.isOp || user.is_op)
-      ? i18next.t('UserActionSheet:make-deop')
-      : i18next.t('UserActionSheet:make-op'),
-    onPress: () => (user.isOp)
-      ? _onDeop(type, id, user)
-      : _onOp(type, id, user)
-  });
+  if (type === 'roomUsers' && !user.isAllowed) {
+    // op / deop
+    options.push({
+      text: (user.isOp || user.is_op)
+        ? i18next.t('UserActionSheet:make-deop')
+        : i18next.t('UserActionSheet:make-op'),
+      onPress: () => (user.isOp)
+        ? _onDeop(type, id, user)
+        : _onOp(type, id, user)
+    });
 
-  // devoice / voice
-  if (type === 'roomUsers') {
+    // devoice / voice
     options.push({
       text: (user.isDevoiced || user.is_devoice)
         ? i18next.t('UserActionSheet:make-voice')
@@ -182,10 +182,8 @@ var _getActionUsersOptionsForRoomActionSheet = function (type, model, user) {
         ? _onVoice(id, user)
         : _onDevoice(id, user)
     });
-  }
 
-  // kick
-  if (type === 'roomUsers') {
+    // kick
     options.push({
       text: i18next.t('UserActionSheet:make-kick'),
       onPress: () => _onKick(id, user)
@@ -293,6 +291,9 @@ var _getActionUsersOptionsForGroupActionSheet = function (type, groupId, user, i
 };
 
 var _getUser = function (user, model) {
+  if (user.isAllowed) {
+    return user;
+  }
   if (!model.users || !model.users.length) {
     return _.extend(user, {not_in: true});
   }

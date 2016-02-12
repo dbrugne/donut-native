@@ -21,7 +21,8 @@ var AllowedUsersView = React.createClass({
     actionSheet: React.PropTypes.func
   },
   propTypes: {
-    data: React.PropTypes.object
+    data: React.PropTypes.object,
+    fetchParent: React.PropTypes.func
   },
   getInitialState: function () {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -83,11 +84,18 @@ var AllowedUsersView = React.createClass({
     if (this.props.data.type === 'group') {
       userActionSheet.openGroupActionSheet(this.context.actionSheet(), 'groupInvite', this.props.data.id, userData, true, (err) => {
         if (!err) {
+          this.props.fetchParent();
           this._fetchData();
         }
       });
     } else {
-      // @todo room
+      var model = app.rooms.iwhere('id', this.props.data.id);
+      userActionSheet.openRoomActionSheet(this.context.actionSheet(), 'roomInvite', model, user, (err) => {
+        if (!err) {
+          this.props.fetchParent();
+          this._fetchData();
+        }
+      });
     }
   }
 });

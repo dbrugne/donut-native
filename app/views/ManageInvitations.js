@@ -56,7 +56,7 @@ var ManageInvitationsView = React.createClass({
     // type : 'pending' or 'allowed'
     var selector = {type: type};
     if (type === 'allowed') {
-      selector.selector = {start: 0, length: 10};
+      selector.selector = {start: 0, length: 6};
     }
     if (this.props.data.type === 'group') {
       app.client.groupUsers(this.props.data.id, selector, (data) => {
@@ -69,6 +69,9 @@ var ManageInvitationsView = React.createClass({
         this.setState(state);
       });
     } else {
+      if (type === 'pending') {
+        selector.type = 'allowedPending';
+      }
       app.client.roomUsers(this.props.data.id, selector, (data) => {
         if (data.err) {
           return alert.show(i18next.t('messages.' + data.err));
@@ -98,15 +101,19 @@ var ManageInvitationsView = React.createClass({
     let allowedsTab = null;
     if (this.allowed && this.allowed.users && this.allowed.users.length) {
       let allowedUsers = (this.allowed && this.allowed.users) ? this.allowed.users : [];
+      for (var i = 0; i < allowedUsers.length; i++) {
+        allowedUsers[i].isAllowed = true;
+      }
       allowedsTab = (
         <ListItem
-          onPress={() => navigation.navigate('AllowedUsers', this.props.data)}
+          onPress={() => navigation.navigate('AllowedUsers', {data: this.props.data, fetchParent: () => this._fetchData('allowed')})}
           text={i18next.t('ManageInvitations:allowed')}
           type='image-list'
           action
           first
           autoCapitalize='none'
           id={this.props.data.id}
+          model={app.rooms.iwhere('id', this.props.data.id)}
           parentType={this.props.data.type}
           value={(this.allowed && this.allowed.count) ? this.allowed.count.toString() : '0'}
           imageList={allowedUsers}
@@ -177,7 +184,13 @@ var ManageInvitationsView = React.createClass({
         this._fetchData('pending');
       });
     } else {
-      // @todo userActionSheet.openRoomActionSheet(this.context.actionSheet(), 'roomInvite', ...)
+      var model = app.rooms.iwhere('id', this.props.data.id);
+      userActionSheet.openRoomActionSheet(this.context.actionSheet(), 'roomInvite', model, user, (err) => {
+        if (err) {
+          return;
+        }
+        this._fetchData('pending');
+      });
     }
   },
   _inviteUsername: function () {

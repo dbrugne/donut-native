@@ -7,7 +7,7 @@ module.exports = function (data) {
   return {
     renderScene: function (navigator) {
       let ManageInvitations = require('../../views/ManageInvitations');
-      return <ManageInvitations navigator={navigator} data={data} />;
+      return <ManageInvitations navigator={navigator} data={data}/>;
     },
     getTitle () {
       return i18next.t('navigation.manage-invitations');

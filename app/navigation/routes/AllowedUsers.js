@@ -7,7 +7,7 @@ module.exports = function (data) {
   return {
     renderScene: function (navigator) {
       let AllowedUsers = require('../../views/AllowedUsers');
-      return <AllowedUsers navigator={navigator} data={data} />;
+      return <AllowedUsers navigator={navigator} data={data.data} fetchParent={data.fetchParent} />;
     },
     getTitle () {
       return i18next.t('navigation.allowed-users');
