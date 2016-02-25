@@ -201,7 +201,7 @@ class SearchView extends Component {
     this.resetList(skip);
 
     if (!skip) {
-      this.refs.listview.refs.listviewscroll.scrollTo(0,0);
+      this.refs.listview.refs.listviewscroll.scrollTo({x:0, y:0, animated: true});
     }
 
     var options = {

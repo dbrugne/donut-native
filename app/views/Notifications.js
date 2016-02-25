@@ -79,7 +79,6 @@ class NotificationsView extends Component {
         dataSource: this.notificationsDataSource.append(data),
         unread: app.user.get('unviewedNotification')
       });
-      this._setViewedAfterTimeout();
     }
   }
 
@@ -95,7 +94,6 @@ class NotificationsView extends Component {
       unread: app.user.get('unviewedNotification'),
       more: response.more
     });
-    this._setViewedAfterTimeout();
   }
 
   render () {
@@ -118,7 +116,6 @@ class NotificationsView extends Component {
           renderRow={this.renderRow.bind(this)}
           renderHeader={this.renderHeader.bind(this)}
           renderFooter={this.renderFooter.bind(this)}
-          onChangeVisibleRows={(visibleRows, changedRows) => this.onChangeVisibleRows(visibleRows, changedRows)}
           style={{flex: 1, backgroundColor: '#f0f0f0'}}
           scrollEnabled
         />
@@ -314,31 +311,31 @@ class NotificationsView extends Component {
     }
   }
 
-  onChangeVisibleRows (visibleRows) {
-    var idxs = [];
-    _.each(visibleRows.s1, (e, idx) => {
-      idxs.push(idx);
-    });
-
-    clearTimeout(this.timeouts.visibleRows);
-    this.timeouts.visibleRows = setTimeout(() => {
-      let unviewed = this.notificationsDataSource.findWhere('viewed', false);
-      // nothing to process
-      if (unviewed.length === 0) {
-        return;
-      }
-
-      let unviewedIds = _.map(unviewed, 'id');
-      let visible = this.notificationsDataSource.findIdsFromIndex(idxs);
-      let unviewedVisibleIds = _.intersection(unviewedIds, visible);
-      // nothing to process
-      if (unviewedVisibleIds.length === 0) {
-        return;
-      }
-
-      app.client.notificationViewed(unviewedVisibleIds, false);
-    }, this.visibleRowsTimer);
-  }
+  //onChangeVisibleRows (visibleRows) {
+  //  var idxs = [];
+  //  _.each(visibleRows.s1, (e, idx) => {
+  //    idxs.push(idx);
+  //  });
+  //
+  //  clearTimeout(this.timeouts.visibleRows);
+  //  this.timeouts.visibleRows = setTimeout(() => {
+  //    let unviewed = this.notificationsDataSource.findWhere('viewed', false);
+  //    // nothing to process
+  //    if (unviewed.length === 0) {
+  //      return;
+  //    }
+  //
+  //    let unviewedIds = _.map(unviewed, 'id');
+  //    let visible = this.notificationsDataSource.findIdsFromIndex(idxs);
+  //    let unviewedVisibleIds = _.intersection(unviewedIds, visible);
+  //    // nothing to process
+  //    if (unviewedVisibleIds.length === 0) {
+  //      return;
+  //    }
+  //
+  //    app.client.notificationViewed(unviewedVisibleIds, false);
+  //  }, this.visibleRowsTimer);
+  //}
 
   onLongPress (elt) {
     var id = elt.id;
@@ -519,7 +516,6 @@ class NotificationsView extends Component {
         unread: data.unread,
         dataSource: this.notificationsDataSource.prepend(data.notifications)
       });
-      this._setViewedAfterTimeout();
     });
   }
 
@@ -538,6 +534,7 @@ class NotificationsView extends Component {
         loadingTagAsRead: false,
         unread: app.user.get('unviewedNotification')
       });
+      this._setViewed()
     });
   }
 
@@ -547,24 +544,22 @@ class NotificationsView extends Component {
     });
   }
 
-  _setViewedAfterTimeout () {
-    setTimeout(() => {
-      if (!this.notificationsDataSource.blob) {
-        return;
+  _setViewed () {
+    if (!this.notificationsDataSource.blob) {
+      return;
+    }
+    let ids = [];
+    _.each(this.notificationsDataSource.blob, (notification) => {
+      if (!notification.viewed) {
+        ids.push(notification.id);
       }
-      let ids = [];
-      _.each(this.notificationsDataSource.blob, (notification) => {
-        if (!notification.viewed) {
-          ids.push(notification.id);
-        }
+    });
+    app.client.notificationViewed(ids, false, () => {
+      this.setState({
+        loadingTagAsRead: false,
+        unread: app.user.get('unviewedNotification')
       });
-      app.client.notificationViewed(ids, false, () => {
-        this.setState({
-          loadingTagAsRead: false,
-          unread: app.user.get('unviewedNotification')
-        });
-      });
-    }, this.visibleRowsTimer);
+    });
   }
 }
 

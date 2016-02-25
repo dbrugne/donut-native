@@ -120,7 +120,8 @@
     "placeholder-request": "Your motivations, background ...",
     "allowed-pending": "Access to this community is by invitation, and you already have a request in progress.",
     "success-request": "Request sent ! You will be notified when accepted.",
-    "message-wrong-format": "The message should be less than 200 character"
+    "message-wrong-format": "The message should be less than 200 character",
+    "not-confirmed": "Action authorized to verified accounts only. Verify your e-mail."
   },
   "room": {
     "message-membership": "You are not yet a member of this discussion. Before you request membership, have a glance at this discussion access conditions"
