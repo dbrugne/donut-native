@@ -170,11 +170,11 @@ module.exports = function () {
       return this.dataSource.cloneWithRows(this.blob);
     },
     removeUnviewedBlock () {
-      let index = _.findIndex(this.blob, {type:'unviewed'}); // look for an event of type unviewed
-
-      if (index !== -1) {
-        this.blob.splice(index, 1); // remove 1 item at index and does not insert anything
-      }
+      //let index = _.findIndex(this.blob, {type:'unviewed'}); // look for an event of type unviewed
+      //
+      //if (index !== -1) {
+      //  this.blob.splice(index, 1); // remove 1 item at index and does not insert anything
+      //}
       return this.dataSource.cloneWithRows(this.blob);
     }
   };
