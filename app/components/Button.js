@@ -22,7 +22,8 @@ var Button = React.createClass({
     help: React.PropTypes.string,
     icon: React.PropTypes.string,
     iconColor: React.PropTypes.string,
-    style: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number])
+    style: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number, React.PropTypes.array]),
+    buttonStyle: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.number, React.PropTypes.array])
   },
   render () {
     return (
@@ -67,7 +68,8 @@ var Button = React.createClass({
           this.props.type === 'red' && s.buttonRed,
           this.props.type === 'gray' && s.buttonGray,
           this.props.loading && s.buttonLoading,
-          this.props.disabled && s.buttonDisabled
+          this.props.disabled && s.buttonDisabled,
+          this.props.buttonStyle
         ]}>
         <View style={s.textCtn}>
           {this._renderText()}

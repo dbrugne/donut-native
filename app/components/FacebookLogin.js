@@ -12,7 +12,6 @@ var {
   Text,
   Image
 } = React;
-var Icon = require('react-native-vector-icons/FontAwesome');
 
 var currentUser = require('../models/current-user');
 
@@ -45,14 +44,6 @@ module.exports = React.createClass({
                                 underlayColor='#647EB7'
               >
               <View style={[s.buttonLabel, styles.buttonLabelFacebook]}>
-                <View style={styles.iconContainer}>
-                  <Icon
-                    name='facebook'
-                    size={28}
-                    color='#FFF'
-                    style={styles.iconFacebook}
-                  />
-                </View>
                 <Text style={[s.buttonText, styles.buttonTextFacebook]}>{i18next.t('facebookLogin:use')}</Text>
               </View>
             </TouchableHighlight>
@@ -67,7 +58,7 @@ module.exports = React.createClass({
       <View style={styles.container}>
         {useFacebookToken}
         <View style={styles.container}>
-          <View style={[s.button, s.buttonBlue]}>
+          <View style={[s.button, s.buttonBlue, styles.shadow]}>
             <FBLogin
               permissions={['email']}
               onLogin={this.onLogin}
@@ -159,9 +150,10 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     flex: 1
   },
-  iconFacebook: {
-    paddingRight: 5,
-    marginRight: 5,
-    alignSelf: 'flex-end'
+  shadow: {
+    shadowColor: 'rgb(30,30,30)',
+    shadowOffset: {width: 0, height: 5},
+    shadowRadius: 5,
+    shadowOpacity: 0.75
   }
 });
