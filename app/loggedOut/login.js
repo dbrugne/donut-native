@@ -8,7 +8,6 @@ var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var Button = require('../components/Button');
 var Link = require('../components/Link');
-
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'login', {
   'forgot': 'Forgot your password ?',
@@ -54,6 +53,10 @@ class LoginView extends Component {
   }
 
   render () {
+    if (this.state.showLoadingModal) {
+      return (<LoadingModal />);
+    }
+
     if (!currentUser.hasFacebookToken()) {
       var loginForm = (
         <View>
@@ -109,19 +112,21 @@ class LoginView extends Component {
     }
 
     return (
-      <View style={{flex: 1, alignItems: 'stretch'}}>
+      <View style={{flex: 1, alignItems: 'stretch', position: 'relative'}}>
+        <Image source={require('../assets/background.jpg')} style={{position: 'absolute', resizeMode:'stretch'}} />
         <ScrollView
           ref='scrollView'
           contentContainerStyle={{flex:1}}
           keyboardDismissMode='on-drag'
-          style={{flex: 1, backgroundColor: '#FAF9F5'}}>
+          style={{flex: 1}}>
           <View>
             <View style={styles.logoCtn}>
               <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
             </View>
             <View style={styles.container}>
               <FacebookLogin showLoadingModal={() => this.setState({showLoadingModal: true})}
-                             hideLoadingModal={() => this.setState({showLoadingModal: false})}/>
+                             hideLoadingModal={() => this.setState({showLoadingModal: false})}
+                />
               {loginForm}
             </View>
             <View style={styles.linkCtn}>
@@ -142,7 +147,6 @@ class LoginView extends Component {
               />
           </View>
         </ScrollView>
-        {this.state.showLoadingModal ? <LoadingModal /> : null}
       </View>
     );
   }
@@ -217,22 +221,18 @@ var styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
-    justifyContent: 'center',
-    backgroundColor: '#FFF'
+    justifyContent: 'center'
   },
   logoCtn: {
     marginTop: 50,
     paddingBottom: 25,
     flexDirection: 'column',
     alignItems: 'stretch',
-    justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#C3C3C3'
+    justifyContent: 'center'
   },
   logo: {
-    width: 125,
-    height: 32,
+    width: 200,   // 400
+    height: 50,   // 101
     alignSelf: 'center'
   },
   orContainer: {
@@ -258,18 +258,12 @@ var styles = StyleSheet.create({
   },
   iconContainer: {
     justifyContent: 'flex-end',
-    borderRightWidth: 2,
-    borderColor: '#344B7D',
-    borderStyle: 'solid',
     marginRight: 5
   },
   linkCtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderTopWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#C3C3C3',
     paddingTop: 10,
     paddingBottom: 10
   },
