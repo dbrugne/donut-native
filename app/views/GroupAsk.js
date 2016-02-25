@@ -21,7 +21,6 @@ var LoadingView = require('../components/Loading');
 var GroupHeader = require('./GroupHeader');
 var i18next = require('../libs/i18next');
 var alert = require('../libs/alert');
-var KeyboardAwareComponent = require('../components/KeyboardAware');
 
 class GroupAskMembership extends Component {
 
@@ -69,22 +68,15 @@ class GroupAskMembership extends Component {
     }
 
     return (
-      <KeyboardAwareComponent
-        shouldShow={() => { return true }}
-        shouldHide={() => { return true }}
-        >
-        <View style={{flex:1}}>
-          <ScrollView style={styles.main}>
-            <GroupHeader  model={this.state.data}/>
-            <View style={styles.container}>
+      <ScrollView style={styles.main}>
+        <GroupHeader  model={this.state.data}/>
+        <View style={styles.container}>
 
-              {this._renderDisclaimer()}
-              {this.renderListOptions()}
+          {this._renderDisclaimer()}
+          {this.renderListOptions()}
 
-            </View>
-          </ScrollView>
         </View>
-      </KeyboardAwareComponent>
+      </ScrollView>
     );
   }
 
