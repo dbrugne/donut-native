@@ -13,10 +13,10 @@ var {
   TouchableHighlight
   } = React;
 
-var _ = require('underscore');
 var app = require('../../libs/app');
 var navigation = require('../index');
 var animation = require('../../libs/animations').callapse;
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'drawerContentRooms', {
@@ -28,6 +28,7 @@ i18next.addResourceBundle('en', 'drawerContentRooms', {
 class NavigationRoomsView extends Component {
   constructor (props) {
     super(props);
+    this.displayLimit = 4;
     this.state = {
       elements: new ListView.DataSource({
         rowHasChanged: function (row1, row2) {
@@ -57,10 +58,11 @@ class NavigationRoomsView extends Component {
       if (room.group_id) {
         return;
       }
-      room.visible = (idx <= 3);
+      room.visible = (idx <= (this.displayLimit - 1));
       rooms.push(room);
     });
     this.setState({
+      rooms: rooms,
       collapsed: true,
       elements: this.state.elements.cloneWithRows(rooms)
     });
@@ -77,14 +79,7 @@ class NavigationRoomsView extends Component {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.title}>{i18next.t('drawerContentRooms:rooms')}</Text>
           <View style={{flex:1}}/>
-          <TouchableHighlight
-            style={{ backgroundColor: '#6E7784', borderRadius: 3, paddingVertical: 5, paddingHorizontal: 10, marginRight:10 }}
-            onPress={this.toggle.bind(this)}
-            underlayColor='#6E7784'
-            >
-            <Text
-              style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentRooms:see-all') : i18next.t('drawerContentRooms:see-less')}</Text>
-          </TouchableHighlight>
+          {this._renderToggle()}
         </View>
         <ListView
           dataSource={this.state.elements}
@@ -97,8 +92,36 @@ class NavigationRoomsView extends Component {
     );
   }
 
+  roomCount() {
+    var _roomsCount = 0;
+    _.each(app.rooms.toJSON(), (room, idx) => {
+      if (room.group_id) {
+        return;
+      }
+      _roomsCount++;
+    });
+    return _roomsCount;
+  }
+
+  _renderToggle() {
+    if (this.roomCount() <= this.displayLimit) {
+      return null;
+    }
+
+    return (
+      <TouchableHighlight
+        style={{ backgroundColor: '#6E7784', borderRadius: 3, paddingVertical: 5, paddingHorizontal: 10, marginRight:10 }}
+        onPress={this.toggle.bind(this)}
+        underlayColor='#6E7784'
+        >
+        <Text
+          style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentRooms:see-all') : i18next.t('drawerContentRooms:see-less')}</Text>
+      </TouchableHighlight>
+    );
+  }
+
   _renderMore () {
-    if (!this.state.collapsed) {
+    if (!this.state.collapsed || this.roomCount() <= this.displayLimit) {
       return null;
     }
 
@@ -131,9 +154,18 @@ class NavigationRoomsView extends Component {
             underlayColor='transparent'
             >
             <View style={styles.item}>
-              <Text style={[styles.itemTitle, {color: (model.get('focused')) ? '#FFFFFF' : '#AFBAC8'}, {textDecorationLine: 'line-through'}]}>
-                {('#' + model.get('name'))}
-              </Text>
+              <Text style={[styles.itemTitle, {color: (model.get('focused')) ? '#FFFFFF' : '#AFBAC8'}, {textDecorationLine: 'line-through'}]}> {('#' + model.get('name'))} </Text>
+              <TouchableHighlight
+                underlayColor= 'transparent'
+                style={{marginRight: 20}}
+                onPress={() => app.client.roomLeaveBlock(e.room_id)}
+                >
+                <Icon
+                  name='close'
+                  size={18}
+                  color='#AFBAC8'
+                  />
+              </TouchableHighlight>
             </View>
           </TouchableHighlight>
         </View>
@@ -167,7 +199,7 @@ class NavigationRoomsView extends Component {
     LayoutAnimation.configureNext(animation);
     var rooms = [];
     if (this.state.collapsed) {
-      _.each(app.rooms.toJSON(), (room, idx) => {
+      _.each(app.rooms.toJSON(), (room) => {
         if (room.group_id) {
           return;
         }
@@ -175,6 +207,7 @@ class NavigationRoomsView extends Component {
         rooms.push(room);
       });
       return this.setState({
+        rooms: rooms,
         collapsed: false,
         elements: this.state.elements.cloneWithRows(rooms)
       });
@@ -184,10 +217,11 @@ class NavigationRoomsView extends Component {
       if (room.group_id) {
         return;
       }
-      room.visible = (idx <= 3);
+      room.visible = (idx <= (this.displayLimit - 1));
       rooms.push(room);
     });
     this.setState({
+      rooms: rooms,
       collapsed: true,
       elements: this.state.elements.cloneWithRows(rooms)
     });

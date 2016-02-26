@@ -29,6 +29,7 @@ i18next.addResourceBundle('en', 'drawerContentOnes', {
 class NavigationOnesView extends Component {
   constructor (props) {
     super(props);
+    this.displayLimit = 4;
     this.state = {
       elements: new ListView.DataSource({
         rowHasChanged: function (row1, row2) {
@@ -56,7 +57,7 @@ class NavigationOnesView extends Component {
       collapsed: true,
       elements: this.state.elements.cloneWithRows(
         _.map(app.ones.toJSON(), (e, idx) => {
-            e.visible = (idx <= 3);
+            e.visible = (idx <= (this.displayLimit - 1));
             return e;
           }
         ))
@@ -73,13 +74,7 @@ class NavigationOnesView extends Component {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.title}>{i18next.t('drawerContentOnes:ones')}</Text>
           <View style={{flex:1}}/>
-          <TouchableHighlight
-            style={{ backgroundColor: '#6E7784', borderRadius: 3, paddingVertical: 5, paddingHorizontal: 10, marginRight:10 }}
-            onPress={this.toggle.bind(this)}
-            underlayColor='#6E7784'
-            >
-            <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentOnes:see-all') : i18next.t('drawerContentOnes:see-less')}</Text>
-          </TouchableHighlight>
+          {this._renderToggle()}
         </View>
         <ListView
           dataSource={this.state.elements}
@@ -92,8 +87,24 @@ class NavigationOnesView extends Component {
     );
   }
 
+  _renderToggle() {
+    if (app.ones.toJSON().length <= this.displayLimit) {
+      return null;
+    }
+
+    return (
+      <TouchableHighlight
+        style={{ backgroundColor: '#6E7784', borderRadius: 3, paddingVertical: 5, paddingHorizontal: 10, marginRight:10 }}
+        onPress={this.toggle.bind(this)}
+        underlayColor='#6E7784'
+        >
+        <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentOnes:see-all') : i18next.t('drawerContentOnes:see-less')}</Text>
+      </TouchableHighlight>
+    );
+  }
+
   _renderMore () {
-    if (!this.state.collapsed) {
+    if (!this.state.collapsed || app.ones.toJSON().length <= this.displayLimit) {
       return null;
     }
 
@@ -170,7 +181,7 @@ class NavigationOnesView extends Component {
       collapsed: true,
       elements: this.state.elements.cloneWithRows(
         _.map(app.ones.toJSON(), (e, idx) => {
-            e.visible = (idx <= 3);
+            e.visible = (idx <= (this.displayLimit - 1));
             return e;
           }
         ))
