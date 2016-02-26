@@ -15,7 +15,7 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'Create', {
-  'disclaimer-discussion': 'A discussion is chating (a chat room)',
+  'disclaimer-discussion': 'A discussion is chatting (a chat room)',
   'create-discussion': 'create a discussion',
   'help': 'Note: to create a discussion hosted within a community, go to this community homepage',
   'or': 'or',

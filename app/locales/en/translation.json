@@ -51,7 +51,7 @@
     "existing-user": "This email address is already used",
     "not-available": "This username is not available",
     "error-try-again": "Impossible to achieve this request, please try again later",
-    "not-connected": "Looks like there is connection issue",
+    "not-connected": "Looks like there is some connection issue",
     "wrong": "Incorrect e-mail or password",
     "unknown": "Incorrect e-mail format",
     "not-in": "User is not in the discussion",
