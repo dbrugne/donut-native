@@ -54,11 +54,11 @@ class NavigationRoomsView extends Component {
 
   refresh () {
     var rooms = [];
-    _.each(app.rooms.toJSON(), (room, idx) => {
+    _.each(app.rooms.toJSON(), (room) => {
       if (room.group_id) {
         return;
       }
-      room.visible = (idx <= (this.displayLimit - 1));
+      room.visible = (rooms.length <= (this.displayLimit - 1));
       rooms.push(room);
     });
     this.setState({
@@ -213,11 +213,11 @@ class NavigationRoomsView extends Component {
       });
     }
 
-    _.each(app.rooms.toJSON(), (room, idx) => {
+    _.each(app.rooms.toJSON(), (room) => {
       if (room.group_id) {
         return;
       }
-      room.visible = (idx <= (this.displayLimit - 1));
+      room.visible = (rooms.length <= (this.displayLimit - 1));
       rooms.push(room);
     });
     this.setState({

@@ -27,7 +27,7 @@ i18next.addResourceBundle('en', 'drawerContentGroups', {
 var NavigationGroupsView = React.createClass({
   getInitialState: function () {
     this.lastGroup = null;
-    this.displayLimit = 1;
+    this.displayLimit = 4;
     return {
       elements: new ListView.DataSource({
         rowHasChanged: function (row1, row2) {
@@ -99,7 +99,7 @@ var NavigationGroupsView = React.createClass({
 
   groupsCount: function() {
     var groupIds = [];
-    _.each(app.rooms.toJSON(), (room, idx) => {
+    _.each(app.rooms.toJSON(), (room) => {
       if (!room.group_id) {
         return;
       }
