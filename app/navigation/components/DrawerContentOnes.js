@@ -78,8 +78,7 @@ class NavigationOnesView extends Component {
             onPress={this.toggle.bind(this)}
             underlayColor='#6E7784'
             >
-            <Text
-              style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentOnes:see-all') : i18next.t('drawerContentOnes:see-less')}</Text>
+            <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentOnes:see-all') : i18next.t('drawerContentOnes:see-less')}</Text>
           </TouchableHighlight>
         </View>
         <ListView
@@ -207,7 +206,7 @@ var styles = StyleSheet.create({
   unviewed: {
     fontSize: 20,
     color: '#fc2063',
-    marginRight: 20
+    marginRight: 10
   }
 });
 

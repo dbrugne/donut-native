@@ -9,15 +9,20 @@ var {
   Text,
   Component,
   ListView,
+  LayoutAnimation,
   TouchableHighlight
-} = React;
+  } = React;
 
+var _ = require('underscore');
 var app = require('../../libs/app');
 var navigation = require('../index');
+var animation = require('../../libs/animations').callapse;
 
 var i18next = require('../../libs/i18next');
-i18next.addResourceBundle('en', 'drawer_content_rooms', {
-  'rooms': 'DISCUSSIONS'
+i18next.addResourceBundle('en', 'drawerContentRooms', {
+  'rooms': 'DISCUSSIONS',
+  'see-all': 'see all',
+  'see-less': 'see less'
 });
 
 class NavigationRoomsView extends Component {
@@ -28,7 +33,8 @@ class NavigationRoomsView extends Component {
         rowHasChanged: function (row1, row2) {
           return (row1 !== row2);
         }
-      })
+      }),
+      collapsed: true
     };
     this.lastGroup = null;
   }
@@ -39,6 +45,7 @@ class NavigationRoomsView extends Component {
     app.on('focusedModelChanged', this.refresh, this);
     app.rooms.on('change:unviewed', this.refresh, this);
   }
+
   componentWillUnmount () {
     app.off(null, null, this);
     app.rooms.off(null, null, this);
@@ -46,41 +53,71 @@ class NavigationRoomsView extends Component {
 
   refresh () {
     var rooms = [];
-    _.each(app.rooms.toJSON(), (room) => {
-      // only add room with no group
-      if (!room.group_id) {
-        rooms.push(room);
+    _.each(app.rooms.toJSON(), (room, idx) => {
+      if (room.group_id) {
+        return;
       }
+      room.visible = (idx <= 3);
+      rooms.push(room);
     });
     this.setState({
+      collapsed: true,
       elements: this.state.elements.cloneWithRows(rooms)
     });
   }
 
   render () {
-    this.lastGroup = null;
-    var title = null;
-    if (app.rooms.length > 0) {
-      title = (
-        <View style={{backgroundColor: '#1D1D1D'}}>
-          <Text style={styles.title}>{i18next.t('drawer_content_rooms:rooms')}</Text>
-        </View>
-      );
+    if (app.rooms.length === 0) {
+      return null;
     }
+
+    this.lastGroup = null;
     return (
       <View>
-        {title}
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={styles.title}>{i18next.t('drawerContentRooms:rooms')}</Text>
+          <View style={{flex:1}}/>
+          <TouchableHighlight
+            style={{ backgroundColor: '#6E7784', borderRadius: 3, paddingVertical: 5, paddingHorizontal: 10, marginRight:10 }}
+            onPress={this.toggle.bind(this)}
+            underlayColor='#6E7784'
+            >
+            <Text
+              style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentRooms:see-all') : i18next.t('drawerContentRooms:see-less')}</Text>
+          </TouchableHighlight>
+        </View>
         <ListView
           dataSource={this.state.elements}
           renderRow={(e) => this.renderElement(e)}
           style={styles.listView}
           scrollEnabled={false}
-        />
+          />
+        {this._renderMore()}
       </View>
     );
   }
 
+  _renderMore () {
+    if (!this.state.collapsed) {
+      return null;
+    }
+
+    return (
+      <TouchableHighlight
+        style={{ marginLeft:20, paddingVertical: 10 }}
+        onPress={this.toggle.bind(this)}
+        underlayColor='transparent'
+        >
+        <Text style={{color: '#AFBAC8'}}>● ● ●</Text>
+      </TouchableHighlight>
+    );
+  }
+
   renderElement (e) {
+    if (e.visible === false) {
+      return null;
+    }
+
     var model = app.rooms.get(e.room_id);
     if (!model) {
       return null;
@@ -90,12 +127,11 @@ class NavigationRoomsView extends Component {
       return (
         <View>
           <TouchableHighlight
-            style={[styles.linkBlock, {backgroundColor: (model.get('focused')) ? '#666' : '#222'}]}
             onPress={() => navigation.navigate('Discussion', model)}
-            underlayColor= '#414041'
+            underlayColor='transparent'
             >
             <View style={styles.item}>
-              <Text style={[styles.itemTitle, {textDecorationLine: 'line-through', color: '#e74c3c'}]}>
+              <Text style={[styles.itemTitle, {color: (model.get('focused')) ? '#FFFFFF' : '#AFBAC8'}, {textDecorationLine: 'line-through'}]}>
                 {('#' + model.get('name'))}
               </Text>
             </View>
@@ -113,62 +149,77 @@ class NavigationRoomsView extends Component {
 
     return (
       <View>
-      <TouchableHighlight
-        style={[styles.linkBlock, {backgroundColor: (model.get('focused')) ? '#666' : '#222'}]}
-        onPress={() => navigation.navigate('Discussion', model)}
-        underlayColor= '#414041'
-        >
-        <View style={styles.item}>
-          <Text style={styles.itemTitle}>
-            {('#' + model.get('name'))}
-          </Text>
-          {badge}
-        </View>
-      </TouchableHighlight>
+        <TouchableHighlight
+          onPress={() => navigation.navigate('Discussion', model)}
+          underlayColor='transparent'
+          >
+          <View style={styles.item}>
+            <Text style={[styles.itemTitle, {color: (model.get('focused')) ? '#FFFFFF' : '#AFBAC8'}]}>
+              {('#' + model.get('name'))}
+            </Text>
+            {badge}
+          </View>
+        </TouchableHighlight>
       </View>
     );
+  }
+  toggle () {
+    LayoutAnimation.configureNext(animation);
+    var rooms = [];
+    if (this.state.collapsed) {
+      _.each(app.rooms.toJSON(), (room, idx) => {
+        if (room.group_id) {
+          return;
+        }
+        room.visible = true;
+        rooms.push(room);
+      });
+      return this.setState({
+        collapsed: false,
+        elements: this.state.elements.cloneWithRows(rooms)
+      });
+    }
+
+    _.each(app.rooms.toJSON(), (room, idx) => {
+      if (room.group_id) {
+        return;
+      }
+      room.visible = (idx <= 3);
+      rooms.push(room);
+    });
+    this.setState({
+      collapsed: true,
+      elements: this.state.elements.cloneWithRows(rooms)
+    });
   }
 }
 
 var styles = StyleSheet.create({
   title: {
     fontFamily: 'Open Sans',
-    fontSize: 10,
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontWeight: '600',
     margin: 10,
-    color: '#FFFFFF'
+    color: '#19212A'
   },
-  listView: {
-  },
+  listView: {},
   item: {
-    marginVertical: 2,
+    marginLeft: 10,
     flexDirection: 'row',
     alignItems: 'center'
-  },
-  thumbnail: {
-    width: 30,
-    height: 30,
-    borderRadius: 4
   },
   itemTitle: {
     fontFamily: 'Open Sans',
     fontSize: 16,
-    color: '#ecf0f1',
+    color: '#FFFFFF',
     marginLeft: 10,
     flex: 1,
-    marginVertical: 10
+    marginVertical: 15
   },
   unviewed: {
     fontSize: 20,
     color: '#fc2063',
     marginRight: 10
-  },
-  linkBlock: {
-    borderTopColor: '#373737',
-    borderTopWidth: 0.5,
-    borderStyle: 'solid',
-    borderBottomColor: '#0E0D0E',
-    borderBottomWidth: 0.5
   }
 });
 
