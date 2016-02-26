@@ -56,9 +56,22 @@ var Button = React.createClass({
     );
   },
   _renderButton () {
+    var underlayColor = this.props.type === 'white'
+        ? '#FFFFFF'
+        : this.props.type === 'blue'
+          ? '#2980B9'
+          : this.props.type === 'green'
+            ? '#27ae60'
+            : this.props.type === 'pink'
+              ? '#FC2063'
+              : this.props.type === 'red'
+                ? '#e74c3c'
+                : this.props.type === 'gray'
+                  ? '#95a5a6'
+                  : 'transparent';
     return (
       <TouchableHighlight {...this.props}
-        underlayColor='#FFFFFF'
+        underlayColor={underlayColor}
         style={[
           s.button,
           this.props.type === 'white' && s.buttonWhite,

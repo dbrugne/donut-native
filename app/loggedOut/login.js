@@ -9,6 +9,9 @@ var Alert = require('../libs/alert');
 var Button = require('../components/Button');
 var Link = require('../components/Link');
 var animation = require('../libs/animations').homepageLogo;
+var currentUser = require('../models/current-user');
+var FacebookLogin = require('../components/FacebookLogin');
+var LoadingModal = require('../components/LoadingModal');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'login', {
@@ -32,11 +35,7 @@ var {
   Image,
   LayoutAnimation,
   TouchableHighlight
-  } = React;
-
-var currentUser = require('../models/current-user');
-var FacebookLogin = require('../components/FacebookLogin');
-var LoadingModal = require('../components/LoadingModal');
+} = React;
 
 class LoginView extends Component {
   constructor (props) {
@@ -62,60 +61,6 @@ class LoginView extends Component {
       return (<LoadingModal />);
     }
 
-    if (!currentUser.hasFacebookToken()) {
-      var loginForm = (
-        <View>
-          <View style={styles.orContainer}>
-            <Text style={{fontSize: 14, alignSelf: "center", fontFamily: "Open Sans", color: "#AFBAC8" }}> {i18next.t('login:or')} </Text>
-          </View>
-          <View style={[{ padding:2, borderRadius:4, backgroundColor: '#FFF'}, styles.shadow]}>
-            <TextInput
-              ref='1'
-              autoCapitalize='none'
-              placeholder={i18next.t('login:mail')}
-              onChange={(event) => this.setState({email: event.nativeEvent.text})}
-              style={{ backgroundColor: '#FFF', color: "#AFBAC8", height: 40, paddingBottom: 3, paddingTop: 3, paddingLeft: 10, paddingRight: 10, fontFamily: 'Open Sans', fontSize: 14, flex: 1 }}
-              keyboardType='email-address'
-              onSubmitEditing={() => this._focusNextField('2')}
-              onFocus={this.inputFocused.bind(this, 'email')}
-              onBlur={this.inputBlured.bind(this, 'email')}
-              returnKeyType='next'
-              value={this.state.email}/>
-            <View style={{height:1, backgroundColor: '#E7ECF3'}} />
-            <TextInput
-              ref='2'
-              autoCapitalize='none'
-              placeholder={i18next.t('login:password')}
-              secureTextEntry={true}
-              onChange={(event) => this.setState({password: event.nativeEvent.text})}
-              style={{ backgroundColor: '#FFF', color: "#AFBAC8", height: 40, paddingBottom: 3, paddingTop: 3, paddingLeft: 10, paddingRight: 10, fontFamily: 'Open Sans', fontSize: 14, flex: 1 }}
-              onFocus={this.inputFocused.bind(this, 'password')}
-              onBlur={this.inputBlured.bind(this, 'password')}
-              returnKeyType='done'
-              value={this.state.password}/>
-          </View>
-
-          <Button onPress={(this.onSubmitPressed.bind(this))}
-                  style={{marginTop:15}}
-                  buttonStyle={[{borderRadius:4}, styles.shadow]}
-                  type='pink'
-                  label={i18next.t('login:signin')}
-            />
-
-          <TouchableHighlight style={{ marginTop: 15 }}
-                              onPress={(this.onForgotPressed.bind(this))}
-                              underlayColor='transparent'
-            >
-            <View>
-              <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF', textAlign: 'center'}}>
-                {i18next.t('login:forgot')}
-              </Text>
-            </View>
-          </TouchableHighlight>
-
-        </View>
-      );
-    }
     return (
       <View style={{flex: 1, alignItems: 'stretch', position: 'relative'}}>
         <Image source={require('../assets/background.jpg')} style={{position: 'absolute', resizeMode:'stretch'}} />
@@ -124,6 +69,7 @@ class LoginView extends Component {
           contentContainerStyle={{flex:1}}
           keyboardDismissMode='on-drag'
           style={{flex: 1}}>
+
           <View style={styles.logoCtn}>
             <Image source={require('../assets/logo-bordered.png')} style={[styles.logo, this.state.editing && styles.logoSmall]}/>
           </View>
@@ -132,10 +78,8 @@ class LoginView extends Component {
             <FacebookLogin showLoadingModal={() => this.setState({showLoadingModal: true})}
                            hideLoadingModal={() => this.setState({showLoadingModal: false})}
               />
-            {loginForm}
+            {this._renderLoginForm()}
           </View>
-
-          <View style={{flex:1}} />
 
           <View style={[styles.linkCtn, { marginBottom: 10 }]}>
             <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF'}}>{i18next.t('login:account')}</Text>
@@ -143,23 +87,87 @@ class LoginView extends Component {
                                 underlayColor='transparent'
               >
               <View>
-                <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF'}}>
+                <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF', fontWeight: 'bold'}}>
                   {i18next.t('login:signup')}
                 </Text>
               </View>
             </TouchableHighlight>
             <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF'}}> | </Text>
+
             <TouchableHighlight onPress={(this.onEutcPressed.bind(this))}
                                 underlayColor='transparent'
               >
               <View>
-                <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF'}}>
+                <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF', fontWeight: 'bold'}}>
                   {i18next.t('login:eutc')}
                 </Text>
               </View>
             </TouchableHighlight>
           </View>
         </ScrollView>
+      </View>
+    );
+  }
+
+  _renderLoginForm() {
+    if (currentUser.hasFacebookToken()) {
+      return null;
+    }
+
+    return (
+      <View>
+        <View style={styles.orContainer}>
+          <Text style={{fontSize: 14, alignSelf: "center", fontFamily: "Open Sans", color: "#AFBAC8" }}> {i18next.t('login:or')} </Text>
+        </View>
+
+        <View style={{flex:1}} />
+
+        <View style={[{ padding:2, borderRadius:4, backgroundColor: '#FFF'}, styles.shadow]}>
+          <TextInput
+            ref='1'
+            autoCapitalize='none'
+            placeholder={i18next.t('login:mail')}
+            onChange={(event) => this.setState({email: event.nativeEvent.text})}
+            style={{ backgroundColor: '#FFF', color: "#AFBAC8", height: 40, paddingBottom: 3, paddingTop: 3, paddingLeft: 10, paddingRight: 10, fontFamily: 'Open Sans', fontSize: 14, flex: 1 }}
+            keyboardType='email-address'
+            onSubmitEditing={() => this._focusNextField('2')}
+            onFocus={this.inputFocused.bind(this, 'email')}
+            onBlur={this.inputBlured.bind(this, 'email')}
+            returnKeyType='next'
+            value={this.state.email}/>
+          <View style={{height:1, backgroundColor: '#E7ECF3'}} />
+          <TextInput
+            ref='2'
+            autoCapitalize='none'
+            placeholder={i18next.t('login:password')}
+            secureTextEntry={true}
+            onChange={(event) => this.setState({password: event.nativeEvent.text})}
+            style={{ backgroundColor: '#FFF', color: "#AFBAC8", height: 40, paddingBottom: 3, paddingTop: 3, paddingLeft: 10, paddingRight: 10, fontFamily: 'Open Sans', fontSize: 14, flex: 1 }}
+            onFocus={this.inputFocused.bind(this, 'password')}
+            onBlur={this.inputBlured.bind(this, 'password')}
+            returnKeyType='done'
+            value={this.state.password}/>
+        </View>
+
+        <Button onPress={(this.onSubmitPressed.bind(this))}
+                style={{marginTop:15}}
+                buttonStyle={[{borderRadius:4}, styles.shadow]}
+                type='pink'
+                label={i18next.t('login:signin')}
+          />
+
+
+        <TouchableHighlight style={{ marginTop: 30 }}
+                            onPress={(() => this.onForgotPressed())}
+                            underlayColor='transparent'
+          >
+          <View>
+            <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF', textAlign: 'center', fontWeight: 'bold'}}>
+              {i18next.t('login:forgot')}
+            </Text>
+          </View>
+        </TouchableHighlight>
+
       </View>
     );
   }
@@ -261,10 +269,6 @@ var styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     alignSelf: "center"
-  },
-  icon: {
-    width: 28,
-    height: 28
   },
   iconContainer: {
     justifyContent: 'flex-end',
