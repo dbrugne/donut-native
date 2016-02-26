@@ -73,9 +73,8 @@ var NotConfirmedComponent = React.createClass({
 
 var styles = StyleSheet.create({
   main: {
-    marginRight: 7,
-    marginLeft: 7,
-    marginTop: 10,
+    marginHorizontal: 7,
+    marginVertical: 10,
     backgroundColor: '#FC2063',
     padding: 5
   },

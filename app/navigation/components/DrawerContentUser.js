@@ -15,7 +15,6 @@ var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
 var currentUser = require('../../models/current-user');
 var navigation = require('../index');
-var NotConfirmedComponent = require('../../components/NotConfirmed');
 
 var i18next = require('../../libs/i18next');
 
@@ -40,19 +39,15 @@ class CurrentUserView extends Component {
       return null;
     }
 
-    var username = (user.username)
-      ? '@' + user.username + ' '
-      : '';
-    var realname = null;
-    if (user.realname) {
-      realname = (
-        <Text style={[styles.text, styles.username]}>{_.unescape(user.realname)}</Text>
-      );
-    }
+    var name = user.realname
+      ? user.realname
+      : user.username
+        ? '@' + user.username
+        : '';
 
     var avatar;
     if (user.avatar) {
-      avatar = (<Image style={styles.avatar} source={{uri: common.cloudinary.prepare(user.avatar, 60)}} />);
+      avatar = (<Image style={styles.avatar} source={{uri: common.cloudinary.prepare(user.avatar, 50)}} />);
     }
 
     return (
@@ -60,27 +55,26 @@ class CurrentUserView extends Component {
         <TouchableHighlight
           underlayColor= '#414041'
           onPress={() => navigation.navigate('MyAccount')}>
-          <View style={{flexDirection: 'row', backgroundColor: '#1D1D1D', alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{flexDirection: 'row', backgroundColor: 'rgba(29,37,47,30)', alignItems: 'center', justifyContent: 'center'}}>
             <View style={styles.avatarCtn}>
               <View style={[styles.linkContainer, {position: 'relative'}]}>
                 {avatar}
-                <Text style={[styles.text, styles.status, user.status === 'connecting' && styles.statusConnecting, user.status === 'offline' && styles.statusOffline, user.status === 'online' && styles.statusOnline]}>{user.status}</Text>
+                <View style={[styles.status, user.status === 'connecting' && styles.statusConnecting, user.status === 'offline' && styles.statusOffline, user.status === 'online' && styles.statusOnline]}>
+                </View>
               </View>
             </View>
-            <View style={{ flexDirection: 'column', flex:1 }}>
-              <Text style={[styles.text, styles.username]}>{username}</Text>
-              {realname}
+            <View style={{ flexDirection: 'column', flex:1, position: 'relative', marginLeft: 10 }}>
+              <Text style={styles.text}>{name}</Text>
             </View>
             <View style={styles.iconCtn}>
               <Icon
                 name='gear'
                 size={18}
-                color='#999998'
+                color='rgba(208,217,230,40)'
               />
             </View>
           </View>
         </TouchableHighlight>
-        <NotConfirmedComponent />
       </View>
     );
   }
@@ -101,39 +95,30 @@ var styles = StyleSheet.create({
   },
   text: {
     color: '#FFFFFF',
-    fontWeight: '500',
-    fontSize: 14,
+    fontWeight: '600',
+    fontSize: 16,
     fontFamily: 'Open Sans'
   },
   avatar: {
-    width: 50,
-    height: 50,
-    margin:8,
-    borderRadius: 4
+    width: 40,
+    height: 40,
+    marginVertical: 5,
+    marginHorizontal: 10
   },
   status: {
-    marginBottom: 8,
-    alignSelf: 'center',
-    textAlign: 'center',
-    flex:1,
-    fontWeight: '400',
-    fontSize: 12,
-    fontFamily: 'Open Sans',
-    width: 50,
-    paddingLeft:5,
-    paddingRight:5,
-    marginLeft: 8,
-    marginRight: 8,
-    overflow: 'hidden',
     position: 'absolute',
-    bottom: 8,
-    left:0,
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4
+    width: 15,
+    height: 15,
+    bottom: 6,
+    right:0,
+    borderRadius: 7.5,
+    borderColor: 'rgba(29,37,47,30)',
+    borderWidth: 2,
+    borderStyle: 'solid'
   },
-  statusOnline: { backgroundColor: 'rgba(79, 237, 192, 0.8)' },
-  statusConnecting: { backgroundColor: 'rgba(255, 218, 62, 0.8)' },
-  statusOffline: { backgroundColor: 'rgba(119,119,119,0.8)' },
+  statusOnline: { backgroundColor: 'rgb(79, 237, 192)' },
+  statusConnecting: { backgroundColor: 'rgb(255, 218, 62)' },
+  statusOffline: { backgroundColor: 'rgb(119,119,119)' },
   linkContainer: {
     flexDirection: 'row',
     alignItems: 'center'
@@ -152,8 +137,7 @@ var styles = StyleSheet.create({
     marginVertical: 15
   },
   iconCtn: {
-    marginVertical: 8,
-    marginHorizontal: 10
+    marginRight: 20
   }
 });
 

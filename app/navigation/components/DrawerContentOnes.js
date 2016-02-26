@@ -18,7 +18,9 @@ var navigation = require('../index');
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'drawerContentOnes', {
-  'ones': 'ONE TO ONES'
+  'ones': 'ONE TO ONE ',
+  'see-all': 'see all',
+  'see-less': 'see less'
 });
 
 class NavigationOnesView extends Component {
@@ -29,7 +31,8 @@ class NavigationOnesView extends Component {
         rowHasChanged: function (row1, row2) {
           return (row1 !== row2);
         }
-      })
+      }),
+      collapsed: true
     };
   }
 
@@ -52,17 +55,22 @@ class NavigationOnesView extends Component {
   }
 
   render () {
-    var title = null;
-    if (app.ones.length > 0) {
-      title = (
-        <View style={{backgroundColor: '#1D1D1D'}}>
-          <Text style={styles.title}>{i18next.t('drawerContentOnes:ones')}</Text>
-        </View>
-      );
+    if (app.ones.length === 0) {
+      return null;
     }
+
     return (
       <View>
-        {title}
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={styles.title}>{i18next.t('drawerContentOnes:ones')}</Text>
+          <View style={{flex:1}} />
+          <TouchableHighlight style={{ backgroundColor: '#6E7784', borderRadius: 3, paddingVertical: 5, paddingHorizontal: 10, marginRight:10 }}
+                              onPress={this.toggle()}
+            underlayColor='#6E7784'
+            >
+            <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentOnes:see-all') : i18next.t('drawerContentOnes:see-less')}</Text>
+          </TouchableHighlight>
+        </View>
         <ListView
           dataSource={this.state.elements}
           renderRow={this.renderElement.bind(this)}
@@ -88,13 +96,12 @@ class NavigationOnesView extends Component {
 
     return (
       <TouchableHighlight
-        style={[styles.linkBlock, {backgroundColor: (model.get('focused')) ? '#666' : '#222'}]}
         onPress={() => navigation.navigate('Discussion', model)}
-        underlayColor='#414041'
+        underlayColor='transparent'
       >
         <View style={styles.item}>
           {this._renderAvatar(e.avatar)}
-          <Text style={styles.itemTitle}>@{e.username}</Text>
+          <Text style={[styles.itemTitle, {color: (model.get('focused')) ? '#FFFFFF' : '#AFBAC8'}]}>@{e.username}</Text>
           {badge}
         </View>
       </TouchableHighlight>
@@ -114,26 +121,28 @@ class NavigationOnesView extends Component {
       <Image style={styles.thumbnail} source={{uri: avatarUrl}}/>
     );
   }
+
+  toggle() {
+
+  }
 }
 
 var styles = StyleSheet.create({
   title: {
     fontFamily: 'Open Sans',
-    fontSize: 10,
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontWeight: '600',
     margin: 10,
-    color: '#FFFFFF'
+    color: '#19212A'
   },
-  listView: {},
   item: {
-    paddingLeft: 10,
+    marginLeft: 20,
     flexDirection: 'row',
     alignItems: 'center'
   },
   thumbnail: {
     width: 30,
-    height: 30,
-    borderRadius: 4
+    height: 30
   },
   itemTitle: {
     fontFamily: 'Open Sans',
@@ -146,14 +155,7 @@ var styles = StyleSheet.create({
   unviewed: {
     fontSize: 20,
     color: '#fc2063',
-    marginRight: 10
-  },
-  linkBlock: {
-    borderTopColor: '#373737',
-    borderTopWidth: 0.5,
-    borderStyle: 'solid',
-    borderBottomColor: '#0E0D0E',
-    borderBottomWidth: 0.5
+    marginRight: 20
   }
 });
 
