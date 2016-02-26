@@ -9,12 +9,15 @@ var {
   Component,
   ListView,
   Image,
+  LayoutAnimation,
   TouchableHighlight
   } = React;
 
+var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../../libs/app');
 var navigation = require('../index');
+var animation = require('../../libs/animations').callapse;
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'drawerContentOnes', {
@@ -50,7 +53,13 @@ class NavigationOnesView extends Component {
 
   refresh () {
     this.setState({
-      elements: this.state.elements.cloneWithRows(app.ones.toJSON())
+      collapsed: true,
+      elements: this.state.elements.cloneWithRows(
+        _.map(app.ones.toJSON(), (e, idx) => {
+            e.visible = (idx <= 3);
+            return e;
+          }
+        ))
     });
   }
 
@@ -63,12 +72,14 @@ class NavigationOnesView extends Component {
       <View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.title}>{i18next.t('drawerContentOnes:ones')}</Text>
-          <View style={{flex:1}} />
-          <TouchableHighlight style={{ backgroundColor: '#6E7784', borderRadius: 3, paddingVertical: 5, paddingHorizontal: 10, marginRight:10 }}
-                              onPress={this.toggle()}
+          <View style={{flex:1}}/>
+          <TouchableHighlight
+            style={{ backgroundColor: '#6E7784', borderRadius: 3, paddingVertical: 5, paddingHorizontal: 10, marginRight:10 }}
+            onPress={this.toggle.bind(this)}
             underlayColor='#6E7784'
             >
-            <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentOnes:see-all') : i18next.t('drawerContentOnes:see-less')}</Text>
+            <Text
+              style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentOnes:see-all') : i18next.t('drawerContentOnes:see-less')}</Text>
           </TouchableHighlight>
         </View>
         <ListView
@@ -76,12 +87,33 @@ class NavigationOnesView extends Component {
           renderRow={this.renderElement.bind(this)}
           style={styles.listView}
           scrollEnabled={false}
-        />
+          />
+        {this._renderMore()}
       </View>
     );
   }
 
+  _renderMore () {
+    if (!this.state.collapsed) {
+      return null;
+    }
+
+    return (
+      <TouchableHighlight
+        style={{ marginLeft:20, paddingVertical: 10 }}
+        onPress={this.toggle.bind(this)}
+        underlayColor='transparent'
+        >
+        <Text style={{color: '#AFBAC8'}}>● ● ●</Text>
+      </TouchableHighlight>
+    );
+  }
+
   renderElement (e) {
+    if (e.visible === false) {
+      return null;
+    }
+
     var model = app.ones.get(e.user_id);
     if (!model) {
       return;
@@ -98,7 +130,7 @@ class NavigationOnesView extends Component {
       <TouchableHighlight
         onPress={() => navigation.navigate('Discussion', model)}
         underlayColor='transparent'
-      >
+        >
         <View style={styles.item}>
           {this._renderAvatar(e.avatar)}
           <Text style={[styles.itemTitle, {color: (model.get('focused')) ? '#FFFFFF' : '#AFBAC8'}]}>@{e.username}</Text>
@@ -122,8 +154,28 @@ class NavigationOnesView extends Component {
     );
   }
 
-  toggle() {
-
+  toggle () {
+    LayoutAnimation.configureNext(animation);
+    if (this.state.collapsed) {
+      return this.setState({
+        collapsed: false,
+        elements: this.state.elements.cloneWithRows(
+          _.map(app.ones.toJSON(), (e) => {
+              e.visible = true;
+              return e;
+            }
+          ))
+      });
+    }
+    return this.setState({
+      collapsed: true,
+      elements: this.state.elements.cloneWithRows(
+        _.map(app.ones.toJSON(), (e, idx) => {
+            e.visible = (idx <= 3);
+            return e;
+          }
+        ))
+    });
   }
 }
 
