@@ -171,17 +171,12 @@ class ListItemImageList extends ListItemAbstract {
       return (null);
     }
 
+    var source = item.mode === 'private'
+      ? require('../../assets/lock.png')
+      : require('../../assets/lock-member.png');
+
     return (
-      <Icon
-        name={'lock'}
-        size={30}
-        color='#FFF'
-        style={{
-          position: 'absolute',
-          top:10,
-          right:10
-        }}
-        />
+      <Image style={{width: 14, height: 20, position: 'absolute', top: 10, right: 10}} source={source} />
     );
   }
 
