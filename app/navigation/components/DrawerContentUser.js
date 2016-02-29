@@ -59,8 +59,7 @@ class CurrentUserView extends Component {
             <View style={styles.avatarCtn}>
               <View style={[styles.linkContainer, {position: 'relative'}]}>
                 {avatar}
-                <View style={[styles.status, user.status === 'connecting' && styles.statusConnecting, user.status === 'offline' && styles.statusOffline, user.status === 'online' && styles.statusOnline]}>
-                </View>
+                <View style={[styles.status, user.status === 'connecting' && styles.statusConnecting, user.status === 'offline' && styles.statusOffline, user.status === 'online' && styles.statusOnline]} />
               </View>
             </View>
             <View style={{ flexDirection: 'column', flex:1, position: 'relative', marginLeft: 10 }}>

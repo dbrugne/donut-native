@@ -68,7 +68,6 @@ module.exports = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 13,
     lineHeight: 20,
-    height: 45,
     overflow: 'hidden'
   },
   statusText: {

@@ -9,7 +9,7 @@ var {
   View,
   ListView,
   Component,
-} = React;
+  } = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
 
 var app = require('../libs/app');
@@ -20,9 +20,9 @@ var LoadingView = require('../components/Loading');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'Search', {
   'search': 'Search',
-  'donuts': 'discussions',
-  'users': 'users',
-  'communities': 'communities',
+  'donuts': 'DISCUSSIONS',
+  'users': 'USERS',
+  'communities': 'COMMUNITIES',
   'load-more': 'load more',
   'no-results': 'No result'
 });
@@ -52,41 +52,42 @@ class SearchView extends Component {
       <View style={styles.main}>
         <View>
           <View style={styles.formInputContainer}>
-            <TextInput style={styles.formInputFind}
-              autoCapitalize='none'
-              placeholder={i18next.t('Search:search')}
-              onChangeText={(text) => this.setState({findValue: text})}
-              value={this.state.findValue}
-              onChange={this.changeText.bind(this)}
-              autoFocus
-              />
             <Icon
               name='search'
               size={18}
-              color='#DDD'
-            />
+              color='#AFBAC8'
+              style={{ marginLeft: 20, marginRight: 5 }}
+              />
+            <TextInput style={styles.formInputFind}
+                       autoCapitalize='none'
+                       placeholder={i18next.t('Search:search')}
+                       onChangeText={(text) => this.setState({findValue: text})}
+                       value={this.state.findValue}
+                       onChange={this.changeText.bind(this)}
+                       autoFocus
+              />
           </View>
 
-          <View style={styles.buttonContainer}>
+          <View style={[styles.buttonContainer, styles.shadow, { marginBottom: 10 }]}>
             <TouchableHighlight onPress={this.search.bind(this, 'rooms', null)}
-                                underlayColor= '#DDD'
+                                underlayColor='#DDD'
                                 style={[styles.button, this.state.type === 'rooms' && styles.buttonActive]}>
-              <Text style={styles.textButton}>{i18next.t('Search:donuts')}</Text>
+              <Text style={[styles.textButton, this.state.type === 'rooms' && styles.textButtonActive ]}>{i18next.t('Search:donuts')}</Text>
             </TouchableHighlight>
             <TouchableHighlight onPress={this.search.bind(this, 'users', null)}
-                                underlayColor= '#DDD'
+                                underlayColor='#DDD'
                                 style={[styles.button, this.state.type === 'users' && styles.buttonActive]}>
-              <Text style={styles.textButton}>{i18next.t('Search:users')}</Text>
+              <Text style={[styles.textButton, this.state.type === 'users' && styles.textButtonActive ]}>{i18next.t('Search:users')}</Text>
             </TouchableHighlight>
             <TouchableHighlight onPress={this.search.bind(this, 'groups', null)}
-                                underlayColor= '#DDD'
+                                underlayColor='#DDD'
                                 style={[styles.button, this.state.type === 'groups' && styles.buttonActive]}>
-              <Text style={styles.textButton}>{i18next.t('Search:communities')}</Text>
+              <Text style={[styles.textButton, this.state.type === 'groups' && styles.textButtonActive ]}>{i18next.t('Search:communities')}</Text>
             </TouchableHighlight>
           </View>
         </View>
 
-        <View style={styles.searchContainer} >
+        <View style={styles.searchContainer}>
           <ListView
             ref='listview'
             dataSource={this.state.dataSource}
@@ -97,6 +98,7 @@ class SearchView extends Component {
       </View>
     );
   }
+
   renderElement (rowData, sectionID, rowID) {
     if (this.state.type === 'rooms') {
       return (
@@ -118,7 +120,7 @@ class SearchView extends Component {
           type='user'
           identifier={'@' + rowData.username}
           realname={rowData.realname}
-          bio={rowData.bio}
+          location={rowData.location}
           status={rowData.status}
           />
       );
@@ -128,7 +130,6 @@ class SearchView extends Component {
           onPress={() => app.trigger('joinGroup', rowData.group_id)}
           image={rowData.avatar}
           type='group'
-          first={rowID === '0'}
           key={'group'+rowData.group_id}
           identifier={'#' + rowData.name}
           description={rowData.description}
@@ -150,12 +151,12 @@ class SearchView extends Component {
 
   _renderLoadMore () {
     if (this.state.loading) {
-      return (<LoadingView style={styles.loadMore} />);
+      return (<LoadingView style={styles.loadMore}/>);
     }
     else if (this.state.more) {
       return (
         <TouchableHighlight onPress={this.loadMore.bind(this)}
-                            underlayColor= '#DDD'
+                            underlayColor='#DDD'
           >
           <View style={styles.loadMore}>
             <Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('Search:load-more')}</Text>
@@ -166,7 +167,8 @@ class SearchView extends Component {
     } else if (this.resultBlob.length) {
       return (<View></View>);
     } else {
-      return (<View style={styles.loadMore}><Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('Search:no-results')}</Text></View>);
+      return (<View style={styles.loadMore}><Text
+        style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#586473' , textAlign: 'center'}}>{i18next.t('Search:no-results')}</Text></View>);
     }
   }
 
@@ -201,7 +203,7 @@ class SearchView extends Component {
     this.resetList(skip);
 
     if (!skip) {
-      this.refs.listview.refs.listviewscroll.scrollTo({x:0, y:0, animated: true});
+      this.refs.listview.refs.listviewscroll.scrollTo({x: 0, y: 0, animated: true});
     }
 
     var options = {
@@ -222,6 +224,7 @@ class SearchView extends Component {
         more: (response[this.state.type].list.length === LIMIT),
         loading: false
       });
+      this.refs.listview.scrollTo({x: 0, y: 0, animated: false}); // required to fix a ListView bug when changing dataSet and a scroll has already been performed
       this.render();
     });
   }
@@ -240,37 +243,34 @@ var styles = StyleSheet.create({
     height: 40,
     paddingLeft: 15,
     paddingRight: 15,
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingVertical: 5,
     fontSize: 18,
-    color: '#48BBEC',
+    color: '#AFBAC8',
     flex: 1
   },
   buttonContainer: {
-    borderTopWidth: 3,
-    borderStyle: 'solid',
-    borderColor: '#DDD',
     flexDirection: 'row',
     justifyContent: 'center'
   },
   textButton: {
+    fontFamily: 'Open Sans',
+    fontSize: 14,
     padding: 10,
-    textAlign: 'center',
-    color: '#333'
+    color: '#AFBAC8',
+    textAlign: 'center'
+  },
+  textButtonActive: {
+    color: '#353F4C'
   },
   button: {
     height: 40,
-    flex: 1,
-    borderBottomWidth:1,
-    borderStyle: 'solid',
-    borderColor: '#3498db'
+    flex: 1
   },
   buttonActive: {
-    borderBottomWidth:3,
+    borderBottomWidth: 3,
     borderStyle: 'solid',
-    borderColor: '#3498db'
+    borderColor: '#FC2063'
   },
-
   searchContainer: {
     flex: 1,
     flexDirection: 'column',
@@ -284,7 +284,7 @@ var styles = StyleSheet.create({
     borderColor: '#DDD',
     padding: 10,
     backgroundColor: '#f0f0f0',
-    borderTopWidth:1,
+    borderTopWidth: 1,
     borderStyle: 'solid',
     borderTopColor: '#FFF',
     borderBottomWidth: 1,
@@ -329,8 +329,13 @@ var styles = StyleSheet.create({
   },
   loadMore: {
     height: 40,
-    backgroundColor: '#f5f8fa',
     justifyContent: 'center'
+  },
+  shadow: {
+    shadowColor: '#E7ECF3',
+    shadowOffset: {width: 0, height: 5},
+    shadowRadius: 4,
+    shadowOpacity: 1
   }
 });
 
