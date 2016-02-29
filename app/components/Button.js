@@ -67,7 +67,7 @@ var Button = React.createClass({
               : this.props.type === 'red'
                 ? '#e74c3c'
                 : this.props.type === 'gray'
-                  ? '#95a5a6'
+                  ? '#FFFFFF'
                   : 'transparent';
     return (
       <TouchableHighlight {...this.props}

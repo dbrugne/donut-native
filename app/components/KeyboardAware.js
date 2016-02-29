@@ -5,7 +5,6 @@ var animation = require('../libs/animations').keyboard;
 var app = require('../libs/app');
 
 var {
-  StyleSheet,
   View,
   LayoutAnimation
 } = React;
@@ -29,8 +28,10 @@ var KeyboardAwareComponent = React.createClass({
   },
   render () {
     return (
-      <View style={styles.main}>
-        {this.props.children}
+      <View style={{flex: 1, flexDirection: 'column'}}>
+        <View style={{flex: 1}}>
+          {this.props.children}
+        </View>
         <View style={{height: this.state.keyboardSpace}}/>
       </View>
     );
@@ -51,13 +52,6 @@ var KeyboardAwareComponent = React.createClass({
     LayoutAnimation.configureNext(animation);
     this.setState({ keyboardSpace: 0 });
   }
-});
-
-var styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    flexDirection: 'column'
-  },
 });
 
 module.exports = KeyboardAwareComponent;

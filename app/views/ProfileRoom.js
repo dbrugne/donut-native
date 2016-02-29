@@ -114,7 +114,7 @@ class RoomProfileView extends Component {
     if (!avatar) {
       return null;
     }
-    var avatarUrl = common.cloudinary.prepare(avatar, 130);
+    var avatarUrl = common.cloudinary.prepare(avatar, 150);
     if (!avatarUrl) {
       return null;
     }

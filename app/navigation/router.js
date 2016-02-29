@@ -18,8 +18,8 @@ var routeTemplate = {
   __type: 'route',
   renderTitle () {
     let title = this.getTitle();
-    title = title.length > 18
-      ? title.substr(0, 18) + '…'
+    title = title.length > 24
+      ? title.substr(0, 24) + '…'
       : title;
     return (
       <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>

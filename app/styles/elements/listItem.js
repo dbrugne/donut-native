@@ -14,15 +14,10 @@ var style = {
     backgroundColor: '#fff',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    borderColor: '#DDD',
-    borderBottomWidth: 1,
-    borderStyle: 'solid'
+    alignItems: 'center'
   },
   listGroupItemFirst: {
-    borderColor: '#DDD',
-    borderTopWidth: 1,
-    borderStyle: 'solid'
+
   },
   listGroupTitle: {
     color: '#999999',
@@ -45,7 +40,7 @@ var style = {
     marginRight: 5
   },
   listGroupItemText: {
-    color: '#333333',
+    color: '#586473',
     fontFamily: 'Open Sans',
     fontSize: 16,
     flex: 1
@@ -66,9 +61,10 @@ var style = {
     color: '#e74c3c'
   },
   listGroupHelp: {
-    fontSize: 12,
-    color: '#737373',
+    fontFamily: 'Open Sans',
     fontStyle: 'italic',
+    fontSize: 14,
+    color: '#AFBAC8',
     marginVertical: 5,
     marginHorizontal: 10
   },
