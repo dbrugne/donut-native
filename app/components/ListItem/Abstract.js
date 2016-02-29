@@ -17,7 +17,7 @@ class ListItemAbstract extends Component {
 
   render () {
     return (
-      <View style={{flex: 1, flexDirection: 'column'}}>
+      <View style={{flexDirection: 'column'}}>
         {this._renderTitle()}
         {this._renderContent()}
         {this._renderHelp()}

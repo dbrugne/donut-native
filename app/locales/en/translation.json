@@ -163,13 +163,9 @@
       "groupop": "You are moderator of community #__name__",
       "groupdeop": "You are no longer moderator of community #__name__"
     },
-    "discussion-count": "You also have __count__ unread discussion",
-    "discussion-count_plural": "You also have __count__ unread discussions",
     "notification-count": "You have __count__ unviewed notification",
     "notification-count_plural": "You have __count__ unviewed notifications",
     "no-unread-notification": "You do not have unread notification",
-    "mark-as-read": "Mark all notifications as read",
     "load-more": "Load more",
-    "delete-selected": "Delete selected"
   }
 }

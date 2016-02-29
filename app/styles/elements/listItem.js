@@ -6,7 +6,6 @@ var Util = require('../util');
 
 var style = {
   listGroupItem: {
-    flex: 1,
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 10,
