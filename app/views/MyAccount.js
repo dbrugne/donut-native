@@ -70,7 +70,7 @@ var MyAccountView = React.createClass({
     this.fetchData();
     currentUser.on('change:avatar', (model) => {
       this.setState({
-        avatar: common.cloudinary.prepare(model.get('avatar'), 120)
+        avatar: common.cloudinary.prepare(model.get('avatar'), 150)
       });
     });
   },
@@ -83,7 +83,7 @@ var MyAccountView = React.createClass({
         color: response.color,
         location: _.unescape(response.location),
         website: (response.website && response.website.title ? response.website.title : {value: ''}),
-        avatar: common.cloudinary.prepare(response.avatar, 120),
+        avatar: common.cloudinary.prepare(response.avatar, 150),
         loaded: true
       });
     });

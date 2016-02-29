@@ -53,7 +53,7 @@ module.exports = React.createClass({
 
     let avatar = this.props.data.avatar;
     if (this.props.data.avatarRaw) {
-      avatar = common.cloudinary.prepare(this.props.data.avatarRaw, 40);
+      avatar = common.cloudinary.prepare(this.props.data.avatarRaw, 50);
     }
 
     return (

@@ -24,7 +24,7 @@ class AbstractCard extends Component {
     if (!thumbnail) {
       return null;
     }
-    var thumbnailUrl = common.cloudinary.prepare(thumbnail, 90);
+    var thumbnailUrl = common.cloudinary.prepare(thumbnail, 150);
     if (!thumbnailUrl) {
       return null;
     }

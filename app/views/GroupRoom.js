@@ -30,7 +30,7 @@ var GroupRoomView = React.createClass({
     return { };
   },
   render: function () {
-    var avatarUrl = common.cloudinary.prepare(this.props.room.avatar, 120);
+    var avatarUrl = common.cloudinary.prepare(this.props.room.avatar, 150);
 
     return (
       <ScrollView style={styles.main}>

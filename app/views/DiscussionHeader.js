@@ -32,7 +32,7 @@ var DiscussionHeaderView = React.createClass({
     );
   },
   _renderAvatar () {
-    var avatarUrl = common.cloudinary.prepare(this.state.avatar, 130);
+    var avatarUrl = common.cloudinary.prepare(this.state.avatar, 150);
     if (!avatarUrl) {
       return null;
     }

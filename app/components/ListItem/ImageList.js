@@ -110,7 +110,7 @@ class ListItemImageList extends ListItemAbstract {
                                 onPress={data.onProfile}
                                 style={{width: 80, height: 80}}
               >
-              <Image style={{width: 80, height: 80, position: 'absolute', top: 0, left: 0}} source={{uri: common.cloudinary.prepare(item.avatar, 120)}}/>
+              <Image style={{width: 80, height: 80, position: 'absolute', top: 0, left: 0}} source={{uri: common.cloudinary.prepare(item.avatar, 150)}}/>
             </TouchableHighlight>
           </View>
         </View>
@@ -137,15 +137,15 @@ class ListItemImageList extends ListItemAbstract {
       return null;
     }
 
-    let avatarUrl = common.cloudinary.prepare(item.avatar, 170);
+    let avatarUrl = common.cloudinary.prepare(item.avatar, 150);
     return (
       <View style={styles.element} key={data.key}>
         <View style={{position: 'relative'}}>
-          <Image style={{width: 160, height: 130, position: 'absolute', top: 0, left: 0}} source={{uri: avatarUrl}}/>
-          <View style={{width: 160, height: 130, position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(28,37,47,0.60)'}}></View>
+          <Image style={{width: 150, height: 130, position: 'absolute', top: 0, left: 0}} source={{uri: avatarUrl}}/>
+          <View style={{width: 150, height: 130, position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(28,37,47,0.60)'}}></View>
           <TouchableHighlight underlayColor='transparent'
                               onPress={data.onProfile}
-                              style={{width: 160, height: 130}}
+                              style={{width: 150, height: 130}}
             >
             <View style={[styles.avatarCtn, data.avatarRadius]}>
               <Image style={[styles.avatar, data.avatarRadius]} source={{uri: avatarUrl}}/>
@@ -205,7 +205,7 @@ var styles = StyleSheet.create({
   identifier: {
     alignSelf:'center',
     position: 'absolute',
-    width: 160,
+    width: 150,
     height: 19, // 38px
     top: 105
   },

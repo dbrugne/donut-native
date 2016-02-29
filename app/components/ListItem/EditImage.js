@@ -29,7 +29,7 @@ class ListItemEditImage extends ListItemAbstract {
   }
 
   _renderElement () {
-    let avatarUrl = common.cloudinary.prepare(this.props.avatar, 40);
+    let avatarUrl = common.cloudinary.prepare(this.props.avatar, 50);
     return (
       <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
         <Text style={s.listGroupItemText}>{this.props.text}</Text>

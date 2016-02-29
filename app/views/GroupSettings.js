@@ -115,7 +115,7 @@ class GroupSettings extends Component {
     if (!avatar) {
       return null;
     }
-    var avatarUrl = common.cloudinary.prepare(avatar, 60);
+    var avatarUrl = common.cloudinary.prepare(avatar, 50);
     if (!avatarUrl) {
       return null;
     }

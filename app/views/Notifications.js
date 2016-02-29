@@ -215,7 +215,7 @@ class NotificationsView extends Component {
     n.name = '';
     n.avatarCircle = false;
     if (n.data.room) {
-      n.avatar = common.cloudinary.prepare(n.data.room.avatar, 45);
+      n.avatar = common.cloudinary.prepare(n.data.room.avatar, 50);
       n.avatarCircle = true;
       n.title = n.data.room.name;
       n.name = n.data.room.name;
@@ -233,7 +233,7 @@ class NotificationsView extends Component {
         });
       }
     } else if (n.data.group) {
-      n.avatar = common.cloudinary.prepare(n.data.group.avatar, 45);
+      n.avatar = common.cloudinary.prepare(n.data.group.avatar, 50);
       n.avatarCircle = true;
       n.title = n.data.group.name;
       n.name = n.data.group.name;
@@ -242,7 +242,7 @@ class NotificationsView extends Component {
         : n.data.group.id;
       n.onPress = () => app.trigger('joinGroup', groupId);
     } else if (n.data.by_user) {
-      n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 45);
+      n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 50);
       n.title = n.data.by_user.username;
     }
 
@@ -266,7 +266,7 @@ class NotificationsView extends Component {
       var avatar = (n.data.by_user)
         ? n.data.by_user.avatar
         : n.data.user.avatar;
-      n.avatar = common.cloudinary.prepare(avatar, 45);
+      n.avatar = common.cloudinary.prepare(avatar, 50);
       n.avatarCircle = false;
     }
     if (n.type === 'roomjoinrequest') {

@@ -137,7 +137,7 @@ var ManageInvitationsView = React.createClass({
     );
   },
   _renderPending: function (user) {
-    var thumbnailUrl = common.cloudinary.prepare(user.avatar, 90);
+    var thumbnailUrl = common.cloudinary.prepare(user.avatar, 150);
 
     return (
       <TouchableHighlight onPress={() => this._openActionSheet(user)} underlayColor='transparent'>
