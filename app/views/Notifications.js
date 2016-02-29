@@ -170,7 +170,7 @@ class NotificationsView extends Component {
     let unviewedDiscussions = null;
     if (this.state.discussionsUnviewed !== 0) {
       unviewedDiscussions = (
-        <View style={{marginHorizontal: 20}}>
+        <View style={{marginHorizontal: 20, marginTop: 20}}>
           <Button type='gray'
                   onPress={() => navigation.openDrawer()}
                   label={i18next.t('Notifications:discussion-count', {count: this.state.discussionsUnviewed})}
@@ -180,7 +180,7 @@ class NotificationsView extends Component {
     }
 
     let unread = this.state.unread === 0
-        ? (<Text style={{textAlign: 'center'}}>{i18next.t('notifications.no-unread-notification')}</Text>)
+        ? (<Text style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#586473', textAlign: 'center' }}>{i18next.t('notifications.no-unread-notification')}</Text>)
         : (<Button type='gray'
                    onPress={this.tagAllAsRead.bind(this)}
                    loading={this.state.loadingTagAsRead}
@@ -189,7 +189,7 @@ class NotificationsView extends Component {
       ;
 
     return (
-      <View style={{ marginTop: 20 }}>
+      <View>
         {unviewedDiscussions}
         <View style={{marginHorizontal: 20, marginVertical: 20}}>
           {unread}
@@ -442,13 +442,12 @@ class NotificationsView extends Component {
 
   _renderContent (n) {
     return (
-      <View
-        style={[{ paddingVertical: 15, paddingLeft: 15, paddingRight: 10, borderBottomWidth: 1, borderBottomColor: '#f1f1f1', borderStyle: 'solid'}, !n.viewed && {borderBottomColor: '#d8deea', backgroundColor: '#E2E8F0'}]}>
+      <View style={[{ paddingVertical: 15, paddingLeft: 15, paddingRight: 10, borderBottomWidth: 1, borderBottomColor: '#f1f1f1', borderStyle: 'solid'}, !n.viewed && {borderBottomColor: '#d8deea', backgroundColor: '#E2E8F0'}]}>
         <View style={{flexDirection: 'row', justifyContent: 'center', flex: 1}}>
           {this._renderAvatar(n)}
           <View style={{flexDirection: 'column', justifyContent: 'center', flex: 1, marginLeft: 10}}>
-            <Text>{n.message}</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center', flex: 1, marginTop: 5 }}>
+            <Text style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#586473' }}>{n.message}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginTop: 5 }}>
               <View style={{flex: 1}}>
                 {this._renderByUsername(n)}
               </View>
@@ -497,6 +496,7 @@ class NotificationsView extends Component {
         user_id={n.data.user._id}
         username={n.username}
         navigator={this.props.navigator}
+        style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#586473' }}
         />
     );
   }
@@ -515,7 +515,7 @@ class NotificationsView extends Component {
       this.setState({
         loadingMore: false,
         more: data.more,
-        unread: data.unread,
+        unread: data.unread ? data.unread : 0,
         dataSource: this.notificationsDataSource.prepend(data.notifications)
       });
     });
