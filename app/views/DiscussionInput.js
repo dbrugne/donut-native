@@ -4,6 +4,7 @@ var React = require('react-native');
 var {
   StyleSheet,
   View,
+  Image,
   TextInput
 } = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
@@ -38,20 +39,15 @@ var InputView = React.createClass({
     var inputPlaceholder;
     if (this.state.userConfirmed) {
       inputPlaceholder = 'Message ' + ((this.model.get('type') === 'room')
-          ? 'dans ' + this.model.get('identifier')
-          : 'à @' + this.model.get('username'));
+          ? 'in ' + this.model.get('identifier')
+          : 'to @' + this.model.get('username'));
     } else {
       inputPlaceholder = i18next.t('messages.not-confirmed');
     }
     return (
       <View style={[styles.inputContainer, this.state.inSendingIntent && {backgroundColor: '#EEE'}]}>
         <Button style={styles.button} onPress={() => this._addImage()} disabled={!this.state.userConfirmed || this.state.inSendingIntent}>
-          <Icon
-            name='camera'
-            size={28}
-            color='#999998'
-            style={styles.icon}
-          />
+          <Image source={require('../assets/camera.png')} style={{width: 25, height: 18, marginLeft: 10, marginRight: 10}} />
         </Button>
         <View style={{flex: 1}}>
         <TextInput style={[styles.input, {height: (this.state.height < MAXINPUTHEIGHT) ? this.state.height : MAXINPUTHEIGHT}]}
@@ -77,12 +73,7 @@ var InputView = React.createClass({
           />
         </View>
         <Button style={styles.button} onPress={() => this.onSubmit()} disabled={!this.state.userConfirmed || this.state.inSendingIntent}>
-          <Icon
-            name='paper-plane'
-            size={28}
-            color='#999998'
-            style={styles.icon}
-          />
+          <Image source={require('../assets/send.png')} style={{width: 19.5, height: 24, marginLeft: 10, marginRight: 10}} />
         </Button>
       </View>
     );
@@ -132,18 +123,20 @@ var styles = StyleSheet.create({
   inputContainer: {
     left: 0,
     right: 0,
-    borderColor: '#d9d9d9',
+    borderColor: '#D0D9E6',
     borderTopWidth: 1,
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderBottomWidth: 0,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   input: {
     flex: 1,
-    padding: 3,
     paddingHorizontal: 5,
-    fontSize: 17
+    paddingVertical: 8,
+    fontSize: 14
   },
   icon: {
     marginHorizontal: 5,

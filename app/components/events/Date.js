@@ -11,12 +11,12 @@ module.exports = React.createClass({
   render () {
     return (
       <View style={[s.dateBlock, s.event]}>
-        <View style={{marginLeft:10, flex:1, justifyContent: 'center', flexDirection: 'column'}}>
-          <View style={{height:1, backgroundColor: '#666666'}}></View>
+        <View style={{flex:1, justifyContent: 'center', flexDirection: 'column'}}>
+          <View style={{height:1, backgroundColor: '#D0D9E6'}}></View>
         </View>
         <Text style={s.dateContent}>{this.props.data.text}</Text>
-        <View style={{marginRight:10, flex:1, justifyContent: 'center', flexDirection: 'column'}}>
-          <View style={{height:1, backgroundColor: '#666666'}}></View>
+        <View style={{flex:1, justifyContent: 'center', flexDirection: 'column'}}>
+          <View style={{height:1, backgroundColor: '#D0D9E6'}}></View>
         </View>
       </View>
     );

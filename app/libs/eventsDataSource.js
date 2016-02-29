@@ -130,7 +130,7 @@ module.exports = function () {
       var list = [item];
 
       // date
-      if (isDifferentDay) {
+      if (isDifferentDay && previous !== null) {
         list = list.concat([{type: 'date', data: {
           id: 'date' + item.data.id,
           time: item.data.time,

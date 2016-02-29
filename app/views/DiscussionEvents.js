@@ -13,6 +13,7 @@ var {
   Text,
   View,
   Component,
+  Image,
   ListView
 } = React;
 
@@ -22,7 +23,7 @@ var InvertibleScrollView = require('react-native-invertible-scroll-view');
 var debug = require('../libs/debug')('events');
 var app = require('../libs/app');
 var s = require('../styles/style');
-
+var common = require('@dbrugne/donut-common/mobile');
 var eventsPrepare = require('../libs/eventsPrepare');
 var EventDate = require('./../components/events/Date');
 var EventMessage = require('./../components/events/Message');
@@ -172,8 +173,12 @@ class DiscussionEvents extends Component {
   renderHeader () {
     if (!this.state.more) {
       if (this.props.model.get('type') === 'room') {
+        var avatarUrl = common.cloudinary.prepare(this.props.model.get('avatar'), 150);
         return (
-          <Text style={[s.h1, s.textCenter]}>{i18next.t('DiscussionEvents:in')} {this.props.title}</Text>
+          <View style={{flexDirection: 'column', alignItems: 'center'}}>
+            <Image source={{uri: avatarUrl}} style={{width: 100, height: 100, borderRadius: 50, marginBottom: 10}} />
+            <Text style={[s.h1, s.textCenter]}>{i18next.t('DiscussionEvents:in')} {this.props.title}</Text>
+          </View>
         );
       }
 
