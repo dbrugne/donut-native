@@ -21,7 +21,9 @@ class ListItemButton extends ListItemAbstract {
         >
         <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
           {this._renderLeftIcon()}
+          {this._renderLeftImage()}
           {this._renderElement()}
+          {this._renderRightImage()}
           {this._renderRightIcon()}
         </View>
       </TouchableHighlight>

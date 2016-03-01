@@ -8,8 +8,8 @@ var style = {
   listGroupItem: {
     paddingTop: 10,
     paddingBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
     backgroundColor: '#fff',
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -31,16 +31,31 @@ var style = {
   listGroupItemIconRight: {
     alignSelf: 'center',
     justifyContent: 'flex-end',
-    marginLeft: 5
+    marginLeft: 10
   },
   listGroupItemIconLeft: {
     alignSelf: 'center',
     justifyContent: 'flex-start',
-    marginRight: 5
+    marginRight: 10
+  },
+  listGroupItemImageLeft: {
+    alignSelf: 'center',
+    justifyContent: 'flex-start',
+    marginRight: 10,
+    width: 20,
+    height: 20
+  },
+  listGroupItemImageRight: {
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
+    marginLeft: 10,
+    width: 20,
+    height: 20
   },
   listGroupItemText: {
     color: '#586473',
     fontFamily: 'Open Sans',
+    fontWeight: '600',
     fontSize: 16,
     flex: 1
   },

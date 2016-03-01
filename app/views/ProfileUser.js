@@ -82,7 +82,7 @@ class UserProfileView extends Component {
       type='text'
       text={i18next.t('ProfileUser:registered-on', {date: date.shortDate(data.registered)})}
       first={(!data.location && !data.website)}
-      icon='clock-o'
+      imageLeft={require('../assets/icon-time.png')}
       />
     );
 
@@ -130,8 +130,7 @@ class UserProfileView extends Component {
             type='edit-button'
             action
             onPress={() => navigation.navigate('Report', {type: 'user', user: data})}
-            icon='ban'
-            iconColor='#ff3838'
+            imageLeft={require('../assets/icon-ban.png')}
             />
         </View>
       </ScrollView>

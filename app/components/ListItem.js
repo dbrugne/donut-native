@@ -34,7 +34,10 @@ var ListItem = React.createClass({
     keyboardType: React.PropTypes.string, // value of the ListItemEdit
     loading: React.PropTypes.bool, // loading state, used for the ListItemInputButton
     imageList: React.PropTypes.array, // required for ImageList item
-    image: React.PropTypes.string // required for ListItemEditImage item
+    image: React.PropTypes.string, // required for ListItemEditImage item
+
+    imageLeft: React.PropTypes.any,
+    imageRight: React.PropTypes.any
   },
   render () {
     switch (this.props.type) {
