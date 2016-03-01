@@ -57,6 +57,7 @@ class UserProfileView extends Component {
       <ListItem
         text={_.unescape(this.props.data.location)}
         type='text'
+        first
         imageLeft={require('../assets/icon-location.png')}
         />
       );
@@ -183,7 +184,7 @@ class UserProfileView extends Component {
     return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 10, flexDirection: 'column'}}>
       <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={[styles.username, styles.usernameGray]}>@{this.props.data.username}</Text>
+        <Text style={[styles.realname]}>@{this.props.data.username}</Text>
         <View style={[styles.status, this.props.data.status === 'connecting' && styles.statusConnecting, this.props.data.status === 'offline' && styles.statusOffline, this.props.data.status === 'online' && styles.statusOnline]} />
         <Text style={styles.statusText}>{this.props.data.status}</Text>
       </View>
