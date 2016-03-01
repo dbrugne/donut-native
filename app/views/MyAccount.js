@@ -8,6 +8,7 @@ var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
 var navigation = require('../navigation/index');
 var ListItem = require('../components/ListItem');
+var Button = require('../components/Button');
 var imageUpload = require('../libs/imageUpload');
 var LoadingView = require('../components/Loading');
 var Alert = require('../libs/alert');
@@ -19,7 +20,7 @@ var {
   StyleSheet,
   Image,
   TouchableHighlight
-} = React;
+  } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccount', {
@@ -36,14 +37,13 @@ i18next.addResourceBundle('en', 'myAccount', {
   'location': 'Location',
   'website': 'Website',
   'website-url': 'Wrong url',
-  'profile': 'Profile details',
-  'credentials': 'Credentials',
-  'notifications': 'Notifications',
-  'logout-title': 'End',
-  'miscellaneous': 'Miscellaneous',
+  'profile': 'PROFILE DETAILS',
+  'credentials': 'CREDENTIALS',
+  'notifications': 'NOTIFICATIONS',
+  'miscellaneous': 'MISCELLANEOUS',
   'help': 'Help',
   'silence': 'Silence',
-  'language': 'Language: English',
+  'language': 'Language',
   'facebook': 'Facebook'
 });
 
@@ -108,15 +108,15 @@ var MyAccountView = React.createClass({
         <TouchableHighlight
           onPress={() => navigation.navigate('Profile', {type: 'user', id: currentUser.get('user_id'), identifier: '@' + this.state.username})}
           >
-        <View style={styles.containerHorizontal}>
-          {this._renderAvatar(this.state.avatar)}
-          <View style={styles.containerVertical}>
-            {realname}
-            <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
+          <View style={styles.containerHorizontal}>
+            {this._renderAvatar(this.state.avatar)}
+            <View style={styles.containerVertical}>
+              {realname}
+              <Text style={[styles.username, realname && styles.usernameGray]}>@{this.state.username}</Text>
+            </View>
           </View>
-        </View>
         </TouchableHighlight>
-        <View style={s.listGroup}>
+        <View style={{ marginTop: 40 }}>
           <ListItem text={i18next.t('myAccount:avatar')}
                     type='edit-button'
                     first
@@ -152,8 +152,9 @@ var MyAccountView = React.createClass({
                     value={this.state.website}
                     onPress={() => this.onUserEdit(require('./MyAccountEditWebsite'), this.state.website)}
             />
-          </View>
-          <View style={s.listGroup}>
+        </View>
+
+        <View style={{ marginTop: 40 }}>
           <ListItem
             onPress={() => navigation.navigate('MyAccountPreferences')}
             text={i18next.t('myAccount:change-preferences')}
@@ -162,14 +163,15 @@ var MyAccountView = React.createClass({
             first
             title={i18next.t('myAccount:notifications')}
             />
-            <ListItem
-              text={i18next.t('myAccount:silence')}
-              type='switch'
-              switchValue={false}
-              onSwitch={() => navigation.navigate('AvailableSoon')}
-              />
-          </View>
-        <View style={s.listGroup}>
+          <ListItem
+            text={i18next.t('myAccount:silence')}
+            type='switch'
+            switchValue={false}
+            onSwitch={() => navigation.navigate('AvailableSoon')}
+            />
+        </View>
+
+        <View style={{ marginTop: 40 }}>
           <ListItem
             onPress={() => navigation.navigate('MyAccountEmails')}
             text={i18next.t('myAccount:manage-emails')}
@@ -190,42 +192,42 @@ var MyAccountView = React.createClass({
             action
             type='button'
             />
-          </View>
-          <View style={s.listGroup}>
-            <ListItem
-              onPress={() => navigation.navigate('AvailableSoon')}
-              text={i18next.t('myAccount:language')}
-              action
-              title={i18next.t('myAccount:miscellaneous')}
-              type='button'
-              first
-              />
-            <ListItem text={i18next.t('myAccount:eutc')}
-                      type='button'
-                      onPress={() => navigation.navigate('Eutc')}
-                      action
-              />
-            <ListItem text={i18next.t('myAccount:help')}
-                      type='button'
-                      action
-                      onPress={() => this.joinHelp()}
-              />
-            <ListItem
-              onPress={() => navigation.navigate('About')}
-              text={i18next.t('myAccount:about')}
-              action
-              type='button'
-            />
-          </View>
-        <View style={s.listGroup}>
+        </View>
+
+        <View style={{ marginTop: 40 }}>
           <ListItem
-            onPress={() => currentUser.logout()}
-            text={i18next.t('myAccount:logout')}
-            type='button'
-            warning
+            onPress={() => navigation.navigate('AvailableSoon')}
+            text={i18next.t('myAccount:language')}
+            value='English'
+            action
+            title={i18next.t('myAccount:miscellaneous')}
+            type='edit-button'
             first
-            title={i18next.t('myAccount:logout-title')}
-          />
+            />
+          <ListItem text={i18next.t('myAccount:eutc')}
+                    type='button'
+                    onPress={() => navigation.navigate('Eutc')}
+                    action
+            />
+          <ListItem text={i18next.t('myAccount:help')}
+                    type='button'
+                    action
+                    onPress={() => this.joinHelp()}
+            />
+          <ListItem
+            onPress={() => navigation.navigate('About')}
+            text={i18next.t('myAccount:about')}
+            action
+            type='button'
+            />
+        </View>
+
+        <View style={{ marginTop: 40, marginHorizontal: 20, marginBottom: 40 }}>
+          <Button
+            onPress={() => currentUser.logout()}
+            label={i18next.t('myAccount:logout')}
+            type='gray'
+            />
         </View>
       </ScrollView>
     );
@@ -303,8 +305,7 @@ var MyAccountView = React.createClass({
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
+    flexWrap: 'wrap'
   },
   username: {
     color: '#333333',

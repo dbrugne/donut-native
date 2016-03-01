@@ -24,11 +24,12 @@ var style = {
     borderTopWidth: 1
   },
   listGroupTitle: {
-    color: '#999999',
+    fontWeight: '600',
+    color: '#FC2063',
     fontFamily: 'Open Sans',
-    fontSize: 14,
-    marginHorizontal: 10,
-    marginVertical: 2
+    fontSize: 16,
+    marginHorizontal: 20,
+    marginVertical: 5
   },
   listGroupItemLast: {
 
