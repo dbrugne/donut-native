@@ -17,7 +17,7 @@ var {
   ListView
 } = React;
 
-var Button = require('react-native-button');
+var Button = require('../components/Button');
 var InvertibleScrollView = require('react-native-invertible-scroll-view');
 
 var debug = require('../libs/debug')('events');
@@ -209,9 +209,10 @@ class DiscussionEvents extends Component {
         <View style={[s.textCenter, {marginVertical: 15}]}>
           {loading}
         </View>
-        <Button onPress={() => this.onLoadMore('older')}>
-          {i18next.t('DiscussionEvents:load-more')}
-        </Button>
+        <Button onPress={() => this.onLoadMore('older')}
+                type='gray'
+                label={i18next.t('DiscussionEvents:load-more')}
+          />
       </View>
     );
   }

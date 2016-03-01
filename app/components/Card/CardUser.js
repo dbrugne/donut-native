@@ -121,7 +121,7 @@ class CardUser extends Abstract {
   }
 
   _renderStatus () {
-    return (<View style={[{backgroundColor: 'red'}, styles.status, this.props.status === 'connecting' && styles.statusConnecting, this.props.status === 'offline' && styles.statusOffline, this.props.status === 'online' && styles.statusOnline]} />);
+    return (<View style={[styles.status, this.props.status === 'connecting' && styles.statusConnecting, this.props.status === 'offline' && styles.statusOffline, this.props.status === 'online' && styles.statusOnline]} />);
   }
 }
 

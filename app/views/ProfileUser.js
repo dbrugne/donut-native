@@ -7,6 +7,7 @@ var {
   Text,
   Component,
   Image,
+  TouchableHighlight,
   ScrollView
 } = React;
 
@@ -26,7 +27,7 @@ i18next.addResourceBundle('en', 'ProfileUser', {
   'unlock': 'unblock this user',
   'lock': 'block this user',
   'blocked': 'this user blocked you',
-  'discuss': 'Chat',
+  'discuss': 'CHAT',
   'report': 'report user'
 });
 
@@ -41,13 +42,6 @@ class UserProfileView extends Component {
   }
   render () {
     var data = this.data;
-
-    var realname = null;
-    if (data.realname) {
-      realname = (
-        <Text style={styles.realname}>{_.unescape(data.realname)}</Text>
-      );
-    }
 
     var bio = _.unescape(data.bio);
 
@@ -116,34 +110,17 @@ class UserProfileView extends Component {
       );
     }
 
-    let discuss = null;
-    if (data.user_id !== currentUser.get('user_id')) {
-      discuss = (
-        <View>
-          <Text style={s.listGroupItemSpacing} />
-          <ListItem
-            text={i18next.t('ProfileUser:discuss')}
-            type='edit-button'
-            first
-            action
-            onPress={() => app.trigger('joinUser', data.user_id)}
-            />
-        </View>
-      );
-    }
     return (
       <ScrollView style={styles.main}>
-        <View style={[styles.container, {position: 'relative'}]}>
-          {this._renderAvatar(data.avatar)}
-          <Text style={[styles.statusText, styles.status, data.status === 'connecting' && styles.statusConnecting, data.status === 'offline' && styles.statusOffline, data.status === 'online' && styles.statusOnline]}>{data.status}</Text>
-          {realname}
-          <Text style={[styles.username, data.realname && styles.usernameGray]}>@{data.username}</Text>
-          <Text style={styles.bio}>{bio}</Text>
-          {isBannedLink}
-        </View>
+        <BackgroundComponent avatar={data.avatar} >
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            {this._renderAvatar(data.avatar)}
+            {this._renderIdentifier()}
+            {isBannedLink}
+          </View>
+        </BackgroundComponent>
         <View style={[s.listGroup]}>
-          {discuss}
-          <Text style={s.listGroupItemSpacing} />
+          <Text style={styles.bio}>{bio}</Text>
           {location}
           {website}
           {registeredAt}
@@ -158,6 +135,51 @@ class UserProfileView extends Component {
             />
         </View>
       </ScrollView>
+    );
+  }
+
+  _renderDiscuss() {
+    if (this.props.data.user_id === currentUser.get('user_id')) {
+      return null;
+    }
+
+    return (
+      <Image style={{width: 152.5, height: 35, marginVertical: 20}} source={require('../assets/chat-button.png')} >
+        <TouchableHighlight
+          underlayColor='transparent'
+          style={{ flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+          onPress={() => app.trigger('joinUser', this.props.data.user_id)}
+          >
+          <Text style={{ textAlign: 'center', fontFamily: 'Open Sans', fontWeight: '600', fontSize: 14, color: '#353F4C' }}> {i18next.t('ProfileUser:discuss')} </Text>
+        </TouchableHighlight>
+      </Image>
+    );
+  }
+
+  _renderIdentifier() {
+    if (this.props.data.realname) {
+      return (
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 10, flexDirection: 'column'}}>
+          <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={styles.realname}>{_.unescape(this.props.data.realname)}</Text>
+            <View style={[styles.status, this.props.data.status === 'connecting' && styles.statusConnecting, this.props.data.status === 'offline' && styles.statusOffline, this.props.data.status === 'online' && styles.statusOnline]} />
+            <Text style={styles.statusText}>{this.props.data.status}</Text>
+          </View>
+          <Text style={[styles.username, styles.usernameGray]}>@{this.props.data.username}</Text>
+          {this._renderDiscuss()}
+        </View>
+      );
+    }
+
+    return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 10, flexDirection: 'column'}}>
+      <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={[styles.username, styles.usernameGray]}>@{this.props.data.username}</Text>
+        <View style={[styles.status, this.props.data.status === 'connecting' && styles.statusConnecting, this.props.data.status === 'offline' && styles.statusOffline, this.props.data.status === 'online' && styles.statusOnline]} />
+        <Text style={styles.statusText}>{this.props.data.status}</Text>
+      </View>
+      {this._renderDiscuss()}
+    </View>
     );
   }
 
@@ -194,61 +216,83 @@ class UserProfileView extends Component {
   }
 }
 
+var BackgroundComponent = React.createClass({
+  propTypes: {
+    children: React.PropTypes.element.isRequired,
+    avatar: React.PropTypes.string
+  },
+
+  render: function() {
+    var avatarUrl = null;
+    if (this.props.avatar) {
+      avatarUrl = common.cloudinary.prepare(this.props.avatar, 300);
+    }
+
+    if (avatarUrl) {
+      return (
+        <Image style={[styles.container, {resizeMode: 'cover'}]} source={{uri: avatarUrl}}>
+          {this.props.children}
+        </Image>
+      );
+    }
+
+    return (
+      <View style={[styles.container, {position: 'relative'}]}>
+        {this.props.children}
+      </View>
+    );
+  }
+
+});
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
+    flexWrap: 'wrap'
   },
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFF'
+    justifyContent: 'center'
   },
   avatar: {
-    width: 120,
-    height: 120,
+    width: 100,
+    height: 100,
     marginTop:20
   },
   username: {
-    color: '#333333',
+    color: '#AFBAC8',
+    backgroundColor: 'transparent',
     fontFamily: 'Open Sans',
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 16,
     marginBottom: 5
   },
   usernameGray: {
     color: '#b6b6b6'
   },
   realname: {
-    color: '#333333',
+    color: '#FFFFFF',
+    backgroundColor: 'transparent',
     fontFamily: 'Open Sans',
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 5
+    fontSize: 16,
+    fontWeight: '600'
   },
   status: {
-    marginBottom: 8,
-    alignSelf: 'center',
-    textAlign: 'center',
-    flex:1,
-    fontWeight: '400',
-    fontSize: 12,
-    fontFamily: 'Open Sans',
-    width: 120,
-    paddingLeft:5,
-    paddingRight:5,
-    overflow: 'hidden'
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    marginTop: 4
   },
-  statusOnline: { backgroundColor: 'rgba(79, 237, 192, 0.8)' },
-  statusConnecting: { backgroundColor: 'rgba(255, 218, 62, 0.8)' },
-  statusOffline: { backgroundColor: 'rgba(119,119,119,0.8)' },
+  statusOnline: { backgroundColor: '#18C095' },
+  statusConnecting: { backgroundColor: 'rgb(255, 218, 62)' },
+  statusOffline: { backgroundColor: 'rgb(119,119,119)' },
   statusText: {
     color: '#FFFFFF',
-    fontWeight: '500',
+    fontStyle: 'italic',
+    fontWeight: '600',
     fontSize: 16,
-    fontFamily: 'Open Sans'
+    fontFamily: 'Open Sans',
+    backgroundColor: 'transparent'
   },
   icon: {
     width: 14,
@@ -259,8 +303,8 @@ var styles = StyleSheet.create({
     color: '#4fedc0'
   },
   bio: {
-    marginVertical: 5,
-    marginHorizontal: 5,
+    marginVertical: 20,
+    marginHorizontal: 20,
     color: '#333333',
     fontFamily: 'Open Sans',
     fontSize: 14
