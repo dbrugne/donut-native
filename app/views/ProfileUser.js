@@ -40,8 +40,6 @@ class UserProfileView extends Component {
     };
   }
   render () {
-    var data = this.data;
-
     var bio = _.unescape(this.props.data.bio);
 
     var isBannedLink = null;
@@ -252,7 +250,6 @@ var BackgroundComponent = React.createClass({
       </View>
     );
   }
-
 });
 
 var styles = StyleSheet.create({
