@@ -6,17 +6,22 @@ var Util = require('../util');
 
 var style = {
   listGroupItem: {
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 15,
+    paddingBottom: 15,
     paddingLeft: 20,
     paddingRight: 20,
     backgroundColor: '#fff',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderColor: '#E7ECF3',
+    borderStyle: 'solid',
+    borderBottomWidth: 1
   },
   listGroupItemFirst: {
-
+    borderColor: '#E7ECF3',
+    borderStyle: 'solid',
+    borderTopWidth: 1
   },
   listGroupTitle: {
     color: '#999999',

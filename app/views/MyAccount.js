@@ -82,7 +82,7 @@ var MyAccountView = React.createClass({
         bio: _.unescape(response.bio),
         color: response.color,
         location: _.unescape(response.location),
-        website: (response.website && response.website.title ? response.website.title : {value: ''}),
+        website: (response.website && response.website.title ? response.website.title : ''),
         avatar: common.cloudinary.prepare(response.avatar, 150),
         loaded: true
       });

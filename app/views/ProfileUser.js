@@ -86,30 +86,6 @@ class UserProfileView extends Component {
       />
     );
 
-    var bannedLink = null;
-    if (this.state.banned === true && data.user_id !== currentUser.get('user_id')) {
-      bannedLink = (
-        <ListItem
-          text={i18next.t('ProfileUser:unlock')}
-          type='edit-button'
-          action
-          onPress={() => this._unbanUser()}
-          icon='ban'
-          />
-      );
-    } else if (data.user_id !== currentUser.get('user_id')) {
-      bannedLink = (
-        <ListItem
-          text={i18next.t('ProfileUser:lock')}
-          type='edit-button'
-          action
-          onPress={() => this._banUser()}
-          icon='ban'
-          iconColor='#ff3838'
-          />
-      );
-    }
-
     return (
       <ScrollView style={styles.main}>
         <BackgroundComponent avatar={data.avatar} >
@@ -124,7 +100,7 @@ class UserProfileView extends Component {
           {location}
           {website}
           {registeredAt}
-          {bannedLink}
+          {this._renderBanned()}
           <ListItem
             text={i18next.t('ProfileUser:report')}
             type='edit-button'
@@ -135,6 +111,31 @@ class UserProfileView extends Component {
         </View>
       </ScrollView>
     );
+  }
+
+  _renderBanned() {
+    if (this.props.data.user_id === currentUser.get('user_id')) {
+      return;
+    }
+
+    return (
+      <ListItem
+        type='switch'
+        imageLeft={require('../assets/icon-ban.png')}
+        text={ this.state.banned ? i18next.t('ProfileUser:unlock') : i18next.t('ProfileUser:lock')}
+        onSwitch={this._toggleBanned.bind(this)}
+        switchValue={this.state.banned}
+        />
+    );
+  }
+
+  _toggleBanned() {
+    // currently banned
+    if (this.state.banned) {
+      this._unbanUser();
+    } else {
+      this._banUser()
+    }
   }
 
   _renderDiscuss() {
