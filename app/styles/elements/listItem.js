@@ -48,14 +48,16 @@ var style = {
     justifyContent: 'flex-start',
     marginRight: 10,
     width: 20,
-    height: 20
+    height: 20,
+    resizeMode: 'contain'
   },
   listGroupItemImageRight: {
     alignSelf: 'center',
     justifyContent: 'flex-end',
     marginLeft: 10,
     width: 20,
-    height: 20
+    height: 20,
+    resizeMode: 'contain'
   },
   listGroupItemText: {
     color: '#586473',

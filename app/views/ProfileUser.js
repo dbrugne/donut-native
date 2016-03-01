@@ -35,44 +35,43 @@ class UserProfileView extends Component {
   constructor (props) {
     super(props);
 
-    this.data = props.data;
     this.state = {
-      banned: this.data.banned
+      banned: this.props.data.banned
     };
   }
   render () {
     var data = this.data;
 
-    var bio = _.unescape(data.bio);
+    var bio = _.unescape(this.props.data.bio);
 
     var isBannedLink = null;
-    if (data.i_am_banned === true) {
+    if (this.props.data.i_am_banned === true) {
       isBannedLink = (
         <Text style={{marginVertical: 5, marginHorizontal: 5, color: '#ff3838', fontFamily: 'Open Sans', fontSize: 14}}>{i18next.t('ProfileUser:blocked')}</Text>
       );
     }
 
     var location = null;
-    if (data.location) {
+    if (this.props.data.location) {
       location = (
       <ListItem
-        text={_.unescape(data.location)}
+        text={_.unescape(this.props.data.location)}
         type='text'
-        icon='map-marker'
+        imageLeft={require('../assets/icon-location.png')}
         />
       );
     }
 
     var website = null;
-    if (data.website) {
+    if (this.props.data.website) {
       website = (
       <ListItem
-        text={data.website.title}
+        text={this.props.data.website.title}
         type='edit-button'
-        onPress={() => hyperlink.open(data.website.href)}
-        first={!data.location}
+        onPress={() => hyperlink.open(this.props.data.website.href)}
+        first={!this.props.data.location}
         action
-        icon='link'
+        imageLeft={require('../assets/icon-link.png')}
         />
       );
     }
@@ -80,17 +79,17 @@ class UserProfileView extends Component {
     var registeredAt = (
     <ListItem
       type='text'
-      text={i18next.t('ProfileUser:registered-on', {date: date.shortDate(data.registered)})}
-      first={(!data.location && !data.website)}
+      text={i18next.t('ProfileUser:registered-on', {date: date.shortDate(this.props.data.registered)})}
+      first={(!this.props.data.location && !this.props.data.website)}
       imageLeft={require('../assets/icon-time.png')}
       />
     );
 
     return (
       <ScrollView style={styles.main}>
-        <BackgroundComponent avatar={data.avatar} >
+        <BackgroundComponent avatar={this.props.data.avatar} >
           <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            {this._renderAvatar(data.avatar)}
+            {this._renderAvatar(this.props.data.avatar)}
             {this._renderIdentifier()}
             {isBannedLink}
           </View>
@@ -101,13 +100,7 @@ class UserProfileView extends Component {
           {website}
           {registeredAt}
           {this._renderBanned()}
-          <ListItem
-            text={i18next.t('ProfileUser:report')}
-            type='edit-button'
-            action
-            onPress={() => navigation.navigate('Report', {type: 'user', user: data})}
-            imageLeft={require('../assets/icon-ban.png')}
-            />
+          {this._renderReport()}
         </View>
       </ScrollView>
     );
@@ -136,6 +129,22 @@ class UserProfileView extends Component {
     } else {
       this._banUser()
     }
+  }
+
+  _renderReport() {
+    if (this.props.data.user_id === currentUser.get('user_id')) {
+      return;
+    }
+
+    return (
+      <ListItem
+        text={i18next.t('ProfileUser:report')}
+        type='edit-button'
+        action
+        onPress={() => navigation.navigate('Report', {type: 'user', user: this.props.data})}
+        imageLeft={require('../assets/icon-ban.png')}
+        />
+    );
   }
 
   _renderDiscuss() {
@@ -198,7 +207,7 @@ class UserProfileView extends Component {
   }
 
   _banUser () {
-    app.client.userBan(this.data.user_id, (response) => {
+    app.client.userBan(this.props.data.user_id, (response) => {
       if (response.err) {
         return;
       }
@@ -207,7 +216,7 @@ class UserProfileView extends Component {
   }
 
   _unbanUser () {
-    app.client.userDeban(this.data.user_id, (response) => {
+    app.client.userDeban(this.props.data.user_id, (response) => {
       if (response.err) {
         return;
       }
@@ -244,6 +253,7 @@ var BackgroundComponent = React.createClass({
   }
 
 });
+
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
