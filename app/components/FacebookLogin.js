@@ -19,7 +19,7 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'facebookLogin', {
   'already-logged-as': 'You are already identified with Facebook as __username__',
   'already-logged': 'You are already identified with Facebook',
-  'use': 'Use this Facebook account'
+  'use': 'USE THIS FACEBOOK ACCOUNT'
 });
 
 module.exports = React.createClass({
@@ -38,9 +38,9 @@ module.exports = React.createClass({
         <View style={styles.container}>
           <View style={styles.container}>
             {avatar}
-            <Text style={{marginBottom: 10, textAlign: 'center'}}>{message}</Text>
+            <Text style={{marginBottom: 20, marginTop: 10, textAlign: 'center', fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF' }}>{message}</Text>
             <TouchableHighlight onPress={() => currentUser.useFacebookToken()}
-                                style={[s.button, styles.buttonFacebook]}
+                                style={[s.button, s.buttonBlue, styles.shadow]}
                                 underlayColor='#647EB7'
               >
               <View style={[s.buttonLabel, styles.buttonLabelFacebook]}>
