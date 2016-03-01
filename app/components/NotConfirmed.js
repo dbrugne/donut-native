@@ -34,7 +34,7 @@ var NotConfirmedComponent = React.createClass({
     currentUser.off(null, null, this);
   },
   render () {
-    if (this.state.userConfirmed) {
+    if (typeof (this.state.userConfirmed) === 'undefined' || this.state.userConfirmed === true) {
       return null;
     }
 
