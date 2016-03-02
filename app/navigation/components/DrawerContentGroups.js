@@ -27,7 +27,7 @@ i18next.addResourceBundle('en', 'drawerContentGroups', {
 var NavigationGroupsView = React.createClass({
   getInitialState: function () {
     this.lastGroup = null;
-    this.displayLimit = 4;
+    this.displayLimit = 2;
     return {
       elements: new ListView.DataSource({
         rowHasChanged: function (row1, row2) {
@@ -53,16 +53,21 @@ var NavigationGroupsView = React.createClass({
 
   refresh: function () {
     var roomsAndGroups = [];
+    var groupIds = [];
     _.each(app.rooms.toJSON(), (room) => {
       if (!room.group_id) {
         return;
       }
-      room.visible = roomsAndGroups.length <= (this.displayLimit - 1);
+      groupIds.push(room.group_id);
+      groupIds = _.uniq(groupIds);
+      room.visible = groupIds.length <= (this.displayLimit);
       roomsAndGroups.push(room);
     });
     _.each(app.groups.toJSON(), (group) => {
       if (!app.rooms.iwhere('group_id', group.id)) {
-        group.visible = roomsAndGroups.length <= (this.displayLimit - 1);
+        groupIds.push(group.id);
+        groupIds = _.uniq(groupIds);
+        group.visible = groupIds.length <= (this.displayLimit);
         roomsAndGroups.push(group);
       }
     });
@@ -121,10 +126,9 @@ var NavigationGroupsView = React.createClass({
       <TouchableHighlight
         style={{ backgroundColor: '#6E7784', borderRadius: 3, paddingVertical: 5, paddingHorizontal: 10, marginRight:10 }}
         onPress={this.toggle}
-        underlayColor='transparent'
+        underlayColor='#6E7784'
         >
-        <Text
-          style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentGroups:see-all') : i18next.t('drawerContentGroups:see-less')}</Text>
+        <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentGroups:see-all') : i18next.t('drawerContentGroups:see-less')}</Text>
       </TouchableHighlight>
     );
   },
@@ -138,7 +142,7 @@ var NavigationGroupsView = React.createClass({
       <TouchableHighlight
         style={{ marginLeft:20, paddingVertical: 10 }}
         onPress={this.toggle}
-        underlayColor='transparent'
+        underlayColor='#6E7784'
         >
         <Text style={{color: '#AFBAC8'}}>● ● ●</Text>
       </TouchableHighlight>
@@ -261,15 +265,20 @@ var NavigationGroupsView = React.createClass({
       });
     }
 
+    var groupIds = [];
     _.each(app.rooms.toJSON(), (room) => {
       if (room.group_id) {
-        room.visible = roomsAndGroups.length <= (this.displayLimit - 1);
+        groupIds.push(room.group_id);
+        groupIds = _.uniq(groupIds);
+        room.visible = groupIds.length <= (this.displayLimit);
         roomsAndGroups.push(room);
       }
     });
     _.each(app.groups.toJSON(), (group) => {
       if (!app.rooms.iwhere('group_id', group.id)) {
-        group.visible = roomsAndGroups.length <= (this.displayLimit - 1);
+        groupIds.push(group.id);
+        groupIds = _.uniq(groupIds);
+        group.visible = groupIds.length <= (this.displayLimit);
         roomsAndGroups.push(group);
       }
     });
