@@ -19,7 +19,8 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'discussionBlocked', {
-  'click': 'REQUEST AN ACCESS.',
+  'click': 'REQUEST AN ACCESS',
+  'join': 'JOIN',
   'close': 'CLOSE THIS DISCUSSION',
   // 'by': 'by',
   // 'allowed': 'This discussion is private.',
@@ -96,7 +97,7 @@ var DiscussionBlocked = React.createClass({
 
     return (
       <Button onPress={() => this.onJoin()}
-              label={i18next.t('discussionBlocked:click')}
+              label={this.props.model.get('blocked_why') === 'kick' ? i18next.t('discussionBlocked:join') : i18next.t('discussionBlocked:click')}
               type='white'
               style={{ alignSelf: 'stretch', marginHorizontal: 20, marginTop: 20 }}
         />
