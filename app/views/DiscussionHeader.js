@@ -5,20 +5,19 @@ var {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight,
   Image
   } = React;
 
-var alert = require('../libs/alert');
-var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/mobile');
-var s = require('../styles/style');
-var Icon = require('react-native-vector-icons/EvilIcons');
-var _ = require('underscore');
 
 var DiscussionHeaderView = React.createClass({
+  defaultPropTypes: {
+    small: false
+  },
   propTypes: {
-    model: React.PropTypes.object.isRequired
+    model: React.PropTypes.object.isRequired,
+    small: React.PropTypes.bool,
+    children: React.PropTypes.any
   },
   getInitialState: function () {
     return {
@@ -35,7 +34,7 @@ var DiscussionHeaderView = React.createClass({
   render () {
     return (
       <View style={[styles.container]}>
-        <BackgroundComponent avatar={this.props.model.get('avatar')} >
+        <BackgroundComponent avatar={this.props.model.get('avatar')}>
           <View style={{alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}>
             {this._renderAvatar()}
             {this._renderMode()}
@@ -47,23 +46,26 @@ var DiscussionHeaderView = React.createClass({
       </View>
     );
   },
-  _renderGroup() {
+  _renderGroup () {
     return (
-      <View style={{flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}>
-        <Text style={styles.group}>{this.state.model.get('group_name') ? '#' + this.state.model.get('group_name') : ''}</Text>
+      <View
+        style={{flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}>
+        <Text
+          style={styles.group}>{this.state.model.get('group_name') ? '#' + this.state.model.get('group_name') : ''}</Text>
       </View>
     );
   },
-  _renderName() {
+  _renderName () {
     return (
-      <View style={{height: 20, flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}>
+      <View
+        style={{height: 20, flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}>
         <Text
           style={styles.roomname}>{this.state.model.get('group_name') ? '/' + this.state.model.get('name') : '#' + this.state.model.get('name')}</Text>
       </View>
     );
   },
-  _renderMode() {
-    if ( !this.state.model.get('mode') || this.state.model.get('mode') === 'public' ) {
+  _renderMode () {
+    if (!this.state.model.get('mode') || this.state.model.get('mode') === 'public') {
       return null;
     }
 
@@ -72,10 +74,14 @@ var DiscussionHeaderView = React.createClass({
       : require('../assets/lock-member.png');
 
     return (
-      <Image style={{width: 14, height: 20, position: 'absolute', top: 10, right: 10}} source={source} />
+      <Image style={{width: 14, height: 20, position: 'absolute', top: 10, right: 10}} source={source}/>
     );
   },
   _renderAvatar () {
+    if (this.props.small) {
+      return;
+    }
+
     var avatarUrl = common.cloudinary.prepare(this.state.model.get('avatar'), 150);
     if (!avatarUrl) {
       return null;
@@ -93,7 +99,7 @@ var BackgroundComponent = React.createClass({
     avatar: React.PropTypes.string
   },
 
-  render: function() {
+  render: function () {
     var avatarUrl = null;
     if (this.props.avatar) {
       avatarUrl = common.cloudinary.prepare(this.props.avatar, 300);
@@ -101,7 +107,9 @@ var BackgroundComponent = React.createClass({
 
     if (avatarUrl) {
       return (
-        <Image style={{resizeMode: 'cover', paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}} source={{uri: avatarUrl}}>
+        <Image
+          style={{resizeMode: 'cover', paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}
+          source={{uri: avatarUrl}}>
           {this.props.children}
         </Image>
       );

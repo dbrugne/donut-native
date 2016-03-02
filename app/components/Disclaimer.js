@@ -11,32 +11,47 @@ var {
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'componentsDisclaimer', {
-  'message': 'Message from',
-  'header': 'This discussion is private.'
+  'message': 'Message from'
 });
 
 var Link = React.createClass({
   propTypes: {
     model: React.PropTypes.object.isRequired,
+    title: React.PropTypes.string,
     navigator: React.PropTypes.object
   },
   render () {
+    if (!this.props.model.get('disclaimer') && !this.props.title) {
+      return null;
+    }
+
     return (
       <View style={{ padding: 20, alignSelf: 'stretch', backgroundColor: '#E7ECF3' }}>
-        <Text
-          style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#394350' }}>{i18next.t('componentsDisclaimer:header')}</Text>
+        {this._renderTitle()}
         {this._renderDisclaimer()}
       </View>
     );
   },
 
-  _renderDisclaimer() {
+  _renderTitle () {
+    if (!this.props.title) {
+      return null;
+    }
+
+    return (
+      <Text style={[{ fontFamily: 'Open Sans', fontSize: 14, color: '#394350' }, this.props.model.get('disclaimer') && { marginBottom: 20 }]} >
+        {this.props.title}
+      </Text>
+    );
+  },
+
+  _renderDisclaimer () {
     if (!this.props.model.get('disclaimer')) {
       return null;
     }
 
     return (
-      <View style={{ marginTop: 20 }}>
+      <View>
         <Username
           prepend={i18next.t('componentsDisclaimer:message')}
           user_id={this.props.model.get('owner_id')}

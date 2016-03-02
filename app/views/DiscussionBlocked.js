@@ -22,18 +22,13 @@ i18next.addResourceBundle('en', 'discussionBlocked', {
   'click': 'REQUEST AN ACCESS',
   'join': 'JOIN',
   'close': 'CLOSE THIS DISCUSSION',
-  // 'by': 'by',
-  // 'allowed': 'This discussion is private.',
   'disallow': 'This discussion is private.',
-  // 'request': 'To join,',
-  // 'password': 'direct access',
-  // 'password-placeholder': 'password',
-  // 'join': 'join',
-  // 'not-confirmed': 'Not confirmed user can\'t join private discussions',
   'ban': 'You were banned from this discussion',
   'groupban': 'You were banned from this community',
-  'kick': 'You have been kicked out.'
-  // 'rejoin': ' to get back in.',
+  'kick': [
+    'You have been kicked out by moderators.',
+    'You can join back'
+  ]
 });
 
 var DiscussionBlocked = React.createClass({
@@ -85,11 +80,6 @@ var DiscussionBlocked = React.createClass({
     );
   },
   _renderActions: function () {
-    // // not confirmed
-    // if (!this.state.userConfirmed) {
-    //   return null;
-    // }
-
     // kicked or banned
     if (_.indexOf(['groupban', 'ban'], this.props.model.get('blocked_why')) !== -1) {
       return null;
@@ -111,7 +101,7 @@ var DiscussionBlocked = React.createClass({
       return (
         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' }}>
           <Image source={require('../assets/arrow-top-gray.png')} style={{ width: 30, height: 8.5, resizeMode: 'contain', marginTop: -8.5 }}/>
-          <Disclaimer {...this.props} />
+          <Disclaimer {...this.props} title={i18next.t('discussionBlocked:disallow')} />
         </View>
       );
     }
@@ -146,7 +136,7 @@ var DiscussionBlocked = React.createClass({
         return;
       }
       if (data && data.infos) {
-        return navigation.navigate('DiscussionBlockJoin', data.infos, this.props.model);
+        return navigation.navigate('DiscussionBlockedJoin', data.infos, this.props.model);
       } else if (data.success) {
         app.client.roomJoin(this.props.model.get('id'), null, function (response) {
           if (response.err) {

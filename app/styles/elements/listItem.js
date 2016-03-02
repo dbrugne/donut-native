@@ -32,7 +32,7 @@ var style = {
     marginVertical: 5
   },
   listGroupItemLast: {
-
+    borderBottomWidth: 0
   },
   listGroupItemIconRight: {
     alignSelf: 'center',

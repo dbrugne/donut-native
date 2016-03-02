@@ -3,7 +3,6 @@
 var React = require('react-native');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
-var navigation = require('../navigation/index');
 var ListItem = require('../components/ListItem');
 var Button = require('../components/Button');
 var LoadingModal = require('../components/LoadingModal');
@@ -50,15 +49,15 @@ class RoomCreateView extends Component {
 
     return (
       <KeyboardAwareComponent
-        shouldShow={() => { return true }}
-        shouldHide={() => { return true }}
+        shouldShow={() => { return true; }}
+        shouldHide={() => { return true; }}
         >
 
         <ScrollView>
           <View style={{ marginHorizontal: 20 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 20 }}>
               {this._renderSharp()}
-              <View style={{width: 1, height: 40, backgroundColor: '#FC2063'}} ></View>
+              <View style={{width: 1, height: 40, backgroundColor: '#FC2063'}}/>
               <TextInput
                 autoCapitalize='none'
                 placeholder={i18next.t('createRoom:name')}
@@ -67,10 +66,11 @@ class RoomCreateView extends Component {
                 style={{ flex: 1, fontFamily: 'Open Sans', fontSize: 14, fontWeight: '400', color: '#333', height: 40, paddingVertical: 8, paddingHorizontal: 10 }}
                 />
             </View>
-            <Text style={{ fontFamily: 'Open Sans', fontStyle: 'italic', fontSize: 14, color: '#AFBAC8', marginVertical: 20 }}>{i18next.t('createRoom:help')}</Text>
+            <Text
+              style={{ fontFamily: 'Open Sans', fontStyle: 'italic', fontSize: 14, color: '#AFBAC8', marginVertical: 20 }}>{i18next.t('createRoom:help')}</Text>
           </View>
 
-          <View style={{ height: 1, backgroundColor: '#D0D9E6', marginVertical: 20 }}></View>
+          <View style={{ height: 1, backgroundColor: '#D0D9E6', marginVertical: 20 }} />
 
           <View style={{ marginHorizontal: 20 }}>
             <ListItem
@@ -90,29 +90,30 @@ class RoomCreateView extends Component {
               style={{marginTop: 20}}
               />
 
-            </View>
+          </View>
         </ScrollView>
       </KeyboardAwareComponent>
     );
   }
 
-  _renderSharp() {
+  _renderSharp () {
     if (this.props.group_identifier) {
       var group = app.groups.get(this.props.group_id);
       if (group && group.get('avatar')) {
         var avatarUrl = common.cloudinary.prepare(group.get('avatar'), 50);
         return (
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{ fontFamily: 'Open Sans', fontSize: 25, color: '#FC2063', marginRight: 10  }}>#</Text>
-            <View style={{borderStyle: 'solid', borderWidth: 1, borderColor: '#D0D9E6', marginRight: 10}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ fontFamily: 'Open Sans', fontSize: 25, color: '#FC2063', marginRight: 10 }}>#</Text>
+            <View style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#D0D9E6', marginRight: 10 }}>
               <Image style={{ width: 38, height: 38 }} source={{uri: avatarUrl}}/>
             </View>
-            <Text style={{ fontFamily: 'Open Sans', fontSize: 25, color: '#FC2063', marginRight: 10  }}>/</Text>
+            <Text style={{ fontFamily: 'Open Sans', fontSize: 25, color: '#FC2063', marginRight: 10 }}>/</Text>
           </View>
         );
       }
       return (
-        <Text style={{ fontFamily: 'Open Sans', fontSize: 25, color: '#FC2063', marginRight: 10  }}>{ this.props.group_identifier + '/' }</Text>
+        <Text
+          style={{ fontFamily: 'Open Sans', fontSize: 25, color: '#FC2063', marginRight: 10 }}>{ this.props.group_identifier + '/' }</Text>
       );
     }
 

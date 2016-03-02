@@ -4,8 +4,8 @@ var i18next = require('../../libs/i18next');
 module.exports = function (data, model) {
   return {
     renderScene: function (navigator) {
-      let RoomEdit = require('../../views/DiscussionBlockedJoin');
-      return <RoomEdit navigator={navigator} data={data} model={model} />;
+      let DiscussionBlockedJoin = require('../../views/DiscussionBlockedJoin');
+      return <DiscussionBlockedJoin navigator={navigator} data={data} model={model} />;
     },
     getTitle () {
       return i18next.t('navigation.discussion-blocked-join');
