@@ -23,7 +23,8 @@ var Link = React.createClass({
   render () {
     return (
       <View style={{ padding: 20, alignSelf: 'stretch', backgroundColor: '#E7ECF3' }}>
-        <Text style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#394350' }}>{i18next.t('componentsDisclaimer:header')}</Text>
+        <Text
+          style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#394350' }}>{i18next.t('componentsDisclaimer:header')}</Text>
         {this._renderDisclaimer()}
       </View>
     );
@@ -43,9 +44,10 @@ var Link = React.createClass({
           navigator={this.props.navigator}
           style={{fontStyle: 'italic', paddingLeft: 5, fontWeight: '500'}}
           />
-        <View style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', alignSelf: 'stretch'}}>
+        <View
+          style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', alignSelf: 'stretch', marginTop: 20}}>
           <View style={{flexDirection: 'column', flex: 1, justifyContent: 'center'}}>
-            <Text style={{fontStyle: 'italic', paddingLeft: 5}}>{_.unescape(this.props.model.get('disclaimer'))}</Text>
+            <Text style={{ fontStyle: 'italic' }}>{'"' + _.unescape(this.props.model.get('disclaimer')) + '"'}</Text>
           </View>
         </View>
       </View>
