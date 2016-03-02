@@ -39,7 +39,6 @@ module.exports = React.createClass({
   render () {
     return (
       <View style={[s.event, {flexDirection: 'column', alignItems:'center', justifyContent: 'center'}]}>
-        <Image source={require('../../assets/welcome.png')} resizeMode='contain' style={{width: 20, height: 34}} />
         {this._renderTitle()}
         {this._renderMessage()}
       </View>

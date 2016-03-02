@@ -12,7 +12,6 @@ var {
   Text,
   Image
 } = React;
-var Icon = require('react-native-vector-icons/FontAwesome');
 
 var currentUser = require('../models/current-user');
 
@@ -20,7 +19,7 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'facebookLogin', {
   'already-logged-as': 'You are already identified with Facebook as __username__',
   'already-logged': 'You are already identified with Facebook',
-  'use': 'Use this Facebook account'
+  'use': 'USE THIS FACEBOOK ACCOUNT'
 });
 
 module.exports = React.createClass({
@@ -39,20 +38,12 @@ module.exports = React.createClass({
         <View style={styles.container}>
           <View style={styles.container}>
             {avatar}
-            <Text style={{marginBottom: 10, textAlign: 'center'}}>{message}</Text>
+            <Text style={{marginBottom: 20, marginTop: 10, textAlign: 'center', fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF' }}>{message}</Text>
             <TouchableHighlight onPress={() => currentUser.useFacebookToken()}
-                                style={[s.button, styles.buttonFacebook]}
+                                style={[s.button, s.buttonBlue, styles.shadow]}
                                 underlayColor='#647EB7'
               >
               <View style={[s.buttonLabel, styles.buttonLabelFacebook]}>
-                <View style={styles.iconContainer}>
-                  <Icon
-                    name='facebook'
-                    size={28}
-                    color='#FFF'
-                    style={styles.iconFacebook}
-                  />
-                </View>
                 <Text style={[s.buttonText, styles.buttonTextFacebook]}>{i18next.t('facebookLogin:use')}</Text>
               </View>
             </TouchableHighlight>
@@ -67,7 +58,7 @@ module.exports = React.createClass({
       <View style={styles.container}>
         {useFacebookToken}
         <View style={styles.container}>
-          <View style={[s.button, s.buttonBlue]}>
+          <View style={[s.button, s.buttonBlue, styles.shadow]}>
             <FBLogin
               permissions={['email']}
               onLogin={this.onLogin}
@@ -159,9 +150,10 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     flex: 1
   },
-  iconFacebook: {
-    paddingRight: 5,
-    marginRight: 5,
-    alignSelf: 'flex-end'
+  shadow: {
+    shadowColor: 'rgb(30,30,30)',
+    shadowOffset: {width: 0, height: 5},
+    shadowRadius: 5,
+    shadowOpacity: 0.75
   }
 });

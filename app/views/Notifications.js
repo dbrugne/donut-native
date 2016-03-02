@@ -5,6 +5,8 @@ var _ = require('underscore');
 var app = require('../libs/app');
 var navigation = require('../navigation/index');
 var ListItem = require('../components/ListItem');
+var Button = require('../components/Button');
+var Username = require('../components/events/Username');
 var LoadingView = require('../components/Loading');
 var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
@@ -15,15 +17,25 @@ var state = require('../navigation/state');
 
 var {
   View,
+  ScrollView,
   ListView,
   Component,
   TouchableHighlight,
   Text,
   Image
-} = React;
+  } = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
 
 var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'Notifications', {
+  'alerts': 'Alerts',
+  "mark-as-read": "MARK ALL NOTIFICATIONS AS READ",
+  "discussion-count": "__count__ UNREAD DISCUSSION",
+  "discussion-count_plural": "__count__ UNREAD DISCUSSIONS",
+  "delete-selected": "DELETE SELECTED",
+  "cancel": "CANCEL"
+});
+
 
 class NotificationsView extends Component {
   constructor (props) {
@@ -34,7 +46,6 @@ class NotificationsView extends Component {
       loadingTagAsDone: null,
       visibleRows: null
     };
-    this.visibleRowsTimer = 2000; // 2sec
     this.timeoutTimer = 10000; // 10sec
     this.notificationsDataSource = require('../libs/notificationsDataSource')();
     this.state = {
@@ -69,7 +80,14 @@ class NotificationsView extends Component {
 
   fetchData () {
     this.notificationsDataSource.blob = [];
-    return app.client.notificationRead(null, null, 10, this.onData.bind(this));
+    return app.client.notificationRead(null, null, 10, (data) => {
+      app.client.userPreferencesRead(null, (response) => {
+        this.setState({
+          mobileAlerts: response.preferences && response.preferences['notif:channels:mobile']
+        });
+        return this.onData(data);
+      });
+    });
   }
 
   newIncomingNotification (data) {
@@ -79,7 +97,6 @@ class NotificationsView extends Component {
         dataSource: this.notificationsDataSource.append(data),
         unread: app.user.get('unviewedNotification')
       });
-      this._setViewedAfterTimeout();
     }
   }
 
@@ -95,7 +112,6 @@ class NotificationsView extends Component {
       unread: app.user.get('unviewedNotification'),
       more: response.more
     });
-    this._setViewedAfterTimeout();
   }
 
   render () {
@@ -104,6 +120,7 @@ class NotificationsView extends Component {
         <LoadingView />
       );
     }
+
     if (this.state.error) {
       alert.show(i18next.t('messages.notification-read-error'));
       return (
@@ -112,83 +129,76 @@ class NotificationsView extends Component {
     }
 
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex:1}}>
+        <ListItem text={i18next.t('Notifications:alerts')}
+                  type='switch'
+                  onSwitch={() => this.onChangeMobileNotifications()}
+                  switchValue={this.state.mobileAlerts}
+                  style={{marginHorizontal: 10}}
+          />
+        {this._renderHeader()}
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}
-          renderHeader={this.renderHeader.bind(this)}
           renderFooter={this.renderFooter.bind(this)}
-          onChangeVisibleRows={(visibleRows, changedRows) => this.onChangeVisibleRows(visibleRows, changedRows)}
-          style={{flex: 1, backgroundColor: '#f0f0f0'}}
+          style={{flex: 1}}
           scrollEnabled
-        />
+          />
       </View>
     );
   }
 
-  renderHeader () {
-    let unviewedDiscussions = null;
-    if (this.state.discussionsUnviewed !== 0) {
-      unviewedDiscussions = (
-        <View>
-          <ListItem type='button'
-                    onPress={() => navigation.openDrawer()}
-                    first
-                    last
-                    action
-                    text={i18next.t('notifications.discussion-count', {count: this.state.discussionsUnviewed})}
-          />
-          <Text style={s.listGroupItemSpacing}/>
+  _renderHeader () {
+    if (this.state.selecting) {
+      return (
+        <View style={{marginTop: 20, marginHorizontal: 20}}>
+          <Button type='gray'
+                    onPress={this.markSelectedAsDone.bind(this)}
+                    loading={this.state.loadingTagAsDone}
+                    label={i18next.t('Notifications:delete-selected')}
+            />
+
+          <Button type='red'
+                  onPress={this.cancelSelecting.bind(this)}
+                  label={i18next.t('Notifications:cancel')}
+                  style={{marginVertical: 20}}
+            />
         </View>
       );
     }
 
-    let unread = (this.state.unread === 0)
-      ? (
-      <View style={{marginHorizontal: 10, marginBottom: 30}}>
-        <Text>{i18next.t('notifications.no-unread-notification')}</Text>
-      </View>
-    )
-      : (
-      <ListItem
-        type='button'
-        onPress={this.tagAllAsRead.bind(this)}
-        loading={this.state.loadingTagAsRead}
-        first
-        last
-        action
-        title={i18next.t('notifications.notification-count', {count: this.state.unread})}
-        text={i18next.t('notifications.mark-as-read')}
-      />
-    );
+    let unviewedDiscussions = null;
+    if (this.state.discussionsUnviewed !== 0) {
+      unviewedDiscussions = (
+        <View style={{marginHorizontal: 20, marginTop: 20}}>
+          <Button type='gray'
+                  onPress={() => navigation.openDrawer()}
+                  label={i18next.t('Notifications:discussion-count', {count: this.state.discussionsUnviewed})}
+            />
+        </View>
+      );
+    }
+
+    let unread = this.state.unread === 0
+        ? (<Text style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#586473', textAlign: 'center' }}>{i18next.t('notifications.no-unread-notification')}</Text>)
+        : (<Button type='gray'
+                   onPress={this.tagAllAsRead.bind(this)}
+                   loading={this.state.loadingTagAsRead}
+                   label={i18next.t('Notifications:mark-as-read')}
+        />)
+      ;
 
     return (
-      <View style={{marginTop: 30}}>
+      <View>
         {unviewedDiscussions}
-        {unread}
+        <View style={{marginHorizontal: 20, marginVertical: 20}}>
+          {unread}
+        </View>
       </View>
     );
   }
 
   renderFooter () {
-    if (this.state.selecting) {
-      return (
-        <View>
-          <Text style={s.listGroupItemSpacing}/>
-          <ListItem type='button'
-                    onPress={this.markSelectedAsDone.bind(this)}
-                    loading={this.state.loadingTagAsDone}
-                    text={i18next.t('notifications.delete-selected')}
-                    first
-                    warning
-          />
-          <ListItem type='button'
-                    onPress={this.cancelSelecting.bind(this)}
-                    text={i18next.t('cancel')}
-          />
-        </View>
-      );
-    }
     if (!this.state.more) {
       return null;
     }
@@ -206,9 +216,11 @@ class NotificationsView extends Component {
         underlayColor='#f0f0f0'
         onPress={this.onLoadMore.bind(this)}
         style={{height: 50, justifyContent: 'center', alignItems: 'center'}}
-      >
-        <Text
-          style={{textAlign: 'center'}}>{i18next.t('notifications.load-more')}</Text>
+        >
+        <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={{textAlign: 'center', fontFamily: 'Open Sans', fontSize: 14, color: '#8491A1'}}>● ● ●</Text>
+          <Text style={{textAlign: 'center', fontFamily: 'Open Sans', fontSize: 14, color: '#8491A1' }}>{i18next.t('notifications.load-more')}</Text>
+        </View>
       </TouchableHighlight>
     );
   }
@@ -218,7 +230,7 @@ class NotificationsView extends Component {
     n.name = '';
     n.avatarCircle = false;
     if (n.data.room) {
-      n.avatar = common.cloudinary.prepare(n.data.room.avatar, 45);
+      n.avatar = common.cloudinary.prepare(n.data.room.avatar, 50);
       n.avatarCircle = true;
       n.title = n.data.room.name;
       n.name = n.data.room.name;
@@ -236,7 +248,7 @@ class NotificationsView extends Component {
         });
       }
     } else if (n.data.group) {
-      n.avatar = common.cloudinary.prepare(n.data.group.avatar, 45);
+      n.avatar = common.cloudinary.prepare(n.data.group.avatar, 50);
       n.avatarCircle = true;
       n.title = n.data.group.name;
       n.name = n.data.group.name;
@@ -245,7 +257,7 @@ class NotificationsView extends Component {
         : n.data.group.id;
       n.onPress = () => app.trigger('joinGroup', groupId);
     } else if (n.data.by_user) {
-      n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 45);
+      n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 50);
       n.title = n.data.by_user.username;
     }
 
@@ -265,11 +277,11 @@ class NotificationsView extends Component {
       topic: (topic) ? emojione.shortnameToUnicode(topic) : ''
     });
 
-    if ([ 'roomjoinrequest', 'groupjoinrequest', 'usermention' ].indexOf(n.type) !== -1) {
+    if (['roomjoinrequest', 'groupjoinrequest', 'usermention'].indexOf(n.type) !== -1) {
       var avatar = (n.data.by_user)
         ? n.data.by_user.avatar
         : n.data.user.avatar;
-      n.avatar = common.cloudinary.prepare(avatar, 45);
+      n.avatar = common.cloudinary.prepare(avatar, 50);
       n.avatarCircle = false;
     }
     if (n.type === 'roomjoinrequest') {
@@ -297,7 +309,7 @@ class NotificationsView extends Component {
           underlayColor='#f0f0f0'
           onPress={this.state.selecting ? this.onLongPress.bind(this, n) : () => n.onPress()}
           onLongPress={this.onLongPress.bind(this, n)}
-        >
+          >
           {this._renderContent(n)}
         </TouchableHighlight>
       );
@@ -307,37 +319,23 @@ class NotificationsView extends Component {
           style={{backgroundColor: '#ffffff'}}
           underlayColor='#f0f0f0'
           onLongPress={this.onLongPress.bind(this, n)}
-        >
+          >
           {this._renderContent(n)}
         </TouchableHighlight>
       );
     }
   }
 
-  onChangeVisibleRows (visibleRows) {
-    var idxs = [];
-    _.each(visibleRows.s1, (e, idx) => {
-      idxs.push(idx);
+  onChangeMobileNotifications () {
+    var update = {'notif:channels:mobile': !this.state.mobileAlerts};
+    app.client.userPreferencesUpdate(update, (data) => {
+      this.setState({
+        mobileAlerts: !this.state.mobileAlerts
+      });
+      if (data.err) {
+        alert.show(i18next.t('messages.' + data.err));
+      }
     });
-
-    clearTimeout(this.timeouts.visibleRows);
-    this.timeouts.visibleRows = setTimeout(() => {
-      let unviewed = this.notificationsDataSource.findWhere('viewed', false);
-      // nothing to process
-      if (unviewed.length === 0) {
-        return;
-      }
-
-      let unviewedIds = _.map(unviewed, 'id');
-      let visible = this.notificationsDataSource.findIdsFromIndex(idxs);
-      let unviewedVisibleIds = _.intersection(unviewedIds, visible);
-      // nothing to process
-      if (unviewedVisibleIds.length === 0) {
-        return;
-      }
-
-      app.client.notificationViewed(unviewedVisibleIds, false);
-    }, this.visibleRowsTimer);
   }
 
   onLongPress (elt) {
@@ -392,12 +390,12 @@ class NotificationsView extends Component {
     });
 
     // set button state as loading
-    this.setState({ loadingTagAsDone: true });
+    this.setState({loadingTagAsDone: true});
 
     // Add timeout to prevent loading too long & display error message
     this.timeouts.loadingTagAsDone = setTimeout(() => {
       alert.show(i18next.t('messages.error-try-again'));
-      this.setState({ loadingTagAsDone: false });
+      this.setState({loadingTagAsDone: false});
     }, this.timeoutTimer);
 
     // call client to tag selected notifications as done and display error
@@ -412,7 +410,7 @@ class NotificationsView extends Component {
   onDoneNotification (data) {
     clearTimeout(this.timeouts.loadingTagAsDone);
 
-    let state = { loadingTagAsDone: false };
+    let state = {loadingTagAsDone: false};
 
     // remove notifications from blob & close selecting buttons (delete &
     // cancel)
@@ -444,20 +442,16 @@ class NotificationsView extends Component {
 
   _renderContent (n) {
     return (
-      <View
-        style={[{height: 62, paddingTop: 5, paddingBottom: 5, paddingLeft: 5, paddingRight: 5, borderBottomWidth: 1, borderBottomColor: '#f1f1f1', borderStyle: 'solid'}, !n.viewed && {borderBottomColor: '#d8deea', backgroundColor: 'rgba(237, 239, 245, .98)'}]}>
-        <View
-          style={{flexDirection: 'row', justifyContent: 'center', flex: 1}}>
+      <View style={[{ paddingVertical: 15, paddingLeft: 15, paddingRight: 10, borderBottomWidth: 1, borderBottomColor: '#f1f1f1', borderStyle: 'solid'}, !n.viewed && {borderBottomColor: '#d8deea', backgroundColor: '#E2E8F0'}]}>
+        <View style={{flexDirection: 'row', justifyContent: 'center', flex: 1}}>
           {this._renderAvatar(n)}
-          <View
-            style={{flexDirection: 'column', justifyContent: 'center', flex: 1, marginLeft: 10}}>
-            <Text>{n.message}</Text>
-            <View
-              style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-              <Text
-                style={{flex: 1, fontSize: 14}}>{this._renderByUsername(n)}</Text>
-              <Text
-                style={{color: '#999999', fontSize: 12}}>{date.dayMonthTime(n.time)}</Text>
+          <View style={{flexDirection: 'column', justifyContent: 'center', flex: 1, marginLeft: 10}}>
+            <Text style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#586473' }}>{n.message}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginTop: 5 }}>
+              <View style={{flex: 1}}>
+                {this._renderByUsername(n)}
+              </View>
+              <Text style={{ fontFamily: 'Open Sans', fontSize: 12, color: '#AFBAC8' }}>{date.dayMonthTime(n.time)}</Text>
             </View>
           </View>
         </View>
@@ -468,14 +462,13 @@ class NotificationsView extends Component {
   _renderAvatar (n) {
     if (n.selected) {
       return (
-        <View
-          style={[{ width: 44, height: 44, borderRadius: 4, backgroundColor: '#3498db', flexDirection: 'row' }, n.avatarCircle && {borderRadius: 22}]}>
+        <View style={[{ width: 40, height: 40, backgroundColor: '#3498db', flexDirection: 'row', marginRight: 10 }, n.avatarCircle && {borderRadius: 20}]}>
           <Icon
             name='check'
             size={30}
             color='#ecf0f1'
             style={{alignSelf: 'center', marginLeft: 6}}
-          />
+            />
         </View>
       );
     }
@@ -486,29 +479,35 @@ class NotificationsView extends Component {
 
     return (
       <Image
-        style={[{ width: 44, height: 44, borderRadius: 4 }, n.avatarCircle && {borderRadius: 22}]}
+        style={[{ width: 40, height: 40, marginRight: 10 }, n.avatarCircle && {borderRadius: 20}]}
         source={{uri: n.avatar}}
-      />
+        />
     );
   }
 
   _renderByUsername (n) {
-    if (!n.username) {
-      return null;
+    if (!n.data|| !n.data.user || !n.data.user._id) {
+      return (<View style={{ flex:1 }} />);
     }
 
     return (
-      <Text>{i18next.t('by-username', { username: n.username }) }</Text>
+      <Username
+        prepend={i18next.t('by')}
+        user_id={n.data.user._id}
+        username={n.username}
+        navigator={this.props.navigator}
+        style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#586473' }}
+        />
     );
   }
 
   onLoadMore () {
-    this.setState({ loadingMore: true });
+    this.setState({loadingMore: true});
 
     // Add timeout to prevent loading too long & display error message
     this.timeouts.loadingMore = setTimeout(() => {
       alert.show(i18next.t('messages.error-try-again'));
-      this.setState({ loadingMore: false });
+      this.setState({loadingMore: false});
     }, this.timeoutTimer);
 
     app.client.notificationRead(null, this.notificationsDataSource.getBottomItemTime(), 10, (data) => {
@@ -516,20 +515,19 @@ class NotificationsView extends Component {
       this.setState({
         loadingMore: false,
         more: data.more,
-        unread: data.unread,
+        unread: data.unread ? data.unread : 0,
         dataSource: this.notificationsDataSource.prepend(data.notifications)
       });
-      this._setViewedAfterTimeout();
     });
   }
 
   tagAllAsRead () {
-    this.setState({ loadingTagAsRead: true });
+    this.setState({loadingTagAsRead: true});
 
     // Add timeout to prevent loading too long & display error message
     this.timeouts.loadingTagAsRead = setTimeout(() => {
       alert.show(i18next.t('messages.error-try-again'));
-      this.setState({ loadingTagAsRead: false });
+      this.setState({loadingTagAsRead: false});
     }, this.timeoutTimer);
 
     app.client.notificationViewed([], true, () => {
@@ -538,6 +536,7 @@ class NotificationsView extends Component {
         loadingTagAsRead: false,
         unread: app.user.get('unviewedNotification')
       });
+      this._setViewed()
     });
   }
 
@@ -547,24 +546,22 @@ class NotificationsView extends Component {
     });
   }
 
-  _setViewedAfterTimeout () {
-    setTimeout(() => {
-      if (!this.notificationsDataSource.blob) {
-        return;
+  _setViewed () {
+    if (!this.notificationsDataSource.blob) {
+      return;
+    }
+    let ids = [];
+    _.each(this.notificationsDataSource.blob, (notification) => {
+      if (!notification.viewed) {
+        ids.push(notification.id);
       }
-      let ids = [];
-      _.each(this.notificationsDataSource.blob, (notification) => {
-        if (!notification.viewed) {
-          ids.push(notification.id);
-        }
+    });
+    app.client.notificationViewed(ids, false, () => {
+      this.setState({
+        loadingTagAsRead: false,
+        unread: app.user.get('unviewedNotification')
       });
-      app.client.notificationViewed(ids, false, () => {
-        this.setState({
-          loadingTagAsRead: false,
-          unread: app.user.get('unviewedNotification')
-        });
-      });
-    }, this.visibleRowsTimer);
+    });
   }
 }
 

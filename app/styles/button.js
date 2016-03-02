@@ -9,8 +9,7 @@ var {
 module.exports = StyleSheet.create({
   button: {
     padding:10,
-    borderTopWidth:1,
-    borderBottomWidth:1
+    borderRadius: 4
   },
   textCtn: {
     flexWrap: 'nowrap',
@@ -22,43 +21,22 @@ module.exports = StyleSheet.create({
   label: {
     fontFamily: 'Open Sans',
     fontSize: 14,
-    fontWeight: 'bold',
     textAlign: 'center'
   },
   buttonGray: {
-    borderTopColor: '#7C8C8D',
-    borderBottomColor: '#7C8C8D',
-    backgroundColor: "#95a5a6" // Lighten 10%: #AFBFC0 / Darken 10%: #7C8C8D
+    backgroundColor: "#E7ECF3"
   },
   buttonPink: {
-    borderTopColor: '#E4396D',
-    borderBottomColor: '#E4396D',
-    backgroundColor: "#fc2063" // Lighten 10%: #FF6CA0 / Darken 10%: #E4396D
-  },
-  buttonGreen: {
-    borderTopColor: '#0E9547',
-    borderBottomColor: '#0E9547',
-    backgroundColor: "#27ae60" // Lighten 10%: #41C87A / Darken 10%: #0E9547
-  },
-  buttonBlue: {
-    borderTopColor: '#1067A0',
-    borderBottomColor: '#1067A0',
-    backgroundColor: "#2980B9" // Lighten 10%: #439AD3 / Darken 10%: #1067A0
+    backgroundColor: "#FC2063"
   },
   buttonRed: {
-    borderTopColor: '#CE3323',
-    borderBottomColor: '#CE3323',
-    backgroundColor: "#e74c3c" // Lighten 10%: #FF6656 / Darken 10%: #CE3323
+    backgroundColor: "#F15261"
   },
   buttonWhite: {
-    borderTopColor: '#DCDFE1',
-    borderBottomColor: '#DCDFE1',
-    backgroundColor: '#f5f8fa' // Lighten 10%: #FFFFFF / Darken 10%: #DCDFE1
+    backgroundColor: '#f5f8fa'
   },
-  labelGray: { color: '#FFFFFF'},
+  labelGray: { color: '#353F4C'},
   labelPink: { color: '#FFFFFF'},
-  labelGreen: { color: '#FFFFFF'},
-  labelBlue: { color: '#FFFFFF'},
   labelRed: { color: '#FFFFFF'},
   labelWhite: { color: '#333'},
   buttonLoading: {
@@ -72,13 +50,5 @@ module.exports = StyleSheet.create({
   },
   labelDisabled: {
 
-  },
-  buttonIcon: {
-    width: 20,
-    height: 20
-  },
-  help: {
-    color: '#999999',
-    fontSize: 12
   }
 });

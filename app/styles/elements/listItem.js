@@ -6,30 +6,30 @@ var Util = require('../util');
 
 var style = {
   listGroupItem: {
-    flex: 1,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingTop: 15,
+    paddingBottom: 15,
+    paddingLeft: 20,
+    paddingRight: 20,
     backgroundColor: '#fff',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    borderColor: '#DDD',
-    borderBottomWidth: 1,
-    borderStyle: 'solid'
+    borderColor: '#E7ECF3',
+    borderStyle: 'solid',
+    borderBottomWidth: 1
   },
   listGroupItemFirst: {
-    borderColor: '#DDD',
-    borderTopWidth: 1,
-    borderStyle: 'solid'
+    borderColor: '#E7ECF3',
+    borderStyle: 'solid',
+    borderTopWidth: 1
   },
   listGroupTitle: {
-    color: '#999999',
+    fontWeight: '600',
+    color: '#FC2063',
     fontFamily: 'Open Sans',
-    fontSize: 14,
-    marginHorizontal: 10,
-    marginVertical: 2
+    fontSize: 16,
+    marginHorizontal: 20,
+    marginVertical: 5
   },
   listGroupItemLast: {
 
@@ -37,16 +37,33 @@ var style = {
   listGroupItemIconRight: {
     alignSelf: 'center',
     justifyContent: 'flex-end',
-    marginLeft: 5
+    marginLeft: 10
   },
   listGroupItemIconLeft: {
     alignSelf: 'center',
     justifyContent: 'flex-start',
-    marginRight: 5
+    marginRight: 10
+  },
+  listGroupItemImageLeft: {
+    alignSelf: 'center',
+    justifyContent: 'flex-start',
+    marginRight: 10,
+    width: 20,
+    height: 20,
+    resizeMode: 'contain'
+  },
+  listGroupItemImageRight: {
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
+    marginLeft: 10,
+    width: 20,
+    height: 20,
+    resizeMode: 'contain'
   },
   listGroupItemText: {
-    color: '#333333',
+    color: '#586473',
     fontFamily: 'Open Sans',
+    fontWeight: '600',
     fontSize: 16,
     flex: 1
   },
@@ -66,9 +83,10 @@ var style = {
     color: '#e74c3c'
   },
   listGroupHelp: {
-    fontSize: 12,
-    color: '#737373',
+    fontFamily: 'Open Sans',
     fontStyle: 'italic',
+    fontSize: 14,
+    color: '#AFBAC8',
     marginVertical: 5,
     marginHorizontal: 10
   },

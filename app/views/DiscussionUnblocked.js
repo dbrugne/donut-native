@@ -2,17 +2,15 @@
 
 var React = require('react-native');
 var {
-  StyleSheet,
-  View,
-  LayoutAnimation
+  View
 } = React;
 
-var animation = require('../libs/animations').keyboard;
 var EventsView = require('./DiscussionEvents');
 var InputView = require('./DiscussionInput');
 var LoadingModal = require('../components/LoadingModal');
 var ConfirmationModal = require('../components/ConfirmationModal');
 var imageUpload = require('../libs/imageUpload');
+var KeyboardAwareComponent = require('../components/KeyboardAware');
 var Alert = require('../libs/alert');
 var app = require('../libs/app');
 
@@ -33,9 +31,6 @@ var DiscussionAbstract = React.createClass({
     };
   },
   componentDidMount () {
-    app.on('keyboardWillShow', this.onKeyboardWillShow, this);
-    app.on('keyboardWillHide', this.onKeyboardWillHide, this);
-
     // load history portion since last blur/disconnect
     app.on('ready', this.onFocus, this);
 
@@ -49,13 +44,19 @@ var DiscussionAbstract = React.createClass({
     app.off(null, null, this);
   },
   onFocus () {
-    if (this.refs.events) {
+    if (this.props.model.get('type') === 'room') {
+      this.refs.events.onFocus();
+      this.props.model.users.fetchUsers();
+    } else if (this.refs.events) {
       this.refs.events.onFocus();
     }
   },
   render () {
     return (
-      <View style={styles.main}>
+      <KeyboardAwareComponent
+        shouldShow={() => { return this.props.model.get('focused') === true }}
+        shouldHide={() => { return this.props.model.get('focused') === true }}
+        >
         <EventsView ref='events' title={this.props.model.get('identifier')}
                     model={this.props.model} {...this.props} />
         <InputView ref='input'
@@ -64,8 +65,7 @@ var DiscussionAbstract = React.createClass({
                    closeConfirmationModal={() => this.closeConfirmationModal()}
                    addImage={() => this._addImage()}
                    setImageSource={(src) => this.setImageSource(src)}
-        />
-        <View style={{height: this.state.keyboardSpace}}/>
+          />
         {this.state.showLoadingModal
           ? <LoadingModal />
           : null}
@@ -74,9 +74,9 @@ var DiscussionAbstract = React.createClass({
                                imageSource={this.state.imageSource}
                                onCancel={() => this.setState({showConfirmationModal: false})}
                                onConfirm={() => this._addImage()}
-        />
+          />
           : null}
-      </View>
+      </KeyboardAwareComponent>
     );
   },
   showConfirmationModal () {
@@ -102,32 +102,6 @@ var DiscussionAbstract = React.createClass({
       }
       this.props.model.sendMessage(null, [ data ]);
     });
-  },
-  onKeyboardWillShow (height) {
-    if (this.props.model.get('focused') !== true) {
-      return;
-    }
-    LayoutAnimation.configureNext(animation);
-    this.setState({ keyboardSpace: height });
-  },
-  onKeyboardWillHide () {
-    if (this.props.model.get('focused') !== true) {
-      return;
-    }
-    LayoutAnimation.configureNext(animation);
-    this.setState({ keyboardSpace: 0 });
-  }
-});
-
-// @source: http://stackoverflow.com/questions/29313244/how-to-auto-slide-the-window-out-from-behind-keyboard-when-textinput-has-focus
-// @source: http://stackoverflow.com/questions/29541971/absolute-and-flexbox-in-react-native
-var styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    flexDirection: 'column'
-  },
-  events: {
-    flex: 1
   }
 });
 

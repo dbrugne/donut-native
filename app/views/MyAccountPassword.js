@@ -124,7 +124,7 @@ class ChangePasswordView extends Component {
            </View>
 
           <Button onPress={(this.onSubmitPressed.bind(this))}
-                  type='green'
+                  type='gray'
                   style={[s.marginTop10]}
                   label={i18next.t('myAccountPassword:change')} />
 

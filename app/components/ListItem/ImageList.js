@@ -83,7 +83,7 @@ class ListItemImageList extends ListItemAbstract {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={{height: 200, flex: 1, marginLeft: 10, marginTop: 20}}
+        style={{height: 200, flex: 1, marginTop: 20}}
         contentContainerStyle={{alignItems: 'flex-start', flex: 1}}>
         {_.map(this.props.imageList, (item) => {
           return this._renderImageButton(item);
@@ -103,6 +103,18 @@ class ListItemImageList extends ListItemAbstract {
         identifier: '@' + item.username,
         avatarRadius: { borderRadius: 0 }
       };
+      return (
+        <View style={styles.element} key={data.key}>
+          <View style={{position: 'relative'}}>
+            <TouchableHighlight underlayColor='transparent'
+                                onPress={data.onProfile}
+                                style={{width: 80, height: 80}}
+              >
+              <Image style={{width: 80, height: 80, position: 'absolute', top: 0, left: 0}} source={{uri: common.cloudinary.prepare(item.avatar, 150)}}/>
+            </TouchableHighlight>
+          </View>
+        </View>
+      );
     } else if (_.has(item, 'room_id')) {
       data = {
         key: 'room' + item.room_id,
@@ -125,15 +137,15 @@ class ListItemImageList extends ListItemAbstract {
       return null;
     }
 
-    let avatarUrl = common.cloudinary.prepare(item.avatar, 170);
+    let avatarUrl = common.cloudinary.prepare(item.avatar, 150);
     return (
       <View style={styles.element} key={data.key}>
         <View style={{position: 'relative'}}>
-          <Image style={{width: 160, height: 130, position: 'absolute', top: 0, left: 0}} source={{uri: avatarUrl}}/>
-          <View style={{width: 160, height: 130, position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(28,37,47,0.60)'}}></View>
+          <Image style={{width: 150, height: 130, position: 'absolute', top: 0, left: 0}} source={{uri: avatarUrl}}/>
+          <View style={{width: 150, height: 130, position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(28,37,47,0.60)'}}></View>
           <TouchableHighlight underlayColor='transparent'
                               onPress={data.onProfile}
-                              style={{width: 160, height: 130}}
+                              style={{width: 150, height: 130}}
             >
             <View style={[styles.avatarCtn, data.avatarRadius]}>
               <Image style={[styles.avatar, data.avatarRadius]} source={{uri: avatarUrl}}/>
@@ -159,25 +171,20 @@ class ListItemImageList extends ListItemAbstract {
       return (null);
     }
 
+    var source = item.mode === 'private'
+      ? require('../../assets/lock.png')
+      : require('../../assets/lock-member.png');
+
     return (
-      <Icon
-        name={'lock'}
-        size={30}
-        color='#FFF'
-        style={{
-          position: 'absolute',
-          top:10,
-          right:10
-        }}
-        />
+      <Image style={{width: 14, height: 20, position: 'absolute', top: 10, right: 10}} source={source} />
     );
   }
 
   _renderActionSheet (user) {
     if (this.props.parentType === 'group') {
-      userActionSheet.openActionSheet(this.context.actionSheet(), 'groupUsers', this.props.id, user, this.props.isOwnerAdminOrOp);
+      userActionSheet.openGroupActionSheet(this.context.actionSheet(), 'groupUsers', this.props.id, user, this.props.isOwnerAdminOrOp);
     } else {
-      userActionSheet.openActionSheet(this.context.actionSheet(), 'roomUsers', this.props.id, user, this.props.isOwnerAdminOrOp);
+      userActionSheet.openRoomActionSheet(this.context.actionSheet(), 'roomUsers', this.props.model, user);
     }
   }
 }
@@ -198,7 +205,7 @@ var styles = StyleSheet.create({
   identifier: {
     alignSelf:'center',
     position: 'absolute',
-    width: 160,
+    width: 150,
     height: 19, // 38px
     top: 105
   },

@@ -22,8 +22,7 @@ module.exports = StyleSheet.create({
   },
   dateContent: {
     fontFamily: 'Open Sans',
-    color: '#666666',
-    fontWeight: 'bold',
+    color: '#AFBAC8',
     marginLeft:10,
     marginRight:10
   },

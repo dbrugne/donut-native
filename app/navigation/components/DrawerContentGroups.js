@@ -8,28 +8,34 @@ var {
   View,
   Text,
   ListView,
+  LayoutAnimation,
   TouchableHighlight
 } = React;
-var Icon = require('react-native-vector-icons/FontAwesome');
 
+var Icon = require('react-native-vector-icons/FontAwesome');
 var app = require('../../libs/app');
 var navigation = require('../index');
+var animation = require('../../libs/animations').callapse;
 
 var i18next = require('../../libs/i18next');
-i18next.addResourceBundle('en', 'drawer_content_groups', {
-  'groups': 'COMMUNITIES'
+i18next.addResourceBundle('en', 'drawerContentGroups', {
+  'groups': 'COMMUNITIES',
+  'see-all': 'see all',
+  'see-less': 'see less'
 });
 
 var NavigationGroupsView = React.createClass({
   getInitialState: function () {
     this.lastGroup = null;
+    this.displayLimit = 4;
     return {
       elements: new ListView.DataSource({
         rowHasChanged: function (row1, row2) {
           return (row1 !== row2);
         }
       }),
-      atLeastOne: false
+      atLeastOne: false,
+      collapsed: true
     };
   },
 
@@ -48,65 +54,121 @@ var NavigationGroupsView = React.createClass({
   refresh: function () {
     var roomsAndGroups = [];
     _.each(app.rooms.toJSON(), (room) => {
-      if (room.group_id) {
-        roomsAndGroups.push(room);
+      if (!room.group_id) {
+        return;
       }
+      room.visible = roomsAndGroups.length <= (this.displayLimit - 1);
+      roomsAndGroups.push(room);
     });
     _.each(app.groups.toJSON(), (group) => {
       if (!app.rooms.iwhere('group_id', group.id)) {
+        group.visible = roomsAndGroups.length <= (this.displayLimit - 1);
         roomsAndGroups.push(group);
       }
     });
     this.setState({
       elements: this.state.elements.cloneWithRows(roomsAndGroups),
-      atLeastOne: (roomsAndGroups.length > 0)
+      atLeastOne: (roomsAndGroups.length > 0),
+      collapsed: true
     });
   },
 
   render: function () {
-    this.lastGroup = null;
-    var title = null;
-    if (this.state.atLeastOne) {
-      title = (
-        <View style={{backgroundColor: '#1D1D1D'}}>
-          <Text style={styles.title}>{i18next.t('drawer_content_groups:groups')}</Text>
-        </View>
-      );
+    if (!this.state.atLeastOne) {
+      return null;
     }
+
+    this.lastGroup = null;
     return (
       <View>
-        {title}
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={styles.title}>{i18next.t('drawerContentGroups:groups')}</Text>
+          <View style={{flex:1}}/>
+          {this._renderToggle()}
+        </View>
         <ListView
           dataSource={this.state.elements}
           renderRow={(e) => this.renderElement(e)}
           style={styles.listView}
           scrollEnabled={false}
           />
+        {this._renderMore()}
       </View>
     );
   },
 
+  groupsCount: function() {
+    var groupIds = [];
+    _.each(app.rooms.toJSON(), (room) => {
+      if (!room.group_id) {
+        return;
+      }
+      groupIds.push(room.group_id);
+    });
+    _.each(app.groups.toJSON(), (group) => {
+      groupIds.push(group.id);
+    });
+
+    return _.uniq(groupIds).length;
+  },
+
+  _renderToggle: function() {
+    if (this.groupsCount() <= this.displayLimit) {
+      return null;
+    }
+
+    return (
+      <TouchableHighlight
+        style={{ backgroundColor: '#6E7784', borderRadius: 3, paddingVertical: 5, paddingHorizontal: 10, marginRight:10 }}
+        onPress={this.toggle}
+        underlayColor='transparent'
+        >
+        <Text
+          style={{fontFamily: 'Open Sans', fontSize: 12, color: '#353F4C'}}>{this.state.collapsed ? i18next.t('drawerContentGroups:see-all') : i18next.t('drawerContentGroups:see-less')}</Text>
+      </TouchableHighlight>
+    );
+  },
+
+  _renderMore: function () {
+    if (!this.state.collapsed || this.groupsCount() <= this.displayLimit) {
+      return null;
+    }
+
+    return (
+      <TouchableHighlight
+        style={{ marginLeft:20, paddingVertical: 10 }}
+        onPress={this.toggle}
+        underlayColor='transparent'
+        >
+        <Text style={{color: '#AFBAC8'}}>● ● ●</Text>
+      </TouchableHighlight>
+    );
+  },
+
   renderElement: function (e) {
+    if (e.visible === false) {
+      return null;
+    }
+
     var groupModel;
     if (e.type === 'group') {
-      groupModel = app.groups.iwhere('group_id', e.group_id);
+      groupModel = app.groups.get(e.group_id);
       return (
         <TouchableHighlight
-        style={[styles.linkBlock, {backgroundColor: (groupModel && groupModel.get('focused')) ? '#666' : '#222'}]}
-        underlayColor= '#414041'
+        underlayColor='transparent'
         onPress={() => app.trigger('joinGroup', e.group_id)}
         >
         <View style={styles.item}>
-          <Text style={[styles.itemTitle, e.blocked && {textDecorationLine: 'line-through', color: '#e74c3c'}]}>#{e.name}</Text>
+          <Text style={[styles.itemTitle, e.blocked && {textDecorationLine: 'line-through'}, {color: (groupModel.get('focused')) ? '#FFFFFF' : '#AFBAC8'}]}>#{e.name}</Text>
           <TouchableHighlight
-            style={[styles.leaveGroupButton, {backgroundColor: (groupModel && groupModel.get('focused')) ? '#666' : '#222'}]}
-            underlayColor= '#414041'
+            underlayColor= 'transparent'
+            style={{marginRight: 20}}
             onPress={() => app.client.groupLeave(e.group_id)}
           >
             <Icon
               name='close'
               size={18}
-              color='#DDD'
+              color='#AFBAC8'
             />
           </TouchableHighlight>
         </View>
@@ -116,15 +178,14 @@ var NavigationGroupsView = React.createClass({
     var group = null;
     if (e.group_id && e.group_name && e.group_id !== this.lastGroup) {
       this.lastGroup = e.group_id;
-      groupModel = app.groups.iwhere('group_id', e.group_id);
+      groupModel = app.groups.get(e.group_id);
       group = (
         <TouchableHighlight
-          style={[styles.linkBlock, {backgroundColor: (groupModel && groupModel.get('focused')) ? '#666' : '#222'}]}
-          underlayColor= '#414041'
+          underlayColor= 'transparent'
           onPress={() => app.trigger('joinGroup', e.group_id)}
           >
           <View style={styles.item}>
-            <Text style={styles.itemTitle}>#{e.group_name}</Text>
+            <Text style={[styles.itemTitle, {color: (groupModel.get('focused')) ? '#FFFFFF' : '#AFBAC8'}]}>#{e.group_name}</Text>
           </View>
         </TouchableHighlight>
       );
@@ -140,12 +201,11 @@ var NavigationGroupsView = React.createClass({
         <View>
           {group}
           <TouchableHighlight
-            style={[styles.linkBlock, {backgroundColor: (model.get('focused')) ? '#666' : '#222'}]}
             onPress={() => navigation.navigate('Discussion', model)}
-            underlayColor= '#414041'
+            underlayColor= 'transparent'
             >
             <View style={(model.get('group_id')) ? styles.itemGroup : styles.item}>
-              <Text style={[styles.itemTitle, {textDecorationLine: 'line-through', color: '#e74c3c'}]}>
+              <Text style={[styles.itemTitle, {textDecorationLine: 'line-through', color: '#e74c3c'}, {color: (model.get('focused')) ? '#FFFFFF' : '#AFBAC8'}]}>
                 {(model.get('group_id')) ? '/' + model.get('name') : '#' + model.get('name')}
               </Text>
             </View>
@@ -165,12 +225,11 @@ var NavigationGroupsView = React.createClass({
       <View>
         {group}
         <TouchableHighlight
-          style={[styles.linkBlock, {backgroundColor: (model.get('focused')) ? '#666' : '#222'}]}
           onPress={() => navigation.navigate('Discussion', model)}
-          underlayColor= '#414041'
+          underlayColor= 'transparent'
           >
           <View style={(model.get('group_id')) ? styles.itemGroup : styles.item}>
-            <Text style={styles.itemTitle}>
+            <Text style={[styles.itemTitle, {color: (model.get('focused')) ? '#FFFFFF' : '#AFBAC8'}]}>
               {(model.get('group_id')) ? '/' + model.get('name') : '#' + model.get('name')}
             </Text>
             {badge}
@@ -178,21 +237,62 @@ var NavigationGroupsView = React.createClass({
         </TouchableHighlight>
       </View>
     );
+  },
+  toggle: function () {
+    LayoutAnimation.configureNext(animation);
+    var roomsAndGroups = [];
+    if (this.state.collapsed) {
+      _.each(app.rooms.toJSON(), (room) => {
+        if (room.group_id) {
+          room.visible = true;
+          roomsAndGroups.push(room);
+        }
+      });
+      _.each(app.groups.toJSON(), (group) => {
+        if (!app.rooms.iwhere('group_id', group.id)) {
+          group.visible = true;
+          roomsAndGroups.push(group);
+        }
+      });
+      return this.setState({
+        elements: this.state.elements.cloneWithRows(roomsAndGroups),
+        atLeastOne: (roomsAndGroups.length > 0),
+        collapsed: false
+      });
+    }
+
+    _.each(app.rooms.toJSON(), (room) => {
+      if (room.group_id) {
+        room.visible = roomsAndGroups.length <= (this.displayLimit - 1);
+        roomsAndGroups.push(room);
+      }
+    });
+    _.each(app.groups.toJSON(), (group) => {
+      if (!app.rooms.iwhere('group_id', group.id)) {
+        group.visible = roomsAndGroups.length <= (this.displayLimit - 1);
+        roomsAndGroups.push(group);
+      }
+    });
+    this.setState({
+      elements: this.state.elements.cloneWithRows(roomsAndGroups),
+      atLeastOne: (roomsAndGroups.length > 0),
+      collapsed: true
+    });
   }
+
 });
 
 var styles = StyleSheet.create({
   title: {
     fontFamily: 'Open Sans',
-    fontSize: 10,
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontWeight: '600',
     margin: 10,
-    color: '#FFFFFF'
+    color: '#19212A'
   },
-  listView: {
-  },
+  listView: {},
   item: {
-    marginVertical: 2,
+    marginLeft: 10,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -202,30 +302,18 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 20
   },
-  thumbnail: {
-    width: 30,
-    height: 30,
-    borderRadius: 4
-  },
   itemTitle: {
     fontFamily: 'Open Sans',
     fontSize: 16,
-    color: '#ecf0f1',
+    color: '#FFFFFF',
     marginLeft: 10,
     flex: 1,
-    marginVertical: 10
+    marginVertical: 15
   },
   unviewed: {
     fontSize: 20,
     color: '#fc2063',
     marginRight: 10
-  },
-  linkBlock: {
-    borderTopColor: '#373737',
-    borderTopWidth: 0.5,
-    borderStyle: 'solid',
-    borderBottomColor: '#0E0D0E',
-    borderBottomWidth: 0.5
   },
   leaveGroupButton: {
     width: 30,

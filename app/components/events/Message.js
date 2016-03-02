@@ -25,7 +25,8 @@ module.exports = React.createClass({
   propTypes: {
     data: React.PropTypes.object,
     navigator: React.PropTypes.object,
-    renderActionSheet: React.PropTypes.func
+    renderActionSheet: React.PropTypes.func,
+    model: React.PropTypes.object.isRequired
   },
   render () {
     var message = null;
@@ -46,6 +47,7 @@ module.exports = React.createClass({
       message = (
         <Text>
           <ParsedText
+            model={this.props.model}
             navigator={this.props.navigator}
             style={[s.messageContent, {flexWrap: 'wrap'}, this.props.data.viewed && {backgroundColor: 'rgba(241,82,97,0.15)'}, this.props.data.special && {fontSize: 12, fontStyle: 'italic', fontFamily: 'Open Sans', color: '#666666'}]}
           >

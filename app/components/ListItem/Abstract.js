@@ -6,6 +6,7 @@ var s = require('../../styles/elements/listItem');
 var {
   Component,
   View,
+  Image,
   Text
 } = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
@@ -14,32 +15,26 @@ class ListItemAbstract extends Component {
   constructor (props) {
     super(props);
   }
-
   render () {
     return (
-      <View style={{flex: 1, flexDirection: 'column'}}>
+      <View style={{flexDirection: 'column'}}>
         {this._renderTitle()}
         {this._renderContent()}
         {this._renderHelp()}
       </View>
     );
   }
-
   _renderContent () {
     return (
       <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
         {this._renderLeftIcon()}
+        {this._renderLeftImage()}
         {this._renderElement()}
+        {this._renderRightImage()}
         {this._renderRightIcon()}
       </View>
     );
   }
-
-  /**
-   *
-   * @returns {*}
-   * @private
-   */
   _renderLeftIcon () {
     if (!this.props.icon) {
       return null;
@@ -55,23 +50,35 @@ class ListItemAbstract extends Component {
       />
     );
   }
+  _renderLeftImage() {
+    if (!this.props.imageLeft) {
+      return null;
+    }
 
-  /**
-   *
-   * @returns {XML}
-   * @private
-   */
+    return (
+      <Image
+        source={this.props.imageLeft}
+        style={s.listGroupItemImageLeft}
+        />
+    );
+  }
+  _renderRightImage() {
+    if (!this.props.imageRight) {
+      return null;
+    }
+
+    return (
+      <Image
+        source={this.props.imageRight}
+        style={s.listGroupItemImageRight}
+        />
+    );
+  }
   _renderElement () {
     return (
       <Text/>
     );
   }
-
-  /**
-   * Display an arrow on right of the ListGroupItem ?
-   * @returns {*}
-   * @private
-   */
   _renderRightIcon () {
     if (!this.props.action && !this.props.iconRight) {
       return null;
@@ -86,7 +93,6 @@ class ListItemAbstract extends Component {
       />
     );
   }
-
   _renderTitle () {
     if (!this.props.title) {
       return null;
@@ -95,7 +101,6 @@ class ListItemAbstract extends Component {
       <Text style={s.listGroupTitle}>{this.props.title}</Text>
     );
   }
-
   _renderHelp () {
     if (!this.props.help) {
       return null;
@@ -120,7 +125,11 @@ ListItemAbstract.propTypes = {
   help: React.PropTypes.string, // help message to display bellow the ListItem
   id: React.PropTypes.string, // id of the room / group
   parentType: React.PropTypes.oneOf(['room', 'group']),
-  isOwnerAdminOrOp: React.PropTypes.bool
+  isOwnerAdminOrOp: React.PropTypes.bool,
+  model: React.PropTypes.object, // model of parent room / group
+
+  imageLeft: React.PropTypes.any,
+  imageRight: React.PropTypes.any
 };
 
 ListItemAbstract.contextTypes = {

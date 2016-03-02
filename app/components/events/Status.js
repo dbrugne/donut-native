@@ -25,6 +25,7 @@ module.exports = React.createClass({
       <View style={s.event}>
         <UserBlock
           navigator={this.props.navigator}
+          model={this.props.model}
           {...this.props}
           >
           <Text style={s.eventText}>{message}</Text>

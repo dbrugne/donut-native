@@ -182,7 +182,7 @@ class DiscussionSettings extends Component {
             icon='users'
             type='image-list'
             action
-            id={this.props.model.get('id')}
+            model={this.props.model}
             parentType='room'
             isOwnerAdminOrOp={this.isOp || this.isOwner || this.isAdmin}
             value={this.state.nbUsers}
@@ -283,7 +283,7 @@ class DiscussionSettings extends Component {
   _renderAllowedUsers () {
     return (
       <ListItem
-          onPress={() => navigation.navigate('AvailableSoon')}
+          onPress={() => navigation.navigate('ManageInvitations', {id: this.props.model.get('id'), type: 'room'})}
           text={i18next.t('DiscussionSettings:allowed')}
           icon='shield'
           type='button'
@@ -296,7 +296,7 @@ class DiscussionSettings extends Component {
     if (!avatar) {
       return null;
     }
-    var avatarUrl = common.cloudinary.prepare(avatar, 60);
+    var avatarUrl = common.cloudinary.prepare(avatar, 50);
     if (!avatarUrl) {
       return null;
     }

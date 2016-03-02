@@ -84,7 +84,7 @@ var GroupUsersView = React.createClass({
   },
 
   _onOpenActionSheet: function (user, adminOwnerOrOp) {
-    userActionSheet.openActionSheet(this.context.actionSheet(), 'groupUsers', this.props.data.group_id, user, adminOwnerOrOp);
+    userActionSheet.openGroupActionSheet(this.context.actionSheet(), 'groupUsers', this.props.data.group_id, user, adminOwnerOrOp);
   }
 });
 

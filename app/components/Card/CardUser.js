@@ -8,7 +8,8 @@ var Abstract = require('./Abstract');
 var {
   View,
   Text,
-  TouchableHighlight
+  TouchableHighlight,
+  StyleSheet
 } = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
 
@@ -21,14 +22,15 @@ class CardUser extends Abstract {
 
   render () {
     return (
-      <TouchableHighlight onPress={this.props.onPress}>
+      <TouchableHighlight onPress={this.props.onPress} onLongPress={this.props.onEdit ? this.props.onEdit : this.props.onPress}>
         <View style={[s.container, this.props.first && s.first]}>
-          <View style={s.thumbnailContainer}>
+          <View style={[s.thumbnailContainer, {position: 'relative'}]}>
             {this._renderThumbnail(this.props.image, false)}
             {this._renderStatus()}
           </View>
           <View style={s.rightContainer}>
             {this._renderContent()}
+            {this._renderRightArrow()}
           </View>
         </View>
       </TouchableHighlight>
@@ -36,39 +38,14 @@ class CardUser extends Abstract {
   }
 
   _renderContent () {
-    // Not editable user
-    if (!this.props.onEdit) {
-      return (
-        <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-          {this._renderIdentifier()}
-          {this._renderBio()}
-          {this._renderRoles()}
-          {this._renderMuted()}
-          {this._renderBanned()}
-        </View>
-      );
-    }
-
-    // Editable user, render arrow on right
     return (
       <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
         <View style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
           {this._renderIdentifier()}
+          {this._renderLocation()}
           {this._renderRoles()}
           {this._renderMuted()}
           {this._renderBanned()}
-        </View>
-        <View style={{alignSelf: 'stretch', width: 50, flexDirection: 'column', justifyContent: 'center'}}>
-          <TouchableHighlight
-            style={{alignSelf: 'stretch', flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}
-            underlayColor='transparent'
-            onPress={this.props.onEdit}>
-            <Icon
-              name='chevron-right'
-              size={22}
-              color='#DDD'
-            />
-          </TouchableHighlight>
         </View>
       </View>
     );
@@ -121,11 +98,10 @@ class CardUser extends Abstract {
   _renderIdentifier () {
     if (this.props.realname) {
       return (
-        <Text>
-          <Text style={[s.title, {marginLeft: 5}]}>{_.unescape(this.props.realname)}</Text>
-          <Text> </Text>
+        <View>
+          <Text style={s.title}>{_.unescape(this.props.realname)}</Text>
           <Text style={[s.title, {fontWeight: 'normal', color: '#999999'}]}>{this.props.identifier}</Text>
-        </Text>
+        </View>
       );
     }
 
@@ -134,23 +110,37 @@ class CardUser extends Abstract {
     );
   }
 
-  _renderBio () {
-    if (!this.props.bio) {
+  _renderLocation () {
+    if (!this.props.location) {
       return null;
     }
 
     return (
-      <Text style={s.description}>{_.unescape(this.truncate(this.props.bio, true))}</Text>
+      <Text style={s.description}>{_.unescape(this.truncate(this.props.location, true))}</Text>
     );
   }
 
   _renderStatus () {
-    return (
-      <Text
-        style={[s.statusText, s.status, this.props.status === 'connecting' && s.statusConnecting, this.props.status === 'offline' && s.statusOffline, this.props.status === 'online' && s.statusOnline]}>{this.props.status}</Text>
-    );
+    return (<View style={[styles.status, this.props.status === 'connecting' && styles.statusConnecting, this.props.status === 'offline' && styles.statusOffline, this.props.status === 'online' && styles.statusOnline]} />);
   }
 }
+
+var styles = StyleSheet.create({
+  status: {
+    position: 'absolute',
+    width: 15,
+    height: 15,
+    bottom: 18,
+    right:-7,
+    borderRadius: 7.5,
+    borderColor: '#FFF',
+    borderWidth: 2,
+    borderStyle: 'solid'
+  },
+  statusOnline: { backgroundColor: 'rgb(79, 237, 192)' },
+  statusConnecting: { backgroundColor: 'rgb(255, 218, 62)' },
+  statusOffline: { backgroundColor: 'rgb(119,119,119)' }
+});
 
 module.exports = CardUser;
 

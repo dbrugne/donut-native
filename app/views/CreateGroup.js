@@ -4,15 +4,17 @@ var _ = require('underscore');
 var React = require('react-native');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
+var Button = require('../components/Button');
 var ListItem = require('../components/ListItem');
 var LoadingModal = require('../components/LoadingModal');
 var navigation = require('../navigation/index');
+var KeyboardAwareComponent = require('../components/KeyboardAware');
 
 var {
-  StyleSheet,
   Text,
   ScrollView,
   Component,
+  TextInput,
   View
   } = React;
 
@@ -20,7 +22,7 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'createGroup', {
   'name': 'Enter a community name',
   'help': 'Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_). Caution the community name cannot be changed',
-  'create': 'create'
+  'create': 'CREATE'
 });
 
 class RoomCreateView extends Component {
@@ -33,35 +35,41 @@ class RoomCreateView extends Component {
   }
 
   render () {
+    if (this.state.showLoading) {
+      return (<LoadingModal/>);
+    }
+
     return (
-      <View style={{flex: 1}}>
-        <ScrollView style={styles.container}>
+      <KeyboardAwareComponent
+        shouldShow={() => { return true }}
+        shouldHide={() => { return true }}
+        >
 
-          <Text style={styles.listGroupItemSpacing}/>
-          <ListItem
-            type='input'
-            first
-            last
-            autoCapitalize='none'
-            placeholder={i18next.t('createGroup:name')}
-            onChangeText={(text) => this.setState({groupName: text})}
-            value={this.state.groupName}
-            help={i18next.t('createGroup:help')}
-            />
+        <ScrollView>
+          <View style={{ marginHorizontal: 20 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 20 }}>
+              <Text style={{ fontFamily: 'Open Sans', fontSize: 25, color: '#FC2063', marginRight: 10 }}>#</Text>
+              <View style={{width: 1, height: 40, backgroundColor: '#FC2063'}} ></View>
+              <TextInput
+                autoCapitalize='none'
+                placeholder={i18next.t('createGroup:name')}
+                onChangeText={(text) => this.setState({groupName: text})}
+                value={this.state.groupName}
+                style={{ flex: 1, fontFamily: 'Open Sans', fontSize: 14, fontWeight: '400', color: '#333', height: 40, paddingVertical: 8, paddingHorizontal: 10 }}
+                />
+            </View>
+            <Text style={{ fontFamily: 'Open Sans', fontStyle: 'italic', fontSize: 14, color: '#AFBAC8', marginVertical: 20 }}>{i18next.t('createGroup:help')}</Text>
 
-          <Text style={styles.listGroupItemSpacing}/>
-          <ListItem
-            type='button'
-            first
-            last
-            action
-            onPress={(this.onGroupCreate.bind(this))}
-            text={i18next.t('createGroup:create')}
-            />
+            <Button
+              type='gray'
+              onPress={(this.onGroupCreate.bind(this))}
+              label={i18next.t('createGroup:create')}
+              style={{marginTop: 20}}
+              />
 
+          </View>
         </ScrollView>
-        {this.state.showLoading ? <LoadingModal/> : null}
-      </View>
+      </KeyboardAwareComponent>
     );
   }
 
@@ -91,18 +99,5 @@ class RoomCreateView extends Component {
     }, this));
   }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    flex: 1,
-    backgroundColor: '#f0f0f0'
-  },
-  block: {
-    color: '#333',
-    marginVertical: 20,
-    marginHorizontal: 10
-  }
-});
 
 module.exports = RoomCreateView;

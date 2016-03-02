@@ -51,7 +51,7 @@ class GroupHeaderView extends Component {
       return null;
     }
 
-    var avatarUrl = common.cloudinary.prepare(this.state.model.avatar, 160);
+    var avatarUrl = common.cloudinary.prepare(this.state.model.avatar, 150);
     if (!avatarUrl) {
       return null;
     }

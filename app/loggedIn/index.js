@@ -11,6 +11,8 @@ var navigation = require('../navigation/index');
 var ChooseUsername = require('../views/ChooseUsername');
 var Keyboard = require('../components/Keyboard');
 var PushNotification = require('../pushNotification/index');
+var alert = require('../libs/alert');
+var i18next = require('../libs/i18next');
 
 var LoggedIn = React.createClass({
   nextFocus: null,
@@ -111,8 +113,7 @@ var LoggedIn = React.createClass({
     this.nextFocus = id;
     app.client.roomJoin(id, null, (response) => {
       if (response.err) {
-        // @todo handle errors
-        return;
+        alert.show(i18next.t('messages.' + response.err));
       }
     });
   },
@@ -151,8 +152,7 @@ var LoggedIn = React.createClass({
     this.nextFocus = id;
     app.client.groupJoin(id, function (response) {
       if (response.err) {
-        // @todo handle errors
-        return;
+        alert.show(i18next.t('messages.' + response.err));
       }
     });
   }

@@ -6,6 +6,7 @@ var Link = require('../components/Link');
 var Button = require('../components/Button');
 var LoadingModal = require('../components/LoadingModal');
 var currentUser = require('../models/current-user');
+var animation = require('../libs/animations').homepageLogo;
 
 var {
   Component,
@@ -14,17 +15,18 @@ var {
   StyleSheet,
   ScrollView,
   TextInput,
-  Image
+  Image,
+  LayoutAnimation,
+  TouchableHighlight
 } = React;
-var Icon = require('react-native-vector-icons/FontAwesome');
+var Icon = require('react-native-vector-icons/EvilIcons');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'forgot', {
   'forgot': 'Forgot Password',
   'what': 'What email do you usually use to sign in ?',
-  'reset': 'Reset',
-  'email': 'Email',
-  'back': 'Back'
+  'reset': 'RESET',
+  'email': 'Email'
 });
 
 class ForgotView extends Component {
@@ -32,43 +34,48 @@ class ForgotView extends Component {
     super(props);
     this.state = {
       email: '',
-      showLoadingModal: false
+      showLoadingModal: false,
+      editing: false
     };
   }
 
   render() {
+    if (this.state.showLoadingModal) {
+      return (<LoadingModal />);
+    }
+
     return (
-      <View style={{flex:1, alignItems: 'stretch'}}>
-        <View style={[styles.linkCtn, {marginTop:10, paddingLeft:10}]} >
-          <Icon
-            name='chevron-left'
-            size={14}
-            color='#808080'
-            style={{marginTop: 2, marginRight: 2}}
-          />
-          <Link
-            onPress={(this.onBack.bind(this))}
-            text={i18next.t('forgot:back')}
-            linkStyle={[s.link, styles.textGray]}
-            type='bold'
-          />
-        </View>
-        <ScrollView
-          ref='scrollView'
-          contentContainerStyle={{flex:1}}
-          keyboardDismissMode='on-drag'
-          style={{flex: 1, backgroundColor: '#FAF9F5'}}>
-          <View>
-            <View style={styles.logoCtn}>
-              <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
+      <View style={{flex: 1, alignItems: 'stretch', position: 'relative'}}>
+        <Image source={require('../assets/background.jpg')} style={{position: 'absolute', resizeMode:'stretch'}} />
+
+        <View style={[styles.linkCtn, {marginTop:15, paddingLeft:10, backgroundColor: 'transparent'}]} >
+          <TouchableHighlight onPress={(this.onBack.bind(this))}
+                              underlayColor='transparent'
+            >
+            <View>
+              <Icon
+                name='chevron-left'
+                size={50}
+                color='#FC2063'
+                style={{marginTop: 2, marginRight: 2}}
+                />
             </View>
+          </TouchableHighlight>
+        </View>
 
-            <View style={styles.container}>
-              <Text style={[s.h1, s.textCenter]}>{i18next.t('forgot:forgot')}</Text>
-              <Text style={[s.spacer, s.p, s.textCenter]}>{i18next.t('forgot:what')}</Text>
+        <ScrollView ref='scrollView' contentContainerStyle={{flex:1}} keyboardDismissMode='on-drag' style={{flex: 1}}>
 
-              <View ref='email'
-                    style={[s.inputContainer, s.marginTop5]}>
+          <View style={styles.logoCtn}>
+            <Image source={require('../assets/logo-bordered.png')} style={[styles.logo, this.state.editing && styles.logoSmall]}/>
+          </View>
+
+          <View style={styles.container}>
+            <View>
+              <Text style={{fontFamily: 'Open Sans', fontSize: 16, color: '#FFFFFF', fontWeight: 'bold', textAlign: 'center'}}>{i18next.t('forgot:forgot')}</Text>
+              <Text style={{marginTop: 10, fontFamily: 'Open Sans', fontSize: 14, color: '#FFFFFF', fontWeight: 'bold', textAlign: 'center'}}>{i18next.t('forgot:what')}</Text>
+
+              <View style={[{ marginTop: 20, padding:4, borderRadius:4, backgroundColor:'#FFFFFF'}, styles.shadow]}>
+
                 <TextInput
                   autoCapitalize='none'
                   placeholder={i18next.t('forgot:email')}
@@ -77,19 +84,20 @@ class ForgotView extends Component {
                   onBlur={this.inputBlured.bind(this, 'email')}
                   keyboardType='email-address'
                   returnKeyType='done'
-                  style={[s.input, s.marginTop10]}
+                  style={{ backgroundColor: '#FFF', color: "#AFBAC8", height: 40, paddingBottom: 3, paddingTop: 3, paddingLeft: 10, paddingRight: 10, fontFamily: 'Open Sans', fontSize: 14, flex: 1 }}
                   value={this.state.email}/>
+
               </View>
 
               <Button onPress={(this.onResetPressed.bind(this))}
-                      style={s.marginTop5}
+                      style={{marginTop:15}}
+                      buttonStyle={[{borderRadius:4}, styles.shadow]}
                       type='pink'
                       label={i18next.t('forgot:reset')} />
 
             </View>
           </View>
         </ScrollView>
-        {this.state.showLoadingModal ? <LoadingModal /> : null}
       </View>
     )
   }
@@ -99,24 +107,17 @@ class ForgotView extends Component {
   }
 
   inputFocused (refName) {
-    setTimeout(() => {
-      this._updateScroll(refName, 60);
-    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
+    LayoutAnimation.configureNext(animation);
+    this.setState({
+      editing: true
+    });
   }
 
   inputBlured (refName) {
-    setTimeout(() => {
-      this._updateScroll(refName, -60);
-    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
-  }
-
-  _updateScroll(refName, offset) {
-    let scrollResponder = this.refs.scrollView.getScrollResponder();
-    scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-      React.findNodeHandle(this.refs[refName]),
-      offset,
-      true
-    );
+    LayoutAnimation.configureNext(animation);
+    this.setState({
+      editing: false
+    });
   }
 
   onResetPressed() {
@@ -143,37 +144,30 @@ var styles = StyleSheet.create({
     backgroundColor: '#FAF9F5'
   },
   container: {
-    paddingLeft:20,
-    paddingRight:20,
-    paddingTop:10,
-    paddingBottom:10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
-    justifyContent: 'center',
-    backgroundColor: '#FFF'
+    justifyContent: 'center'
   },
   logo: {
-    width: 125,
-    height: 32,
+    width: 200,   // 400
+    height: 50,   // 101
     alignSelf: 'center'
+  },
+  logoSmall: {
+    width: 100,
+    height: 25
   },
   logoCtn: {
     marginTop: 50,
     paddingBottom:25,
     flexDirection: 'column',
     alignItems: 'stretch',
-    justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#C3C3C3'
-  },
-  iconContainer: {
-    justifyContent: 'flex-end',
-    borderRightWidth: 2,
-    borderColor: '#344B7D',
-    borderStyle: 'solid',
-    marginRight: 5
+    justifyContent: 'center'
   },
   title: {
     fontSize: 12,
@@ -192,9 +186,11 @@ var styles = StyleSheet.create({
     fontWeight: 'normal',
     color: '#808080'
   },
-  icon: {
-    width: 14,
-    height: 14
+  shadow: {
+    shadowColor: 'rgb(30,30,30)',
+    shadowOffset: {width: 0, height: 5},
+    shadowRadius: 5,
+    shadowOpacity: 0.75
   }
 });
 

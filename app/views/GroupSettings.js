@@ -115,7 +115,7 @@ class GroupSettings extends Component {
     if (!avatar) {
       return null;
     }
-    var avatarUrl = common.cloudinary.prepare(avatar, 60);
+    var avatarUrl = common.cloudinary.prepare(avatar, 50);
     if (!avatarUrl) {
       return null;
     }
@@ -182,11 +182,11 @@ class GroupSettings extends Component {
     return (
       <View style={s.listGroup}>
         <ListItem text={i18next.t('GroupSettings:profile-picture')}
-                  type='edit-image'
+                  type='edit-button'
                   title={i18next.t('GroupSettings:profile-details')}
                   action
                   first
-                  avatar={this.state.avatar}
+                  image={this.state.avatar}
                   onPress={() => this._pickImage()}
         />
         <ListItem text={i18next.t('GroupSettings:description')}

@@ -3,11 +3,13 @@
 var React = require('react-native');
 var s = require('../../styles/elements/listItem');
 var ListItemAbstract = require('./Abstract');
+var common = require('@dbrugne/donut-common/mobile');
 
 var {
   View,
   TouchableHighlight,
-  Text
+  Text,
+  Image
   } = React;
 
 class ListItemEdit extends ListItemAbstract {
@@ -19,7 +21,9 @@ class ListItemEdit extends ListItemAbstract {
         >
         <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
           {this._renderLeftIcon()}
+          {this._renderLeftImage()}
           {this._renderElement()}
+          {this._renderRightImage()}
           {this._renderRightIcon()}
         </View>
       </TouchableHighlight>
@@ -27,21 +31,29 @@ class ListItemEdit extends ListItemAbstract {
   }
 
   _renderElement () {
-    var value;
-    if (this.props.value && this.props.value.length < 30) {
-      value = this.props.value;
-    } else if (this.props.value && typeof this.props.value !== 'object') {
-      value = this.props.value.slice(0, 12) + '...';
-    }
-
     return (
       <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
         <Text style={[s.listGroupItemText, this.props.warning && s.listGroupItemTextWarning]}>{this.props.text}</Text>
         <View style={{alignSelf: 'center', flexDirection: 'row', alignItems:'center'}}>
-          <Text style={{color: '#999', fontFamily: 'Open Sans', fontSize: 16, paddingBottom: 1, marginRight: 10}}>{value}</Text>
+          {this._renderValue()}
         </View>
       </View>
     );
+  }
+
+  _renderValue() {
+    if (this.props.image) {
+      let avatarUrl = common.cloudinary.prepare(this.props.image, 50);
+      return (<Image style={{width: 30, height: 30, marginHorizontal: 2}} source={{uri: avatarUrl}}/>);
+    }
+
+    var value = !this.props.value
+      ? null
+      : this.props.value.length < 30
+        ? this.props.value
+        : this.props.value.slice(0, 27) + '...';
+
+    return (<Text style={{color: '#999', fontFamily: 'Open Sans', fontSize: 16, paddingBottom: 1, marginRight: 10}}>{value}</Text>);
   }
 }
 

@@ -8,14 +8,18 @@ var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var Button = require('../components/Button');
 var Link = require('../components/Link');
+var animation = require('../libs/animations').homepageLogo;
+var currentUser = require('../models/current-user');
+var FacebookLogin = require('../components/FacebookLogin');
+var LoadingModal = require('../components/LoadingModal');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'login', {
   'forgot': 'Forgot your password ?',
-  'or': 'or',
+  'or': 'OR',
   'account': 'Don\'t have an account ? ',
-  'signup': 'Sign up',
-  'signin': 'Sign in',
+  'signup': 'Sign Up',
+  'signin': 'SIGN IN',
   'password': 'Password',
   'mail': 'Mail',
   'eutc': 'EUTC'
@@ -28,12 +32,10 @@ var {
   TextInput,
   ScrollView,
   View,
-  Image
-  } = React;
-
-var currentUser = require('../models/current-user');
-var FacebookLogin = require('../components/FacebookLogin');
-var LoadingModal = require('../components/LoadingModal');
+  Image,
+  LayoutAnimation,
+  TouchableHighlight
+} = React;
 
 class LoginView extends Component {
   constructor (props) {
@@ -43,7 +45,8 @@ class LoginView extends Component {
       email: '',
       password: '',
       hasPassword: false,
-      showLoadingModal: false
+      showLoadingModal: false,
+      editing: false
     };
   }
 
@@ -54,118 +57,133 @@ class LoginView extends Component {
   }
 
   render () {
-    if (!currentUser.hasFacebookToken()) {
-      var loginForm = (
-        <View>
-          <View style={styles.orContainer}>
-            <Text style={styles.title}> {i18next.t('login:or')} </Text>
-          </View>
-          <View
-            ref='email'
-            style={[s.inputContainer, s.marginTop5]}>
-            <TextInput
-              ref='1'
-              autoCapitalize='none'
-              placeholder={i18next.t('login:mail')}
-              onChange={(event) => this.setState({email: event.nativeEvent.text})}
-              style={s.input}
-              keyboardType='email-address'
-              onSubmitEditing={() => this._focusNextField('2')}
-              onFocus={this.inputFocused.bind(this, 'email')}
-              onBlur={this.inputBlured.bind(this, 'email')}
-              returnKeyType='next'
-              value={this.state.email}/>
-          </View>
-          <View
-            ref='password'
-            style={[s.inputContainer, s.marginTop5]}>
-            <TextInput
-              ref='2'
-              autoCapitalize='none'
-              placeholder={i18next.t('login:password')}
-              secureTextEntry={true}
-              onChange={(event) => this.setState({password: event.nativeEvent.text})}
-              style={[s.input, s.marginTop5]}
-              onFocus={this.inputFocused.bind(this, 'password')}
-              onBlur={this.inputBlured.bind(this, 'password')}
-              returnKeyType='done'
-              value={this.state.password}/>
-          </View>
-
-          <Button onPress={(this.onSubmitPressed.bind(this))}
-                  style={s.marginTop10}
-                  type='pink'
-                  label={i18next.t('login:signin')}/>
-
-          <Link onPress={(this.onForgotPressed.bind(this))}
-                text={i18next.t('login:forgot')}
-                style={[s.marginTop10, styles.centered]}
-                linkStyle={s.link}
-                type='bold'
-            />
-
-        </View>
-      );
+    if (this.state.showLoadingModal) {
+      return (<LoadingModal />);
     }
 
     return (
-      <View style={{flex: 1, alignItems: 'stretch'}}>
+      <View style={{flex: 1, alignItems: 'stretch', position: 'relative'}}>
+        <Image source={require('../assets/background.jpg')} style={{position: 'absolute', resizeMode:'stretch'}} />
         <ScrollView
           ref='scrollView'
           contentContainerStyle={{flex:1}}
           keyboardDismissMode='on-drag'
-          style={{flex: 1, backgroundColor: '#FAF9F5'}}>
-          <View>
-            <View style={styles.logoCtn}>
-              <Image source={require('../assets/logo-bordered.png')} style={styles.logo}/>
-            </View>
-            <View style={styles.container}>
-              <FacebookLogin showLoadingModal={() => this.setState({showLoadingModal: true})}
-                             hideLoadingModal={() => this.setState({showLoadingModal: false})}/>
-              {loginForm}
-            </View>
-            <View style={styles.linkCtn}>
-              <Link onPress={(this.onCreatePressed.bind(this))}
-                    text={i18next.t('login:signup')}
-                    style={[s.marginTop10, styles.centered]}
-                    linkStyle={s.link}
-                    prepend={i18next.t('login:account')}
-                    prependStyle={styles.textGray}
-                    type='bold'
-                />
-            </View>
-            <Link onPress={(this.onEutcPressed.bind(this))}
-                  text={i18next.t('login:eutc')}
-                  style={styles.centered}
-                  linkStyle={s.link}
-                  type='bold'
+          style={{flex: 1}}>
+
+          <View style={styles.logoCtn}>
+            <Image source={require('../assets/logo-bordered.png')} style={[styles.logo, this.state.editing && styles.logoSmall]}/>
+          </View>
+
+          <View style={styles.container}>
+            <FacebookLogin showLoadingModal={() => this.setState({showLoadingModal: true})}
+                           hideLoadingModal={() => this.setState({showLoadingModal: false})}
               />
+            {this._renderLoginForm()}
+          </View>
+
+          <View style={[styles.linkCtn, { marginBottom: 10 }]}>
+            <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF'}}>{i18next.t('login:account')}</Text>
+            <TouchableHighlight onPress={(this.onCreatePressed.bind(this))}
+                                underlayColor='transparent'
+              >
+              <View>
+                <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF', fontWeight: 'bold'}}>
+                  {i18next.t('login:signup')}
+                </Text>
+              </View>
+            </TouchableHighlight>
+            <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF'}}> | </Text>
+
+            <TouchableHighlight onPress={(this.onEutcPressed.bind(this))}
+                                underlayColor='transparent'
+              >
+              <View>
+                <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF', fontWeight: 'bold'}}>
+                  {i18next.t('login:eutc')}
+                </Text>
+              </View>
+            </TouchableHighlight>
           </View>
         </ScrollView>
-        {this.state.showLoadingModal ? <LoadingModal /> : null}
+      </View>
+    );
+  }
+
+  _renderLoginForm() {
+    if (currentUser.hasFacebookToken()) {
+      return null;
+    }
+
+    return (
+      <View>
+        <View style={styles.orContainer}>
+          <Text style={{fontSize: 14, alignSelf: "center", fontFamily: "Open Sans", color: "#AFBAC8" }}> {i18next.t('login:or')} </Text>
+        </View>
+
+        <View style={{flex:1}} />
+
+        <View style={[{ padding:2, borderRadius:4, backgroundColor: '#FFF'}, styles.shadow]}>
+          <TextInput
+            ref='1'
+            autoCapitalize='none'
+            placeholder={i18next.t('login:mail')}
+            onChange={(event) => this.setState({email: event.nativeEvent.text})}
+            style={{ backgroundColor: '#FFF', color: "#AFBAC8", height: 40, paddingBottom: 3, paddingTop: 3, paddingLeft: 10, paddingRight: 10, fontFamily: 'Open Sans', fontSize: 14, flex: 1 }}
+            keyboardType='email-address'
+            onSubmitEditing={() => this._focusNextField('2')}
+            onFocus={this.inputFocused.bind(this, 'email')}
+            onBlur={this.inputBlured.bind(this, 'email')}
+            returnKeyType='next'
+            value={this.state.email}/>
+          <View style={{height:1, backgroundColor: '#E7ECF3'}} />
+          <TextInput
+            ref='2'
+            autoCapitalize='none'
+            placeholder={i18next.t('login:password')}
+            secureTextEntry={true}
+            onChange={(event) => this.setState({password: event.nativeEvent.text})}
+            style={{ backgroundColor: '#FFF', color: "#AFBAC8", height: 40, paddingBottom: 3, paddingTop: 3, paddingLeft: 10, paddingRight: 10, fontFamily: 'Open Sans', fontSize: 14, flex: 1 }}
+            onFocus={this.inputFocused.bind(this, 'password')}
+            onBlur={this.inputBlured.bind(this, 'password')}
+            returnKeyType='done'
+            value={this.state.password}/>
+        </View>
+
+        <Button onPress={(this.onSubmitPressed.bind(this))}
+                style={{marginTop:15}}
+                buttonStyle={[{borderRadius:4}, styles.shadow]}
+                type='pink'
+                label={i18next.t('login:signin')}
+          />
+
+
+        <TouchableHighlight style={{ marginTop: 30 }}
+                            onPress={(() => this.onForgotPressed())}
+                            underlayColor='transparent'
+          >
+          <View>
+            <Text style={{fontFamily: 'Open Sans', fontSize: 12, color: '#FFFFFF', textAlign: 'center', fontWeight: 'bold'}}>
+              {i18next.t('login:forgot')}
+            </Text>
+          </View>
+        </TouchableHighlight>
+
       </View>
     );
   }
 
   inputFocused (refName) {
-    setTimeout(() => {
-      this._updateScroll(refName, 60);
-    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
+    LayoutAnimation.configureNext(animation);
+    this.setState({
+      editing: true
+    });
   }
 
   inputBlured (refName) {
-    setTimeout(() => {
-      this._updateScroll(refName, -60);
-    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
-  }
-
-  _updateScroll (refName, offset) {
-    let scrollResponder = this.refs.scrollView.getScrollResponder();
-    scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-      React.findNodeHandle(this.refs[refName]),
-      offset,
-      true
-    );
+    LayoutAnimation.configureNext(animation);
+    this.setState({
+      editing: false
+    });
   }
 
   _focusNextField (nextField) {
@@ -217,23 +235,23 @@ var styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
-    justifyContent: 'center',
-    backgroundColor: '#FFF'
+    justifyContent: 'center'
   },
   logoCtn: {
     marginTop: 50,
     paddingBottom: 25,
     flexDirection: 'column',
     alignItems: 'stretch',
-    justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#C3C3C3'
+    justifyContent: 'center'
   },
   logo: {
-    width: 125,
-    height: 32,
+    width: 200,   // 400
+    height: 50,   // 101
     alignSelf: 'center'
+  },
+  logoSmall: {
+    width: 100,
+    height: 25
   },
   orContainer: {
     padding: 5,
@@ -252,30 +270,26 @@ var styles = StyleSheet.create({
     color: '#333',
     alignSelf: "center"
   },
-  icon: {
-    width: 28,
-    height: 28
-  },
   iconContainer: {
     justifyContent: 'flex-end',
-    borderRightWidth: 2,
-    borderColor: '#344B7D',
-    borderStyle: 'solid',
     marginRight: 5
   },
   linkCtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderTopWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#C3C3C3',
     paddingTop: 10,
     paddingBottom: 10
   },
   textGray: {
     fontWeight: 'normal',
     color: '#808080'
+  },
+  shadow: {
+    shadowColor: 'rgb(30,30,30)',
+    shadowOffset: {width: 0, height: 5},
+    shadowRadius: 5,
+    shadowOpacity: 0.75
   }
 });
 

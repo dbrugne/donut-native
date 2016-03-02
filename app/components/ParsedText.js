@@ -16,6 +16,13 @@ module.exports = React.createClass({
   contextTypes: {
     actionSheet: React.PropTypes.func
   },
+  propTypes: {
+    style: React.PropTypes.oneOfType([
+      React.PropTypes.array,
+      React.PropTypes.object
+    ]),
+    model: React.PropTypes.object
+  },
   render () {
     if (!this.props.children) {
       return (<View />);
@@ -48,8 +55,14 @@ module.exports = React.createClass({
       hyperlink.open(markup.href);
     }
 
-    if (markup.type === 'user') {
-      userActionSheet.openActionSheet(this.context.actionSheet(), 'roomUsers', null, {user_id: markup.id, username: markup.title.replace('@', '')});
+    if (markup.type === 'user' && this.props.model && this.props.model.get('type') === 'room') {
+      userActionSheet.openRoomActionSheet(this.context.actionSheet(), 'roomUsers', this.props.model, {user_id: markup.id, username: markup.title.replace('@', '')});
+    } else if (markup.type === 'user') {
+      navigation.navigate('Profile', {
+        type: 'user',
+        id: markup.id,
+        identifier: markup.title.replace('@', '')
+      });
     }
 
     if (markup.type === 'room') {

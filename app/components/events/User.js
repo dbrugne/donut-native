@@ -21,7 +21,9 @@ module.exports = React.createClass({
           <Username user_id={this.props.data.user_id}
                     username={this.props.data.username}
                     realname={this.props.data.realname}
-                    navigator={this.props.navigator} />
+                    navigator={this.props.navigator}
+                    model={this.props.model}
+            />
           <Text style={s.time}>{time}</Text>
         </View>
       </View>

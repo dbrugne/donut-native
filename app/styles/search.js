@@ -35,8 +35,8 @@ module.exports = StyleSheet.create({
   },
   rightContainer: {
     height: 120,
-    paddingVertical:10,
-    paddingRight:40,
+    paddingVertical: 10,
+    paddingRight: 40,
     marginLeft: 30,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -68,7 +68,6 @@ module.exports = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontSize: 13,
     lineHeight: 20,
-    height: 45,
     overflow: 'hidden'
   },
   statusText: {
@@ -88,7 +87,7 @@ module.exports = StyleSheet.create({
     paddingRight: 5,
     overflow: 'hidden'
   },
-  statusOnline: {backgroundColor: 'rgba(79, 237, 192, 0.8)'},
-  statusConnecting: {backgroundColor: 'rgba(255, 218, 62, 0.8)'},
-  statusOffline: {backgroundColor: 'rgba(119,119,119,0.8)'}
+  statusOnline: {backgroundColor: '#18C095'},
+  statusConnecting: {backgroundColor: 'rgba(255, 218, 62, 1)'},
+  statusOffline: {backgroundColor: 'rgba(119,119,119,1)'}
 });

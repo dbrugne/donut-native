@@ -130,15 +130,16 @@ android {
             signingConfig signingConfigs.release
         }
         // no debug features, connect to test.donut.me
-        donutReleaseTest.initWith(buildTypes.release)
+        donutReleaseTest.initWith(buildTypes.release) // clone release build conf
         donutReleaseTest {
-            applicationIdSuffix ".test"
+            applicationIdSuffix ".test" // change bundleID
             minifyEnabled false  // Set this to true to enable Proguard
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.donutReleaseTest
+            signingConfig signingConfigs.donutReleaseTest // set signing config
         }
         // debug features, connect to test.donut.me
         debug {
+            // inherit everything from default debug build
             applicationIdSuffix ".debug"
         }
     }
@@ -160,6 +161,7 @@ android {
 dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
+    // @upgrade version                         ↓
     compile "com.facebook.react:react-native:0.20.+"
 
     // @CodePush
