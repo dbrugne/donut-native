@@ -89,7 +89,7 @@ var DiscussionBlockedJoin = React.createClass({
     );
   },
   _renderAskMembershipButton: function () {
-    if (!this.props.data.allow_user_request) {
+    if (!this.props.data.allow_user_request || this.state.type === 'request') {
       return null;
     }
 
@@ -103,7 +103,7 @@ var DiscussionBlockedJoin = React.createClass({
     );
   },
   _renderPasswordButton: function () {
-    if (!this.props.data.hasPassword) {
+    if (!this.props.data.hasPassword || this.state.type === 'password') {
       return null;
     }
 
