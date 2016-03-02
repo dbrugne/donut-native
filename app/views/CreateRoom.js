@@ -5,7 +5,6 @@ var app = require('../libs/app');
 var alert = require('../libs/alert');
 var ListItem = require('../components/ListItem');
 var Button = require('../components/Button');
-var LoadingModal = require('../components/LoadingModal');
 var KeyboardAwareComponent = require('../components/KeyboardAware');
 var common = require('@dbrugne/donut-common/mobile');
 
@@ -38,15 +37,11 @@ class RoomCreateView extends Component {
     this.state = {
       roomName: '',
       public: true,
-      showLoading: false
+      loadingButton: false
     };
   }
 
   render () {
-    if (this.state.showLoading) {
-      return (<LoadingModal/>);
-    }
-
     return (
       <KeyboardAwareComponent
         shouldShow={() => { return true; }}
@@ -72,10 +67,9 @@ class RoomCreateView extends Component {
 
           <View style={{ height: 1, backgroundColor: '#D0D9E6', marginVertical: 20 }} />
 
-          <View style={{ marginHorizontal: 20 }}>
+          <View>
             <ListItem
               type='switch'
-              first
               last
               text={ this.state.public ? i18next.t('createRoom:public') : i18next.t('createRoom:private')}
               onSwitch={this._changeMode.bind(this)}
@@ -87,7 +81,8 @@ class RoomCreateView extends Component {
               type='gray'
               onPress={(this.onRoomCreate.bind(this))}
               label={i18next.t('createRoom:create')}
-              style={{marginTop: 20}}
+              loading={this.state.loadingButton}
+              style={{marginTop: 20, marginHorizontal: 20}}
               />
 
           </View>
@@ -134,15 +129,15 @@ class RoomCreateView extends Component {
     }
 
     var mode = (this.state.public) ? 'public' : 'private';
-    this.setState({showLoading: true});
+    this.setState({loadingButton: true});
     app.client.roomCreate(this.state.roomName, mode, null, this.props.group_id, (response) => {
       if (response.err) {
-        this.setState({showLoading: false});
+        this.setState({loadingButton: false});
         return alert.show(i18next.t('messages.' + response.err));
       }
       let identifier = this.props.group_identifier ? this.props.group_identifier + '/' + this.state.roomName : '#' + this.state.roomName;
       app.client.roomId(identifier, (data) => {
-        this.setState({showLoading: false, roomName: '', public: true});
+        this.setState({loadingButton: false, roomName: '', public: true});
         if (data.err) {
           return alert.show(response.err);
         }
