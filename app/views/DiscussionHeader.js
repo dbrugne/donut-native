@@ -49,14 +49,14 @@ var DiscussionHeaderView = React.createClass({
   },
   _renderGroup() {
     return (
-      <View style={{flexDirection: 'column', alignSelf: 'center', justifyContent: 'center'}}>
+      <View style={{flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}>
         <Text style={styles.group}>{this.state.model.get('group_name') ? '#' + this.state.model.get('group_name') : ''}</Text>
       </View>
     );
   },
   _renderName() {
     return (
-      <View style={{height: 20, flexDirection: 'column', alignSelf: 'center', justifyContent: 'center'}}>
+      <View style={{height: 20, flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}>
         <Text
           style={styles.roomname}>{this.state.model.get('group_name') ? '/' + this.state.model.get('name') : '#' + this.state.model.get('name')}</Text>
       </View>

@@ -1,42 +1,38 @@
 'use strict';
 
 var React = require('react-native');
-var s = require('../styles/style');
-var Link = require('../components/Link');
-var ListItem = require('../components/ListItem');
 var Button = require('../components/Button');
+var Disclaimer = require('../components/Disclaimer');
 var alert = require('../libs/alert');
-var common = require('@dbrugne/donut-common/mobile');
 var navigation = require('../navigation/index');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
-var Disclaimer = require('../components/Disclaimer');
 var DiscussionHeader = require('./DiscussionHeader');
 var _ = require('underscore');
 
 var {
   StyleSheet,
   View,
-  ScrollView,
-  Text
+  Text,
+  Image
   } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'discussionBlocked', {
   'click': 'REQUEST AN ACCESS.',
-  'close': 'CLOSE THIS DISCUSSION'
-  //'by': 'by',
-  //'allowed': 'This discussion is private.',
-  //'disallow': 'This discussion is private.',
-  //'request': 'To join,',
-  //'password': 'direct access',
-  //'password-placeholder': 'password',
-  //'join': 'join',
-  //'not-confirmed': 'Not confirmed user can\'t join private discussions',
-  //'ban': 'You were banned from this discussion',
-  //'groupban': 'You were banned from this community',
-  //'kick': 'You have been kicked out.',
-  //'rejoin': ' to get back in.',
+  'close': 'CLOSE THIS DISCUSSION',
+  // 'by': 'by',
+  // 'allowed': 'This discussion is private.',
+  'disallow': 'This discussion is private.',
+  // 'request': 'To join,',
+  // 'password': 'direct access',
+  // 'password-placeholder': 'password',
+  // 'join': 'join',
+  // 'not-confirmed': 'Not confirmed user can\'t join private discussions',
+  'ban': 'You were banned from this discussion',
+  'groupban': 'You were banned from this community',
+  'kick': 'You have been kicked out.'
+  // 'rejoin': ' to get back in.',
 });
 
 var DiscussionBlocked = React.createClass({
@@ -71,15 +67,13 @@ var DiscussionBlocked = React.createClass({
   render: function () {
     return (
       <View style={styles.container}>
-        <DiscussionHeader model={this.props.model} >
+        <DiscussionHeader model={this.props.model}>
           {this._renderActions()}
         </DiscussionHeader>
 
-        <Disclaimer model={this.props.model}
-                    navigator={this.props.navigator}
-          />
+        {this._renderDisclaimer()}
 
-        <View style={{ flex: 1 }}></View>
+        <View style={{ flex: 1 }}/>
 
         <Button type='red'
                 onPress={() => this.props.model.leaveBlocked()}
@@ -90,10 +84,10 @@ var DiscussionBlocked = React.createClass({
     );
   },
   _renderActions: function () {
-    //// not confirmed
-    //if (!this.state.userConfirmed) {
-    //  return null;
-    //}
+    // // not confirmed
+    // if (!this.state.userConfirmed) {
+    //   return null;
+    // }
 
     // kicked or banned
     if (_.indexOf(['groupban', 'ban'], this.props.model.get('blocked_why')) !== -1) {
@@ -104,22 +98,45 @@ var DiscussionBlocked = React.createClass({
       <Button onPress={() => this.onJoin()}
               label={i18next.t('discussionBlocked:click')}
               type='white'
-              style={{ alignSelf: 'stretch',  marginHorizontal: 20, marginTop: 20 }}
+              style={{ alignSelf: 'stretch', marginHorizontal: 20, marginTop: 20 }}
         />
     );
+  },
 
-    //var why = (!this.state.userConfirmed)
-    //  ? 'not-confirmed'
-    //  : this.props.model.get('blocked_why');
-    //
-    //return (
-    //  <View style={(why === 'ban' || why === 'groupban') && s.alertError}>
-    //    <Text
-    //      style={[{marginHorizontal: 10, marginVertical: 10}, (why === 'ban' || why === 'groupban') && s.alertErrorText]}>
-    //      {i18next.t('discussionBlocked:' + why)}
-    //    </Text>
-    //  </View>
-    //);
+  _renderDisclaimer: function () {
+    var why = this.props.model.get('blocked_why');
+
+    if (why === 'disallow') {
+      return (
+        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' }}>
+          <Image source={require('../assets/arrow-top-gray.png')} style={{ width: 30, height: 8.5, resizeMode: 'contain', marginTop: -8.5 }}/>
+          <Disclaimer {...this.props} />
+        </View>
+      );
+    }
+
+    if (why === 'kick') {
+      return (
+        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' }}>
+          <Image source={require('../assets/arrow-top-red.png')} style={{ width: 30, height: 8.5, resizeMode: 'contain', marginTop: -8.5 }}/>
+          <View style={{ backgroundColor: '#F15261', padding: 20, alignSelf: 'stretch' }}>
+            <Text style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#FFFFFF' }}>
+              {i18next.t('discussionBlocked:kick')}
+            </Text>
+          </View>
+        </View>
+      );
+    }
+
+    return (
+      <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' }}>
+        <View style={{ backgroundColor: '#F15261', padding: 20, alignSelf: 'stretch' }}>
+          <Text style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#FFFFFF' }}>
+            {i18next.t('discussionBlocked:' + why)}
+          </Text>
+        </View>
+      </View>
+    );
   },
 
   onJoin: function () {
