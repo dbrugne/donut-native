@@ -88,7 +88,7 @@ var style = {
     fontSize: 14,
     color: '#AFBAC8',
     marginVertical: 5,
-    marginHorizontal: 10
+    marginHorizontal: 20
   },
   input: {
     backgroundColor: '#FFF',

@@ -13,13 +13,12 @@ var {
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../libs/app');
-var currentUser = require('../models/current-user');
-var navigation = require('../navigation/index');
 var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
-var Link = require('../components/Link');
 var ListItem = require('../components/ListItem');
+var Button = require('../components/Button');
+var DiscussionHeader = require('./DiscussionHeader');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'profileRoom', {
@@ -52,7 +51,7 @@ class RoomProfileView extends Component {
           first={!data.users_count}
           action
           onPress={() => hyperlink.open(data.website.href)}
-          icon='link'
+          imageLeft={require('../assets/icon-link.png')}
         />
       );
     }
@@ -60,13 +59,12 @@ class RoomProfileView extends Component {
     var numberOfUsers = null;
     if (data.users_count) {
       numberOfUsers = (
-        <ListItem
-          text={'' + data.users_count}
-          type='text'
-          first
-          icon='user'
-          iconColor='#f1c40f'
-          />
+      <ListItem
+        text={'' + data.users_count}
+        type='text'
+        first
+        imageLeft={require('../assets/icon-users.png')}
+        />
       );
     }
 
@@ -74,34 +72,24 @@ class RoomProfileView extends Component {
     <ListItem
       text={i18next.t('profileRoom:created-on', {date: date.shortDate(data.created)})}
       type='text'
-      icon='clock-o'
+      imageLeft={require('../assets/icon-time.png')}
+      last
       />
     );
 
     return (
       <ScrollView style={styles.main}>
-        <View style={styles.container}>
-          {this._renderAvatar(data.avatar)}
-          <Text style={styles.identifier}>{data.identifier}</Text>
-          <Link onPress={() => navigation.navigate('Profile', {type: 'user', id: data.owner_id, identifier: '@' + data.owner_username})}
-                prepend={i18next.t('profileRoom:by')}
-                text= {'@' + data.owner_username}
-                type='bold'
-            />
-
-          <Text style={styles.description}>{description}</Text>
-        </View>
-        <View style={s.listGroup}>
-          <Text style={s.listGroupItemSpacing} />
-          <ListItem
-            text={i18next.t('profileRoom:join')}
-            type='edit-button'
-            first
-            action
-            last
+        <DiscussionHeader data={data}>
+          <Button
+            label={i18next.t('profileRoom:join')}
+            type='white'
             onPress={() => app.trigger('joinRoom', data.room_id)}
+            style={{ alignSelf: 'stretch', marginHorizontal: 20, marginTop: 20 }}
             />
-          <Text style={s.listGroupItemSpacing} />
+        </DiscussionHeader>
+
+        <View style={s.listGroup}>
+          <Text style={styles.description}>{description}</Text>
           {numberOfUsers}
           {website}
           {createdAt}
@@ -128,8 +116,7 @@ class RoomProfileView extends Component {
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
+    flexWrap: 'wrap'
   },
   container: {
     flex: 1,
@@ -155,14 +142,10 @@ var styles = StyleSheet.create({
   },
   description: {
     marginVertical: 20,
-    marginHorizontal: 10,
+    marginHorizontal: 20,
     color: '#333333',
     fontFamily: 'Open Sans',
-    fontSize: 16
-  },
-  icon: {
-    width: 14,
-    height: 14
+    fontSize: 14
   }
 });
 

@@ -15,26 +15,20 @@ var DiscussionHeaderView = React.createClass({
     small: false
   },
   propTypes: {
-    model: React.PropTypes.object.isRequired,
+    model: React.PropTypes.object,
+    data: React.PropTypes.any,
     small: React.PropTypes.bool,
     children: React.PropTypes.any
   },
   getInitialState: function () {
     return {
-      model: this.props.model
+      data: this.props.data ? this.props.data : this.props.model.toJSON()
     };
-  },
-  componentDidMount: function () {
-    this.props.model.on('change:avatar', () => this.setState({model: this.props.model}), this);
-    this.props.model.on('change:blocked', () => this.setState({model: this.props.model}), this);
-  },
-  componentWillUnmount: function () {
-    this.props.model.off(this, null, null);
   },
   render () {
     return (
       <View style={[styles.container]}>
-        <BackgroundComponent avatar={this.props.model.get('avatar')}>
+        <BackgroundComponent avatar={this.state.data.avatar}>
           <View style={{alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}>
             {this._renderAvatar()}
             {this._renderMode()}
@@ -51,7 +45,7 @@ var DiscussionHeaderView = React.createClass({
       <View
         style={{flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}>
         <Text
-          style={styles.group}>{this.state.model.get('group_name') ? '#' + this.state.model.get('group_name') : ''}</Text>
+          style={styles.group}>{this.state.data.group_name ? '#' + this.state.data.group_name : ''}</Text>
       </View>
     );
   },
@@ -60,16 +54,16 @@ var DiscussionHeaderView = React.createClass({
       <View
         style={{height: 20, flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}>
         <Text
-          style={styles.roomname}>{this.state.model.get('group_name') ? '/' + this.state.model.get('name') : '#' + this.state.model.get('name')}</Text>
+          style={styles.roomname}>{this.state.data.group_name ? '/' + this.state.data.name : '#' + this.state.data.name}</Text>
       </View>
     );
   },
   _renderMode () {
-    if (!this.state.model.get('mode') || this.state.model.get('mode') === 'public') {
+    if (!this.state.data.mode || this.state.data.mode === 'public') {
       return null;
     }
 
-    var source = this.state.model.get('mode') === 'private'
+    var source = this.state.data.mode === 'private'
       ? require('../assets/lock.png')
       : require('../assets/lock-member.png');
 
@@ -82,7 +76,7 @@ var DiscussionHeaderView = React.createClass({
       return;
     }
 
-    var avatarUrl = common.cloudinary.prepare(this.state.model.get('avatar'), 150);
+    var avatarUrl = common.cloudinary.prepare(this.state.data.avatar, 150);
     if (!avatarUrl) {
       return null;
     }

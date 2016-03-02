@@ -141,65 +141,45 @@ class DiscussionSettings extends Component {
   }
 
   _renderLinks () {
-    if (this.props.model.get('type') === 'onetoone') {
-      return (
-        <View style={s.listGroup}>
+    let itemTopic = null;
+    if (this.isOp || this.isOwner || this.isAdmin) {
+      itemTopic = (
+        <View>
           <ListItem
-            onPress={() => navigation.navigate('Profile', {type: 'user', id: this.props.model.get('id'), identifier: this.state.identifier})}
-            text={i18next.t('DiscussionSettings:see')}
-            icon='eye'
-            type='button'
-            first
-            action
-            />
-          {this._renderBlock()}
-        </View>
-      );
-    } else {
-      let itemTopic = null;
-      if (this.isOp || this.isOwner || this.isAdmin) {
-        itemTopic = (
-          <View>
-            <ListItem
-              onPress={() => navigation.navigate('RoomAccess', this.props.model)}
-              text={i18next.t('DiscussionSettings:access')}
-              icon='users'
-              type='button'
-              action
-              title={i18next.t('DiscussionSettings:users-title')}
-              first
-              />
-            {this._renderAllowedUsers()}
-          </View>
-        );
-      }
-      return (
-        <View style={s.listGroup}>
-          {itemTopic}
-          <ListItem
-            onPress={() => navigation.navigate('RoomUsers', this.props.model.get('id'))}
-            text={i18next.t('DiscussionSettings:users')}
+            onPress={() => navigation.navigate('RoomAccess', this.props.model)}
+            text={i18next.t('DiscussionSettings:access')}
             icon='users'
-            type='image-list'
+            type='button'
             action
-            model={this.props.model}
-            parentType='room'
-            isOwnerAdminOrOp={this.isOp || this.isOwner || this.isAdmin}
-            value={this.state.nbUsers}
-            title={(!itemTopic) ? i18next.t('DiscussionSettings:users-title') : null}
-            first={!(itemTopic)}
-            imageList={this.state.userListLoaded ? this.state.users : null}
+            title={i18next.t('DiscussionSettings:users-title')}
+            first
             />
+          {this._renderAllowedUsers()}
         </View>
       );
     }
+    return (
+      <View style={s.listGroup}>
+        {itemTopic}
+        <ListItem
+          onPress={() => navigation.navigate('RoomUsers', this.props.model.get('id'))}
+          text={i18next.t('DiscussionSettings:users')}
+          icon='users'
+          type='image-list'
+          action
+          model={this.props.model}
+          parentType='room'
+          isOwnerAdminOrOp={this.isOp || this.isOwner || this.isAdmin}
+          value={this.state.nbUsers}
+          title={(!itemTopic) ? i18next.t('DiscussionSettings:users-title') : null}
+          first={!(itemTopic)}
+          imageList={this.state.userListLoaded ? this.state.users : null}
+          />
+      </View>
+    );
   }
 
   _renderTopic () {
-    if (this.props.model.get('type') === 'onetoone') {
-      return null;
-    }
-
     var topic;
     if (this.state.topic) {
       topic = common.markup.toText(this.state.topic);
@@ -318,9 +298,6 @@ class DiscussionSettings extends Component {
   }
 
   _renderEdition () {
-    if (this.props.model.get('type') === 'onetoone') {
-      return null;
-    }
     if (!this.isOwner && !this.isAdmin) {
       return null;
     }
@@ -390,32 +367,17 @@ class DiscussionSettings extends Component {
     });
   }
   _renderEnd () {
-    if (this.props.model.get('type') === 'onetoone') {
-      return (
-        <View style={s.listGroup}>
-          <ListItem
-            onPress={() => this.props.model.leave()}
-            text={i18next.t('DiscussionSettings:close')}
-            type='button'
-            first
-            warning
-            title={i18next.t('DiscussionSettings:end')}
-            />
-        </View>
+    var deleteRoomLink = null;
+    if ((this.isOwner || this.isAdmin) && this.can_delete) {
+      deleteRoomLink = (
+        <ListItem
+          onPress={() => this._deleteRoom()}
+          text={i18next.t('DiscussionSettings:delete')}
+          type='button'
+          first
+          warning
+          />
       );
-    } else {
-      var deleteRoomLink = null;
-      if ((this.isOwner || this.isAdmin) && this.can_delete) {
-        deleteRoomLink = (
-          <ListItem
-            onPress={() => this._deleteRoom()}
-            text={i18next.t('DiscussionSettings:delete')}
-            type='button'
-            first
-            warning
-            />
-        );
-      }
       return (
         <View style={s.listGroup}>
           <ListItem

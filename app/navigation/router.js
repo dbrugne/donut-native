@@ -166,6 +166,8 @@ module.exports = {
         return require('./routes/Discussion');
       case 'DiscussionSettings':
         return require('./routes/DiscussionSettings');
+      case 'OneSettings':
+        return require('./routes/OneSettings');
       case 'DiscussionBlockedJoin':
         return require('./routes/DiscussionBlockedJoin');
       case 'MyAccount':

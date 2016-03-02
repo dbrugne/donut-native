@@ -38,10 +38,12 @@ var RightIconProfile = React.createClass({
       return null;
     }
 
+    let Comp = this.props.model.get('type') === 'room' ? 'DiscussionSettings' : 'OneSettings';
+
     return (
       <TouchableOpacity
         touchRetentionOffset={ExNavigator.Styles.barButtonTouchRetentionOffset}
-        onPress={() => navigation.navigate('DiscussionSettings', this.props.model)}
+        onPress={() => navigation.navigate(Comp, this.props.model)}
         style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 44}} >
         <Icon
           name='gear'
