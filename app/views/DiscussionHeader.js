@@ -5,30 +5,60 @@ var {
   StyleSheet,
   View,
   Text,
+  TouchableHighlight,
   Image
 } = React;
 
+var alert = require('../libs/alert');
+var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
+var Icon = require('react-native-vector-icons/EvilIcons');
 
 var DiscussionHeaderView = React.createClass({
   propTypes: {
-    identifier: React.PropTypes.string.isRequired,
-    avatar: React.PropTypes.string.isRequired,
-    navigator: React.PropTypes.object
+    data: React.PropTypes.object.isRequired
   },
   getInitialState: function () {
     return {
-      identifier: this.props.identifier,
-      avatar: this.props.avatar
+      data: this.props.data
     };
   },
   render () {
     return (
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <View style={styles.containerTop}>
           {this._renderAvatar()}
-          <Text style={styles.identifier}>{this.state.identifier}</Text>
+          {this._renderMode()}
+          {this._renderGroup()}
+          {this._renderName()}
+          {this.props.children}
         </View>
+      </View>
+    );
+  },
+  _renderGroup() {
+    return (
+      <View style={{flexDirection: 'column', alignSelf: 'center', justifyContent: 'center'}}>
+        <Text style={styles.group}>{this.state.data.group_name ? '#' + this.state.data.group_name : ''}</Text>
+      </View>
+    );
+  },
+  _renderName() {
+    return (
+      <View style={{height: 20, flexDirection: 'column', alignSelf: 'center', justifyContent: 'center'}}>
+        <Text style={styles.roomname}>{this.state.data.group_name ? '/' + this.state.data.name :  '#' + this.state.data.name}</Text>
+      </View>
+    );
+  },
+  _renderMode() {
+    return (
+      <Icon
+        name={'lock'}
+        size={30}
+        color='#AFBAC8'
+        style={{ position: 'absolute', top:10, right:10, backgroundColor: 'transparent' }}
+        />
     );
   },
   _renderAvatar () {
@@ -47,20 +77,49 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    position: 'relative',
+    alignSelf: 'stretch',
+    flexDirection: 'column',
+  },
+  containerTop: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    alignSelf: 'stretch',
+    flexDirection: 'column',
+    backgroundColor: '#DDD' // @todo remove
   },
   avatar: {
-    width: 120,
-    height: 120,
-    marginTop: 40,
+    width: 80,
+    height: 80,
+    marginTop: 20,
     marginBottom: 10,
-    borderRadius: 60
+    borderRadius: 40,
+    shadowColor: 'rgb(28,36,47)',
+    shadowOffset: {width: 0, height: 3},
+    shadowRadius: 3,
+    shadowOpacity: 0.15
   },
-  identifier: {
-    color: '#333333',
+  roomname: {
+    color: '#FFFFFF',
     fontFamily: 'Open Sans',
-    fontSize: 22,
-    fontWeight: 'bold'
+    fontSize: 18,
+    fontWeight: '600',
+    lineHeight: 18
+  },
+  group: {
+    fontFamily: 'Open Sans',
+    fontSize: 11,
+    color: '#AFBAC8',
+    letterSpacing: 0.85,
+    lineHeight: 14
+  },
+  description: {
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    color: '#394350',
+    lineHeight: 14
   }
 });
 
