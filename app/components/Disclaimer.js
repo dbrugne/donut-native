@@ -8,8 +8,7 @@ var s = require('../styles/style');
 var {
   View,
   Text
-} = React;
-var Icon = require('react-native-vector-icons/FontAwesome');
+  } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'componentsDisclaimer', {
@@ -18,34 +17,28 @@ i18next.addResourceBundle('en', 'componentsDisclaimer', {
 
 var Link = React.createClass({
   propTypes: {
-    text: React.PropTypes.string,
-    owner_id: React.PropTypes.string,
-    owner_username: React.PropTypes.string,
+    model: React.PropTypes.object.isRequired,
     navigator: React.PropTypes.object
   },
   render () {
-    if (!this.props.text) {
+    if (!this.props.model.get('disclaimer')) {
       return null;
     }
 
     return (
-      <View style={[s.alertWarning, {marginVertical: 0, marginHorizontal: 0, marginTop: 10, borderRadius: 0, alignSelf:'stretch'}]}>
+      <View
+        style={[s.alertWarning, {marginVertical: 0, marginHorizontal: 0, marginTop: 10, borderRadius: 0, alignSelf:'stretch'}]}>
         <Username
           prepend={i18next.t('componentsDisclaimer:message')}
-          user_id={this.props.owner_id}
-          username={this.props.owner_username}
+          user_id={this.props.model.get('owner_id')}
+          username={this.props.model.get('owner_username')}
           navigator={this.props.navigator}
           style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}
-        />
-        <View style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', alignSelf:'stretch'}}>
-          <Icon
-            name='quote-right'
-            size={14}
-            color='#8a6d3b'
-            style={{marginTop: 2}}
           />
+        <View style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', alignSelf:'stretch'}}>
           <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
-            <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{_.unescape(this.props.text)}</Text>
+            <Text
+              style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{_.unescape(this.props.model.get('disclaimer'))}</Text>
           </View>
         </View>
       </View>

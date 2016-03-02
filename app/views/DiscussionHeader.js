@@ -5,34 +5,78 @@ var {
   StyleSheet,
   View,
   Text,
+  TouchableHighlight,
   Image
-} = React;
+  } = React;
 
+var alert = require('../libs/alert');
+var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/mobile');
 var s = require('../styles/style');
+var Icon = require('react-native-vector-icons/EvilIcons');
+var _ = require('underscore');
 
 var DiscussionHeaderView = React.createClass({
   propTypes: {
-    identifier: React.PropTypes.string.isRequired,
-    avatar: React.PropTypes.string.isRequired,
-    navigator: React.PropTypes.object
+    model: React.PropTypes.object.isRequired
   },
   getInitialState: function () {
     return {
-      identifier: this.props.identifier,
-      avatar: this.props.avatar
+      model: this.props.model
     };
+  },
+  componentDidMount: function () {
+    this.props.model.on('change:avatar', () => this.setState({model: this.props.model}), this);
+    this.props.model.on('change:blocked', () => this.setState({model: this.props.model}), this);
+  },
+  componentWillUnmount: function () {
+    this.props.model.off(this, null, null);
   },
   render () {
     return (
-        <View style={styles.container}>
-          {this._renderAvatar()}
-          <Text style={styles.identifier}>{this.state.identifier}</Text>
-        </View>
+      <View style={[styles.container]}>
+        <BackgroundComponent avatar={this.props.model.get('avatar')} >
+          <View style={{alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}>
+            {this._renderAvatar()}
+            {this._renderMode()}
+            {this._renderGroup()}
+            {this._renderName()}
+            {this.props.children}
+          </View>
+        </BackgroundComponent>
+      </View>
+    );
+  },
+  _renderGroup() {
+    return (
+      <View style={{flexDirection: 'column', alignSelf: 'center', justifyContent: 'center'}}>
+        <Text style={styles.group}>{this.state.model.get('group_name') ? '#' + this.state.model.get('group_name') : ''}</Text>
+      </View>
+    );
+  },
+  _renderName() {
+    return (
+      <View style={{height: 20, flexDirection: 'column', alignSelf: 'center', justifyContent: 'center'}}>
+        <Text
+          style={styles.roomname}>{this.state.model.get('group_name') ? '/' + this.state.model.get('name') : '#' + this.state.model.get('name')}</Text>
+      </View>
+    );
+  },
+  _renderMode() {
+    if ( !this.state.model.get('mode') || this.state.model.get('mode') === 'public' ) {
+      return null;
+    }
+
+    var source = this.state.model.get('mode') === 'private'
+      ? require('../assets/lock.png')
+      : require('../assets/lock-member.png');
+
+    return (
+      <Image style={{width: 14, height: 20, position: 'absolute', top: 10, right: 10}} source={source} />
     );
   },
   _renderAvatar () {
-    var avatarUrl = common.cloudinary.prepare(this.state.avatar, 150);
+    var avatarUrl = common.cloudinary.prepare(this.state.model.get('avatar'), 150);
     if (!avatarUrl) {
       return null;
     }
@@ -43,24 +87,75 @@ var DiscussionHeaderView = React.createClass({
   }
 });
 
+var BackgroundComponent = React.createClass({
+  propTypes: {
+    children: React.PropTypes.element.isRequired,
+    avatar: React.PropTypes.string
+  },
+
+  render: function() {
+    var avatarUrl = null;
+    if (this.props.avatar) {
+      avatarUrl = common.cloudinary.prepare(this.props.avatar, 300);
+    }
+
+    if (avatarUrl) {
+      return (
+        <Image style={{resizeMode: 'cover', paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}} source={{uri: avatarUrl}}>
+          {this.props.children}
+        </Image>
+      );
+    }
+
+    return (
+      <View style={{position: 'relative', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}>
+        {this.props.children}
+      </View>
+    );
+  }
+});
+
 var styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    position: 'relative',
+    alignSelf: 'stretch',
+    flexDirection: 'column'
   },
   avatar: {
-    width: 120,
-    height: 120,
-    marginTop: 40,
+    width: 80,
+    height: 80,
+    marginTop: 20,
     marginBottom: 10,
-    borderRadius: 60
+    borderRadius: 40,
+    shadowColor: 'rgb(28,36,47)',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.15
   },
-  identifier: {
-    color: '#333333',
+  roomname: {
+    color: '#FFFFFF',
     fontFamily: 'Open Sans',
-    fontSize: 22,
-    fontWeight: 'bold'
+    fontSize: 18,
+    fontWeight: '600',
+    lineHeight: 18
+  },
+  group: {
+    fontFamily: 'Open Sans',
+    fontSize: 11,
+    color: '#AFBAC8',
+    letterSpacing: 0.85,
+    lineHeight: 14
+  },
+  description: {
+    fontFamily: 'Open Sans',
+    fontSize: 14,
+    color: '#394350',
+    lineHeight: 14
   }
 });
 

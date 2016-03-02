@@ -54,11 +54,10 @@ var DiscussionBlockedJoin = React.createClass({
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
-          <DiscussionHeader identifier={this.props.model.get('identifier')} avatar={this.props.model.get('avatar')} />
+          <DiscussionHeader model={this.props.model} />
+
           <Text style={{marginVertical: 10, marginHorizontal: 10}}>{i18next.t('discussionBlockedJoin:infos')}</Text>
-          <Disclaimer owner_id={this.props.data.owner_id}
-                      owner_username={this.props.data.owner_username}
-                      text={this.props.data.disclaimer}
+          <Disclaimer model={this.props.model}
                       navigator={this.props.navigator}
           />
 
