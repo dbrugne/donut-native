@@ -99,18 +99,19 @@ var BackgroundComponent = React.createClass({
       avatarUrl = common.cloudinary.prepare(this.props.avatar, 300);
     }
 
-    if (avatarUrl) {
-      return (
-        <Image
-          style={{resizeMode: 'cover', paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}
-          source={{uri: avatarUrl}}>
-          {this.props.children}
-        </Image>
-      );
-    }
+    // @todo uncomment when blur is ok
+    // if (avatarUrl) {
+    //   return (
+    //     <Image
+    //       style={{resizeMode: 'cover', paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}
+    //       source={{uri: avatarUrl}}>
+    //       {this.props.children}
+    //     </Image>
+    //   );
+    // }
 
     return (
-      <View style={{position: 'relative', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{ paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.50)' }}>
         {this.props.children}
       </View>
     );

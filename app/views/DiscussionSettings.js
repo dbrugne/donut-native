@@ -4,60 +4,58 @@ var _ = require('underscore');
 var currentUser = require('../models/current-user');
 var app = require('../libs/app');
 var s = require('../styles/style');
+var Button = require('../components/Button');
 var ListItem = require('../components/ListItem');
 var navigation = require('../navigation/index');
 var common = require('@dbrugne/donut-common/mobile');
 var Alert = require('../libs/alert');
 var imageUploader = require('../libs/imageUpload');
 var emojione = require('emojione');
+var DiscussionHeader = require('./DiscussionHeader');
 
 var {
-  Component,
   Text,
   View,
   ScrollView,
   StyleSheet,
   Image,
   TouchableHighlight
-} = React;
+  } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'DiscussionSettings', {
-  'settings': '__identifier__ SETTINGS',
-  'change-topic': 'Change topic',
+  'topic': 'CURRENT TOPIC',
+  'users-title': 'USERS',
+  'users': 'USERS LIST',
+  'details': 'PROFILE DETAILS',
+  'notifications-title': 'NOTIFICATIONS',
+  'notifications': 'Custom notifications',
+  'silence': 'Silence',
+  'access': 'Access',
   'no-topic': 'No topic',
-  'see': 'See profile',
   'block': 'Block this user',
   'unblock': 'Unblock this user',
-  'edit': 'Edit',
-  'access': 'Access',
   'allowed': 'Manage invitations',
-  'leave': 'Leave this discussion',
-  'close': 'Close this discussion',
-  'users': 'Users list',
-  'users-title': 'Users',
-  'topic': 'Current topic',
-  'description': 'Description',
   'avatar': 'Profile picture',
+  'description': 'Description',
   'website': 'Website',
-  'end': 'End',
-  'details': 'Profile details',
-  'notifications': 'Custom notifications',
-  'notifications-title': 'Notifications',
-  'delete': 'Delete this discussion',
-  'deleteTitle': 'Delete discussion',
-  'deleteDisclaimer': 'Are you sure you want to delete this discussion ? This action is irreversible.',
-  'silence': 'Silence'
+  'delete': 'DELETE THIS DISCUSSION',
+  'leave': 'LEAVE THIS DISCUSSION',
+  'deleteTitle': 'delete discussion',
+  'deleteDisclaimer': 'Are you sure you want to delete this discussion ? This action is irreversible.'
 });
 
-class DiscussionSettings extends Component {
-  constructor (props) {
-    super(props);
-    this.isOwner = (currentUser.get('user_id') === props.model.get('owner_id'));
+var DiscussionSettings = React.createClass({
+  propTypes: {
+    model: React.PropTypes.object,
+    navigator: React.PropTypes.object
+  },
+  getInitialState: function () {
+    this.isOwner = (currentUser.get('user_id') === this.props.model.get('owner_id'));
     this.isAdmin = app.user.isAdmin();
-    this.isOp = (_.indexOf(props.model.get('op'), currentUser.get('user_id')) !== -1);
+    this.isOp = (_.indexOf(this.props.model.get('op'), currentUser.get('user_id')) !== -1);
     this.can_delete = true;
-    this.state = {
+    return {
       topic: this.props.model.get('topic'),
       avatar: this.props.model.get('avatar'),
       identifier: this.props.model.get('identifier'),
@@ -68,8 +66,8 @@ class DiscussionSettings extends Component {
       description: '',
       website: ''
     };
-  }
-  fetchData () {
+  },
+  fetchData: function () {
     this.setState({
       topic: this.props.model.get('topic'),
       avatar: this.props.model.get('avatar'),
@@ -77,8 +75,8 @@ class DiscussionSettings extends Component {
       status: this.props.model.get('status'),
       banned: this.props.model.get('banned')
     });
-  }
-  componentDidMount () {
+  },
+  componentDidMount: function () {
     if (this.props.model.get('type') === 'room') {
       app.client.roomUsers(this.props.model.get('id'), {type: 'users', selector: {start: 0, length: 15}}, (data) => {
         if (data.err || data === 'not-connected') {
@@ -99,87 +97,87 @@ class DiscussionSettings extends Component {
       });
     }
     this.props.model.on('change:avatar', () => this.setState({avatar: this.props.model.get('avatar')}), this);
-  }
-  componentWillUnmount () {
+  },
+  componentWillUnmount: function () {
     this.props.model.off(this, null, null);
-  }
-  render () {
+  },
+  render: function () {
     var setRoomNotificationLink = null;
     if (this.props.model.get('type') === 'room') {
       setRoomNotificationLink = (
         <View style={s.listGroup}>
-          <ListItem
-            onPress={() => navigation.navigate('AvailableSoon')}
-            text={i18next.t('DiscussionSettings:notifications')}
-            type='button'
-            action
-            title={i18next.t('DiscussionSettings:notifications-title')}
-            first
+          <ListItem type='button'
+                    onPress={() => navigation.navigate('AvailableSoon')}
+                    text={i18next.t('DiscussionSettings:notifications')}
+                    action
+                    title={i18next.t('DiscussionSettings:notifications-title')}
+                    first
             />
-          <ListItem
-            text={i18next.t('DiscussionSettings:silence')}
-            type='switch'
-            switchValue={false}
-            onSwitch={() => navigation.navigate('AvailableSoon')}
+          <ListItem type='switch'
+                    text={i18next.t('DiscussionSettings:silence')}
+                    switchValue={false}
+                    onSwitch={() => navigation.navigate('AvailableSoon')}
             />
-          </View>
+        </View>
       );
     }
     return (
       <ScrollView style={styles.main}>
-        <View style={styles.containerTop}>
-          {this._renderAvatar(this.state.avatar)}
-          <Text style={{marginTop: 10}}>{this.state.identifier}</Text>
-        </View>
+        <DiscussionHeader model={this.props.model} small/>
+        <View style={{ marginTop: 20 }}/>
         {this._renderTopic()}
-        {this._renderLinks()}
+        {this._renderUsers()}
+        {this._renderUsersList()}
         {this._renderEdition()}
         {setRoomNotificationLink}
         {this._renderEnd()}
       </ScrollView>
     );
-  }
-
-  _renderLinks () {
-    let itemTopic = null;
-    if (this.isOp || this.isOwner || this.isAdmin) {
-      itemTopic = (
-        <View>
-          <ListItem
-            onPress={() => navigation.navigate('RoomAccess', this.props.model)}
-            text={i18next.t('DiscussionSettings:access')}
-            icon='users'
-            type='button'
-            action
-            title={i18next.t('DiscussionSettings:users-title')}
-            first
-            />
-          {this._renderAllowedUsers()}
-        </View>
-      );
+  },
+  _renderUsers: function () {
+    if (!this.isOp && !this.isOwner && !this.isAdmin) {
+      return null;
     }
+
     return (
-      <View style={s.listGroup}>
-        {itemTopic}
+      <View>
         <ListItem
-          onPress={() => navigation.navigate('RoomUsers', this.props.model.get('id'))}
-          text={i18next.t('DiscussionSettings:users')}
-          icon='users'
-          type='image-list'
+          onPress={() => navigation.navigate('RoomAccess', this.props.model)}
+          text={i18next.t('DiscussionSettings:access')}
+          type='button'
           action
-          model={this.props.model}
-          parentType='room'
-          isOwnerAdminOrOp={this.isOp || this.isOwner || this.isAdmin}
-          value={this.state.nbUsers}
-          title={(!itemTopic) ? i18next.t('DiscussionSettings:users-title') : null}
-          first={!(itemTopic)}
-          imageList={this.state.userListLoaded ? this.state.users : null}
+          title={i18next.t('DiscussionSettings:users-title')}
+          first
+          />
+        <ListItem
+          onPress={() => navigation.navigate('ManageInvitations', {id: this.props.model.get('id'), type: 'room'})}
+          text={i18next.t('DiscussionSettings:allowed')}
+          type='button'
+          action
+          last
           />
       </View>
     );
-  }
-
-  _renderTopic () {
+  },
+  _renderUsersList: function () {
+    return (
+      <View style={{ marginTop: 20 }}>
+        <ListItem type='image-list'
+                  onPress={() => navigation.navigate('RoomUsers', this.props.model.get('id'))}
+                  text={i18next.t('DiscussionSettings:users')}
+                  action
+                  model={this.props.model}
+                  parentType='room'
+                  isOwnerAdminOrOp={this.isOp || this.isOwner || this.isAdmin}
+                  value={this.state.nbUsers}
+                  first
+                  last
+                  imageList={this.state.userListLoaded ? this.state.users : null}
+          />
+      </View>
+    );
+  },
+  _renderTopic: function () {
     var topic;
     if (this.state.topic) {
       topic = common.markup.toText(this.state.topic);
@@ -192,86 +190,29 @@ class DiscussionSettings extends Component {
     if (!this.isOp && !this.isOwner && !this.isAdmin) {
       return (
         <View style={s.listGroup}>
-          <ListItem
-            text={topic}
-            type='text'
-            first
-            title={i18next.t('DiscussionSettings:topic')}
+          <ListItem type='text'
+                    text={topic}
+                    first
+                    last
+                    title={i18next.t('DiscussionSettings:topic')}
             />
         </View>
       );
     } else {
       return (
         <View style={s.listGroup}>
-          <ListItem
-            onPress={() => navigation.navigate('RoomTopic', this.props.model, () => this.fetchData())}
-            text={topic}
-            type='button'
-            action
-            first
-            title={i18next.t('DiscussionSettings:topic')}
+          <ListItem type='button'
+                    onPress={() => navigation.navigate('RoomTopic', this.props.model, () => this.fetchData())}
+                    text={topic}
+                    action
+                    first
+                    last
+                    title={i18next.t('DiscussionSettings:topic')}
             />
         </View>
       );
     }
-  }
-
-  _renderBlock () {
-    if (this.state.banned === false) {
-      return (
-        <ListItem
-          onPress={() => this._banUser()}
-          text={i18next.t('DiscussionSettings:block')}
-          icon='ban'
-          iconColor='#e74c3c'
-          type='button'
-          action
-          warning
-          />
-      );
-    } else {
-      return (
-        <ListItem
-          onPress={() => this._unbanUser()}
-          text={i18next.t('DiscussionSettings:unblock')}
-          icon='ban'
-          type='button'
-          action
-          />
-      );
-    }
-  }
-
-  _banUser () {
-    app.client.userBan(this.props.model.get('id'), (response) => {
-      if (response.err) {
-        return;
-      }
-      this.setState({banned: true});
-    });
-  }
-
-  _unbanUser () {
-    app.client.userDeban(this.props.model.get('id'), (response) => {
-      if (response.err) {
-        return;
-      }
-      this.setState({banned: false});
-    });
-  }
-
-  _renderAllowedUsers () {
-    return (
-      <ListItem
-          onPress={() => navigation.navigate('ManageInvitations', {id: this.props.model.get('id'), type: 'room'})}
-          text={i18next.t('DiscussionSettings:allowed')}
-          icon='shield'
-          type='button'
-          action
-        />
-    );
-  }
-
+  },
   _renderAvatar (avatar) {
     if (!avatar) {
       return null;
@@ -291,13 +232,13 @@ class DiscussionSettings extends Component {
     }
     return (
       <View style={styles.containerAvatarOne}>
-        <Image style={styles.avatarOne} source={{uri: avatarUrl}} />
-        <Text style={[styles.statusText, styles.status, this.state.status === 'connecting' && styles.statusConnecting, this.state.status === 'offline' && styles.statusOffline, this.state.status === 'online' && styles.statusOnline]}>{this.state.status}</Text>
+        <Image style={styles.avatarOne} source={{uri: avatarUrl}}/>
+        <Text
+          style={[styles.statusText, styles.status, this.state.status === 'connecting' && styles.statusConnecting, this.state.status === 'offline' && styles.statusOffline, this.state.status === 'online' && styles.statusOnline]}>{this.state.status}</Text>
       </View>
     );
-  }
-
-  _renderEdition () {
+  },
+  _renderEdition: function () {
     if (!this.isOwner && !this.isAdmin) {
       return null;
     }
@@ -327,8 +268,8 @@ class DiscussionSettings extends Component {
           />
       </View>
     );
-  }
-  _pickImage () {
+  },
+  _pickImage: function () {
     imageUploader.getImageAndUpload('room,avatar', null, (err, response) => {
       if (err) {
         return Alert.show(err);
@@ -340,7 +281,7 @@ class DiscussionSettings extends Component {
 
       this.saveRoomData('avatar', response);
     });
-  }
+  },
   saveRoomData (key, value, callback) {
     var updateData = {};
     updateData[key] = value;
@@ -365,52 +306,48 @@ class DiscussionSettings extends Component {
         callback();
       }
     });
-  }
-  _renderEnd () {
+  },
+  _renderEnd: function () {
     var deleteRoomLink = null;
     if ((this.isOwner || this.isAdmin) && this.can_delete) {
       deleteRoomLink = (
-        <ListItem
+        <Button
           onPress={() => this._deleteRoom()}
-          text={i18next.t('DiscussionSettings:delete')}
-          type='button'
-          first
-          warning
+          label={i18next.t('DiscussionSettings:delete')}
+          type='red'
+          style={{ marginHorizontal: 20, marginTop: 10 }}
           />
       );
       return (
-        <View style={s.listGroup}>
-          <ListItem
+        <View>
+          <Button
             onPress={() => this.props.model.leave()}
-            text={i18next.t('DiscussionSettings:leave')}
-            type='button'
-            first
-            warning
-            title={i18next.t('DiscussionSettings:end')}
+            label={i18next.t('DiscussionSettings:leave')}
+            type='gray'
+            style={{ marginHorizontal: 20, marginTop: 20 }}
             />
           {deleteRoomLink}
         </View>
       );
     }
-  }
-  _deleteRoom () {
+  },
+  _deleteRoom: function () {
     Alert.askConfirmation(
       i18next.t('DiscussionSettings:deleteTitle'),
       i18next.t('DiscussionSettings:deleteDisclaimer', {identifier: this.props.model.get('identifier')}),
-      () => app.client.roomDelete(this.props.model.get('id'), () => {}),
-      () => {}
+      () => app.client.roomDelete(this.props.model.get('id'), () => {
+      }),
+      () => {
+      }
     );
   }
-}
-
-DiscussionSettings.propTypes = {model: React.PropTypes.object};
+});
 
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
     flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0',
-    paddingTop: 10
+    marginBottom: 20
   },
   containerTop: {
     flexDirection: 'column',
@@ -443,9 +380,9 @@ var styles = StyleSheet.create({
     paddingRight: 5,
     overflow: 'hidden'
   },
-  statusOnline: { backgroundColor: 'rgba(79, 237, 192, 0.8)' },
-  statusConnecting: { backgroundColor: 'rgba(255, 218, 62, 0.8)' },
-  statusOffline: { backgroundColor: 'rgba(119,119,119,0.8)' },
+  statusOnline: {backgroundColor: 'rgba(79, 237, 192, 0.8)'},
+  statusConnecting: {backgroundColor: 'rgba(255, 218, 62, 0.8)'},
+  statusOffline: {backgroundColor: 'rgba(119,119,119,0.8)'},
   statusText: {
     color: '#FFFFFF',
     fontWeight: '500',

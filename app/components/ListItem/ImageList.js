@@ -16,7 +16,7 @@ var {
   Image,
   StyleSheet,
   ScrollView
-} = React;
+  } = React;
 var Icon = require('react-native-vector-icons/EvilIcons');
 
 class ListItemImageList extends ListItemAbstract {
@@ -26,7 +26,7 @@ class ListItemImageList extends ListItemAbstract {
         <TouchableHighlight onPress={() => this.props.onPress()}
                             underlayColor='#DDD'
                             style={[s.listGroupItem, styles.listGroupItem]}
-        >
+          >
           <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
             {this._renderLeftIcon()}
             {this._renderElement()}
@@ -51,7 +51,7 @@ class ListItemImageList extends ListItemAbstract {
         style={{
           alignSelf: 'center',
           justifyContent: 'flex-end',
-          paddingTop:2
+          paddingTop: 2
         }}
         />
     );
@@ -67,28 +67,32 @@ class ListItemImageList extends ListItemAbstract {
 
     return (
       <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
-        <Text style={[s.listGroupItemText, {color: '#353F4C', fontFamily: 'Open Sans', fontWeight: '600', fontSize: 16}]}>{this.props.text}</Text>
+        <Text style={[s.listGroupItemText, { fontWeight: '600', color: '#FC2063', fontFamily: 'Open Sans', fontSize: 16 }]}>{this.props.text}</Text>
         <View style={{alignSelf: 'center', flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.seeAll}>{value}</Text>
         </View>
       </View>
     );
   }
+
   _renderImageList () {
     if (!this.props.imageList || this.props.imageList.length === 0) {
       return null;
     }
 
+    let item = _.first(this.props.imageList);
+    let height = _.has(item, 'user_id') ? 100 : 200;
+
     return (
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={{height: 200, flex: 1, marginTop: 20}}
+        style={{height: height, flex: 1, marginTop: 20, marginLeft: 15, marginRight: 15}}
         contentContainerStyle={{alignItems: 'flex-start', flex: 1}}>
         {_.map(this.props.imageList, (item) => {
           return this._renderImageButton(item);
         })}
-        </ScrollView>
+      </ScrollView>
     );
   }
 
@@ -101,7 +105,7 @@ class ListItemImageList extends ListItemAbstract {
         onPress: () => app.trigger('joinUser', item.user_id),
         text: 'CHAT',
         identifier: '@' + item.username,
-        avatarRadius: { borderRadius: 0 }
+        avatarRadius: {borderRadius: 0}
       };
       return (
         <View style={styles.element} key={data.key}>
@@ -110,7 +114,8 @@ class ListItemImageList extends ListItemAbstract {
                                 onPress={data.onProfile}
                                 style={{width: 80, height: 80}}
               >
-              <Image style={{width: 80, height: 80, position: 'absolute', top: 0, left: 0}} source={{uri: common.cloudinary.prepare(item.avatar, 150)}}/>
+              <Image style={{width: 80, height: 80, position: 'absolute', top: 0, left: 0}}
+                     source={{uri: common.cloudinary.prepare(item.avatar, 150)}}/>
             </TouchableHighlight>
           </View>
         </View>
@@ -122,7 +127,7 @@ class ListItemImageList extends ListItemAbstract {
         onPress: () => app.trigger('joinRoom', item.room_id),
         text: 'JOIN',
         identifier: item.identifier,
-        avatarRadius: { borderRadius: 40, borderColor: 'transparent' }
+        avatarRadius: {borderRadius: 40, borderColor: 'transparent'}
       };
     } else if (_.has(item, 'group_id')) {
       data = {
@@ -131,7 +136,7 @@ class ListItemImageList extends ListItemAbstract {
         onPress: () => app.trigger('joinGroup', item.group_id),
         text: 'JOIN',
         identifier: '#' + item.name,
-        avatarRadius: { borderRadius: 0 }
+        avatarRadius: {borderRadius: 0}
       };
     } else {
       return null;
@@ -166,7 +171,7 @@ class ListItemImageList extends ListItemAbstract {
     );
   }
 
-  _renderMode(item) {
+  _renderMode (item) {
     if (!_.has(item, 'room_id') || !_.has(item, 'mode') || item.mode === 'public') {
       return (null);
     }
@@ -176,7 +181,7 @@ class ListItemImageList extends ListItemAbstract {
       : require('../../assets/lock-member.png');
 
     return (
-      <Image style={{width: 14, height: 20, position: 'absolute', top: 10, right: 10}} source={source} />
+      <Image style={{width: 14, height: 20, position: 'absolute', top: 10, right: 10}} source={source}/>
     );
   }
 
@@ -203,7 +208,7 @@ var styles = StyleSheet.create({
     shadowOpacity: 0.15
   },
   identifier: {
-    alignSelf:'center',
+    alignSelf: 'center',
     position: 'absolute',
     width: 150,
     height: 19, // 38px
@@ -242,7 +247,7 @@ var styles = StyleSheet.create({
     textAlign: 'center'
   },
   button: {
-    alignSelf:'center',
+    alignSelf: 'center',
     marginTop: 10,
     marginBottom: 10,
     width: 110,
@@ -253,7 +258,7 @@ var styles = StyleSheet.create({
     paddingVertical: 5
   },
   buttonText: {
-    textAlign:'center',
+    textAlign: 'center',
     fontSize: 14, // 28px
     fontFamily: 'Open sans',
     fontWeight: '600', // semi-bold
