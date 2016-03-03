@@ -134,8 +134,6 @@ module.exports = {
         return require('./routes/Profile');
       case 'Group':
         return require('./routes/Group');
-      case 'GroupAccess':
-        return require('./routes/GroupAccess');
       case 'GroupRoom':
         return require('./routes/GroupRoom');
       case 'GroupRooms':

@@ -1,15 +1,18 @@
 'use strict';
+
 var React = require('react-native');
 var _ = require('underscore');
 var app = require('../libs/app');
 var s = require('../styles/style');
 var ListItem = require('../components/ListItem');
+var Button = require('../components/Button');
 var LoadingView = require('../components/Loading');
 var navigation = require('../navigation/index');
 var common = require('@dbrugne/donut-common/mobile');
 var Alert = require('../libs/alert');
 var imageUploader = require('../libs/imageUpload');
-var emojione = require('emojione');
+var GroupAccess = require('./GroupAccess');
+var GroupHeader = require('./GroupHeader');
 
 var {
   Component,
@@ -19,7 +22,7 @@ var {
   StyleSheet,
   Image,
   TouchableHighlight
-} = React;
+  } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupSettings', {
@@ -33,10 +36,9 @@ i18next.addResourceBundle('en', 'GroupSettings', {
   'trusted-domains': 'Trusted e-mail domains',
   'add-password': 'Add password',
   'domain-sample': '@example.com',
-  'profile-details': 'Profile details',
+  'profile-details': 'PROFILE DETAILS',
   'profile-picture': 'Profile picture',
-  'end': 'End',
-  'delete': 'Delete this community',
+  'delete': 'DELETE THIS COMMUNITY',
   'deleteTitle': 'Delete community',
   'deleteDisclaimer': 'Are you sure you whant to delete __identifier__. This action is ireversible',
   'website-url': 'Wrong url'
@@ -51,6 +53,7 @@ class GroupSettings extends Component {
       loaded: false
     };
   }
+
   componentDidMount () {
     var what = {
       rooms: true,
@@ -65,7 +68,8 @@ class GroupSettings extends Component {
       this.onResponse(data);
     });
   }
-  onResponse(data) {
+
+  onResponse (data) {
     var atLeastOne = false;
     _.find(app.rooms.toJSON(), (room) => {
       if (room.group_id) {
@@ -75,20 +79,11 @@ class GroupSettings extends Component {
     });
     this.setState({
       loaded: true,
-      disclaimer: _.unescape(data.disclaimer),
-      description: _.unescape(data.description),
-      allow_user_request: data.allow_user_request,
-      allowed_domains: data.allowed_domains,
-      avatar: data.avatar,
-      identifier: data.identifier,
-      website: data.website && data.website.title ? data.website.title : '',
-      is_member: data.is_member,
-      is_op: data.is_op,
-      is_owner: data.is_owner,
-      new_domain: null,
+      data: data,
       atLeastOne: atLeastOne
     });
   }
+
   render () {
     if (this.state.loaded === false) {
       return (<LoadingView />);
@@ -96,13 +91,8 @@ class GroupSettings extends Component {
 
     return (
       <ScrollView style={styles.main}>
-        <View style={styles.containerTop}>
-          {this._renderAvatar(this.state.avatar)}
-          <Text style={{marginTop: 10}}>{this.state.identifier}</Text>
-        </View>
-
-        {this._renderAccess()}
-
+        <GroupHeader {...this.props} />
+        <GroupAccess data={this.state.data} {...this.props} />
         <Text style={styles.listGroupItemSpacing}/>
         {this._renderProfileDetails()}
         <Text style={styles.listGroupItemSpacing}/>
@@ -120,31 +110,14 @@ class GroupSettings extends Component {
       return null;
     }
     return (
-      <TouchableHighlight onPress={() => navigation.navigate('Group', {id: this.props.model.get('id'), name: this.props.model.get('name')})}
-                          underlayColor='transparent' >
+      <TouchableHighlight
+        onPress={() => navigation.navigate('Group', {id: this.props.model.get('id'), name: this.props.model.get('name')})}
+        underlayColor='transparent'>
         <Image style={styles.avatarGroup} source={{uri: avatarUrl}}/>
       </TouchableHighlight>
     );
   }
-  _renderAccess () {
-    if (!this.state.is_op && !this.state.is_owner && !this.isAdmin) {
-      return  null;
-    }
 
-    return (
-      <View>
-        <Text style={styles.listGroupItemSpacing}/>
-        <ListItem
-          onPress={() => navigation.navigate('GroupAccess', this.props.model)}
-          text={i18next.t('GroupSettings:access-title')}
-          icon='users'
-          type='button'
-          action
-          first
-        />
-      </View>
-    );
-  }
   onGroupEdit (component, value) {
     navigation.navigate('UserField', {
       component,
@@ -152,6 +125,7 @@ class GroupSettings extends Component {
       onSave: (key, val, cb) => this.saveGroupData(key, val, cb)
     });
   }
+
   saveGroupData (key, value, callback) {
     var updateData = {};
     updateData[key] = value;
@@ -178,56 +152,54 @@ class GroupSettings extends Component {
       }
     });
   }
+
   _renderProfileDetails () {
     return (
-      <View style={s.listGroup}>
+      <View
+        style={{ flexWrap: 'wrap', flexDirection: 'column', justifyContent: 'center', alignItems: 'stretch', marginTop: 20 }}>
         <ListItem text={i18next.t('GroupSettings:profile-picture')}
                   type='edit-button'
                   title={i18next.t('GroupSettings:profile-details')}
                   action
                   first
-                  image={this.state.avatar}
+                  image={this.state.data.avatar}
                   onPress={() => this._pickImage()}
-        />
+          />
         <ListItem text={i18next.t('GroupSettings:description')}
                   type='edit-button'
                   action
-                  value={this.state.description}
-                  onPress={() => this.onGroupEdit(require('./GroupEditDescription'), this.state.description)}
-        />
+                  value={_.unescape(this.state.data.description)}
+                  onPress={() => this.onGroupEdit(require('./GroupEditDescription'), _.unescape(this.state.data.description))}
+          />
         <ListItem text={i18next.t('GroupSettings:website')}
                   type='edit-button'
                   action
-                  value={this.state.website}
-                  onPress={() => this.onGroupEdit(require('./GroupEditWebsite'), this.state.website)}
-        />
+                  value={this.state.data.website && this.state.data.website.title ? this.state.data.website.title : ''}
+                  onPress={() => this.onGroupEdit(require('./GroupEditWebsite'), this.state.data.website && this.state.data.website.title ? this.state.data.website.title : '')}
+          />
       </View>
     );
   }
+
   _renderEnd () {
     var deleteGroupLink = null;
-    if (this.state.is_op || this.state.is_owner || this.isAdmin) {
+    if (this.state.data.is_op || this.state.data.is_owner || this.isAdmin) {
       deleteGroupLink = (
-        <ListItem
-          onPress={() => this.deleteGroup()}
-          text={i18next.t('GroupSettings:delete')}
-          type='button'
-          first
-          warning
-        />
+        <Button type='red'
+                onPress={() => this.deleteGroup()}
+                label={i18next.t('GroupSettings:delete')}
+                style={{ marginHorizontal: 20, marginTop: 20 }}
+          />
       );
     }
     var leaveGroupLink = null;
     if (!this.state.atLeastOne) {
       leaveGroupLink = (
-        <ListItem
-          onPress={() => this.leaveGroup()}
-          text={i18next.t('GroupSettings:leave')}
-          type='button'
-          first
-          warning
-          title={i18next.t('GroupSettings:end')}
-        />
+        <Button type='gray'
+                onPress={() => this.leaveGroup()}
+                label={i18next.t('GroupSettings:leave')}
+                style={{ marginHorizontal: 20 }}
+          />
       );
     }
     return (
@@ -237,6 +209,7 @@ class GroupSettings extends Component {
       </View>
     );
   }
+
   _pickImage () {
     var that = this;
     imageUploader.getImageAndUpload('group,avatar', null, (err, response) => {
@@ -258,11 +231,14 @@ class GroupSettings extends Component {
     Alert.askConfirmation(
       i18next.t('GroupSettings:deleteTitle'),
       i18next.t('GroupSettings:deleteDisclaimer', {identifier: this.props.model.get('identifier')}),
-      () => app.client.groupDelete(this.props.model.get('id'), () => {}),
-      () => {}
+      () => app.client.groupDelete(this.props.model.get('id'), () => {
+      }),
+      () => {
+      }
     );
   }
-  leaveGroup() {
+
+  leaveGroup () {
     app.client.groupLeave(this.props.model.get('id'));
     var model = app.groups.get(this.props.model.get('id'));
     if (!model) {
@@ -279,9 +255,7 @@ GroupSettings.propTypes = {model: React.PropTypes.object};
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0',
-    paddingTop: 10
+    flexWrap: 'wrap'
   },
   containerTop: {
     flexDirection: 'column',

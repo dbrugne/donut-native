@@ -4,7 +4,6 @@ var React = require('react-native');
 var {
   View,
   Text,
-  ScrollView,
   ListView
 } = React;
 
@@ -14,13 +13,11 @@ var app = require('../libs/app');
 var s = require('../styles/style');
 var alert = require('../libs/alert');
 var ListItem = require('../components/ListItem');
-var LoadingView = require('../components/Loading');
-var common = require('@dbrugne/donut-common/mobile');
-var emojione = require('emojione');
 var navigation = require('../navigation/index');
 
 i18next.addResourceBundle('en', 'GroupAccess', {
   'title': 'Members create discussions and manage them. Members can join any discussion open to members. Note: public discussions are open to anyone.',
+  'access-title': 'ACCESS',
   'disclaimer-public': 'This discussion is public. Any user can access it.',
   'disclaimer-public-2': 'You can switch this discussion to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public discussion will remain members once this discussion switched to private. Caution, this action cannot be undone.',
   'allow-users-request': 'Allow users to request access',
@@ -42,67 +39,54 @@ i18next.addResourceBundle('en', 'GroupAccess', {
 
 var GroupAccessView = React.createClass({
   propTypes: {
-    group: React.PropTypes.object,
+    model: React.PropTypes.object,
+    data: React.PropTypes.object,
     navigator: React.PropTypes.object
   },
   getInitialState: function () {
     this.passwordPattern = /(.{4,255})$/i;
     return {
-      loading: true
+      data: this.props.data,
+      setPassword: !!this.props.data.password,
+      newDomain: null,
+      ds: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(this.props.data.allowed_domains || [])
     };
-  },
-  componentDidMount: function() {
-    var what = {
-      users: false,
-      admin: true
-    };
-    app.client.groupRead(this.props.group.id, what, _.bind(function (data) {
-      if (data.err) {
-        return alert.show(i18next.t('messages.' + data.err));
-      }
-      this.setState({
-        loading: false,
-        data: data,
-        setPassword: !!data.password,
-        newDomain: null,
-        ds: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(data.allowed_domains)
-      });
-    }, this));
   },
   render: function () {
-    if (this.state.loading) {
-      return (<LoadingView />);
+    if (!this.state.data.is_owner && !this.isAdmin) {
+      return null;
     }
 
     return (
-      <ScrollView style={{ backgroundColor: '#f0f0f0' }}>
-        {this._renderPrivateTitle()}
-        <View style={s.listGroup}>
-          <Text style={s.listGroupItemSpacing}/>
-          <ListItem
-            text={i18next.t('GroupAccess:allow-users-request')}
-            type='switch'
-            help={this.state.data.allow_user_request ? '' : i18next.t('GroupAccess:allow-users-request-false')}
-            switchValue={this.state.data.allow_user_request}
-            onSwitch={this.saveGroupData.bind(this, {allow_user_request: !this.state.data.allow_user_request})}
-          />
+      <View style={{ marginTop: 20 }}>
+        <ListItem type='title' title={i18next.t('GroupAccess:access-title')} />
+        <View style={{ margin: 20 }}>
+          <Text style={{ fontFamily: 'Open Sans', fontSize: 14, color: '#394350' }}>{i18next.t('GroupAccess:title')}</Text>
+        </View>
 
-          <Text style={s.listGroupItemSpacing}/>
+        <View style={{ flexWrap: 'wrap', flexDirection: 'column', justifyContent: 'center', alignItems: 'stretch' }}>
           <ListItem
             onPress={() => this.onGroupEdit(require('./GroupEditDisclaimer'), _.unescape(this.state.data.disclaimer))}
             text={i18next.t('GroupAccess:disclaimer')}
             type='edit-button'
-            help={i18next.t('GroupAccess:disclaimer-help')}
             action
+            first
             autoCapitalize='none'
             value={_.unescape(this.state.data.disclaimer)}
-          />
+            />
+
+          <ListItem
+            text={i18next.t('GroupAccess:allow-users-request')}
+            type='switch'
+            switchValue={this.state.data.allow_user_request}
+            onSwitch={this.saveGroupData.bind(this, {allow_user_request: !this.state.data.allow_user_request})}
+            />
 
           {this._renderPassword()}
 
           {this._renderTrustedDomains()}
         </View>
-      </ScrollView>
+      </View>
     );
   },
   onGroupEdit (component, value) {
@@ -112,90 +96,76 @@ var GroupAccessView = React.createClass({
       onSave: (key, val, cb) => {
         let update = {};
         update[key] = val;
-        this.saveGroupData(update, cb)
+        this.saveGroupData(update, cb);
       }
     });
   },
-  _renderPrivateTitle: function() {
-    return (
-      <Text style={s.block}>
-        <Text>{i18next.t('GroupAccess:title')}</Text>
-      </Text>
-    );
-  },
-  _renderPassword: function() {
+  _renderPassword: function () {
     let passwordField = null;
     if (this.state.setPassword) {
       passwordField = (
         <ListItem
           ref='input'
-          onPress= {this._savePassword}
+          onPress={this._savePassword}
           placeholder={i18next.t('GroupAccess:password-placeholder')}
           value={this.state.data.password}
           maxLength={255}
-          onChangeText={(password) => this.setState({
-            data: _.extend(this.state.data, {password: password})
-          })}
+          onChangeText={(password) => this.setState({ data: _.extend(this.state.data, {password: password}) })}
           type='input-button'
-          help={i18next.t('GroupAccess:password-help')}
-        />
+          />
       );
     }
     return (
       <View>
-        <Text style={s.listGroupItemSpacing}/>
         <ListItem type='switch'
                   first
+                  last={!!passwordField}
                   text={i18next.t('GroupAccess:password')}
                   switchValue={this.state.setPassword}
-                  onSwitch={this.state.setPassword ? this._cleanPassword : () => { this.setState({ setPassword: true })}}
-                  help={this.state.setPassword ? '' : i18next.t('GroupAccess:password-disclaimer')}
-        />
+                  onSwitch={this.state.setPassword ? this._cleanPassword : () => { this.setState({ setPassword: true }); }}
+          />
         {passwordField}
       </View>
     );
   },
-  _renderTrustedDomains: function() {
+  _renderTrustedDomains: function () {
     return (
       <View>
         <Text style={s.listGroupItemSpacing}/>
         <Text style={s.block}>{i18next.t('GroupAccess:domains')}</Text>
         <Text style={s.block}>{i18next.t('GroupAccess:domains-disclaimer')}</Text>
 
-        <Text style={s.listGroupItemSpacing}/>
         <ListItem
           type='input-button'
-          onPress= {this._addDomain}
+          onPress={this._addDomain}
           placeholder={i18next.t('GroupAccess:domains-placeholder')}
           maxLength={255}
           value={this.state.newDomain}
           onChangeText={(domain) => this.setState({
             newDomain: domain
           })}
-        />
+          />
         <ListView
           dataSource={this.state.ds}
           scrollEnabled={false}
           renderRow={this._renderTrustedDomain}
-        />
+          />
       </View>
     );
   },
-  _renderTrustedDomain: function(domain, sectionID, rowID, highlightRow) {
+  _renderTrustedDomain: function (domain, sectionID, rowID, highlightRow) {
     return (
       <ListItem
         key={rowID}
         onPress={this._removeDomain.bind(this, domain)}
-        text={i18next.t('GroupAccess:delete-domain')}
+        text={domain}
         type='edit-button'
         iconRight='times'
-        warning
         action
-        value={domain}
-      />
+        />
     );
   },
-  _addDomain: function() {
+  _addDomain: function () {
     if (!this.state.newDomain) {
       return;
     }
@@ -213,7 +183,7 @@ var GroupAccessView = React.createClass({
       });
     }, this));
   },
-  _removeDomain: function(domain) {
+  _removeDomain: function (domain) {
     alert.askConfirmation(
       i18next.t('GroupAccess:delete-domain-title', {domain: domain}),
       i18next.t('GroupAccess:delete-domain-disclaimer', {domain: domain}),
@@ -231,10 +201,11 @@ var GroupAccessView = React.createClass({
           ds: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(newData.allowed_domains)
         });
       }),
-      () => {}
+      () => {
+      }
     );
   },
-  _savePassword: function() {
+  _savePassword: function () {
     if (!this.passwordPattern.test(this.state.data.password)) {
       return alert.show(i18next.t('messages.invalid-password'));
     }
@@ -246,7 +217,7 @@ var GroupAccessView = React.createClass({
       });
     });
   },
-  _cleanPassword: function() {
+  _cleanPassword: function () {
     this.saveGroupData({password: null}, () => {
       this.setState({
         setPassword: false
@@ -263,7 +234,7 @@ var GroupAccessView = React.createClass({
         return;
       }
 
-      this.setState({ data: _.extend(this.state.data, update)});
+      this.setState({data: _.extend(this.state.data, update)});
 
       if (callback) {
         callback();
@@ -271,6 +242,5 @@ var GroupAccessView = React.createClass({
     });
   }
 });
-
 
 module.exports = GroupAccessView;

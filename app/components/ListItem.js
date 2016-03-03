@@ -3,6 +3,7 @@
 var React = require('react-native');
 
 var ListItemButton = require('./ListItem/Button');            // Used to display an information that contains a link
+var ListItemTitle = require('./ListItem/Title');
 var ListItemSwitch = require('./ListItem/Switch');            // Used to display a switch button action
 var ListItemInput = require('./ListItem/Input');
 var ListItemInputButton = require('./ListItem/InputButton');
@@ -15,7 +16,7 @@ var ListItem = React.createClass({
   propTypes: {
     onPress: React.PropTypes.func, // callback action when component is clicked
     text: React.PropTypes.string, // string to display on element
-    type: React.PropTypes.oneOf(['switch', 'button', 'edit-button', 'input-button', 'input', 'text', 'image-list', 'radio']).isRequired, // type of the ListItem
+    type: React.PropTypes.oneOf(['switch', 'button', 'edit-button', 'input-button', 'input', 'text', 'image-list', 'radio', 'title']).isRequired, // type of the ListItem
     onSwitch: React.PropTypes.func, // callback action on switch component if any
     switchValue: React.PropTypes.bool, // boolean, value of switch button if any
     active: React.PropTypes.bool, // boolean to display the button status (radio)
@@ -41,6 +42,8 @@ var ListItem = React.createClass({
   },
   render () {
     switch (this.props.type) {
+      case 'title':
+        return (<ListItemTitle {...this.props} />);
       case 'switch':
         return (<ListItemSwitch {...this.props} />);
       case 'button':
