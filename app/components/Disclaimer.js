@@ -14,7 +14,7 @@ i18next.addResourceBundle('en', 'componentsDisclaimer', {
   'message': 'Message from'
 });
 
-var Link = React.createClass({
+var Disclaimer = React.createClass({
   propTypes: {
     model: React.PropTypes.object.isRequired,
     title: React.PropTypes.string,
@@ -70,4 +70,4 @@ var Link = React.createClass({
   }
 });
 
-module.exports = Link;
+module.exports = Disclaimer;

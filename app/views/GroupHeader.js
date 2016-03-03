@@ -62,7 +62,7 @@ var GroupHeaderView = React.createClass({
       <View
         style={{height: 20, flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}>
         <Text
-          style={styles.roomname}>{'#' + this.state.data.identifier}</Text>
+          style={styles.roomname}>{this.state.data.identifier}</Text>
       </View>
     );
   }
