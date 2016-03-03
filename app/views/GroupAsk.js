@@ -69,7 +69,7 @@ class GroupAskMembership extends Component {
 
     return (
       <ScrollView style={styles.main}>
-        <GroupHeader  model={this.state.data}/>
+        <GroupHeader data={this.state.data}/>
         <View style={styles.container}>
 
           {this._renderDisclaimer()}

@@ -55,7 +55,7 @@ var GroupView = React.createClass({
 
     return (
       <ScrollView style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0' }}>
-        <GroupHeader  model={this.state.data}/>
+        <GroupHeader data={this.state.data}/>
         <GroupContent data={this.state.data} {...this.props} />
       </ScrollView>
     );

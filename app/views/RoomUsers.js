@@ -43,7 +43,7 @@ i18next.addResourceBundle('en', 'RoomUsers', {
   'title': 'Actions on this user',
   'chat': 'Chat one-to-one',
   'cancel': 'Cancel',
-  'view-profile': 'View profile',
+  'view-profile': 'View profile'
 }, true, true);
 
 var RoomUsersView = React.createClass({

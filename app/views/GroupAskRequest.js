@@ -63,7 +63,7 @@ class GroupAskMembershipRequest extends Component {
     if (this.props.scroll) {
       return (
         <ScrollView style={styles.main}>
-          <GroupHeader  model={this.state.data}/>
+          <GroupHeader data={this.state.data}/>
           <View style={styles.container}>
             {content}
           </View>
