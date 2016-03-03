@@ -84,11 +84,6 @@ var style = {
   listGroupItemFirst: {},
   listGroupItemSpacing: {
     flex: 1,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#f0f0f0',
     height: 20
   },
   listGroupItemIcon: {
@@ -231,7 +226,7 @@ var style = {
   block: {
     color: '#333',
     marginTop: 20,
-    marginHorizontal: 10
+    marginHorizontal: 20
   },
   help: {
     color: '#999999',
