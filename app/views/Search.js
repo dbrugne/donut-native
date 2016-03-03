@@ -8,8 +8,8 @@ var {
   TextInput,
   View,
   ListView,
-  Component,
-  } = React;
+  Component
+} = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
 
 var app = require('../libs/app');
@@ -152,15 +152,16 @@ class SearchView extends Component {
   _renderLoadMore () {
     if (this.state.loading) {
       return (<LoadingView style={styles.loadMore}/>);
-    }
-    else if (this.state.more) {
+    } else if (this.state.more) {
       return (
         <TouchableHighlight onPress={this.loadMore.bind(this)}
-                            underlayColor='#DDD'
+                            underlayColor='#f0f0f0'
+                            style={{height: 50, justifyContent: 'center', alignItems: 'center'}}
           >
-          <View style={styles.loadMore}>
-            <Text style={{color:'#333', textAlign: 'center'}}>{i18next.t('Search:load-more')}</Text>
-
+          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={{textAlign: 'center', fontFamily: 'Open Sans', fontSize: 14, color: '#8491A1'}}>● ● ●</Text>
+            <Text
+              style={{ textAlign: 'center', fontFamily: 'Open Sans', fontSize: 14, color: '#8491A1' }}>{i18next.t('Search:load-more')}</Text>
           </View>
         </TouchableHighlight>
       );
