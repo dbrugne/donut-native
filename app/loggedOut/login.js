@@ -22,7 +22,8 @@ i18next.addResourceBundle('en', 'login', {
   'signin': 'SIGN IN',
   'password': 'Password',
   'mail': 'Mail',
-  'eutc': 'EUTC'
+  'eutc': 'EUTC',
+  'unknown': 'Unknown account'
 });
 
 var {
@@ -199,7 +200,11 @@ class LoginView extends Component {
     currentUser.emailLogin(this.state.email, this.state.password, (err) => {
       this.setState({showLoadingModal: false});
       if (err) {
-        Alert.show(i18next.t('messages.' + err));
+        if (err === 'unknown') {
+          Alert.show(i18next.t('login:unknown'));
+        } else {
+          Alert.show(i18next.t('messages.' + err));
+        }
       }
     });
   }
