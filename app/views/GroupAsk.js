@@ -13,6 +13,9 @@ var Disclaimer = require('../components/Disclaimer');
 var LoadingView = require('../components/Loading');
 var GroupHeader = require('./GroupHeader');
 var alert = require('../libs/alert');
+var GroupAskRequest = require('./GroupAskRequest');
+var GroupAskEmail = require('./GroupAskEmail');
+var GroupAskPassword = require('./GroupAskPassword');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupAsk', {
@@ -89,6 +92,7 @@ var GroupAskMembership = React.createClass({
         </GroupHeader>
 
         {this._renderDisclaimer()}
+        {this._renderContent()}
 
       </View>
     );
@@ -103,7 +107,7 @@ var GroupAskMembership = React.createClass({
     );
   },
   _renderAskMembershipButton: function () {
-    if (!this.state.options.request) {
+    if (this._countOptions() === 1 || !this.state.options.request) {
       return null;
     }
 
@@ -149,13 +153,40 @@ var GroupAskMembership = React.createClass({
     );
   },
   _renderDisclaimer: function () {
+    if (this._countOptions() > 1) {
+      return null;
+    }
+
     return (
       <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' }}>
         <Disclaimer data={this.state.data} navigator={this.props.navigator}/>
       </View>
     );
   },
+  _countOptions: function () {
+    return (this.state.options.request ? 1 : 0) + (this.state.options.password ? 1 : 0) + (this.state.options.allowed_domains ? 1 : 0);
+  },
+  _renderContent: function () {
+    if (this._countOptions() > 1) {
+      return null;
+    }
 
+    if (this.state.options.request) {
+      return (
+        <GroupAskRequest navigator={this.props.navigator} data={this.state.data} isAllowedPending={this.state.options.isAllowedPending} />
+      );
+    }
+
+    if (this.state.options.password) {
+      return (
+        <GroupAskPassword navigator={this.props.navigator} data={this.state.data} />
+      );
+    }
+
+    return (
+      <GroupAskEmail navigator={this.props.navigator} data={this.state.data} domains={this.state.options.allowed_domains} />
+    );
+  },
   updateGroup: function () {
     this.props.navigator.popToTop(); // @todo handle in navigation.popToTop() wrapper
     app.trigger('refreshGroup', true);

@@ -60,7 +60,7 @@ var GroupHeaderView = React.createClass({
   _renderName () {
     return (
       <View
-        style={{height: 20, flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}>
+        style={[{height: 20, flexDirection: 'column', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}, this.props.small && {marginTop: 20}]}>
         <Text
           style={styles.roomname}>{this.state.data.identifier}</Text>
       </View>
@@ -81,22 +81,22 @@ var BackgroundComponent = React.createClass({
     }
 
     // @todo uncomment when blur is ok
-    // if (avatarUrl) {
-    //   return (
-    //     <Image
-    //       style={{resizeMode: 'cover', paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}
-    //       source={{uri: avatarUrl}}>
-    //       {this.props.children}
-    //     </Image>
-    //   );
-    // }
+    if (avatarUrl) {
+      return (
+        <Image
+          style={{resizeMode: 'cover', paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}
+          source={{uri: avatarUrl}}>
+          {this.props.children}
+        </Image>
+      );
+    }
 
-    return (
-      <View
-        style={{ paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.50)' }}>
-        {this.props.children}
-      </View>
-    );
+    //return (
+    //  <View
+    //    style={{ paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.50)' }}>
+    //    {this.props.children}
+    //  </View>
+    //);
   }
 });
 

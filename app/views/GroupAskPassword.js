@@ -3,19 +3,23 @@
 var React = require('react-native');
 var {
   View,
-  Text,
-  ScrollView,
-  StyleSheet
-  } = React;
+  Text
+} = React;
 
 var alert = require('../libs/alert');
 var app = require('../libs/app');
+var Button = require('../components/Button');
+var Disclaimer = require('../components/Disclaimer');
 var ListItem = require('../components/ListItem');
-var s = require('../styles/style');
 var GroupHeader = require('./GroupHeader');
+var KeyboardAwareComponent = require('../components/KeyboardAware');
 var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'GroupAskPassword', {
+  'rooms': 'Discussion list'
+});
 
-var GroupAskMembershipPassword = React.createClass({
+
+var GroupAskPassword = React.createClass({
   propTypes: {
     data: React.PropTypes.any,
     navigator: React.PropTypes.object,
@@ -24,42 +28,47 @@ var GroupAskMembershipPassword = React.createClass({
   getInitialState: function () {
     return {
       data: this.props.data,
-      password: ''
+      password: null,
+      loadingPassword: false
     };
   },
   render: function () {
     let content = (
-      <View style={{flex: 1, alignSelf: 'stretch'}}>
+      <View style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'column', alignItems: 'center', paddingVertical: 20 }}>
 
-        <Text style={s.listGroupItemSpacing}/>
-        <ListItem
-          title={i18next.t('group.info-password')}
-          onChangeText={(text) => this.setState({password: text})}
-          placeholder={i18next.t('group.placeholder-password')}
-          first
-          secureTextEntry
-          type='input'
-          />
-
-        <Text style={s.listGroupItemSpacing}/>
-        <ListItem
-          onPress={this.onSendPassword.bind(this)}
-          last
-          action
-          type='button'
-          text={i18next.t('group.send')}
+        <View style={{alignSelf: 'stretch'}}>
+          <ListItem type='input'
+                    autoCapitalize='none'
+                    ref='input'
+                    first
+                    last
+                    placeholder={i18next.t('group.placeholder-password')}
+                    onChangeText={(text) => this.setState({password: text})}
+                    value={this.state.password}
+                    style={{ alignSelf: 'stretch' }}
+                    title={i18next.t('group.info-password')}
+            />
+        </View>
+        <View style={{ flex: 1 }}/>
+        <Button type='gray'
+                onPress={this.onSendPassword}
+                label={i18next.t('group.send')}
+                loading={this.state.loadingPassword}
+                style={{ alignSelf: 'stretch', marginTop: 10, marginHorizontal: 20 }}
           />
       </View>
     );
 
     if (this.props.scroll) {
       return (
-        <ScrollView style={styles.main}>
+        <KeyboardAwareComponent
+          shouldShow={() => { return true; }}
+          shouldHide={() => { return true; }}
+          >
           <GroupHeader data={this.state.data} small/>
-          <View style={styles.container}>
-            {content}
-          </View>
-        </ScrollView>
+          <Disclaimer {...this.props} />
+          {content}
+        </KeyboardAwareComponent>
       );
     }
 
@@ -69,7 +78,9 @@ var GroupAskMembershipPassword = React.createClass({
     if (!this.state.password) {
       return alert.show(i18next.t('group.wrong-password'));
     }
+    this.setState({loadingPassword: true});
     app.client.groupBecomeMember(this.state.data.group_id, this.state.password, (response) => {
+      this.setState({loadingPassword: false});
       if (response.success) {
         app.trigger('refreshGroup', true);
         this.props.navigator.popToTop();
@@ -83,16 +94,4 @@ var GroupAskMembershipPassword = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
-  main: {
-    flexDirection: 'column',
-    flexWrap: 'wrap'
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
-
-module.exports = GroupAskMembershipPassword;
+module.exports = GroupAskPassword;

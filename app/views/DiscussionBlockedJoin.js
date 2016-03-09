@@ -214,7 +214,7 @@ var DiscussionBlockedJoin = React.createClass({
                     placeholder={i18next.t('discussionBlockedJoin:password-placeholder')}
                     onChange={(event) => this.setState({password: event.nativeEvent.text})}
                     value={this.state.password}
-                    style={{ backgroundColor: 'blue', alignSelf: 'stretch' }}
+                    style={{ alignSelf: 'stretch' }}
                     title={i18next.t('discussionBlockedJoin:enter-password')}
                     />
         </View>

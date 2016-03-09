@@ -4,19 +4,18 @@ var React = require('react-native');
 var {
   View,
   Text,
-  ScrollView,
-  StyleSheet
-  } = React;
+  TextInput
+} = React;
 
-var s = require('../styles/style');
 var alert = require('../libs/alert');
 var app = require('../libs/app');
-var ListItem = require('../components/ListItem');
 var GroupHeader = require('./GroupHeader');
-
+var Disclaimer = require('../components/Disclaimer');
+var Button = require('../components/Button');
+var KeyboardAwareComponent = require('../components/KeyboardAware');
 var i18next = require('../libs/i18next');
 
-var GroupAskMembershipRequest = React.createClass({
+var GroupAskRequest = React.createClass({
   propTypes: {
     data: React.PropTypes.any,
     navigator: React.PropTypes.object,
@@ -34,43 +33,49 @@ var GroupAskMembershipRequest = React.createClass({
     let content = null;
     if (this.props.isAllowedPending) {
       content = (
-        <Text style={[s.block]}>{i18next.t('group.allowed-pending')}</Text>
+          <Text style={{ margin: 20, fontFamily: 'Open Sans', fontSize: 14, color: '#F15261' }}>{i18next.t('group.allowed-pending')}</Text>
       );
     } else {
       content = (
-        <View style={{alignSelf: 'stretch'}}>
-          <Text style={[s.block]}>{i18next.t('group.info-request')}</Text>
-
-          <ListItem
-            onChangeText={(text) => this.setState({motivations: text})}
-            multiline
-            placeholder={i18next.t('group.placeholder-request')}
-            first
-            type='input'
+        <View
+          style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'column', alignItems: 'center', paddingVertical: 20 }}>
+          <View
+            style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginHorizontal: 20, alignSelf: 'stretch' }}>
+            <View style={{width: 1, height: 40, backgroundColor: '#FC2063'}}/>
+            <TextInput autoCapitalize='none'
+                       ref='input'
+                       placeholder={i18next.t('group.placeholder-request')}
+                       onChangeText={(text) => this.setState({motivations: text})}
+                       value={this.state.request}
+                       style={{ flex: 1, fontFamily: 'Open Sans', fontSize: 14, fontWeight: '400', color: '#333', height: 40, paddingVertical: 8, paddingHorizontal: 10 }}
+              />
+          </View>
+          <View style={{ flex: 1 }}/>
+          <View style={{ height: 1, alignSelf: 'stretch', backgroundColor: '#E7ECF3', marginBottom: 10 }}/>
+          <Text
+            style={{ alignSelf: 'stretch', marginHorizontal: 20, fontFamily: 'Open Sans', fontSize: 12, color: '#AFBAC8', fontStyle: 'italic' }}>{i18next.t('group.info-request')}</Text>
+          <Button type='gray'
+                  onPress={this.onSendRequest}
+                  label={i18next.t('group.send')}
+                  loading={this.state.loading}
+                  style={{ alignSelf: 'stretch', marginTop: 10, marginHorizontal: 20 }}
             />
-
-          <Text style={s.listGroupItemSpacing}/>
-          <ListItem
-            onPress={this.onSendRequest.bind(this)}
-            last
-            action
-            loading={this.state.loading}
-            type='button'
-            text={i18next.t('group.send')}
-            />
-
         </View>
       );
     }
 
     if (this.props.scroll) {
       return (
-        <ScrollView style={styles.main}>
+        <KeyboardAwareComponent
+          shouldShow={() => { return true; }}
+          shouldHide={() => { return true; }}
+          >
           <GroupHeader data={this.state.data} small/>
-          <View style={styles.container}>
+          <View style={{alignSelf: 'stretch'}}>
+            <Disclaimer {...this.props} />
             {content}
           </View>
-        </ScrollView>
+        </KeyboardAwareComponent>
       );
     }
 
@@ -94,16 +99,4 @@ var GroupAskMembershipRequest = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
-  main: {
-    flexDirection: 'column',
-    flexWrap: 'wrap'
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
-
-module.exports = GroupAskMembershipRequest;
+module.exports = GroupAskRequest;
