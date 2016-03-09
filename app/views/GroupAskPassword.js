@@ -2,8 +2,7 @@
 
 var React = require('react-native');
 var {
-  View,
-  Text
+  View
 } = React;
 
 var alert = require('../libs/alert');
@@ -15,9 +14,10 @@ var GroupHeader = require('./GroupHeader');
 var KeyboardAwareComponent = require('../components/KeyboardAware');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupAskPassword', {
-  'rooms': 'Discussion list'
+  'placeholder-password': 'password',
+  'info-password': 'ENTER THE PASSWORD',
+  'send': 'SEND',
 });
-
 
 var GroupAskPassword = React.createClass({
   propTypes: {
@@ -42,17 +42,17 @@ var GroupAskPassword = React.createClass({
                     ref='input'
                     first
                     last
-                    placeholder={i18next.t('group.placeholder-password')}
+                    placeholder={i18next.t('GroupAskPassword:placeholder-password')}
                     onChangeText={(text) => this.setState({password: text})}
                     value={this.state.password}
                     style={{ alignSelf: 'stretch' }}
-                    title={i18next.t('group.info-password')}
+                    title={i18next.t('GroupAskPassword:info-password')}
             />
         </View>
         <View style={{ flex: 1 }}/>
         <Button type='gray'
                 onPress={this.onSendPassword}
-                label={i18next.t('group.send')}
+                label={i18next.t('GroupAskPassword:send')}
                 loading={this.state.loadingPassword}
                 style={{ alignSelf: 'stretch', marginTop: 10, marginHorizontal: 20 }}
           />
@@ -76,7 +76,7 @@ var GroupAskPassword = React.createClass({
   },
   onSendPassword: function () {
     if (!this.state.password) {
-      return alert.show(i18next.t('group.wrong-password'));
+      return alert.show(i18next.t('messages.wrong-password'));
     }
     this.setState({loadingPassword: true});
     app.client.groupBecomeMember(this.state.data.group_id, this.state.password, (response) => {
@@ -86,7 +86,7 @@ var GroupAskPassword = React.createClass({
         this.props.navigator.popToTop();
       } else {
         if (response.err === 'wrong-password') {
-          return alert.show(i18next.t('group.wrong-password'));
+          return alert.show(i18next.t('messages.wrong-password'));
         }
         return alert.show(i18next.t('messages.' + response.err));
       }
