@@ -4,7 +4,6 @@ var React = require('react-native');
 var {
   View,
   Text,
-  Component,
   ListView,
   ScrollView,
   StyleSheet
@@ -25,14 +24,19 @@ i18next.addResourceBundle('en', 'GroupAskEmail', {
   'add-email': 'Send'
 });
 
-class GroupAskEmail extends Component {
-  constructor (props) {
-    super(props);
+var GroupAskEmail = React.createClass({
+  propTypes: {
+    data: React.PropTypes.any,
+    navigator: React.PropTypes.object,
+    domains: React.PropTypes.array,
+    scroll: React.PropTypes.bool
+  },
+  getInitialState: function () {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.select = '';
 
     var listDomains = [];
-    _.each(props.domains, (nomDomain, index) => {
+    _.each(this.props.domains, (nomDomain, index) => {
       var domain = {
         name: nomDomain,
         isSelect: (index === 0)
@@ -43,16 +47,15 @@ class GroupAskEmail extends Component {
       listDomains.push(domain);
     });
 
-    this.state = {
-      data: props.data,
-      domains: props.domains,
+    return {
+      data: this.props.data,
+      domains: this.props.domains,
       listDomains: listDomains,
       email: '',
       dataSource: ds.cloneWithRows(listDomains)
     };
-  }
-
-  render () {
+  },
+  render: function () {
     let content = (
       <View style={{flex: 1, alignSelf: 'stretch'}}>
 
@@ -89,7 +92,7 @@ class GroupAskEmail extends Component {
     if (this.props.scroll) {
       return (
         <ScrollView style={styles.main}>
-          <GroupHeader data={this.state.data}/>
+          <GroupHeader data={this.state.data} small/>
           <View style={styles.container}>
             {content}
           </View>
@@ -98,9 +101,8 @@ class GroupAskEmail extends Component {
     }
 
     return content;
-  }
-
-  renderElement (element) {
+  },
+  renderElement: function (element) {
     return (
       <ListItem text={element.name}
                 type='switch'
@@ -108,9 +110,8 @@ class GroupAskEmail extends Component {
                 switchValue={element.isSelect}
         />
     );
-  }
-
-  updateElement (nameDomain) {
+  },
+  updateElement: function (nameDomain) {
     if (this.select === nameDomain) {
       return;
     }
@@ -126,9 +127,8 @@ class GroupAskEmail extends Component {
     });
     this.select = nameDomain;
     this.render();
-  }
-
-  onAddEmail () {
+  },
+  onAddEmail: function () {
     if (!this.select || _.indexOf(this.state.domains, this.select) === -1) {
       return alert.show(i18next.t('messages.unknownerror'));
     }
@@ -152,13 +152,12 @@ class GroupAskEmail extends Component {
       }
     }, this));
   }
-}
+});
 
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
+    flexWrap: 'wrap'
   },
   container: {
     flex: 1,

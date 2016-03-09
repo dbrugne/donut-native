@@ -68,7 +68,7 @@ var GroupView = React.createClass({
       </ScrollView>
     );
   },
-  _renderActions: function() {
+  _renderActions: function () {
     if (this.state.data.is_member || this.state.data.is_op || this.state.data.i_am_banned || this.state.data.is_owner) {
       return null;
     }

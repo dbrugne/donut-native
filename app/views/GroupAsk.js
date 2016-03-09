@@ -3,64 +3,79 @@
 var React = require('react-native');
 var {
   View,
-  Text,
-  ScrollView,
-  Component,
   StyleSheet
   } = React;
-var Icon = require('react-native-vector-icons/FontAwesome');
 
-var ListItem = require('../components/ListItem');
-var s = require('../styles/style');
+var Button = require('../components/Button');
 var app = require('../libs/app');
 var navigation = require('../navigation/index');
-var MembershipRequest = require('./GroupAskRequest');
-var MembershipPassword = require('./GroupAskPassword');
-var MembershipEmail = require('./GroupAskEmail');
+var Disclaimer = require('../components/Disclaimer');
 var LoadingView = require('../components/Loading');
 var GroupHeader = require('./GroupHeader');
-var i18next = require('../libs/i18next');
 var alert = require('../libs/alert');
 
-class GroupAskMembership extends Component {
+var i18next = require('../libs/i18next');
+i18next.addResourceBundle('en', 'GroupAsk', {
+  'request-title': 'REQUEST AN ACCESS',
+  'password-title': 'ENTER PASSWORD',
+  'domain-title': 'AUTHORIZED EMAIL',
+  'email-title': 'I have an authorized e-mail',
+  'other-request': 'You can join this community only if invited by its moderators.',
+  'wrong-format-email': 'Mail address is not valid',
+  'success-email': 'The email has been successfully added to your account. You will receive a verification e-mail.',
+  'mail-already-exist': 'This mail address is already used',
+  'info-password': 'Enter the password :',
+  'placeholder-password': 'password',
+  'send': 'send',
+  'wrong-password': 'invalid password',
+  'allow-pending': 'An access request is already pending',
+  'info-request': 'Your contact details and your following message (optional) will be sent to the moderators of this community.',
+  'placeholder-request': 'Your motivations, background ...',
+  'allowed-pending': 'Access to this community is by invitation, and you already have a request in progress.',
+  'success-request': 'Request sent ! You will be notified when accepted.',
+  'message-wrong-format': 'The message should be less than 200 character',
+  'not-confirmed': 'Action authorized to verified accounts only. Verify your e-mail.'
+});
 
-  constructor (props) {
-    super(props);
-    this.state = {
-      data: props.data,
+var GroupAskMembership = React.createClass({
+  propTypes: {
+    data: React.PropTypes.any,
+    navigator: React.PropTypes.object
+  },
+  getInitialState: function () {
+    return {
+      type: null,
+      data: this.props.data,
       options: null,
-      loading: true
+      loading: true,
+      loadingRequest: false,
+      loadingPassword: false,
+      loadingDomain: false
     };
-  }
-
-  onFocus () {
+  },
+  onFocus: function () {
     this.onRefresh();
-  }
-
-  onRefresh () {
-    app.client.groupBecomeMember(this.state.data.group_id, null, this.onData.bind(this));
-  }
-
+  },
+  onRefresh: function () {
+    app.client.groupBecomeMember(this.state.data.group_id, null, this.onData);
+  },
   onData (response) {
-    if (response.err) {
-      if (response.err === 'already-member') {
-        return this.updateGroup();
-      }
+    // Anything but already a member : show an error
+    if (response.err && response.err !== 'already-member') {
       return alert.show(i18next.t('messages.' + response.err));
     }
 
-    // !response.success --> an option is required to join the group
-    if (!response.success && response.options) {
-      return this.setState({
-        options: response.options,
-        loading: false
-      });
+    // already a member or success or no options to show, redraw group page
+    if (response.err || response.success || !response.options) {
+      return this.updateGroup();
     }
 
-    this.updateGroup();
-  }
-
-  render () {
+    return this.setState({
+      options: response.options,
+      loading: false
+    });
+  },
+  render: function () {
     if (this.state.loading) {
       return (
         <LoadingView />
@@ -68,131 +83,91 @@ class GroupAskMembership extends Component {
     }
 
     return (
-      <ScrollView style={styles.main}>
-        <GroupHeader data={this.state.data}/>
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <GroupHeader data={this.state.data}>
+          {this._renderActions()}
+        </GroupHeader>
 
-          {this._renderDisclaimer()}
-          {this.renderListOptions()}
+        {this._renderDisclaimer()}
 
-        </View>
-      </ScrollView>
-    );
-  }
-
-  _renderDisclaimer () {
-    if (!this.state.options.disclaimer) {
-      return null;
-    }
-    return (
-      <View style={[s.alertWarning, {flex: 1, marginVertical: 0, marginHorizontal: 0, borderRadius: 0, alignSelf:'stretch'}]}>
-        <View style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', alignSelf:'stretch'}}>
-          <Icon
-            name='quote-right'
-            size={14}
-            color='#8a6d3b'
-            style={{marginTop: 2}}
-          />
-          <View style={{flexDirection: 'column', flex:1, justifyContent: 'center'}}>
-            <Text style={[s.alertWarningText, {fontStyle: 'italic', paddingLeft: 5}]}>{this.state.options.disclaimer}</Text>
-          </View>
-        </View>
       </View>
     );
-  }
-
-  renderListOptions () {
-    var nbrOptions = (this.state.options.allowed_domains ? 1 : 0) + (this.state.options.password ? 1 : 0) + (this.state.options.request ? 1 : 0);
-    if (nbrOptions > 1) {
-      var request = null;
-      var password = null;
-      var email = null;
-
-      if (this.state.options.request) {
-        request = (
-          <ListItem
-            onPress={() => navigation.navigate('GroupAskRequest', {data: this.state.data, options: this.state.options})}
-            text={i18next.t('group.request-title')}
-            first
-            action
-            type='button'
-            />
-        );
-      }
-      if (this.state.options.password) {
-        password = (
-          <ListItem
-            onPress={() => navigation.navigate('GroupAskPassword', this.state.data)}
-            text={i18next.t('group.password-title')}
-            first={(!this.state.options.request)}
-            last={(!this.state.options.email)}
-            action
-            type='button'
-            />
-        );
-      }
-      if (this.state.options.allowed_domains) {
-        email = (
-          <ListItem
-            onPress={() => navigation.navigate('GroupAskEmail', {data: this.state.data, options: this.state.options})}
-            text={i18next.t('group.email-title')}
-            last
-            action
-            type='button'
-            />
-        );
-      }
-
-      return (
-        <View style={{paddingTop: 10, alignSelf: 'stretch'}}>
-          {request}
-          {password}
-          {email}
-        </View>
-      );
-    } else if (nbrOptions === 1) {
-      if (this.state.options.request) {
-        return (
-          <MembershipRequest data={this.state.data} {...this.props} isAllowedPending={this.state.options.isAllowedPending} scroll={false} />
-        );
-      } else if (this.state.options.password) {
-        return (
-          <MembershipPassword data={this.state.data} {...this.props} scroll={false} />
-        );
-      } else {
-        return (
-          <MembershipEmail data={this.state.data} {...this.props} domains={this.state.options.allowed_domains} scroll={false} />
-        );
-      }
-    } else {
-      return (
-        <View style={{flex:1, alignSelf: 'stretch'}}>
-          <Text style={[s.block]}>{i18next.t('group.other-request')}</Text>
-        </View>
-      );
+  },
+  _renderActions: function () {
+    return (
+      <View style={{ alignSelf: 'stretch' }}>
+        {this._renderAskMembershipButton()}
+        {this._renderPasswordButton()}
+        {this._renderAllowedDomains()}
+      </View>
+    );
+  },
+  _renderAskMembershipButton: function () {
+    if (!this.state.options.request) {
+      return null;
     }
-  }
 
-  updateGroup () {
-    this.setState({
-      success: true
-    });
+    return (
+      <Button
+        onPress={() => navigation.navigate('GroupAskRequest', {data: this.state.data, options: this.state.options})}
+        label={i18next.t('GroupAsk:request-title')}
+        type='white'
+        active={this.state.type === 'request'}
+        loading={this.state.loadingRequest}
+        style={{ alignSelf: 'stretch', marginHorizontal: 40, marginTop: 10 }}
+        />
+    );
+  },
+  _renderPasswordButton: function () {
+    if (!this.state.options.password) {
+      return null;
+    }
+
+    return (
+      <Button onPress={() => navigation.navigate('GroupAskPassword', this.state.data)}
+              label={i18next.t('GroupAsk:password-title')}
+              type='white'
+              active={this.state.type === 'password'}
+              loading={this.state.loadingPassword}
+              style={{ alignSelf: 'stretch', marginHorizontal: 40, marginTop: 10 }}
+        />
+    );
+  },
+  _renderAllowedDomains: function () {
+    if (!this.state.options.allowed_domains) {
+      return null;
+    }
+
+    return (
+      <Button onPress={() => navigation.navigate('GroupAskEmail', {data: this.state.data, options: this.state.options})}
+              label={i18next.t('GroupAsk:domain-title')}
+              type='white'
+              active={this.state.type === 'domain'}
+              loading={this.state.loadingDomain}
+              style={{ alignSelf: 'stretch', marginHorizontal: 40, marginTop: 10 }}
+        />
+    );
+  },
+  _renderDisclaimer: function () {
+    return (
+      <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' }}>
+        <Disclaimer data={this.state.data} navigator={this.props.navigator}/>
+      </View>
+    );
+  },
+
+  updateGroup: function () {
     this.props.navigator.popToTop(); // @todo handle in navigation.popToTop() wrapper
     app.trigger('refreshGroup', true);
   }
-}
+});
 
 var styles = StyleSheet.create({
-  main: {
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
-  },
   container: {
-    flex: 1,
-    flexDirection:'column',
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-start',
+    flex: 1
   }
 });
 

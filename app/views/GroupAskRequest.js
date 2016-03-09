@@ -4,7 +4,6 @@ var React = require('react-native');
 var {
   View,
   Text,
-  Component,
   ScrollView,
   StyleSheet
   } = React;
@@ -17,17 +16,21 @@ var GroupHeader = require('./GroupHeader');
 
 var i18next = require('../libs/i18next');
 
-class GroupAskMembershipRequest extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      data: props.data,
+var GroupAskMembershipRequest = React.createClass({
+  propTypes: {
+    data: React.PropTypes.any,
+    navigator: React.PropTypes.object,
+    isAllowedPending: React.PropTypes.bool,
+    scroll: React.PropTypes.bool
+  },
+  getInitialState: function () {
+    return {
+      data: this.props.data,
       motivations: '',
       loading: false
     };
-  }
-
-  render () {
+  },
+  render: function () {
     let content = null;
     if (this.props.isAllowedPending) {
       content = (
@@ -46,7 +49,7 @@ class GroupAskMembershipRequest extends Component {
             type='input'
             />
 
-          <Text style={s.listGroupItemSpacing} />
+          <Text style={s.listGroupItemSpacing}/>
           <ListItem
             onPress={this.onSendRequest.bind(this)}
             last
@@ -63,7 +66,7 @@ class GroupAskMembershipRequest extends Component {
     if (this.props.scroll) {
       return (
         <ScrollView style={styles.main}>
-          <GroupHeader data={this.state.data}/>
+          <GroupHeader data={this.state.data} small/>
           <View style={styles.container}>
             {content}
           </View>
@@ -72,9 +75,8 @@ class GroupAskMembershipRequest extends Component {
     }
 
     return content;
-  }
-
-  onSendRequest () {
+  },
+  onSendRequest: function () {
     this.setState({loading: true});
     app.client.groupRequest(this.state.data.group_id, this.state.motivations, (response) => {
       this.setState({loading: false});
@@ -90,13 +92,12 @@ class GroupAskMembershipRequest extends Component {
       }
     });
   }
-}
+});
 
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
+    flexWrap: 'wrap'
   },
   container: {
     flex: 1,

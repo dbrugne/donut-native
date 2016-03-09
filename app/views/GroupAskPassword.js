@@ -4,7 +4,6 @@ var React = require('react-native');
 var {
   View,
   Text,
-  Component,
   ScrollView,
   StyleSheet
   } = React;
@@ -16,20 +15,23 @@ var s = require('../styles/style');
 var GroupHeader = require('./GroupHeader');
 var i18next = require('../libs/i18next');
 
-class GroupAskMembershipPassword extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      data: props.data,
+var GroupAskMembershipPassword = React.createClass({
+  propTypes: {
+    data: React.PropTypes.any,
+    navigator: React.PropTypes.object,
+    scroll: React.PropTypes.bool
+  },
+  getInitialState: function () {
+    return {
+      data: this.props.data,
       password: ''
     };
-  }
-
-  render () {
+  },
+  render: function () {
     let content = (
       <View style={{flex: 1, alignSelf: 'stretch'}}>
 
-        <Text style={s.listGroupItemSpacing} />
+        <Text style={s.listGroupItemSpacing}/>
         <ListItem
           title={i18next.t('group.info-password')}
           onChangeText={(text) => this.setState({password: text})}
@@ -39,7 +41,7 @@ class GroupAskMembershipPassword extends Component {
           type='input'
           />
 
-        <Text style={s.listGroupItemSpacing} />
+        <Text style={s.listGroupItemSpacing}/>
         <ListItem
           onPress={this.onSendPassword.bind(this)}
           last
@@ -53,7 +55,7 @@ class GroupAskMembershipPassword extends Component {
     if (this.props.scroll) {
       return (
         <ScrollView style={styles.main}>
-          <GroupHeader data={this.state.data}/>
+          <GroupHeader data={this.state.data} small/>
           <View style={styles.container}>
             {content}
           </View>
@@ -62,9 +64,8 @@ class GroupAskMembershipPassword extends Component {
     }
 
     return content;
-  }
-
-  onSendPassword () {
+  },
+  onSendPassword: function () {
     if (!this.state.password) {
       return alert.show(i18next.t('group.wrong-password'));
     }
@@ -80,13 +81,12 @@ class GroupAskMembershipPassword extends Component {
       }
     });
   }
-}
+});
 
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
-    flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0'
+    flexWrap: 'wrap'
   },
   container: {
     flex: 1,
