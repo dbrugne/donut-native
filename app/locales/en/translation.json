@@ -101,7 +101,8 @@
     "available-soon": "Available soon",
     "report": "Report",
     "manage-invitations": "Manage invitations",
-    "allowed-users": "Allowed users"
+    "allowed-users": "Allowed users",
+    "room-preferences": "Notifications"
   },
   "group": {
     "request-title": "I request membership",

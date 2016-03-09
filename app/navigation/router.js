@@ -202,6 +202,8 @@ module.exports = {
         return require('./routes/RoomEditDisclaimer');
       case 'RoomEditWebsite':
         return require('./routes/RoomEditWebsite');
+      case 'RoomPreferences':
+        return require('./routes/RoomPreferences');
       case 'AvailableSoon':
         return require('./routes/AvailableSoon');
       case 'Report':

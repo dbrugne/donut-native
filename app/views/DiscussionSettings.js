@@ -8,10 +8,11 @@ var Button = require('../components/Button');
 var ListItem = require('../components/ListItem');
 var navigation = require('../navigation/index');
 var common = require('@dbrugne/donut-common/mobile');
-var Alert = require('../libs/alert');
+var alert = require('../libs/alert');
 var imageUploader = require('../libs/imageUpload');
 var emojione = require('emojione');
 var DiscussionHeader = require('./DiscussionHeader');
+var LoadingView = require('../components/Loading');
 
 var {
   Text,
@@ -56,6 +57,7 @@ var DiscussionSettings = React.createClass({
     this.isOp = (_.indexOf(this.props.model.get('op'), currentUser.get('user_id')) !== -1);
     this.can_delete = true;
     return {
+      loading: true,
       topic: this.props.model.get('topic'),
       avatar: this.props.model.get('avatar'),
       identifier: this.props.model.get('identifier'),
@@ -64,7 +66,8 @@ var DiscussionSettings = React.createClass({
       userListLoaded: false,
       nbUsers: '...',
       description: '',
-      website: ''
+      website: '',
+      preferences: []
     };
   },
   fetchData: function () {
@@ -88,12 +91,18 @@ var DiscussionSettings = React.createClass({
         if (data.err || data === 'not-connected') {
           return;
         }
-        var website = '';
-        if (data.website && data.website.title) {
-          website = data.website.title;
-        }
-        this.can_delete = data.can_delete;
-        this.setState({description: data.description, website: website});
+        app.client.userPreferencesRead(this.props.model.get('id'), (dataPref) => { // required to display 'silence'
+          if (data.err || data === 'not-connected') {
+            return;
+          }
+          this.can_delete = data.can_delete;
+          this.setState({
+            loading: false,
+            description: data.description,
+            website: (data.website && data.website.title ? data.website.title : ''),
+            preferences: dataPref.preferences
+          });
+        });
       });
     }
     this.props.model.on('change:avatar', () => this.setState({avatar: this.props.model.get('avatar')}), this);
@@ -102,22 +111,26 @@ var DiscussionSettings = React.createClass({
     this.props.model.off(this, null, null);
   },
   render: function () {
+    if (this.state.loading) {
+      return (<LoadingView />);
+    }
+
     var setRoomNotificationLink = null;
     if (this.props.model.get('type') === 'room') {
+      var switchValue = this.state.preferences['room:notif:nothing:' + this.props.model.get('id')]
+        ? this.state.preferences['room:notif:nothing:' + this.props.model.get('id')]
+        : false
+      ;
       setRoomNotificationLink = (
         <View style={s.listGroup}>
-          <ListItem type='button'
-                    onPress={() => navigation.navigate('AvailableSoon')}
-                    text={i18next.t('DiscussionSettings:notifications')}
-                    action
-                    title={i18next.t('DiscussionSettings:notifications-title')}
-                    first
-            />
           <ListItem type='switch'
                     text={i18next.t('DiscussionSettings:silence')}
-                    switchValue={false}
-                    onSwitch={() => navigation.navigate('AvailableSoon')}
+                    title={i18next.t('DiscussionSettings:notifications-title')}
+                    switchValue={switchValue}
+                    first
+                    onSwitch={() => this._changePreference()}
             />
+          {this._customNotifications(switchValue)}
         </View>
       );
     }
@@ -133,6 +146,41 @@ var DiscussionSettings = React.createClass({
         {this._renderEnd()}
       </ScrollView>
     );
+  },
+  _customNotifications: function(switchValue) {
+    if (switchValue) {
+      return null;
+    }
+
+    return (
+      <ListItem type='button'
+                onPress={() => navigation.navigate('RoomPreferences', this.props.model)}
+                text={i18next.t('DiscussionSettings:notifications')}
+                action
+                last
+        />
+    );
+  },
+  _changePreference: function () {
+    var newVal = this.state.preferences['room:notif:nothing:' + this.props.model.get('id')]
+        ? !this.state.preferences['room:notif:nothing:' + this.props.model.get('id')]
+        : true
+      ;
+
+    var update = {};
+    var key = 'room:notif:nothing:' + this.props.model.get('id');
+    update[key] = newVal;
+    app.client.userPreferencesUpdate(update, (response) => {
+      if (response.err) {
+        alert.show(response.err);
+      }
+
+      var preferences = _.clone(this.state.preferences);
+      preferences[key] = newVal;
+      this.setState({
+        preferences
+      });
+    });
   },
   _renderUsers: function () {
     if (!this.isOp && !this.isOwner && !this.isAdmin) {
@@ -272,7 +320,7 @@ var DiscussionSettings = React.createClass({
   _pickImage: function () {
     imageUploader.getImageAndUpload('room,avatar', null, (err, response) => {
       if (err) {
-        return Alert.show(err);
+        return alert.show(err);
       }
 
       if (response === null) {
@@ -289,7 +337,7 @@ var DiscussionSettings = React.createClass({
     app.client.roomUpdate(this.props.model.get('id'), updateData, (response) => {
       if (response.err) {
         for (var k in response.err) {
-          Alert.show(i18next.t('messages.' + response.err[k]));
+          alert.show(i18next.t('messages.' + response.err[k]));
         }
         if (callback) {
           return callback(response.err);
@@ -332,7 +380,7 @@ var DiscussionSettings = React.createClass({
     }
   },
   _deleteRoom: function () {
-    Alert.askConfirmation(
+    alert.askConfirmation(
       i18next.t('DiscussionSettings:deleteTitle'),
       i18next.t('DiscussionSettings:deleteDisclaimer', {identifier: this.props.model.get('identifier')}),
       () => app.client.roomDelete(this.props.model.get('id'), () => {

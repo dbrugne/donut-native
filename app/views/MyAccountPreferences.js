@@ -1,6 +1,5 @@
 var _ = require('underscore');
 var React = require('react-native');
-var Platform = require('Platform');
 var LoadingView = require('../components/Loading');
 var ListItem = require('../components/ListItem');
 var app = require('../libs/app');
@@ -95,7 +94,7 @@ class UserPreferencesView extends Component {
 
         </View>
       </View>
-    )
+    );
   }
 
   _changePreferences(key) {
