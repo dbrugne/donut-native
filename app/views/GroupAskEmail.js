@@ -25,6 +25,7 @@ i18next.addResourceBundle('en', 'GroupAskEmail', {
   'wrong-format-email': 'Mail address is not valid',
   'mail-already-exist': 'This mail address is already used',
   'success-email': 'The email has been successfully added to your account. You will receive a verification e-mail.',
+  'not-allowed-domain': 'The email entered is not part of authorized domains'
 });
 
 var GroupAskEmail = React.createClass({
@@ -96,6 +97,9 @@ var GroupAskEmail = React.createClass({
     if (!this.state.email) {
       return alert.show(i18next.t('GroupAskEmail:missing-email'));
     }
+    if (!this._isAllowedDomain()) {
+      return alert.show(i18next.t('GroupAskEmail:not-allowed-domain'));
+    }
     app.client.accountEmail(this.state.email, 'add', _.bind(function (response) {
       if (response.success) {
         alert.show(i18next.t('GroupAskEmail:success-email'));
@@ -111,6 +115,13 @@ var GroupAskEmail = React.createClass({
         return alert.show(i18next.t('messages.' + response.err));
       }
     }, this));
+  },
+  _isAllowedDomain: function() {
+    if (!this.state.email || this.state.email.split('@').length !== 2) {
+      return false;
+    }
+    var domain = '@' + _.last(this.state.email.split('@')).toLowerCase();
+    return _.contains(_.map(this.state.domains, (d) => { return d.toLowerCase(); }), domain);
   }
 });
 
