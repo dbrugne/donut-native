@@ -80,10 +80,8 @@ var GroupAskRequest = React.createClass({
           shouldHide={() => { return true; }}
           >
           <GroupHeader data={this.state.data} small/>
-          <View style={{alignSelf: 'stretch'}}>
-            <Disclaimer {...this.props} />
-            {content}
-          </View>
+          <Disclaimer {...this.props} />
+          {content}
         </KeyboardAwareComponent>
       );
     }

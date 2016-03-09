@@ -105,17 +105,6 @@
     "allowed-users": "Allowed users",
     "room-preferences": "Notifications"
   },
-  "group": {
-    "request-title": "I request membership",
-    "password-title": "I have the password",
-    "email-title": "I have an authorized e-mail",
-    "other-request": "You can join this community only if invited by its moderators.",
-    "wrong-format-email": "Mail address is not valid",
-    "success-email": "The email has been successfully added to your account. You will receive a verification e-mail.",
-    "mail-already-exist": "This mail address is already used",
-    "send": "send",
-    "allow-pending": "An access request is already pending"
-  },
   "room": {
     "message-membership": "You are not yet a member of this discussion. Before you request membership, have a glance at this discussion access conditions"
   },
@@ -159,6 +148,6 @@
     "notification-count": "You have __count__ unviewed notification",
     "notification-count_plural": "You have __count__ unviewed notifications",
     "no-unread-notification": "You do not have unread notification",
-    "load-more": "Load more",
+    "load-more": "Load more"
   }
 }

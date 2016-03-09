@@ -16,7 +16,7 @@ var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupAskPassword', {
   'placeholder-password': 'password',
   'info-password': 'ENTER THE PASSWORD',
-  'send': 'SEND',
+  'send': 'SEND'
 });
 
 var GroupAskPassword = React.createClass({
@@ -35,7 +35,6 @@ var GroupAskPassword = React.createClass({
   render: function () {
     let content = (
       <View style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'column', alignItems: 'center', paddingVertical: 20 }}>
-
         <View style={{alignSelf: 'stretch'}}>
           <ListItem type='input'
                     autoCapitalize='none'
