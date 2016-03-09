@@ -114,13 +114,7 @@
     "success-email": "The email has been successfully added to your account. You will receive a verification e-mail.",
     "mail-already-exist": "This mail address is already used",
     "send": "send",
-    "allow-pending": "An access request is already pending",
-    "info-request": "Your contact details and your following message (optional) will be sent to the moderators of this community.",
-    "placeholder-request": "Your motivations, background ...",
-    "allowed-pending": "Access to this community is by invitation, and you already have a request in progress.",
-    "success-request": "Request sent ! You will be notified when accepted.",
-    "message-wrong-format": "The message should be less than 200 character",
-    "not-confirmed": "Action authorized to verified accounts only. Verify your e-mail."
+    "allow-pending": "An access request is already pending"
   },
   "room": {
     "message-membership": "You are not yet a member of this discussion. Before you request membership, have a glance at this discussion access conditions"
