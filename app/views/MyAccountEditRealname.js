@@ -12,9 +12,9 @@ i18next.addResourceBundle('en', 'myAccountRealname', {
 });
 
 class UserFieldRealname extends UserField {
-  key = 'realname';
   constructor (props) {
     super(props);
+    this.key = 'realname';
   }
 
   renderField () {
@@ -27,7 +27,6 @@ class UserFieldRealname extends UserField {
       maxLength={20}
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
-      multi={false}
       help={i18next.t('myAccountRealname:help')}
       />
     );

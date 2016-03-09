@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react-native');
-var s = require('../styles/style');
 var UserField = require('../components/UserField');
 var ListItem = require('../components/ListItem');
 
@@ -12,9 +11,9 @@ i18next.addResourceBundle('en', 'myAccountBio', {
 });
 
 class UserFieldBio extends UserField {
-  key = 'bio';
   constructor (props) {
     super(props);
+    this.key = 'bio';
   }
 
   renderField () {
@@ -28,7 +27,7 @@ class UserFieldBio extends UserField {
       multiline
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
-      multi={true}
+      multi
       help={i18next.t('myAccountBio:help')}
       />
     );

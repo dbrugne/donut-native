@@ -12,10 +12,10 @@ i18next.addResourceBundle('en', 'myAccountLocation', {
 });
 
 class UserFieldLocation extends UserField {
-  key = 'location';
 
   constructor (props) {
     super(props);
+    this.key = 'location';
   }
 
   renderField () {

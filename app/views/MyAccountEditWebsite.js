@@ -14,10 +14,10 @@ i18next.addResourceBundle('en', 'myAccountWebsite', {
 // @todo : avoid uppercase in Input field only for this user attribute
 
 class UserFieldWebsite extends UserField {
-  key = 'website';
 
   constructor (props) {
     super(props);
+    this.key = 'website';
   }
 
   isValid () {
@@ -44,7 +44,6 @@ class UserFieldWebsite extends UserField {
       onChange={(event) => this.setState({value: event.nativeEvent.text})}
       type='input-button'
       autoCapitalize='none'
-      multi={false}
       help={i18next.t('myAccountWebsite:help')}
       />
     );

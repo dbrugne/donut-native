@@ -24,8 +24,8 @@ class UserField extends Component {
   render () {
     var field = this.renderField();
     return (
-      <View style={{flexDirection: 'column', justifyContent: 'center', backgroundColor: '#f0f0f0', flex: 1}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 5}}>
+      <View style={{flexDirection: 'column', justifyContent: 'center', backgroundColor: '#f0f0f0', alignSelf: 'stretch', flex: 1}}>
+        <View style={{alignSelf: 'stretch'}}>
           {field}
         </View>
         <View style={s.filler}></View>
