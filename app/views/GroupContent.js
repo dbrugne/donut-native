@@ -37,7 +37,6 @@ i18next.addResourceBundle('en', 'GroupContent', {
   'message-wrong-format': 'The message should be less than 200 character',
   'not-confirmed': 'Action authorized to verified accounts only. Verify your e-mail.',
   'allow-pending': 'An access request is already pending',
-
   'success-domain': 'The email has been successfully added to your account. You will receive a verification e-mail.',
   'email': 'e-mail',
   'info-email': 'I HAVE AN AUTHORIZED E-MAIL',
@@ -46,7 +45,6 @@ i18next.addResourceBundle('en', 'GroupContent', {
   'wrong-format-email': 'Mail address is not valid',
   'mail-already-exist': 'This mail address is already used',
   'not-allowed-domain': 'The email entered is not part of authorized domains'
-  
 });
 
 var GroupView = React.createClass({
@@ -83,6 +81,7 @@ var GroupView = React.createClass({
   componentWillUnmount () {
     app.off(null, null, this);
   },
+  // do not remove, used to reset success state on component refocus
   componentWillReceiveProps () {
     this.setState({requestSuccess: false, domainSuccess: false});
   },
