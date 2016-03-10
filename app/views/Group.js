@@ -50,6 +50,13 @@ var GroupView = React.createClass({
     if (this.props.model.get('id')) {
       app.client.groupJoin(this.props.model.get('id'));
     }
+
+    this.props.model.on('redraw', () => {
+      this.setState({
+        data: this.props.model.toJSON(),
+        step: 'group'
+      });
+    });
   },
   componentWillUnmount () {
     app.off(null, null, this);

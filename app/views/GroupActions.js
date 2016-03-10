@@ -43,6 +43,12 @@ var GroupActionsView = React.createClass({
     app.on('groupStep', this.changeStep, this);
     app.on('groupBecomeMember', this.groupBecomeMember, this);
     app.on('groupRead', this.onGroupRead, this);
+    this.props.model.on('redraw', () => {
+      this.setState({
+        data: this.props.model.toJSON(),
+        step: 'group'
+      });
+    });
   },
   componentWillUnmount () {
     app.off(null, null, this);
