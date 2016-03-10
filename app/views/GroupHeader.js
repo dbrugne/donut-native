@@ -1,19 +1,13 @@
 'use strict';
 
 var React = require('react-native');
+var common = require('@dbrugne/donut-common/mobile');
 var {
   StyleSheet,
   View,
   Text,
   Image
   } = React;
-
-var common = require('@dbrugne/donut-common/mobile');
-
-var i18next = require('../libs/i18next');
-i18next.addResourceBundle('en', 'GroupContent', {
-  'rooms': 'Discussion list'
-});
 
 var GroupHeaderView = React.createClass({
   defaultPropTypes: {
@@ -73,30 +67,24 @@ var BackgroundComponent = React.createClass({
     children: React.PropTypes.element.isRequired,
     avatar: React.PropTypes.string
   },
-
   render: function () {
     var avatarUrl = null;
     if (this.props.avatar) {
       avatarUrl = common.cloudinary.prepare(this.props.avatar, 300);
     }
 
-    // @todo uncomment when blur is ok
+    // @todo implement blur here
     if (avatarUrl) {
       return (
         <Image
-          style={{resizeMode: 'cover', paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center'}}
+          style={{ resizeMode: 'cover', flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center' }}
           source={{uri: avatarUrl}}>
-          {this.props.children}
+          <View style={{ paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.50)' }}>
+            {this.props.children}
+          </View>
         </Image>
       );
     }
-
-    //return (
-    //  <View
-    //    style={{ paddingBottom: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.50)' }}>
-    //    {this.props.children}
-    //  </View>
-    //);
   }
 });
 

@@ -10,7 +10,6 @@ var {
 var _ = require('underscore');
 var app = require('../libs/app');
 var navigation = require('../navigation/index');
-var s = require('../styles/style');
 var date = require('../libs/date');
 var hyperlink = require('../libs/hyperlink');
 var ListItem = require('../components/ListItem');
