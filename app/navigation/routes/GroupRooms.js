@@ -2,15 +2,15 @@
 
 var React = require('react-native');
 
-module.exports = function (group) {
+module.exports = function (model) {
   return {
-    id: 'group-rooms-' + group.group_id,
+    id: 'group-rooms-' + model.get('group_id'),
     renderScene: function (navigator) {
       let GroupRoomsList = require('../../views/GroupRoomsList');
-      return (<GroupRoomsList navigator={navigator} group={group} />);
+      return (<GroupRoomsList navigator={navigator} model={model} />);
     },
     getTitle () {
-      return group.name || 'rooms';
+      return model.get('name') || 'rooms';
     },
     onBack () {
       this.scene.props.navigator.pop();

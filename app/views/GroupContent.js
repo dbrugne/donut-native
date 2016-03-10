@@ -269,7 +269,7 @@ var GroupView = React.createClass({
       <View>
         <Text style={{ marginTop: 20 }}/>
         <ListItem
-          onPress={() => navigation.navigate('GroupRooms', this.state.data)}
+          onPress={() => navigation.navigate('GroupRooms', this.props.model)}
           text={i18next.t('GroupContent:rooms')}
           type='image-list'
           action
