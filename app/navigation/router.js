@@ -144,8 +144,6 @@ module.exports = {
         return require('./routes/GroupAskEmail');
       case 'GroupAskPassword':
         return require('./routes/GroupAskPassword');
-      case 'GroupAskRequest':
-        return require('./routes/GroupAskRequest');
       case 'GroupUsers':
         return require('./routes/GroupUsers');
       case 'GroupSettings':

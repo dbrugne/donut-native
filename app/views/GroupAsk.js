@@ -13,7 +13,6 @@ var Disclaimer = require('../components/Disclaimer');
 var LoadingView = require('../components/Loading');
 var GroupHeader = require('./GroupHeader');
 var alert = require('../libs/alert');
-var GroupAskRequest = require('./GroupAskRequest');
 var GroupAskEmail = require('./GroupAskEmail');
 var GroupAskPassword = require('./GroupAskPassword');
 
@@ -106,22 +105,6 @@ var GroupAskMembership = React.createClass({
       </View>
     );
   },
-  _renderAskMembershipButton: function () {
-    if (this._countOptions() === 1 || !this.state.options.request) {
-      return null;
-    }
-
-    return (
-      <Button
-        onPress={() => navigation.navigate('GroupAskRequest', {data: this.state.data, options: this.state.options})}
-        label={i18next.t('GroupAsk:request-title')}
-        type='white'
-        active={this.state.type === 'request'}
-        loading={this.state.loadingRequest}
-        style={{ alignSelf: 'stretch', marginHorizontal: 40, marginTop: 10 }}
-        />
-    );
-  },
   _renderPasswordButton: function () {
     if (!this.state.options.password) {
       return null;
@@ -165,12 +148,6 @@ var GroupAskMembership = React.createClass({
   _renderContent: function () {
     if (this._countOptions() > 1) {
       return null;
-    }
-
-    if (this.state.options.request) {
-      return (
-        <GroupAskRequest navigator={this.props.navigator} data={this.state.data} isAllowedPending={this.state.options.isAllowedPending} />
-      );
     }
 
     if (this.state.options.password) {
