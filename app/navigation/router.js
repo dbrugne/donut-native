@@ -138,12 +138,6 @@ module.exports = {
         return require('./routes/GroupRoom');
       case 'GroupRooms':
         return require('./routes/GroupRooms');
-      case 'GroupAsk':
-        return require('./routes/GroupAsk');
-      case 'GroupAskEmail':
-        return require('./routes/GroupAskEmail');
-      case 'GroupAskPassword':
-        return require('./routes/GroupAskPassword');
       case 'GroupUsers':
         return require('./routes/GroupUsers');
       case 'GroupSettings':

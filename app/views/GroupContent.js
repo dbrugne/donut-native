@@ -36,7 +36,17 @@ i18next.addResourceBundle('en', 'GroupContent', {
   'leave': 'LEAVE THIS COMMUNTIY',
   'message-wrong-format': 'The message should be less than 200 character',
   'not-confirmed': 'Action authorized to verified accounts only. Verify your e-mail.',
-  'allow-pending': 'An access request is already pending'
+  'allow-pending': 'An access request is already pending',
+
+  'success-domain': 'The email has been successfully added to your account. You will receive a verification e-mail.',
+  'email': 'e-mail',
+  'info-email': 'I HAVE AN AUTHORIZED E-MAIL',
+  'domains': 'Authorized domains:',
+  'missing-email': 'Mail address is required',
+  'wrong-format-email': 'Mail address is not valid',
+  'mail-already-exist': 'This mail address is already used',
+  'not-allowed-domain': 'The email entered is not part of authorized domains'
+  
 });
 
 var GroupView = React.createClass({
@@ -58,7 +68,11 @@ var GroupView = React.createClass({
       requestSuccess: false,
 
       password: null,
-      loadingPassword: false
+      loadingPassword: false,
+
+      domain: '',
+      loadingDomain: false,
+      domainSuccess: false
     };
   },
   componentDidMount () {
@@ -70,7 +84,7 @@ var GroupView = React.createClass({
     app.off(null, null, this);
   },
   componentWillReceiveProps () {
-    this.setState({requestSuccess: false});
+    this.setState({requestSuccess: false, domainSuccess: false});
   },
   changeStep: function (step) {
     this.setState({step});
@@ -178,7 +192,51 @@ var GroupView = React.createClass({
     }
 
     if (this.state.step === 'groupJoinDomain') {
+      // if request send successfully applied
+      if (this.state.domainSuccess) {
+        return (
+          <Text style={{ margin: 20, fontFamily: 'Open Sans', fontSize: 14, color: '#18C095' }}>{i18next.t('GroupContent:success-domain')}</Text>
+        );
+      }
 
+      return (
+        <KeyboardAwareComponent
+          shouldShow={() => { return true; }}
+          shouldHide={() => { return true; }}
+          >
+          <View style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'column', paddingVertical: 20 }}>
+            <View style={{alignSelf: 'stretch'}}>
+              <ListItem type='input'
+                        autoCapitalize='none'
+                        ref='input'
+                        first
+                        last
+                        placeholder={i18next.t('GroupContent:email')}
+                        onChangeText={(text) => this.setState({domain: text})}
+                        value={this.state.domain}
+                        style={{ alignSelf: 'stretch' }}
+                        title={i18next.t('GroupContent:info-email')}
+                />
+            </View>
+
+            <View style={{ flex: 1 }}/>
+
+            <Text style={{ marginTop: 20, alignSelf: 'stretch', marginHorizontal: 20, fontFamily: 'Open Sans', fontSize: 12, color: '#AFBAC8', fontStyle: 'italic' }}>{i18next.t('GroupContent:domains')}</Text>
+            {_.map(this.state.options.allowed_domains, (domain, index) => {
+              return (
+                <Text key={'authorized-domain-'+index} style={{ marginHorizontal: 20, fontFamily: 'Open Sans', fontSize: 12, color: '#AFBAC8', fontStyle: 'italic' }}>{domain}</Text>
+              );
+            })}
+
+            <Button type='gray'
+                    onPress={this.onAddEmail}
+                    label={i18next.t('GroupContent:send')}
+                    loading={this.state.loadingDomain}
+                    style={{ alignSelf: 'stretch', marginTop: 10, marginHorizontal: 20 }}
+              />
+          </View>
+        </KeyboardAwareComponent>
+      );
     }
 
     return null;
@@ -365,6 +423,36 @@ var GroupView = React.createClass({
         return alert.show(i18next.t('messages.' + response.err));
       }
     });
+  },
+  onAddEmail: function () {
+    if (!this.state.domain) {
+      return alert.show(i18next.t('GroupContent:missing-email'));
+    }
+    if (!this._isAllowedDomain()) {
+      return alert.show(i18next.t('GroupContent:not-allowed-domain'));
+    }
+    this.setState({loadingDomain: true});
+    app.client.accountEmail(this.state.domain, 'add', _.bind(function (response) {
+      this.setState({loadingDomain: false});
+      if (response.success) {
+        this.setState({domainSuccess: true});
+      } else {
+        if (response.err === 'mail-already-exist') {
+          return alert.show(i18next.t('GroupContent:mail-already-exist'));
+        }
+        if (response.err === 'wrong-format') {
+          return alert.show(i18next.t('GroupContent:wrong-format-email'));
+        }
+        return alert.show(i18next.t('messages.' + response.err));
+      }
+    }, this));
+  },
+  _isAllowedDomain: function() {
+    if (!this.state.domain || this.state.domain.split('@').length !== 2) {
+      return false;
+    }
+    var domain = '@' + _.last(this.state.domain.split('@')).toLowerCase();
+    return _.contains(_.map(this.state.options.allowed_domains, (d) => { return d.toLowerCase(); }), domain);
   }
 });
 
