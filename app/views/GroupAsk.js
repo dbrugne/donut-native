@@ -153,10 +153,6 @@ var GroupAskMembership = React.createClass({
     );
   },
   _renderDisclaimer: function () {
-    if (this._countOptions() > 1) {
-      return null;
-    }
-
     return (
       <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' }}>
         <Disclaimer data={this.state.data} navigator={this.props.navigator}/>

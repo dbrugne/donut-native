@@ -147,7 +147,7 @@ var GroupContentView = React.createClass({
     let description = _.unescape(this.props.data.description);
 
     return (
-      <View>
+      <View style={{ marginBottom: 20 }}>
         <View style={{ backgroundColor: '#E7ECF3', height: 1, alignSelf: 'stretch' }} />
         <Text style={{ marginVertical: 10, marginHorizontal: 20, fontFamily: 'Open Sans', fontSize: 14, color: '#394350' }}>{description}</Text>
       </View>
