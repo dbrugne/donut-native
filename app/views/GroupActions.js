@@ -36,8 +36,25 @@ var GroupActionsView = React.createClass({
       loadingRequestMembership: false,
       loadingJoinRequest: false,
       loadingJoinPassword: false,
-      loadingJoinDomain: false,
+      loadingJoinDomain: false
     };
+  },
+  componentDidMount () {
+    app.on('groupStep', this.changeStep, this);
+    app.on('groupBecomeMember', this.groupBecomeMember, this);
+    app.on('groupRead', this.onGroupRead, this);
+  },
+  componentWillUnmount () {
+    app.off(null, null, this);
+  },
+  changeStep: function (step) {
+    this.setState({step});
+  },
+  groupBecomeMember: function (options) {
+    this.setState({options});
+  },
+  onGroupRead: function (data) {
+    this.setState({data});
   },
   render: function () {
     // Default group page

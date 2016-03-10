@@ -12,7 +12,8 @@ var {
 var KeyboardAwareComponent = React.createClass({
   propTypes: {
     shouldShow: React.PropTypes.func,
-    shouldHide: React.PropTypes.func
+    shouldHide: React.PropTypes.func,
+    children: React.PropTypes.any
   },
   getInitialState () {
     return {
@@ -37,7 +38,7 @@ var KeyboardAwareComponent = React.createClass({
     );
   },
   onKeyboardWillShow (height) {
-    if (typeof(this.props.shouldShow) !== "function" || !this.props.shouldShow()) {
+    if (typeof(this.props.shouldShow) !== 'function' || !this.props.shouldShow()) {
       return;
     }
 
@@ -45,7 +46,7 @@ var KeyboardAwareComponent = React.createClass({
     this.setState({ keyboardSpace: height });
   },
   onKeyboardWillHide () {
-    if (typeof(this.props.shouldHide) !== "function" || !this.props.shouldHide()) {
+    if (typeof(this.props.shouldHide) !== 'function' || !this.props.shouldHide()) {
       return;
     }
 

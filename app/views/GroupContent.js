@@ -19,23 +19,24 @@ var KeyboardAwareComponent = require('../components/KeyboardAware');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'GroupContent', {
-  'community-member': 'You are a member of this community',
-  'community-not-member-title': 'You are not a member yet !',
-  'community-not-member': 'You can only see public discussions. Members have special priviledges such as direct access to certain private discussions and to this community members.',
-  'community-owner': 'You are the owner of this community',
-  'community-op': 'You are an op of this community',
-  'invite': 'Manage invitations',
-  'create-donut': 'Create a discussion',
-  'message-ban': 'You were banned from this community',
-  'created': 'created on',
-  'unknownerror': 'Unknown error, please retry later',
+  'success-request': 'Request sent ! You will be notified when accepted.',
   'allowed-pending': 'Access to this community is by invitation, and you already have a request in progress.',
   'placeholder-request': 'Your motivations, background ...',
   'info-request': 'Your contact details and your following message (optional) will be sent to the moderators of this community.',
   'send': 'SEND',
-  'success-request': 'Request sent ! You will be notified when accepted.',
+  'placeholder-password': 'password',
+  'info-password': 'ENTER THE PASSWORD',
+  'create-donut': 'Create a discussion',
+  'rooms': 'DISCUSSION LIST ',
+  'invite': 'Manage invitations',
+  'users': 'MEMBER LIST',
+  'about': 'ABOUT',
+  'created': 'created on',
+  'unknownerror': 'Unknown error, please retry later',
+  'leave': 'LEAVE THIS COMMUNTIY',
   'message-wrong-format': 'The message should be less than 200 character',
-  'not-confirmed': 'Action authorized to verified accounts only. Verify your e-mail.'
+  'not-confirmed': 'Action authorized to verified accounts only. Verify your e-mail.',
+  'allow-pending': 'An access request is already pending'
 });
 
 var GroupView = React.createClass({
@@ -54,24 +55,31 @@ var GroupView = React.createClass({
 
       motivations: '',
       loadingSendRequest: false,
-      requestSuccess: false
+      requestSuccess: false,
+
+      password: null,
+      loadingPassword: false
     };
   },
   componentDidMount () {
     app.on('groupStep', this.changeStep, this);
     app.on('groupBecomeMember', this.groupBecomeMember, this);
+    app.on('groupRead', this.onGroupRead, this);
   },
   componentWillUnmount () {
     app.off(null, null, this);
   },
   componentWillReceiveProps () {
-    this.setState({ requestSuccess: false });
+    this.setState({requestSuccess: false});
   },
   changeStep: function (step) {
     this.setState({step});
   },
   groupBecomeMember: function (options) {
     this.setState({options});
+  },
+  onGroupRead: function (data) {
+    this.setState({data});
   },
   render () {
     // default group page render
@@ -138,7 +146,35 @@ var GroupView = React.createClass({
     }
 
     if (this.state.step === 'groupJoinPassword') {
-
+      return (
+        <KeyboardAwareComponent
+          shouldShow={() => { return true; }}
+          shouldHide={() => { return true; }}
+          >
+          <View style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'column', alignItems: 'center', paddingVertical: 20 }}>
+            <View style={{alignSelf: 'stretch'}}>
+              <ListItem type='input'
+                        autoCapitalize='none'
+                        ref='input'
+                        first
+                        last
+                        placeholder={i18next.t('GroupContent:placeholder-password')}
+                        onChangeText={(text) => this.setState({password: text})}
+                        value={this.state.password}
+                        style={{ alignSelf: 'stretch' }}
+                        title={i18next.t('GroupContent:info-password')}
+                />
+            </View>
+            <View style={{ flex: 1 }}/>
+            <Button type='gray'
+                    onPress={this.onSendPassword}
+                    label={i18next.t('GroupContent:send')}
+                    loading={this.state.loadingPassword}
+                    style={{ alignSelf: 'stretch', marginTop: 10, marginHorizontal: 20 }}
+              />
+          </View>
+        </KeyboardAwareComponent>
+      );
     }
 
     if (this.state.step === 'groupJoinDomain') {
@@ -306,6 +342,25 @@ var GroupView = React.createClass({
       } else {
         if (response.err === 'allow-pending' || response.err === 'message-wrong-format' || response.err === 'not-confirmed') {
           return alert.show(i18next.t('GroupContent:' + response.err));
+        }
+        return alert.show(i18next.t('messages.' + response.err));
+      }
+    });
+  },
+  onSendPassword: function () {
+    if (!this.state.password) {
+      return alert.show(i18next.t('messages.wrong-password'));
+    }
+    this.setState({loadingPassword: true});
+    app.client.groupBecomeMember(this.state.data.group_id, this.state.password, (response) => {
+      this.setState({loadingPassword: false});
+      if (response.success) {
+        // update group page as now currentUser is a member
+        app.trigger('refreshGroup', true);
+        app.trigger('groupStep', 'group');
+      } else {
+        if (response.err === 'wrong-password') {
+          return alert.show(i18next.t('messages.wrong-password'));
         }
         return alert.show(i18next.t('messages.' + response.err));
       }

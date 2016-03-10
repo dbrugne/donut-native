@@ -19,22 +19,13 @@ var LoadingView = require('../components/Loading');
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'Group', {
-  'request-membership': 'REQUEST MEMBERSHIP',
-  'rooms': 'DISCUSSION LIST',
-  'users': 'MEMBER LIST',
-  'leave': 'LEAVE THIS COMMUNTIY',
-  'about': 'ABOUT',
-  'empty-methods': 'You can join this community only if invited by its moderators.',
-  'community-member': 'You are a member of this community',
+  'message-ban': 'You were banned from this community',
   'community-not-member-title': 'You are not a member yet !',
   'community-not-member': 'You can only see public discussions. Members have special priviledges such as direct access to certain private discussions and to this community members.',
   'community-owner': 'You are the owner of this community',
   'community-op': 'You are an op of this community',
-  'invite': 'Manage invitations',
-  'create-donut': 'Create a discussion',
-  'message-ban': 'You were banned from this community',
-  'created': 'created on',
-  'unknownerror': 'Unknown error, please retry later'
+  'community-member': 'You are a member of this community',
+  'empty-methods': 'You can join this community only if invited by its moderators.'
 });
 
 var GroupView = React.createClass({
@@ -51,6 +42,7 @@ var GroupView = React.createClass({
     };
   },
   componentDidMount () {
+    // listen group banned & group kick & group disallow & group deop ?
     app.on('refreshGroup', this.fetchData, this);
     app.on('groupStep', this.changeStep, this);
     app.on('groupBecomeMember', this.groupBecomeMember, this);
@@ -83,6 +75,8 @@ var GroupView = React.createClass({
       loaded: true,
       data: response
     });
+
+    app.trigger('groupRead', response);
   },
   render () {
     if (!this.state.loaded) {
