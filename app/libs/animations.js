@@ -30,7 +30,19 @@ module.exports = {
       springDamping: 400
     }
   },
-  callapse: {
+  collapse: {
+    duration: 400,
+    create: {
+      duration: 300,
+      type: LayoutAnimation.Types.easeInEaseOut,
+      property: LayoutAnimation.Properties.opacity
+    },
+    update: {
+      type: LayoutAnimation.Types.spring,
+      springDamping: 400
+    }
+  },
+  header: {
     duration: 400,
     create: {
       duration: 300,

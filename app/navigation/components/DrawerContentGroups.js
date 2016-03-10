@@ -15,7 +15,7 @@ var {
 var Icon = require('react-native-vector-icons/FontAwesome');
 var app = require('../../libs/app');
 var navigation = require('../index');
-var animation = require('../../libs/animations').callapse;
+var animation = require('../../libs/animations').collapse;
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'drawerContentGroups', {

@@ -3,12 +3,12 @@
 var React = require('react-native');
 
 var {
-  StyleSheet,
+  StyleSheet
   } = React;
 
 module.exports = StyleSheet.create({
   button: {
-    padding:10,
+    padding: 10,
     borderRadius: 4
   },
   textCtn: {
@@ -24,31 +24,23 @@ module.exports = StyleSheet.create({
     textAlign: 'center'
   },
   buttonGray: {
-    backgroundColor: "#E7ECF3"
+    backgroundColor: '#E7ECF3'
   },
   buttonPink: {
-    backgroundColor: "#FC2063"
+    backgroundColor: '#FC2063'
   },
   buttonRed: {
-    backgroundColor: "#F15261"
+    backgroundColor: '#F15261'
   },
   buttonWhite: {
     backgroundColor: '#f5f8fa'
   },
-  labelGray: { color: '#353F4C'},
-  labelPink: { color: '#FFFFFF'},
-  labelRed: { color: '#FFFFFF'},
-  labelWhite: { color: '#333'},
-  buttonLoading: {
-
-  },
-  buttonDisabled: {
-
-  },
-  labelLoading: {
-
-  },
-  labelDisabled: {
-
-  }
+  labelGray: {color: '#353F4C'},
+  labelPink: {color: '#FFFFFF'},
+  labelRed: {color: '#FFFFFF'},
+  labelWhite: {color: '#333'},
+  buttonLoading: {paddingTop: 5, paddingBottom: 4.5},
+  buttonDisabled: {},
+  labelLoading: {},
+  labelDisabled: {}
 });

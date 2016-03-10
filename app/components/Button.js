@@ -9,11 +9,10 @@ var {
   Text,
   TouchableHighlight
 } = React;
-var Icon = require('react-native-vector-icons/FontAwesome');
 
 var Button = React.createClass({
   propTypes: {
-    type: React.PropTypes.string.isRequired,
+    type: React.PropTypes.oneOf(['white', 'pink', 'red', 'gray', 'transparent']).isRequired,
     label: React.PropTypes.string.isRequired,
     onPress: React.PropTypes.func,
     onLongPress: React.PropTypes.func,

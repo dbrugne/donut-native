@@ -17,7 +17,7 @@ var _ = require('underscore');
 var common = require('@dbrugne/donut-common/mobile');
 var app = require('../../libs/app');
 var navigation = require('../index');
-var animation = require('../../libs/animations').callapse;
+var animation = require('../../libs/animations').collapse;
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'drawerContentOnes', {
