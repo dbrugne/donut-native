@@ -33,7 +33,10 @@ var GroupActionsView = React.createClass({
       step: this.props.step,
       data: this.props.data,
       options: null,
-      loadingRequestMembership: false
+      loadingRequestMembership: false,
+      loadingJoinRequest: false,
+      loadingJoinPassword: false,
+      loadingJoinDomain: false,
     };
   },
   render: function () {
@@ -83,7 +86,7 @@ var GroupActionsView = React.createClass({
               label={i18next.t('GroupActions:request-membership')}
               type='white'
               loading={this.state.loadingRequestMembership}
-              style={{ alignSelf: 'stretch', marginHorizontal: 20 }}
+              style={{ alignSelf: 'stretch', marginHorizontal: 40 }}
         />
     );
   },
@@ -142,28 +145,7 @@ var GroupActionsView = React.createClass({
     );
   },
   onRequestMembershipPressed: function () {
-    this.setState({loadingRequestMembership: true});
-    app.client.groupBecomeMember(this.state.data.group_id, null, (response) => {
-      this.setState({loadingRequestMembership: false});
-
-      // Anything but already a member : show an error
-      if (response.err && response.err !== 'already-member') {
-        return alert.show(i18next.t('messages.' + response.err));
-      }
-
-      // already a member or success or no options to show, redraw group page
-      if (response.err || response.success || !response.options) {
-        return app.trigger('refreshGroup', true);
-      }
-
-      this.setState({
-        options: response.options,
-        step: 'groupJoin'
-      });
-
-      app.trigger('groupStep', 'groupJoin');
-      app.trigger('groupBecomeMember', response.options); // @todo should be dispatched by handler
-    });
+    this._onButtonPressed('loadingRequestMembership', 'groupJoin');
   },
   onCancelPressed: function () {
     // groupJoin -> group
@@ -179,22 +161,40 @@ var GroupActionsView = React.createClass({
     }
   },
   onRequestAccessPressed: function () {
-    this.setState({
-      step: 'groupJoinRequest'
-    });
-    return app.trigger('groupStep', 'groupJoinRequest');
+    this._onButtonPressed('loadingJoinRequest', 'groupJoinRequest');
   },
   onPasswordPressed: function () {
-    this.setState({
-      step: 'groupJoinPassword'
-    });
-    return app.trigger('groupStep', 'groupJoinPassword');
+    this._onButtonPressed('loadingJoinPassword', 'groupJoinPassword');
   },
   onDomainPressed: function () {
-    this.setState({
-      step: 'groupJoinDomain'
+    this._onButtonPressed('loadingJoinDomain', 'groupJoinDomain');
+  },
+  _onButtonPressed: function (loadingButton, step) {
+    var state = {};
+    state[loadingButton] = true;
+    this.setState(state);
+    app.client.groupBecomeMember(this.state.data.group_id, null, (response) => {
+      state[loadingButton] = false;
+      this.setState(state);
+
+      // Anything but already a member : show an error
+      if (response.err && response.err !== 'already-member') {
+        return alert.show(i18next.t('messages.' + response.err));
+      }
+
+      // already a member or success or no options to show, redraw group page
+      if (response.err || response.success || !response.options) {
+        return app.trigger('refreshGroup', true);
+      }
+
+      this.setState({
+        options: response.options,
+        step: step
+      });
+
+      app.trigger('groupBecomeMember', response.options); // @todo should be dispatched by handler
+      app.trigger('groupStep', step);
     });
-    return app.trigger('groupStep', 'groupJoinDomain');
   }
 });
 
