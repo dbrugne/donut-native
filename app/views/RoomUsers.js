@@ -52,7 +52,7 @@ var RoomUsersView = React.createClass({
   },
   propTypes: {
     navigator: React.PropTypes.object,
-    id: React.PropTypes.string.isRequired
+    id: React.PropTypes.any.isRequired
   },
   getInitialState: function () {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.username !== r2.username});

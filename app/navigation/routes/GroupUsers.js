@@ -3,12 +3,12 @@
 var React = require('react-native');
 var i18next = require('../../libs/i18next');
 
-module.exports = function (data) {
+module.exports = function (id) {
   return {
-    id: 'group-users-' + data.group_id,
+    id: 'group-users-' + id,
     renderScene: function (navigator) {
       let GroupUsers = require('../../views/GroupUsers');
-      return <GroupUsers navigator={navigator} data={data} />;
+      return <GroupUsers navigator={navigator} id={id} />;
     },
     getTitle () {
       return i18next.t('navigation.group-users');
