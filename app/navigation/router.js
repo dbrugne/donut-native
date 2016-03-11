@@ -162,8 +162,6 @@ module.exports = {
         return require('./routes/DiscussionBlockedJoin');
       case 'MyAccount':
         return require('./routes/MyAccount');
-      case 'MyAccountEmail':
-        return require('./routes/MyAccountEmail');
       case 'MyAccountEmailEdit':
         return require('./routes/MyAccountEmailEdit');
       case 'MyAccountEmails':

@@ -3,31 +3,42 @@ var app = require('../libs/app');
 var s = require('../styles/style');
 var Alert = require('../libs/alert');
 var ListItem = require('../components/ListItem');
+var Button = require('../components/Button');
 
 var {
-  Component,
   Text,
   View,
   StyleSheet
-} = React;
+  } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountEmailEdit', {
   'modal-title': 'Delete email',
   'modal-description': 'Are you sure you want to delete this email ? This action is irreversible and cannot be undone',
-  'delete': 'Delete',
-  'validated': 'THIS EMAIL WAS VALIDATED',
-  'not-validated': 'E-MAIL NOT VERIFIED',
-  'send-validation': 'Send a verification email',
-  'define': 'Define as main email'
+  'delete': 'DELETE',
+  'not-validated': 'This email is not yet validated. Press the button below to send a validation email.',
+  'send-validation': 'SEND A VERIFICATION EMAIL'
 });
 
-class EditEmailView extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+var EditEmailView = React.createClass({
+  propTypes: {
+    email: React.PropTypes.any,
+    refreshParentView: React.PropTypes.func,
+    navigator: React.PropTypes.object.isRequired
+  },
+  getInitialState: function () {
+    return {};
+  },
+  componentDidMount: function () {
+    app.client.on('user:confirmed', () => {
+      this.props.refreshParentView();
+      this.props.navigator.pop();
+    });
+  },
+  componentWillUnmount: function () {
+    app.client.off(null, null, this);
+  },
+  render: function () {
     var modalTitle = i18next.t('myAccountEmailEdit:modal-title');
     var modalDescription = i18next.t('myAccountEmailEdit:modal-description');
     return (
@@ -39,63 +50,26 @@ class EditEmailView extends Component {
             {this.props.email.email}
           </Text>
 
-          {this._renderConfirmed()}
+          <Text style={{ marginHorizontal: 20, marginTop: 20, fontFamily: 'Open Sans', fontSize: 14, color: '#394350' }}>{i18next.t('myAccountEmailEdit:not-validated')}</Text>
 
-          <ListItem onPress={() => Alert.askConfirmation(modalTitle, modalDescription, () => this.onDeletePressed(), () => {})}
-                    text={i18next.t('myAccountEmailEdit:delete')}
-                    type='button'
-                    warning='true'
-                    first={true}
+          <Button onPress={(this.onSendEmail)}
+                  label={i18next.t('myAccountEmailEdit:send-validation')}
+                  type='gray'
+                  style={{ marginHorizontal: 20, marginTop: 20 }}
+            />
+
+          <Button onPress={() => Alert.askConfirmation(modalTitle, modalDescription, () => this.onDeletePressed(), () => {})}
+                  label={i18next.t('myAccountEmailEdit:delete')}
+                  type='red'
+                  style={{ marginHorizontal: 20, marginTop: 20 }}
             />
         </View>
 
-        <View style={s.filler}></View>
+        <View style={s.filler}/>
       </View>
-    )
-  }
-
-  _renderConfirmed() {
-    if (this.props.email.confirmed) {
-      return (
-        <View>
-          {this._renderMain()}
-          <Text style={s.listGroupItemSpacing} />
-        </View>
-      );
-    } else {
-      return (
-        <View>
-          <ListItem onPress={(this.onSendEmail.bind(this))}
-                    text={i18next.t('myAccountEmailEdit:send-validation')}
-                    type='button'
-                    action
-                    icon='envelope-o'
-                    first
-                    title={i18next.t('myAccountEmailEdit:not-validated')}
-            />
-
-          <Text style={s.listGroupItemSpacing} />
-        </View>
-      );
-    }
-  }
-
-  _renderMain() {
-    if (!this.props.email.main) {
-      return (<ListItem onPress={(this.onSetAsMainPressed.bind(this))}
-                        text={i18next.t('myAccountEmailEdit:define')}
-                        type='button'
-                        action
-                        icon='anchor'
-                        first
-                        title={i18next.t('myAccountEmailEdit:validated')}
-        />);
-    } else {
-      return (<View />);
-    }
-  }
-
-  onDeletePressed() {
+    );
+  },
+  onDeletePressed: function () {
     app.client.accountEmail(this.props.email.email, 'delete', (response) => {
       if (response.err) {
         Alert.show(response.err);
@@ -105,9 +79,8 @@ class EditEmailView extends Component {
         this.props.navigator.pop();
       }
     });
-  }
-
-  onSendEmail() {
+  },
+  onSendEmail: function () {
     app.client.accountEmail(this.props.email.email, 'validate', (response) => {
       if (response.err) {
         Alert.show(response.err);
@@ -116,35 +89,22 @@ class EditEmailView extends Component {
       }
     });
   }
-
-  onSetAsMainPressed() {
-    app.client.accountEmail(this.props.email.email, 'main', (response) => {
-      if (response.err) {
-        Alert.show(response.err);
-      } else {
-        Alert.show(i18next.t('messages.success'));
-        this.props.refreshParentView();
-        this.props.navigator.pop();
-      }
-    });
-  }
-}
+});
 
 var styles = StyleSheet.create({
   main: {
     flexDirection: 'column',
     flexWrap: 'wrap',
-    backgroundColor: '#f0f0f0',
     paddingTop: 20,
     flex: 1
   },
   email: {
-    fontSize: 23,
     alignSelf: 'center',
-    color: "#444",
+    fontFamily: 'Open Sans',
+    fontSize: 20,
+    color: '#394350',
     marginBottom: 40
   }
 });
 
 module.exports = EditEmailView;
-
