@@ -11,13 +11,11 @@ var LoadingView = require('../components/Loading');
 var alert = require('../libs/alert');
 var common = require('@dbrugne/donut-common/mobile');
 var date = require('../libs/date');
-var s = require('../styles/style');
 var emojione = require('emojione');
 var state = require('../navigation/state');
 
 var {
   View,
-  ScrollView,
   ListView,
   Component,
   TouchableHighlight,
@@ -29,13 +27,12 @@ var Icon = require('react-native-vector-icons/FontAwesome');
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'Notifications', {
   'alerts': 'Alerts',
-  "mark-as-read": "MARK ALL NOTIFICATIONS AS READ",
-  "discussion-count": "__count__ UNREAD DISCUSSION",
-  "discussion-count_plural": "__count__ UNREAD DISCUSSIONS",
-  "delete-selected": "DELETE SELECTED",
-  "cancel": "CANCEL"
+  'mark-as-read': 'MARK ALL NOTIFICATIONS AS READ',
+  'discussion-count': '__count__ UNREAD DISCUSSION',
+  'discussion-count_plural': '__count__ UNREAD DISCUSSIONS',
+  'delete-selected': 'DELETE SELECTED',
+  'cancel': 'CANCEL'
 });
-
 
 class NotificationsView extends Component {
   constructor (props) {
@@ -67,6 +64,7 @@ class NotificationsView extends Component {
     app.client.on('notification:done', this.onDoneNotification, this);
     app.client.on('notification:viewed', this.onViewedNotification, this);
     app.user.on('change:unviewedDiscussion', this.updateDiscussionsUnviewed, this);
+    app.user.on('change:unviewedNotification', this.updateNotificationsUnviewed, this);
   }
 
   componentWillUnmount () {
@@ -153,9 +151,9 @@ class NotificationsView extends Component {
       return (
         <View style={{marginTop: 20, marginHorizontal: 20}}>
           <Button type='gray'
-                    onPress={this.markSelectedAsDone.bind(this)}
-                    loading={this.state.loadingTagAsDone}
-                    label={i18next.t('Notifications:delete-selected')}
+                  onPress={this.markSelectedAsDone.bind(this)}
+                  loading={this.state.loadingTagAsDone}
+                  label={i18next.t('Notifications:delete-selected')}
             />
 
           <Button type='red'
@@ -486,8 +484,8 @@ class NotificationsView extends Component {
   }
 
   _renderByUsername (n) {
-    if (!n.data|| !n.data.user || !n.data.user._id) {
-      return (<View style={{ flex:1 }} />);
+    if (!n.data || !n.data.user || !n.data.user._id) {
+      return (<View style={{ flex:1 }}/>);
     }
 
     return (
@@ -515,8 +513,8 @@ class NotificationsView extends Component {
       this.setState({
         loadingMore: false,
         more: data.more,
-        unread: data.unread ? data.unread : 0,
-        dataSource: this.notificationsDataSource.prepend(data.notifications)
+        dataSource: this.notificationsDataSource.prepend(data.notifications),
+        unread: app.user.get('unviewedNotification')
       });
     });
   }
@@ -536,13 +534,19 @@ class NotificationsView extends Component {
         loadingTagAsRead: false,
         unread: app.user.get('unviewedNotification')
       });
-      this._setViewed()
+      this._setViewed();
     });
   }
 
   updateDiscussionsUnviewed () {
     this.setState({
       discussionsUnviewed: app.getUnviewed()
+    });
+  }
+
+  updateNotificationsUnviewed () {
+    this.setState({
+      unread: app.user.get('unviewedNotification')
     });
   }
 
