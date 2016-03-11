@@ -261,35 +261,12 @@ var DiscussionSettings = React.createClass({
       );
     }
   },
-  _renderAvatar (avatar) {
-    if (!avatar) {
-      return null;
-    }
-    var avatarUrl = common.cloudinary.prepare(avatar, 50);
-    if (!avatarUrl) {
-      return null;
-    }
-    if (this.props.model.get('type') === 'room') {
-      return (
-        <TouchableHighlight
-          onPress={() => navigation.navigate('Profile', {type: 'room', id: this.props.model.get('id'), identifier: this.props.model.get('identifier')})}
-          >
-          <Image style={styles.avatarRoom} source={{uri: avatarUrl}}/>
-        </TouchableHighlight>
-      );
-    }
-    return (
-      <View style={styles.containerAvatarOne}>
-        <Image style={styles.avatarOne} source={{uri: avatarUrl}}/>
-        <Text
-          style={[styles.statusText, styles.status, this.state.status === 'connecting' && styles.statusConnecting, this.state.status === 'offline' && styles.statusOffline, this.state.status === 'online' && styles.statusOnline]}>{this.state.status}</Text>
-      </View>
-    );
-  },
   _renderEdition: function () {
     if (!this.isOwner && !this.isAdmin) {
       return null;
     }
+
+    var avatarUrl = common.cloudinary.prepare(this.props.model.get('avatar'), 50);
     return (
       <View style={s.listGroup}>
         <ListItem
@@ -298,6 +275,7 @@ var DiscussionSettings = React.createClass({
           type='edit-button'
           action
           first
+          imageRight={avatarUrl}
           title={i18next.t('DiscussionSettings:details')}
           />
         <ListItem

@@ -41,7 +41,7 @@ class ListItemEdit extends ListItemAbstract {
     );
   }
 
-  _renderValue() {
+  _renderValue () {
     if (this.props.image) {
       let avatarUrl = common.cloudinary.prepare(this.props.image, 50);
       return (<Image style={{width: 30, height: 30, marginHorizontal: 2}} source={{uri: avatarUrl}}/>);
@@ -50,8 +50,8 @@ class ListItemEdit extends ListItemAbstract {
     var value = !this.props.value
       ? null
       : this.props.value.length < 30
-        ? this.props.value
-        : this.props.value.slice(0, 27) + '...';
+      ? this.props.value
+      : this.props.value.slice(0, 27) + '...';
 
     return (<Text style={{color: '#999', fontFamily: 'Open Sans', fontSize: 16, paddingBottom: 1, marginRight: 10}}>{value}</Text>);
   }

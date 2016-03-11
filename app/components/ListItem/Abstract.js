@@ -8,13 +8,14 @@ var {
   View,
   Image,
   Text
-} = React;
+  } = React;
 var Icon = require('react-native-vector-icons/FontAwesome');
 
 class ListItemAbstract extends Component {
   constructor (props) {
     super(props);
   }
+
   render () {
     return (
       <View style={{flexDirection: 'column'}}>
@@ -24,6 +25,7 @@ class ListItemAbstract extends Component {
       </View>
     );
   }
+
   _renderContent () {
     return (
       <View style={[s.listGroupItem, this.props.first && s.listGroupItemFirst, this.props.last && s.listGroupItemLast]}>
@@ -35,6 +37,7 @@ class ListItemAbstract extends Component {
       </View>
     );
   }
+
   _renderLeftIcon () {
     if (!this.props.icon) {
       return null;
@@ -47,38 +50,42 @@ class ListItemAbstract extends Component {
         size={14}
         color={iconColor}
         style={s.listGroupItemIconLeft}
-      />
+        />
     );
   }
-  _renderLeftImage() {
+
+  _renderLeftImage () {
     if (!this.props.imageLeft) {
       return null;
     }
 
     return (
       <Image
-        source={this.props.imageLeft}
+        source={typeof(this.props.imageLeft) === 'string' ? {uri: this.props.imageLeft} : this.props.imageLeft}
         style={s.listGroupItemImageLeft}
         />
     );
   }
-  _renderRightImage() {
+
+  _renderRightImage () {
     if (!this.props.imageRight) {
       return null;
     }
 
     return (
       <Image
-        source={this.props.imageRight}
+        source={typeof(this.props.imageRight) === 'string' ? {uri: this.props.imageRight} : this.props.imageRight}
         style={s.listGroupItemImageRight}
         />
     );
   }
+
   _renderElement () {
     return (
       <Text/>
     );
   }
+
   _renderRightIcon () {
     if (!this.props.action && !this.props.iconRight) {
       return null;
@@ -90,9 +97,10 @@ class ListItemAbstract extends Component {
         size={14}
         color='#DDD'
         style={s.listGroupItemIconRight}
-      />
+        />
     );
   }
+
   _renderTitle () {
     if (!this.props.title) {
       return null;
@@ -101,6 +109,7 @@ class ListItemAbstract extends Component {
       <Text style={s.listGroupTitle}>{this.props.title}</Text>
     );
   }
+
   _renderHelp () {
     if (!this.props.help) {
       return null;
