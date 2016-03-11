@@ -61,7 +61,7 @@ module.exports = React.createClass({
         underlayColor='transparent'
         onPress={this.onPress}
         >
-        <Image style={{width: 34, height: 34, borderRadius: 3, marginLeft: 10, marginRight: 10}} source={{uri: avatar}}/>
+        <Image style={{width: 34, height: 34, marginLeft: 10, marginRight: 10}} source={{uri: avatar}}/>
       </TouchableHighlight>
     );
   },
