@@ -33,6 +33,12 @@ var UserHeaderView = React.createClass({
       data: this.props.data ? this.props.data : this.props.model.toJSON()
     };
   },
+  componentWillReceiveProps: function () {
+    // required to update current user picture in MyAccount when changing avatar
+    this.setState({
+      data: this.props.data ? this.props.data : this.props.model.toJSON()
+    });
+  },
   render () {
     return (
       <View style={[styles.container]}>

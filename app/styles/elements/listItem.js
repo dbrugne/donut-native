@@ -56,6 +56,7 @@ var style = {
     alignSelf: 'center',
     justifyContent: 'flex-end',
     marginLeft: 10,
+    marginRight: 10,
     width: 20,
     height: 20,
     resizeMode: 'contain'

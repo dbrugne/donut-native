@@ -5,22 +5,19 @@ var _ = require('underscore');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var common = require('@dbrugne/donut-common/mobile');
-var s = require('../styles/style');
 var navigation = require('../navigation/index');
 var ListItem = require('../components/ListItem');
 var Button = require('../components/Button');
 var imageUpload = require('../libs/imageUpload');
 var LoadingView = require('../components/Loading');
+var UserHeader = require('./UserHeader');
 var Alert = require('../libs/alert');
 
 var {
-  Text,
   ScrollView,
   View,
-  StyleSheet,
-  Image,
-  TouchableHighlight
-} = React;
+  StyleSheet
+  } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccount', {
@@ -51,39 +48,25 @@ var MyAccountView = React.createClass({
   getInitialState: function () {
     return {
       username: currentUser.get('username'),
-      realname: '',
-      bio: '',
-      color: '',
-      avatar: '',
-      location: '',
-      website: {
-        value: ''
-      },
       loaded: false
     };
+  },
+  componentDidMount: function () {
+    this.fetchData();
+    currentUser.on('change:avatar', (model) => {
+      let data = _.clone(this.state.data);
+      _.extend(data, {avatar: model.get('avatar')})
+      this.setState({ data });
+    });
   },
   componentWillUnmount: function () {
     currentUser.off('change:avatar');
   },
-
-  componentDidMount: function () {
-    this.fetchData();
-    currentUser.on('change:avatar', (model) => {
-      this.setState({
-        avatar: common.cloudinary.prepare(model.get('avatar'), 150)
-      });
-    });
-  },
-
   fetchData: function () {
-    app.client.userRead(currentUser.get('user_id'), {more: true, admin: true}, (response) => {
+    app.client.userRead(currentUser.get('user_id'), {more: true, admin: true}, (data) => {
+      data.website = (data.website && data.website.title ? data.website.title : '');
       this.setState({
-        realname: _.unescape(response.realname),
-        bio: _.unescape(response.bio),
-        color: response.color,
-        location: _.unescape(response.location),
-        website: (response.website && response.website.title ? response.website.title : ''),
-        avatar: common.cloudinary.prepare(response.avatar, 150),
+        data,
         loaded: true
       });
     });
@@ -96,60 +79,46 @@ var MyAccountView = React.createClass({
       );
     }
 
-    var realname = null;
-    if (this.state.realname) {
-      realname = (
-        <Text style={styles.username}>{this.state.realname}</Text>
-      );
-    }
-
     return (
       <ScrollView style={styles.main}>
-        <BackgroundComponent avatar={this.state.avatar} >
-          <TouchableHighlight onPress={() => navigation.navigate('Profile', {type: 'user', id: currentUser.get('user_id'), identifier: '@' + this.state.username})}
-                              underlayColor='transparent'
-            >
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-              {this._renderIdentifier()}
-            </View>
-          </TouchableHighlight>
-        </BackgroundComponent>
+        <UserHeader data={this.state.data} small/>
 
         <View style={{ marginTop: 40 }}>
           <ListItem text={i18next.t('myAccount:avatar')}
                     type='edit-button'
                     first
                     action
+                    imageRight={common.cloudinary.prepare(this.state.data.avatar, 50)}
                     onPress={() => this._updateAvatar()}
                     title={i18next.t('myAccount:profile')}
             />
           <ListItem text={i18next.t('myAccount:realname')}
                     type='edit-button'
                     action
-                    value={this.state.realname}
-                    onPress={() => this.onUserEdit(require('./MyAccountEditRealname'), this.state.realname)}
+                    value={_.unescape(this.state.data.realname)}
+                    onPress={() => this.onUserEdit(require('./MyAccountEditRealname'), _.unescape(this.state.data.realname))}
             />
 
           <ListItem text={i18next.t('myAccount:biography')}
                     type='edit-button'
                     action
-                    value={this.state.bio}
-                    onPress={() => this.onUserEdit(require('./MyAccountEditBio'), this.state.bio)}
+                    value={_.unescape(this.state.data.bio)}
+                    onPress={() => this.onUserEdit(require('./MyAccountEditBio'), _.unescape(this.state.data.bio))}
             />
 
           <ListItem text={i18next.t('myAccount:location')}
                     type='edit-button'
                     action
-                    value={this.state.location}
-                    onPress={() => this.onUserEdit(require('./MyAccountEditLocation'), this.state.location)}
+                    value={_.unescape(this.state.data.location)}
+                    onPress={() => this.onUserEdit(require('./MyAccountEditLocation'), _.unescape(this.state.data.location))}
             />
 
           <ListItem text={i18next.t('myAccount:website')}
                     type='edit-button'
                     action
                     last
-                    value={this.state.website}
-                    onPress={() => this.onUserEdit(require('./MyAccountEditWebsite'), this.state.website)}
+                    value={this.state.data.website}
+                    onPress={() => this.onUserEdit(require('./MyAccountEditWebsite'), this.state.data.website)}
             />
         </View>
 
@@ -231,32 +200,6 @@ var MyAccountView = React.createClass({
       </ScrollView>
     );
   },
-
-  _renderIdentifier() {
-    if (this.state.realname) {
-      return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 10, flexDirection: 'column'}}>
-          <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={styles.realname}>{_.unescape(this.state.realname)}</Text>
-            <View style={[styles.status, this.state.status === 'connecting' && styles.statusConnecting, this.state.status === 'offline' && styles.statusOffline, this.state.status === 'online' && styles.statusOnline]} />
-            <Text style={styles.statusText}>{this.state.status}</Text>
-          </View>
-          <Text style={[styles.username, styles.usernameGray]}>@{this.state.username}</Text>
-        </View>
-      );
-    }
-
-    return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 10, flexDirection: 'column'}}>
-        <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={[styles.realname]}>@{this.state.username}</Text>
-          <View style={[styles.status, this.state.status === 'connecting' && styles.statusConnecting, this.state.status === 'offline' && styles.statusOffline, this.state.status === 'online' && styles.statusOnline]} />
-          <Text style={styles.statusText}>{this.state.status}</Text>
-        </View>
-      </View>
-    );
-  },
-
   _updateAvatar: function () {
     imageUpload.getImageAndUpload('user,avatar', null, (err, response) => {
       if (err) {
@@ -293,11 +236,15 @@ var MyAccountView = React.createClass({
           return callback(response.err);
         }
       } else {
-        var state = {loaded: true};
         if (key !== 'avatar') {
-          state[key] = value;
+          let data = _.clone(this.state.data);
+          let update = {};
+          update[key] = value;
+          _.extend(data, update);
+          this.setState({
+            data: data
+          });
         }
-        this.setState(state);
 
         if (callback) {
           callback();
@@ -313,34 +260,6 @@ var MyAccountView = React.createClass({
       }
       app.trigger('joinRoom', data.room_id);
     });
-  }
-});
-
-var BackgroundComponent = React.createClass({
-  propTypes: {
-    children: React.PropTypes.element.isRequired,
-    avatar: React.PropTypes.string
-  },
-
-  render: function() {
-    var avatarUrl = null;
-    if (this.props.avatar) {
-      avatarUrl = common.cloudinary.prepare(this.props.avatar, 300);
-    }
-
-    if (avatarUrl) {
-      return (
-        <Image style={[styles.container, {resizeMode: 'cover'}]} source={{uri: avatarUrl}}>
-          {this.props.children}
-        </Image>
-      );
-    }
-
-    return (
-      <View style={[styles.container, {position: 'relative'}]}>
-        {this.props.children}
-      </View>
-    );
   }
 });
 
@@ -393,9 +312,9 @@ var styles = StyleSheet.create({
     marginHorizontal: 5,
     marginTop: 4
   },
-  statusOnline: { backgroundColor: '#18C095' },
-  statusConnecting: { backgroundColor: 'rgb(255, 218, 62)' },
-  statusOffline: { backgroundColor: 'rgb(119,119,119)' },
+  statusOnline: {backgroundColor: '#18C095'},
+  statusConnecting: {backgroundColor: 'rgb(255, 218, 62)'},
+  statusOffline: {backgroundColor: 'rgb(119,119,119)'},
   statusText: {
     color: '#FFFFFF',
     fontStyle: 'italic',
