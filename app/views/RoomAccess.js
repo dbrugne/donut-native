@@ -89,7 +89,6 @@ var RoomAccessView = React.createClass({
           <ListItem
             text={i18next.t('RoomAccess:allow-users-request')}
             type='switch'
-            first
             help={this.state.data.allow_user_request ? i18next.t('RoomAccess:allow-users-request-true') : i18next.t('RoomAccess:allow-users-request-false')}
             switchValue={this.state.data.allow_user_request}
             onSwitch={this.saveRoomData.bind(this, {allow_user_request: !this.state.data.allow_user_request})}
@@ -102,7 +101,6 @@ var RoomAccessView = React.createClass({
             type='edit-button'
             help={i18next.t('RoomAccess:disclaimer-help')}
             action
-            first
             autoCapitalize='none'
             value={_.unescape(this.state.data.disclaimer)}
             />
@@ -140,7 +138,6 @@ var RoomAccessView = React.createClass({
       <View>
         <View style={{ marginTop: 20 }}/>
         <ListItem type='switch'
-                  first
                   text={i18next.t('RoomAccess:password')}
                   switchValue={this.state.setPassword}
                   onSwitch={this.state.setPassword ? this._cleanPassword : () => { this.setState({ setPassword: true })}}
