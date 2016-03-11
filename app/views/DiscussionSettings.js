@@ -196,15 +196,25 @@ var DiscussionSettings = React.createClass({
           action
           title={i18next.t('DiscussionSettings:users-title')}
           first
+          last={this.props.model.get('mode') === 'public'}
           />
-        <ListItem
-          onPress={() => navigation.navigate('ManageInvitations', {id: this.props.model.get('id'), type: 'room'})}
-          text={i18next.t('DiscussionSettings:allowed')}
-          type='button'
-          action
-          last
-          />
+        {this._renderAllowed()}
       </View>
+    );
+  },
+  _renderAllowed: function() {
+    if (this.props.model.get('mode') === 'public') {
+      return;
+    }
+
+    return (
+      <ListItem
+        onPress={() => navigation.navigate('ManageInvitations', {id: this.props.model.get('id'), type: 'room'})}
+        text={i18next.t('DiscussionSettings:allowed')}
+        type='button'
+        action
+        last
+        />
     );
   },
   _renderUsersList: function () {
