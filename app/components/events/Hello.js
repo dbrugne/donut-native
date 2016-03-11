@@ -7,20 +7,20 @@ var {
   TouchableHighlight,
   Image,
   StyleSheet
-} = React;
+  } = React;
 
-var ParsedText = require('../ParsedText');
-var UserBlock = require('./UserBlock');
 var s = require('../../styles/events');
 var app = require('../../libs/app');
 var Icon = require('react-native-vector-icons/EvilIcons');
 var navigation = require('../../navigation/index');
+var common = require('@dbrugne/donut-common/mobile');
+var currentUser = require('../../models/current-user');
 
 var i18next = require('../../libs/i18next');
 i18next.addResourceBundle('en', 'eventsHello', {
   'welcome': 'Welcome',
   'success': 'Success',
-  'chat': 'Chat with __username__',
+  'chat': 'You are in one to one discussion with @__username__',
   'chat-message': 'This conversation is private. Only you and your interlocutor can see it.',
   'public': 'This public conversation and its history are accessible to anyone.',
   'private': 'This private conversation and its history are only accessible to users authorized by @__owner__.',
@@ -46,8 +46,17 @@ module.exports = React.createClass({
   },
   _renderTitle() {
     if (this.props.type === 'onetoone') {
+      let avatar1 = common.cloudinary.prepare(this.props.model.get('avatar'), 150);
+      let avatar2 = common.cloudinary.prepare(currentUser.get('avatar'), 150);
+
       return (
-        <Text style={styles.welcome}>{i18next.t('eventsHello:chat', {username: this.props.data.username})}</Text>
+        <View style={{ marginTop: 20, flexDirection: 'column', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{ flexDirection: 'row', alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center' }}>
+            <Image style={{ width: 75, height: 75, marginRight: 10 }} source={{uri: avatar1}}/>
+            <Image style={{ width: 75, height: 75 }} source={{uri: avatar2}}/>
+          </View>
+          <Text style={styles.welcome}>{i18next.t('eventsHello:chat', {username: this.props.model.get('username')})}</Text>
+        </View>
       );
     }
 
@@ -92,9 +101,9 @@ module.exports = React.createClass({
               name={'gear'}
               size={25}
               color='#AFBAC8'
-              style={{ backgroundColor: 'transparent'}}
+              style={{ backgroundColor: 'transparent' }}
               />
-            </TouchableHighlight>
+          </TouchableHighlight>
           <Text style={styles.text}>{i18next.t('eventsHello:owner')}</Text>
         </View>
       );
@@ -111,17 +120,21 @@ module.exports = React.createClass({
 
 var styles = StyleSheet.create({
   welcome: {
-    color: '#fc2063',
-    fontSize: 20,
+    fontFamily: 'Open Sans',
+    fontSize: 18,
+    color: '#394350',
     lineHeight: 31,
-    marginBottom: 5
+    marginBottom: 40,
+    marginTop: 10,
+    textAlign: 'center',
+    marginHorizontal: 20
   },
   text: {
     color: '#afbac8',
     fontSize: 16,
     lineHeight: 23,
-    fontStyle: 'italic',
     textAlign: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginHorizontal: 20
   }
 });
