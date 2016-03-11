@@ -159,24 +159,6 @@ var styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap'
   },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    marginTop: 20
-  },
-  icon: {
-    width: 14,
-    height: 14,
-    color: '#c7c7c7'
-  },
-  iconOnline: {
-    color: '#4fedc0'
-  },
   bio: {
     marginVertical: 20,
     marginHorizontal: 20,

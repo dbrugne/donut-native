@@ -25,6 +25,7 @@ var UserHeaderView = React.createClass({
   propTypes: {
     model: React.PropTypes.object,
     data: React.PropTypes.any,
+    small: React.PropTypes.bool,
     children: React.PropTypes.any
   },
   getInitialState: function () {
@@ -89,6 +90,10 @@ var UserHeaderView = React.createClass({
     );
   },
   _renderAvatar () {
+    if (this.props.small) {
+      return;
+    }
+
     var avatarUrl = common.cloudinary.prepare(this.state.data.avatar, 150);
     if (!avatarUrl) {
       return null;
