@@ -1,45 +1,44 @@
 var React = require('react-native');
-var Platform = require('Platform');
 var currentUser = require('../models/current-user');
 var LoadingView = require('../components/Loading');
 var app = require('../libs/app');
 var alert = require('../libs/alert');
 var Button = require('../components/Button');
+var ListItem = require('../components/ListItem');
+var KeyboardAware = require('../components/KeyboardAware');
 
 var s = require('../styles/style');
 
 var {
-  Component,
   StyleSheet,
   Text,
   TextInput,
   ScrollView,
   View
-} = React;
+  } = React;
 
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountPassword', {
-  'old-password': 'old password',
+  'old-password': 'Old password',
   'change-password': 'Change password',
-  'new-password': 'new password',
-  'confirm': 'confirm',
+  'new-password': 'New password',
+  'confirm': 'Confirm',
   'change': 'CHANGE',
   'wrong-format': 'Password should be between 6 and 50 characters length',
   'wrong-password': 'Old password is wrong'
 });
 
-class ChangePasswordView extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
+var ChangePasswordView = React.createClass({
+  getInitialState: function () {
+    return {
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
       hasPassword: false,
-      loaded: false
+      loaded: false,
+      loadingRequest: false
     };
-  }
-
+  },
   componentDidMount () {
     app.client.userRead(currentUser.get('user_id'), {admin: true}, (response) => {
       this.setState({
@@ -47,8 +46,7 @@ class ChangePasswordView extends Component {
         hasPassword: !!(response.account && response.account.has_password)
       });
     });
-  }
-
+  },
   render () {
     if (!this.state.loaded) {
       return (
@@ -59,80 +57,78 @@ class ChangePasswordView extends Component {
     var inputOldPassword;
     if (this.state.hasPassword) {
       inputOldPassword = (
-        <View ref='old-password'
-          style={[s.inputContainer, s.marginTop5]}>
-        <TextInput
-          ref='1'
-          autoCapitalize='none'
-          autoFocus
-          placeholder={i18next.t('myAccountPassword:old-password')}
-          secureTextEntry
-          returnKeyType='next'
-          style={[styles.input, s.marginTop10]}
-          onChangeText={(text) => this.setState({oldPassword: text})}
-          onFocus={this.inputFocused.bind(this, 'old-password')}
-          onBlur={this.inputBlured.bind(this, 'old-password')}
-          onSubmitEditing={() => this._focusNextField('2')}
-          />
+        <View style={{ flex: 1 }}>
+          <ListItem
+            last
+            type='input'
+            ref='1'
+            autoCapitalize='none'
+            autoFocus
+            placeholder={i18next.t('myAccountPassword:old-password')}
+            secureTextEntry
+            returnKeyType='next'
+            style={[styles.input, s.marginTop10]}
+            onChangeText={(text) => this.setState({oldPassword: text})}
+            />
         </View>
       );
     }
 
     return (
-      <View style={{ flex:1, alignItems: 'stretch'}}>
+      <KeyboardAware
+        shouldShow={() => { return true }}
+        shouldHide={() => { return true }}
+        >
         <ScrollView
           ref='scrollView'
-          contentContainerStyle={{flex:1}}
+          contentContainerStyle={{ flex: 1 }}
           keyboardDismissMode='on-drag'
-          style={{flex: 1, backgroundColor: '#f0f0f0'}}>
+          style={{ flex: 1, padding: 20 }}>
           <View>
             <Text style={[s.h1, s.textCenter, s.marginTop5]}>{i18next.t('myAccountPassword:change-password')}</Text>
 
+            <View style={{ marginTop: 20 }}/>
+
             {inputOldPassword}
 
-            <View ref='new-password'
-                  style={[s.inputContainer, s.marginTop5]}>
-              <TextInput
+            <View style={{ flex: 1 }}>
+              <ListItem
+                last
+                type='input'
                 ref='2'
                 autoCapitalize='none'
                 placeholder={i18next.t('myAccountPassword:new-password')}
-                secureTextEntry={true}
+                secureTextEntry
                 returnKeyType='next'
-                style={[styles.input, s.marginTop10]}
                 onChangeText={(text) => this.setState({newPassword: text})}
-                onFocus={this.inputFocused.bind(this, 'new-password')}
-                onBlur={this.inputBlured.bind(this, 'new-password')}
-                onSubmitEditing={() => this._focusNextField('3')}
                 />
             </View>
 
-            <View ref='confirm'
-                  style={[s.inputContainer, s.marginTop5]}>
-              <TextInput
+            <View style={{ flex: 1 }}>
+              <ListItem
+                last
+                type='input'
                 ref='3'
                 autoCapitalize='none'
                 placeholder={i18next.t('myAccountPassword:confirm')}
-                secureTextEntry={true}
+                secureTextEntry
                 returnKeyType='done'
-                style={[styles.input, s.marginTop10]}
                 onChangeText={(text) => this.setState({confirmPassword: text})}
-                onFocus={this.inputFocused.bind(this, 'confirm')}
-                onBlur={this.inputBlured.bind(this, 'confirm')}
                 />
             </View>
+          </View>
 
-           </View>
-
-          <Button onPress={(this.onSubmitPressed.bind(this))}
+          <Button onPress={(this.onSubmitPressed)}
                   type='gray'
                   style={[s.marginTop10]}
-                  label={i18next.t('myAccountPassword:change')} />
+                  loading={this.state.loadingRequest}
+                  label={i18next.t('myAccountPassword:change')}
+            />
 
         </ScrollView>
-      </View>
-    )
-  }
-
+      </KeyboardAware>
+    );
+  },
   onSubmitPressed () {
     if (!this.state.newPassword || (this.state.hasPassword && !this.state.oldPassword)) {
       return alert.show(i18next.t('messages.not-complete'));
@@ -142,7 +138,9 @@ class ChangePasswordView extends Component {
       return alert.show(i18next.t('messages.not-same-password'));
     }
 
+    this.setState({loadingRequest: true});
     app.client.accountPassword(this.state.newPassword, this.state.oldPassword, (response) => {
+      this.setState({loadingRequest: false});
       if (response.err) {
         if (response.err === 'wrong-format') {
           alert.show(i18next.t('myAccountPassword:wrong-format'));
@@ -155,33 +153,8 @@ class ChangePasswordView extends Component {
         alert.show(i18next.t('messages.success'));
       }
     });
-  }
-
-  inputFocused (refName) {
-    setTimeout(() => {
-      this._updateScroll(refName, 60);
-    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
-  }
-
-  inputBlured (refName) {
-    setTimeout(() => {
-      this._updateScroll(refName, -60);
-    }, 300); // delay between keyboard opening start and scroll update (no callback after keyboard is rendered)
-  }
-
-  _updateScroll(refName, offset) {
-    let scrollResponder = this.refs.scrollView.getScrollResponder();
-    scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-      React.findNodeHandle(this.refs[refName]),
-      offset,
-      true
-    );
-  }
-
-  _focusNextField(nextField) {
-    this.refs[nextField].focus()
-  }
-}
+  },
+});
 
 module.exports = ChangePasswordView;
 
@@ -202,7 +175,7 @@ var styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     backgroundColor: '#FFF',
-    color: "#333",
+    color: '#333',
     height: 40,
     paddingBottom: 3,
     paddingTop: 3,
