@@ -18,9 +18,9 @@ var {
 var i18next = require('../libs/i18next');
 i18next.addResourceBundle('en', 'myAccountEmails', {
   'add-email': 'Add email',
-  'current-email': 'MAIN EMAIL',
   'missing-email': 'You do not have entered a main email for this account.',
-  'additional-emails': 'ADDITIONAL EMAILS'
+  'additional-emails': 'ADDITIONAL EMAILS',
+  'select': 'Select below your main email to receive your notifications'
 });
 
 class EmailsView extends Component {
@@ -59,10 +59,9 @@ class EmailsView extends Component {
     }
 
     return (
-      <ScrollView
-        style={{ flexDirection: 'column', flexWrap: 'wrap', backgroundColor: '#f0f0f0', paddingTop: 20, flex: 1 }}>
-        <View style={s.listGroup}>
-
+      <ScrollView style={{ flexDirection: 'column', flexWrap: 'wrap' }}>
+        <View style={{ marginVertical: 20 }}>
+          <Text style={{ marginHorizontal: 20, marginBottom: 20 }}>{i18next.t('myAccountEmails:select')}</Text>
           {this._renderMainEmail()}
 
           {this._renderAdditionalEmails()}
@@ -91,7 +90,6 @@ class EmailsView extends Component {
             type='button'
             action
             first
-            title={i18next.t('myAccountEmails:current-email')}
             />
           <Text style={s.listGroupItemSpacing} />
         </View>
