@@ -72,6 +72,11 @@ class NotificationsView extends Component {
     app.off(null, null, this);
   }
 
+  componentWillReceiveProps() {
+    // force scrolltop each time we display this component
+    this.refs['listview'].scrollTo({y: 0});
+  }
+
   onFocus () {
     this.fetchData();
   }
@@ -136,6 +141,7 @@ class NotificationsView extends Component {
           />
         {this._renderHeader()}
         <ListView
+          ref='listview'
           dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}
           renderFooter={this.renderFooter.bind(this)}
