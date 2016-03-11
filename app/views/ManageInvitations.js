@@ -25,8 +25,8 @@ var navigation = require('../navigation/index');
 
 i18next.addResourceBundle('en', 'ManageInvitations', {
   'invite': 'Invite a user',
-  'pending': 'Users pending',
-  'allowed': 'Allowed users',
+  'pending': 'USERS PENDING',
+  'allowed': 'ALLOWED USERS',
   'not-result': 'No user found',
   'invite-confirmation': 'Not found',
   'invite-disclaimer': 'Did you mean to invite @__username__?'
@@ -124,7 +124,7 @@ var ManageInvitationsView = React.createClass({
       <ScrollView style={{flex: 1}}>
         <ListItem
           type='input-button'
-          first
+          autoCapitalize='none'
           value={this.state.invite}
           onChangeText={(text) => this.setState({invite: text})}
           onPress={() => this._inviteUsername()}
