@@ -6,7 +6,7 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
-    "@dbrugne/donut-client": "latest",
+    "@dbrugne/donut-client": "1.0.41",
     "@dbrugne/donut-common": "latest",
     "@exponent/react-native-action-sheet": "^0.1.2",
     "@exponent/react-native-navigator": "^0.4.1",
